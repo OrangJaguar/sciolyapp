@@ -1,0 +1,140 @@
+@import 'tailwindcss';
+@import './styles/tokens.css';
+
+@theme {
+  --color-void: var(--void);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-high: var(--surface-high);
+  --color-cyan: var(--cyan);
+  --color-cyan-dim: var(--cyan-dim);
+  --color-alert: var(--alert);
+  --color-success: var(--success);
+  --color-muted: var(--text-muted);
+  --color-dim: var(--text-dim);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-pill: var(--radius-pill);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.hud-panel {
+  background: var(--surface);
+  border: 1px solid var(--ghost-border);
+  border-radius: var(--radius-lg);
+}
+
+.hud-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--ghost-border);
+  background: var(--surface-elevated);
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.hud-pill:hover {
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.hud-pill-active {
+  background: var(--cyan);
+  color: #000;
+  border-color: var(--cyan);
+  box-shadow: 0 0 18px var(--cyan-glow);
+}
+
+.stripe-progress {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--cyan),
+    var(--cyan) 6px,
+    #007a82 6px,
+    #007a82 12px
+  );
+  box-shadow: 0 0 12px var(--cyan-dim);
+}
+
+.label-caps {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+.data-mono {
+  font-family: var(--font-mono);
+}
+
+.ghost-border {
+  border: 1px solid var(--ghost-border);
+}
+
+/* HUD scrollbars — track blends with panels, thumb is cyan */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--cyan) var(--surface);
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--surface);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--cyan);
+  border-radius: 999px;
+  border: 2px solid var(--surface);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #5ff8ff;
+}
+
+*::-webkit-scrollbar-corner {
+  background: var(--surface);
+}
+
