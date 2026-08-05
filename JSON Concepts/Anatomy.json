@@ -1,0 +1,592 @@
+{
+  "event_id": "anatomy",
+  "event_name": "Anatomy and Physiology",
+  "domain": "Life, Personal & Social Science",
+  "official_2027_scope": "Digestive, Immune, and Respiratory Systems",
+  "season": 2027,
+  "division": "C",
+  "topics": [
+    {
+      "topic_id": "anatomy_respiratory_anatomy_and_mechanics",
+      "title": "Respiratory anatomy and mechanics",
+      "display_order": 1,
+      "concepts": [
+        {
+          "concept_id": "anatomy_upper_respiratory_anatomy",
+          "title": "Upper respiratory tract anatomy (nose, pharynx, larynx)",
+          "description": "Identify and describe the structures of the nose, nasal conchae, pharynx (naso-, oro-, laryngopharynx), and larynx including epiglottis and vocal folds.",
+          "depth_tags": ["nasal conchae", "pharynx regions", "larynx cartilages", "glottis", "vocal folds"]
+        },
+        {
+          "concept_id": "anatomy_lower_respiratory_anatomy",
+          "title": "Lower respiratory tract anatomy (trachea to alveoli)",
+          "description": "Trace the tracheobronchial tree from trachea to terminal bronchioles and alveoli; characterize the respiratory membrane formed by alveolar and capillary walls.",
+          "depth_tags": ["trachea", "bronchi", "bronchioles", "alveolar ducts", "respiratory membrane", "type I pneumocytes"]
+        },
+        {
+          "concept_id": "anatomy_pleura_and_intrapleural_pressure",
+          "title": "Pleura and intrapleural pressure dynamics",
+          "description": "Distinguish visceral and parietal pleura; explain how pleural fluid and negative intrapleural pressure couple lung to chest wall and prevent collapse.",
+          "depth_tags": ["visceral pleura", "parietal pleura", "intrapleural pressure", "pleural fluid", "pneumothorax"]
+        },
+        {
+          "concept_id": "anatomy_respiratory_muscles",
+          "title": "Respiratory muscles and chest wall mechanics",
+          "description": "Identify diaphragm, external/internal intercostals, scalenes, and abdominal muscles; describe their roles in inspiration and forced expiration.",
+          "depth_tags": ["diaphragm", "external intercostals", "internal intercostals", "accessory muscles", "bucket-handle motion"]
+        },
+        {
+          "concept_id": "anatomy_lung_volumes_capacities",
+          "title": "Static lung volumes and capacities",
+          "description": "Define TV, IRV, ERV, RV, VC, TLC, FRC; know normal values and how they are measured or calculated.",
+          "depth_tags": ["tidal volume", "inspiratory reserve volume", "expiratory reserve volume", "residual volume", "vital capacity", "total lung capacity"]
+        },
+        {
+          "concept_id": "anatomy_spirometry_flow_volume",
+          "title": "Spirometry and flow-volume loop interpretation",
+          "description": "Interpret FVC, FEV1, FEV1/FVC ratio; differentiate obstructive (low ratio) and restrictive (normal/high ratio) patterns using flow-volume loops.",
+          "depth_tags": ["FVC", "FEV1", "FEV1/FVC ratio", "obstructive pattern", "restrictive pattern", "flow-volume loop"]
+        },
+        {
+          "concept_id": "anatomy_minute_alveolar_ventilation",
+          "title": "Minute and alveolar ventilation calculations",
+          "description": "Calculate minute ventilation (VE = VT × f) and alveolar ventilation (VA = (VT – VD) × f); explain the impact of dead space on gas turnover.",
+          "depth_tags": ["minute ventilation", "alveolar ventilation", "tidal volume", "dead space", "respiratory rate"]
+        },
+        {
+          "concept_id": "anatomy_dead_space_bohr",
+          "title": "Dead space and Bohr equation",
+          "description": "Distinguish anatomical and physiological dead space; apply the Bohr equation (VD/VT = (PaCO2 – PECO2)/PaCO2) to quantify physiological dead space.",
+          "depth_tags": ["anatomical dead space", "physiological dead space", "Bohr equation", "PaCO2", "PECO2"]
+        },
+        {
+          "concept_id": "anatomy_pulmonary_compliance",
+          "title": "Pulmonary compliance and hysteresis",
+          "description": "Define compliance (ΔV/ΔP); interpret pressure-volume curves showing hysteresis and the effects of emphysema (increased) vs fibrosis (decreased).",
+          "depth_tags": ["compliance ΔV/ΔP", "hysteresis", "emphysema", "pulmonary fibrosis", "elastin"]
+        },
+        {
+          "concept_id": "anatomy_surfactant_laplace",
+          "title": "Surfactant and Laplace's law in alveolar stability",
+          "description": "State Laplace's law (P = 2T/r) and explain how surfactant reduces surface tension, prevents alveolar collapse and decreases work of breathing.",
+          "depth_tags": ["surfactant", "dipalmitoylphosphatidylcholine", "Laplace's law", "surface tension", "type II pneumocytes", "NRDS"]
+        },
+        {
+          "concept_id": "anatomy_airway_resistance",
+          "title": "Airway resistance and Poiseuille's law",
+          "description": "Apply Poiseuille's law (R ∝ 1/r⁴) to explain factors affecting resistance; link to bronchial smooth muscle tone, asthma, and bronchodilators.",
+          "depth_tags": ["Poiseuille's law", "airway radius", "bronchoconstriction", "asthma", "parasympathetic tone"]
+        },
+        {
+          "concept_id": "anatomy_work_of_breathing",
+          "title": "Work of breathing components",
+          "description": "Identify elastic work (lung/chest wall recoil) and resistive work (airway/tissue resistance); recognize conditions that increase each component.",
+          "depth_tags": ["elastic work", "resistive work", "compliance", "airway resistance", "respiratory effort"]
+        },
+        {
+          "concept_id": "anatomy_respiratory_centers",
+          "title": "Medullary and pontine respiratory centers",
+          "description": "Describe the dorsal respiratory group (DRG) for inspiration, ventral respiratory group (VRG) for forced expiration, and pontine centers (apneustic, pneumotaxic) for pattern modulation.",
+          "depth_tags": ["DRG", "VRG", "pre-Bötzinger complex", "apneustic center", "pneumotaxic center"]
+        },
+        {
+          "concept_id": "anatomy_chemoreceptors",
+          "title": "Peripheral and central chemoreceptors in ventilatory control",
+          "description": "Explain how peripheral chemoreceptors (carotid and aortic bodies) sense PO2, PCO2, pH, and central medullary chemoreceptors respond to CSF [H+]; predict ventilatory responses.",
+          "depth_tags": ["carotid body", "aortic body", "central chemoreceptor", "hypercapnia", "hypoxemia", "CSF pH"]
+        },
+        {
+          "concept_id": "anatomy_pressure_changes_breathing",
+          "title": "Pressure changes during inspiration and expiration",
+          "description": "Track alveolar, intrapleural, and transpulmonary pressures during quiet breathing and forced maneuvers; explain pneumothorax consequences.",
+          "depth_tags": ["intrapleural pressure", "alveolar pressure", "transpulmonary pressure", "pneumothorax", "elastic recoil"]
+        }
+      ]
+    },
+    {
+      "topic_id": "anatomy_gas_exchange_transport_and_blood_ph",
+      "title": "Gas exchange, transport, and blood pH",
+      "display_order": 2,
+      "concepts": [
+        {
+          "concept_id": "anatomy_ficks_law_diffusion",
+          "title": "Respiratory membrane and Fick's law of diffusion",
+          "description": "Apply Fick's law (V gas ∝ A × ΔP × D / T) to explain gas exchange; relate changes in surface area, thickness, or pressure gradient to disease (e.g., emphysema, fibrosis).",
+          "depth_tags": ["Fick's law", "diffusion coefficient", "partial pressure gradient", "surface area", "membrane thickness"]
+        },
+        {
+          "concept_id": "anatomy_oxygen_cascade",
+          "title": "Oxygen cascade and partial pressure gradients",
+          "description": "Trace PO2 from inspired air (≈160 mmHg) to mitochondrial PO2 (<5 mmHg); identify key drop points (alveolar, arterial, capillary).",
+          "depth_tags": ["PO2 cascade", "alveolar PO2", "arterial PO2", "mitochondrial PO2"]
+        },
+        {
+          "concept_id": "anatomy_alveolar_gas_equation",
+          "title": "Alveolar gas equation and ideal PAO2",
+          "description": "Calculate ideal alveolar PO2 using PAO2 = (PB – PH2O) × FiO2 – (PaCO2 / R); interpret in hypoventilation and altered FiO2.",
+          "depth_tags": ["alveolar gas equation", "PAO2", "respiratory quotient", "barometric pressure", "FiO2"]
+        },
+        {
+          "concept_id": "anatomy_oxygen_transport_content",
+          "title": "Oxygen content and transport in blood",
+          "description": "Compute arterial O2 content: CaO2 = (Hb × 1.34 × SaO2) + (0.003 × PaO2); compare dissolved vs. hemoglobin-bound O2 contributions.",
+          "depth_tags": ["CaO2", "oxygen content", "hemoglobin binding capacity", "dissolved oxygen"]
+        },
+        {
+          "concept_id": "anatomy_hemoglobin_structure",
+          "title": "Hemoglobin structure and cooperative binding",
+          "description": "Describe Hb quaternary structure (α2β2), heme group Fe2+, and T→R conformational change during O2 binding; relate to sigmoidal dissociation curve.",
+          "depth_tags": ["heme", "globins", "T state", "R state", "cooperativity", "2,3-BPG"]
+        },
+        {
+          "concept_id": "anatomy_oxyhemoglobin_dissociation_curve",
+          "title": "Oxyhemoglobin dissociation curve characteristics",
+          "description": "Interpret the sigmoidal curve: plateau at high PO2 (loading), steep at tissue PO2 (unloading); define P50 and its clinical significance.",
+          "depth_tags": ["P50", "sigmoidal curve", "oxygen saturation", "loading/unloading"]
+        },
+        {
+          "concept_id": "anatomy_bohr_effect_modulators",
+          "title": "Bohr effect and modulators of Hb-O2 affinity",
+          "description": "Explain how increased PCO2, [H+], temperature, and 2,3-BPG shift the curve right (decreased affinity) and enhance O2 unloading; opposite for left shift.",
+          "depth_tags": ["Bohr effect", "right shift", "left shift", "2,3-BPG", "temperature", "pH"]
+        },
+        {
+          "concept_id": "anatomy_co2_transport_forms",
+          "title": "CO2 transport forms and carbonic anhydrase",
+          "description": "List three CO2 transport forms: dissolved (5-10%), carbamino-Hb (20-30%), bicarbonate HCO3- (60-70%); describe role of carbonic anhydrase in RBC.",
+          "depth_tags": ["bicarbonate", "carbaminohemoglobin", "dissolved CO2", "carbonic anhydrase", "Haldane effect"]
+        },
+        {
+          "concept_id": "anatomy_chloride_shift",
+          "title": "Cloride shift (Hamburger phenomenon)",
+          "description": "Explain the Cl-/HCO3- antiport across RBC membrane to maintain electroneutrality during CO2 loading/unloading; link to plasma chloride changes.",
+          "depth_tags": ["chloride shift", "band 3 protein", "anion exchange", "Hamburger phenomenon", "HCO3-"]
+        },
+        {
+          "concept_id": "anatomy_haldane_effect",
+          "title": "Haldane effect and CO2 dissociation curve",
+          "description": "State that deoxygenated hemoglobin has greater affinity for CO2 and H+, facilitating CO2 loading at tissues; interpret the Haldane effect on CO2 transport.",
+          "depth_tags": ["Haldane effect", "deoxyhemoglobin", "CO2 binding", "carbamino formation"]
+        },
+        {
+          "concept_id": "anatomy_vq_matching",
+          "title": "Ventilation-perfusion (V/Q) matching and regional differences",
+          "description": "Define V/Q ratio (ideally ~0.8); describe lung zones (West zones) and how gravity affects ventilation/perfusion distribution; calculate alveolar-arterial O2 difference.",
+          "depth_tags": ["V/Q ratio", "West zones", "A-a gradient", "gravity effect", "alveolar dead space"]
+        },
+        {
+          "concept_id": "anatomy_shunt_deadspace",
+          "title": "Shunt vs. dead space as V/Q abnormalities",
+          "description": "Distinguish shunt (perfused but not ventilated, V/Q <1, responds poorly to O2) from dead space (ventilated but not perfused, V/Q >1); give examples.",
+          "depth_tags": ["shunt", "dead space", "V/Q mismatch", "pulmonary embolism", "atelectasis"]
+        },
+        {
+          "concept_id": "anatomy_henderson_hasselbalch",
+          "title": "Henderson-Hasselbalch equation for bicarbonate buffer",
+          "description": "Apply pH = pKa + log([HCO3-]/(0.03 × PCO2)) to assess acid-base status; identify normal values (pH 7.4, HCO3- 24 mM, PCO2 40 mmHg).",
+          "depth_tags": ["Henderson-Hasselbalch", "bicarbonate buffer", "pH", "PCO2", "metabolic", "respiratory"]
+        },
+        {
+          "concept_id": "anatomy_respiratory_compensation_acid_base",
+          "title": "Respiratory compensation in acid-base disturbances",
+          "description": "Predict ventilator response to metabolic acidosis/alkalosis (Kussmaul breathing, hypoventilation) and interpret compensatory changes in PCO2.",
+          "depth_tags": ["compensation", "metabolic acidosis", "respiratory alkalosis", "Kussmaul respirations", "ventilatory response"]
+        },
+        {
+          "concept_id": "anatomy_carbon_monoxide_poisoning",
+          "title": "Carbon monoxide poisoning and Hb affinity",
+          "description": "Explain CO’s high affinity for Hb (~200x O2), left shift of O2 dissociation curve, decreased O2 unloading, and functional anemia; identify cherry-red skin and treatment with 100% O2.",
+          "depth_tags": ["carboxyhemoglobin", "left shift", "competitive binding", "functional anemia", "pulse oximetry limitation"]
+        }
+      ]
+    },
+    {
+      "topic_id": "anatomy_digestive_anatomy_and_mechanical_chemical_digestion",
+      "title": "Digestive anatomy and mechanical/chemical digestion",
+      "display_order": 3,
+      "concepts": [
+        {
+          "concept_id": "anatomy_oral_cavity_salivary_glands",
+          "title": "Oral cavity and salivary glands",
+          "description": "Identify teeth (incisors, canines, premolars, molars), tongue papillae, and three major salivary glands (parotid, submandibular, sublingual) with their duct openings.",
+          "depth_tags": ["parotid", "submandibular", "sublingual", "ducts of Rivinus", "Wharton's duct", "Stensen's duct"]
+        },
+        {
+          "concept_id": "anatomy_pharynx_esophagus_deglutition",
+          "title": "Pharynx, esophagus, and deglutition",
+          "description": "Outline oral, pharyngeal, and esophageal phases of swallowing; describe upper and lower esophageal sphincters and their role in preventing reflux.",
+          "depth_tags": ["deglutition", "UES", "LES", "peristalsis", "reflux"]
+        },
+        {
+          "concept_id": "anatomy_stomach_gross_anatomy",
+          "title": "Stomach gross anatomy and regions",
+          "description": "Distinguish cardia, fundus, body, antrum, pylorus; identify gastric rugae and sphincters (lower esophageal, pyloric).",
+          "depth_tags": ["cardia", "fundus", "antrum", "pylorus", "rugae", "pyloric sphincter"]
+        },
+        {
+          "concept_id": "anatomy_gastric_gland_histology",
+          "title": "Gastric gland histology and secretory cells",
+          "description": "Identify gastric pit, mucous neck cells, parietal cells (HCl, intrinsic factor), chief cells (pepsinogen), and enteroendocrine G cells (gastrin).",
+          "depth_tags": ["parietal cells", "chief cells", "G cells", "intrinsic factor", "HCl", "pepsinogen"]
+        },
+        {
+          "concept_id": "anatomy_gastric_acid_secretion",
+          "title": "Gastric acid secretion and intrinsic factor",
+          "description": "Describe parietal cell H+,K+-ATPase (proton pump), stimulation by gastrin/histamine/ACh; explain intrinsic factor's role in B12 absorption.",
+          "depth_tags": ["proton pump H+K+-ATPase", "gastrin", "histamine", "ACh", "intrinsic factor", "pernicious anemia"]
+        },
+        {
+          "concept_id": "anatomy_small_intestine_anatomy",
+          "title": "Small intestine anatomy and surface area adaptations",
+          "description": "Distinguish duodenum, jejunum, ileum; describe plicae circulares, villi, and microvilli (brush border) increasing absorptive surface.",
+          "depth_tags": ["duodenum", "jejunum", "ileum", "plicae circulares", "villi", "microvilli"]
+        },
+        {
+          "concept_id": "anatomy_large_intestine_anatomy",
+          "title": "Large intestine anatomy and features",
+          "description": "Identify cecum, appendix, ascending/transverse/descending/sigmoid colon, rectum, anal canal; recognize teniae coli, haustra, and epiploic appendages.",
+          "depth_tags": ["cecum", "appendix", "teniae coli", "haustra", "rectum", "anal canal"]
+        },
+        {
+          "concept_id": "anatomy_accessory_digestive_organs",
+          "title": "Liver, gallbladder, and pancreas anatomy",
+          "description": "Locate liver lobes, portal triad, gallbladder, cystic duct, common bile duct, pancreatic duct (duct of Wirsung), and hepatopancreatic ampulla.",
+          "depth_tags": ["hepatic ducts", "gallbladder", "common bile duct", "pancreatic duct", "ampulla of Vater", "sphincter of Oddi"]
+        },
+        {
+          "concept_id": "anatomy_gi_tract_histology_layers",
+          "title": "Histology of GI tract wall layers",
+          "description": "Describe the four layers: mucosa (epithelium, lamina propria, muscularis mucosae), submucosa (Meissner's plexus), muscularis externa (Auerbach's plexus), and serosa/adventitia.",
+          "depth_tags": ["mucosa", "submucosa", "muscularis externa", "serosa", "Meissner's plexus", "Auerbach's plexus"]
+        },
+        {
+          "concept_id": "anatomy_enteric_nervous_system",
+          "title": "Enteric nervous system and peristaltic reflex",
+          "description": "Explain myenteric and submucosal plexuses roles; describe local peristaltic reflex (contraction behind, relaxation ahead) and law of the gut.",
+          "depth_tags": ["myenteric plexus", "submucosal plexus", "peristalsis", "law of the gut", "VIP", "nitric oxide"]
+        },
+        {
+          "concept_id": "anatomy_mechanical_digestion_processes",
+          "title": "Mechanical digestion processes (mastication, churning, segmentation)",
+          "description": "Define mastication (chewing), gastric churning and retropulsion, segmentation in small intestine mixing chyme; contrast with peristaltic propulsion.",
+          "depth_tags": ["mastication", "churning", "segmentation", "retropulsion", "mixing"]
+        },
+        {
+          "concept_id": "anatomy_pancreatic_exocrine_secretion",
+          "title": "Pancreatic exocrine enzymes and bicarbonate secretion",
+          "description": "List acinar cell secretion of trypsinogen, chymotrypsinogen, procarboxypeptidase, lipase, amylase, nucleases; duct cells secrete HCO3- to neutralize chyme.",
+          "depth_tags": ["trypsinogen", "chymotrypsinogen", "lipase", "amylase", "bicarbonate", "enteropeptidase"]
+        },
+        {
+          "concept_id": "anatomy_bile_enterohepatic",
+          "title": "Bile production, composition, and enterohepatic circulation",
+          "description": "Describe hepatocyte synthesis of bile acids, bile salts, phospholipids, cholesterol, bilirubin; gallbladder concentration; ileal reabsorption (enterohepatic circulation).",
+          "depth_tags": ["bile salts", "cholesterol", "bilirubin", "enterohepatic circulation", "micelles"]
+        },
+        {
+          "concept_id": "anatomy_gi_hormones_regulation",
+          "title": "GI hormones (gastrin, CCK, secretin, GIP)",
+          "description": "Identify stimuli and actions of gastrin (HCl secretion), CCK (gallbladder contraction, pancreatic enzyme), secretin (bicarbonate), and GIP (insulin).",
+          "depth_tags": ["gastrin", "CCK", "secretin", "GIP", "motilin", "somatostatin"]
+        },
+        {
+          "concept_id": "anatomy_gastric_phases",
+          "title": "Phases of gastric secretion (cephalic, gastric, intestinal)",
+          "description": "Describe cephalic (vagus), gastric (distension, peptides, gastrin), and intestinal (enterogastric reflex) phases that regulate gastric acid and motility.",
+          "depth_tags": ["cephalic phase", "gastric phase", "intestinal phase", "vagus", "enterogastric reflex", "somatostatin"]
+        }
+      ]
+    },
+    {
+      "topic_id": "anatomy_absorption_nutrition_and_metabolic_handling_of_nutrients",
+      "title": "Absorption, nutrition, and metabolic handling of nutrients",
+      "display_order": 4,
+      "concepts": [
+        {
+          "concept_id": "anatomy_absorption_pathways",
+          "title": "Absorption pathways across intestinal epithelium",
+          "description": "Differentiate transcellular (passive, active, facilitated) and paracellular routes; identify carriers, channels, and energy-dependent transporters.",
+          "depth_tags": ["transcellular", "paracellular", "active transport", "facilitated diffusion", "SGLT1"]
+        },
+        {
+          "concept_id": "anatomy_carb_digestion_monosaccharides",
+          "title": "Carbohydrate digestion to monosaccharides and brush border enzymes",
+          "description": "Outline starch/glycogen breakdown by salivary and pancreatic amylase to oligosaccharides; final hydrolysis by brush border maltase, sucrase, lactase to monosaccharides.",
+          "depth_tags": ["amylase", "maltase", "sucrase", "lactase", "dextrinase", "oligosaccharides"]
+        },
+        {
+          "concept_id": "anatomy_monosaccharide_absorption",
+          "title": "Intestinal absorption of monosaccharides (SGLT1, GLUT2, GLUT5)",
+          "description": "Describe Na+-dependent glucose/galactose uptake via SGLT1, basolateral exit by GLUT2, and fructose via GLUT5; link to oral rehydration therapy.",
+          "depth_tags": ["SGLT1", "GLUT2", "GLUT5", "Na+ cotransport", "fructose absorption"]
+        },
+        {
+          "concept_id": "anatomy_protein_digestion_absorption",
+          "title": "Protein digestion and amino acid/peptide absorption",
+          "description": "Explain endopeptidases (pepsin, trypsin) and exopeptidases (carboxypeptidase, aminopeptidase); absorption as amino acids (Na+ cotransport) and di/tripeptides (PepT1).",
+          "depth_tags": ["pepsin", "trypsin", "carboxypeptidase", "PepT1", "Na+ cotransport", "amino acids"]
+        },
+        {
+          "concept_id": "anatomy_lipid_digestion_micelles",
+          "title": "Lipid digestion and micelle formation",
+          "description": "Describe emulsification by bile salts, pancreatic lipase/colipase action on triglycerides, and micelle formation with monoglycerides and fatty acids for diffusion across unstirred layer.",
+          "depth_tags": ["lipase", "colipase", "bile salts", "micelle", "monoglycerides", "emulsification"]
+        },
+        {
+          "concept_id": "anatomy_lipid_absorption_chylomicrons",
+          "title": "Lipid absorption and chylomicron pathway",
+          "description": "Inside enterocyte, re-esterify fatty acids to triglycerides, package into chylomicrons with apoproteins B-48, exit via lacteals to lymph, then thoracic duct.",
+          "depth_tags": ["chylomicron", "apoprotein B-48", "lacteal", "lymphatic", "triglycerides", "exocytosis"]
+        },
+        {
+          "concept_id": "anatomy_vitamin_absorption",
+          "title": "Absorption of fat-soluble and water-soluble vitamins",
+          "description": "Compare absorption of fat-soluble (A,D,E,K) requiring micelles and chylomicrons with water-soluble vitamins; highlight B12 needing intrinsic factor for ileal uptake.",
+          "depth_tags": ["fat-soluble vitamins", "water-soluble vitamins", "intrinsic factor", "B12 absorption", "micelle"]
+        },
+        {
+          "concept_id": "anatomy_iron_absorption",
+          "title": "Iron absorption and regulation by hepcidin",
+          "description": "Distinguish heme iron (directly absorbed) vs non-heme (DMT1 uptake, ferroportin export); explain hepcidin-mediated ferroportin degradation regulating iron entry.",
+          "depth_tags": ["DMT1", "ferroportin", "hepcidin", "transferrin", "heme iron", "non-heme iron"]
+        },
+        {
+          "concept_id": "anatomy_calcium_absorption",
+          "title": "Calcium absorption and vitamin D",
+          "description": "Describe active transcellular Ca2+ absorption in duodenum (calbindin, Ca-ATPase) regulated by 1,25-(OH)2 vitamin D; passive paracellular in jejunum/ileum.",
+          "depth_tags": ["calbindin", "TRPV6", "vitamin D receptor", "1,25-dihydroxyvitamin D", "paracellular Ca absorption"]
+        },
+        {
+          "concept_id": "anatomy_water_electrolyte_absorption",
+          "title": "Water and electrolyte absorption in the intestine",
+          "description": "Explain Na+ absorption (cotransport with glucose/amino acids, Na+/H+ exchange), Cl- and HCO3- transport, and osmotic water movement; link to diarrhea mechanisms.",
+          "depth_tags": ["Na+/H+ exchanger", "Cl-/HCO3- exchange", "osmosis", "SGLT1", "CFTR", "secretory diarrhea"]
+        },
+        {
+          "concept_id": "anatomy_hepatic_portal_circulation",
+          "title": "Hepatic portal circulation and first-pass metabolism",
+          "description": "Trace venous drainage from intestines to liver via portal vein; explain first-pass metabolism of drugs and nutrient processing (glycogen storage, detoxification).",
+          "depth_tags": ["portal vein", "sinusoids", "first-pass effect", "hepatocytes", "Kupffer cells"]
+        },
+        {
+          "concept_id": "anatomy_postabsorptive_glucose_metabolism",
+          "title": "Postabsorptive glucose metabolism and hormonal control",
+          "description": "Outline glycogenesis (insulin), glycogenolysis, gluconeogenesis (glucagon, cortisol); contrast fed vs fasted states and role of liver in maintaining blood glucose.",
+          "depth_tags": ["glycogenesis", "glycogenolysis", "gluconeogenesis", "insulin", "glucagon", "glucose-6-phosphatase"]
+        },
+        {
+          "concept_id": "anatomy_lipoprotein_metabolism",
+          "title": "Lipoprotein metabolism and lipid transport",
+          "description": "Describe chylomicron remodeling, VLDL secretion, LDL delivery, HDL reverse cholesterol transport; roles of lipoprotein lipase, CETP, and receptors.",
+          "depth_tags": ["VLDL", "LDL", "HDL", "lipoprotein lipase", "cholesterol", "ApoB-100"]
+        },
+        {
+          "concept_id": "anatomy_amino_acid_metabolism",
+          "title": "Amino acid metabolism and urea cycle",
+          "description": "Outline transamination, oxidative deamination, and the urea cycle (liver) converting ammonia to urea for excretion; nitrogen balance concepts.",
+          "depth_tags": ["transamination", "alanine aminotransferase", "urea cycle", "ammonia", "glutamate dehydrogenase", "nitrogen balance"]
+        },
+        {
+          "concept_id": "anatomy_nutrient_requirements",
+          "title": "Macronutrient and essential nutrient requirements",
+          "description": "Define essential amino acids, essential fatty acids, vitamins, minerals; list recommended daily allowances for macronutrients and concept of nitrogen balance.",
+          "depth_tags": ["essential amino acids", "omega-3/6", "RDA", "nitrogen balance", "macronutrients"]
+        }
+      ]
+    },
+    {
+      "topic_id": "anatomy_immune_system_structure_and_innate_adaptive_roles",
+      "title": "Immune system structure and innate/adaptive roles",
+      "display_order": 5,
+      "concepts": [
+        {
+          "concept_id": "anatomy_primary_lymphoid_organs",
+          "title": "Primary lymphoid organs: bone marrow and thymus",
+          "description": "Explain B cell development in bone marrow (including central tolerance) and T cell maturation in thymus (cortex/medulla); recognize thymic involution.",
+          "depth_tags": ["bone marrow", "thymus", "Hassall's corpuscles", "B cell maturation", "T cell maturation"]
+        },
+        {
+          "concept_id": "anatomy_secondary_lymphoid_organs",
+          "title": "Secondary lymphoid organs: lymph nodes, spleen, MALT",
+          "description": "Describe lymph node structure (follicle, germinal center, paracortex, medulla), spleen white/red pulp, and mucosa-associated lymphoid tissue (tonsils, Peyer's patches).",
+          "depth_tags": ["lymph node", "germinal center", "spleen white pulp", "Peyer's patches", "MALT"]
+        },
+        {
+          "concept_id": "anatomy_leukocyte_types",
+          "title": "Leukocyte types and general functions",
+          "description": "Classify neutrophils, eosinophils, basophils, monocytes/macrophages, dendritic cells, lymphocytes (B, T, NK); identify primary roles in innate/adaptive immunity.",
+          "depth_tags": ["neutrophil", "eosinophil", "basophil", "monocyte", "lymphocyte", "NK cell"]
+        },
+        {
+          "concept_id": "anatomy_innate_barriers",
+          "title": "Innate immunity barriers and antimicrobial factors",
+          "description": "List physical (skin, mucous), chemical (lysozyme, defensins, stomach acid), and microbial barriers; describe roles of antimicrobial peptides and normal flora.",
+          "depth_tags": ["lysozyme", "defensins", "mucus", "commensal bacteria", "acid pH"]
+        },
+        {
+          "concept_id": "anatomy_phagocytosis_tlrs",
+          "title": "Phagocytosis and pattern recognition receptors (TLRs)",
+          "description": "Detail phagocytosis steps (chemotaxis, opsonization, ingestion, killing); identify TLRs and other PRRs recognizing PAMPs (LPS, peptidoglycan, dsRNA).",
+          "depth_tags": ["phagosome", "phagolysosome", "TLR4", "PAMP", "opsonization", "respiratory burst"]
+        },
+        {
+          "concept_id": "anatomy_inflammation_mediators",
+          "title": "Inflammatory response and mediators",
+          "description": "Outline cardinal signs (rubor, tumor, calor, dolor), vascular changes (vasodilation, permeability), and key mediators: histamine, prostaglandins, leukotrienes, cytokines.",
+          "depth_tags": ["vasodilation", "histamine", "prostaglandins", "leukotrienes", "cytokines", "selectins"]
+        },
+        {
+          "concept_id": "anatomy_complement_system",
+          "title": "Complement system pathways and effectors",
+          "description": "Compare classical (antibody), lectin (MBL), and alternative pathways; describe C3 convertase, MAC formation, opsonization (C3b), and anaphylatoxins (C3a, C5a).",
+          "depth_tags": ["C3 convertase", "MAC", "C3b", "C5a", "classical pathway", "alternative pathway"]
+        },
+        {
+          "concept_id": "anatomy_nk_cells",
+          "title": "Natural killer cells and missing-self recognition",
+          "description": "Explain how NK cells detect lack of MHC I (missing self) via inhibitory receptors; kill via perforin/granzyme or FasL; ADCC via CD16.",
+          "depth_tags": ["NK cell", "missing self", "perforin", "granzyme", "ADCC", "CD16"]
+        },
+        {
+          "concept_id": "anatomy_mhc_antigen_presentation",
+          "title": "MHC class I and II in antigen presentation",
+          "description": "Distinguish MHC I (all nucleated cells, presents endogenous antigens to CD8+ T cells) and MHC II (APCs, presents exogenous antigens to CD4+ T cells); describe peptide loading.",
+          "depth_tags": ["MHC I", "MHC II", "endogenous pathway", "exogenous pathway", "TAP", "invariant chain"]
+        },
+        {
+          "concept_id": "anatomy_dendritic_cells",
+          "title": "Dendritic cells as professional antigen-presenting cells",
+          "description": "Describe immature DCs capturing antigen in tissues, maturing upon TLR signals, upregulating MHC II and costimulatory molecules, migrating to lymph nodes.",
+          "depth_tags": ["dendritic cell", "Langerhans cell", "costimulation", "B7-CD28", "CCR7"]
+        },
+        {
+          "concept_id": "anatomy_t_cell_development",
+          "title": "T cell maturation and thymic selection",
+          "description": "Outline positive selection (recognize self MHC) and negative selection (deletion of self-reactive) in thymus; CD4/CD8 lineage commitment.",
+          "depth_tags": ["positive selection", "negative selection", "CD4+", "CD8+", "AIRE", "thymic epithelium"]
+        },
+        {
+          "concept_id": "anatomy_cd4_helper_subsets",
+          "title": "CD4+ T helper cell subsets and cytokines",
+          "description": "Describe Th1 (IFN-γ, activate macrophages), Th2 (IL-4,5,13, help B cells), Th17 (IL-17, antifungal), Tfh (IL-21, germinal center), regulatory T cells (FoxP3).",
+          "depth_tags": ["Th1", "Th2", "Th17", "Tfh", "Treg", "FoxP3"]
+        },
+        {
+          "concept_id": "anatomy_cytotoxic_t_cells",
+          "title": "Cytotoxic T cell killing mechanisms",
+          "description": "Detail CTL target cell killing: perforin/granzyme (pore formation, caspase activation) and Fas/FasL (apoptosis); MHC I-restricted recognition.",
+          "depth_tags": ["perforin", "granzyme", "FasL", "caspase", "apoptosis", "CD8+"]
+        },
+        {
+          "concept_id": "anatomy_b_cell_activation",
+          "title": "B cell activation and plasma cell differentiation",
+          "description": "Describe T-dependent (CD40-CD40L, cytokine) and T-independent (TI-1, TI-2) activation; germinal center reaction, somatic hypermutation, class switching, memory B cells.",
+          "depth_tags": ["CD40", "germinal center", "somatic hypermutation", "class switch recombination", "AID", "plasma cell"]
+        },
+        {
+          "concept_id": "anatomy_antibody_structure_isotypes",
+          "title": "Immunoglobulin structure and isotype functions",
+          "description": "Draw basic Ig structure (heavy/light chains, variable/constant, Fab/Fc); list five isotypes (IgG, IgM, IgA, IgE, IgD) and key functions (opsonization, complement, mucosal, allergy).",
+          "depth_tags": ["IgG", "IgM", "IgA", "IgE", "Fab", "Fc"]
+        }
+      ]
+    },
+    {
+      "topic_id": "anatomy_immune_response_disorders_and_disease_applications",
+      "title": "Immune response, disorders, and disease applications",
+      "display_order": 6,
+      "concepts": [
+        {
+          "concept_id": "anatomy_primary_secondary_response",
+          "title": "Primary and secondary immune response kinetics",
+          "description": "Compare lag, peak antibody titer, isotype (IgM then IgG), and magnitude; explain basis of immunological memory due to expanded memory B/T cells.",
+          "depth_tags": ["primary response", "secondary response", "IgM to IgG switch", "memory cells", "affinity maturation"]
+        },
+        {
+          "concept_id": "anatomy_immunological_memory",
+          "title": "Immunological memory and long-term protection",
+          "description": "Identify long-lived memory B, memory CD4+, and memory CD8+ T cells; describe rapid recall response and maintenance of protective antibody levels by plasma cells.",
+          "depth_tags": ["memory B cells", "memory T cells", "recall response", "long-lived plasma cells", "vaccination"]
+        },
+        {
+          "concept_id": "anatomy_vaccine_types",
+          "title": "Vaccine types and immunization strategies",
+          "description": "Classify vaccines: live attenuated, inactivated, subunit/conjugate, toxoid, mRNA; explain how each induces immunity without disease and need for boosters.",
+          "depth_tags": ["live attenuated", "inactivated", "subunit vaccine", "mRNA vaccine", "adjuvant", "booster"]
+        },
+        {
+          "concept_id": "anatomy_type1_hypersensitivity",
+          "title": "Type I hypersensitivity (IgE-mediated allergy)",
+          "description": "Describe sensitization phase (IgE binding to mast cells), cross-linking on re-exposure, degranulation releasing histamine, leukotrienes; anaphylaxis treatment.",
+          "depth_tags": ["IgE", "mast cell", "histamine", "anaphylaxis", "epinephrine", "allergen"]
+        },
+        {
+          "concept_id": "anatomy_type2_hypersensitivity",
+          "title": "Type II hypersensitivity (antibody-mediated cytotoxicity)",
+          "description": "Explain antibodies against cell-surface antigens leading to complement lysis or ADCC; examples: hemolytic disease of newborn, autoimmune hemolytic anemia.",
+          "depth_tags": ["Rh incompatibility", "Goodpasture syndrome", "ADCC", "complement lysis", "IgG/IgM"]
+        },
+        {
+          "concept_id": "anatomy_type3_hypersensitivity",
+          "title": "Type III hypersensitivity (immune complex disease)",
+          "description": "Deposition of soluble antigen-antibody complexes in tissues (vessel walls, glomeruli) causing inflammation; examples: serum sickness, SLE nephritis.",
+          "depth_tags": ["immune complexes", "serum sickness", "lupus nephritis", "type III", "vasculitis"]
+        },
+        {
+          "concept_id": "anatomy_type4_hypersensitivity",
+          "title": "Type IV hypersensitivity (delayed-type, cell-mediated)",
+          "description": "T cell-mediated: sensitized CD4+ Th1 cells release cytokines recruiting macrophages (e.g., TB granuloma) or CD8+ direct killing (contact dermatitis).",
+          "depth_tags": ["Th1", "granuloma", "contact dermatitis", "Mantoux test", "delayed-type"]
+        },
+        {
+          "concept_id": "anatomy_autoimmunity_mechanisms",
+          "title": "Autoimmune disease mechanisms and examples",
+          "description": "Describe breakdown of central/peripheral tolerance (molecular mimicry, bystander activation); give examples: Type 1 diabetes (beta-cell destruction), SLE, rheumatoid arthritis.",
+          "depth_tags": ["self-tolerance", "molecular mimicry", "AIRE", "Type 1 diabetes", "SLE", "rheumatoid arthritis"]
+        },
+        {
+          "concept_id": "anatomy_immunodeficiency_disorders",
+          "title": "Immunodeficiency disorders: primary and acquired",
+          "description": "Contrast congenital (SCID, X-linked agammaglobulinemia) vs acquired (HIV/AIDS, malnutrition, immunosuppressive drugs); note infections characteristic of each defect.",
+          "depth_tags": ["SCID", "XLA", "HIV", "opportunistic infections", "Bruton's tyrosine kinase"]
+        },
+        {
+          "concept_id": "anatomy_hiv_pathogenesis",
+          "title": "HIV replication and CD4+ T cell depletion",
+          "description": "Describe HIV entry (gp120-CD4, coreceptors CCR5/CXCR4), reverse transcription, integration, budding; CD4+ decline leading to AIDS; monitor viral load, CD4 count.",
+          "depth_tags": ["gp120", "CD4", "CCR5", "reverse transcriptase", "integrase", "protease"]
+        },
+        {
+          "concept_id": "anatomy_immune_response_bacteria",
+          "title": "Immune response to bacterial pathogens",
+          "description": "Describe extracellular bacteria: antibody opsonization, complement, phagocytosis; intracellular: Th1 activation of macrophages; examples like Streptococcus, Mycobacterium.",
+          "depth_tags": ["opsonization", "complement", "Th1", "macrophage activation", "IFN-γ"]
+        },
+        {
+          "concept_id": "anatomy_immune_response_viruses",
+          "title": "Antiviral immune response and interferons",
+          "description": "Detail type I IFN production by infected cells, NK cell killing, CTL killing of infected cells, neutralizing antibodies blocking viral entry.",
+          "depth_tags": ["IFN-α/β", "NK cells", "CTL", "neutralizing antibody", "MHC I presentation"]
+        },
+        {
+          "concept_id": "anatomy_immunodiagnostics",
+          "title": "ELISA and Western blot immunodiagnostic methods",
+          "description": "Interpret direct, indirect, sandwich ELISA for antigen/antibody detection; Western blot for confirmatory protein detection (e.g., HIV).",
+          "depth_tags": ["ELISA", "sandwich ELISA", "Western blot", "primary antibody", "secondary antibody", "enzyme conjugate"]
+        },
+        {
+          "concept_id": "anatomy_transplant_rejection",
+          "title": "Transplant rejection types and MHC matching",
+          "description": "Classify hyperacute (preformed antibodies), acute (cellular/humoral), chronic rejection; explain graft-versus-host disease and importance of HLA matching and immunosuppression.",
+          "depth_tags": ["hyperacute rejection", "acute rejection", "chronic rejection", "GVHD", "HLA", "calcineurin inhibitors"]
+        },
+        {
+          "concept_id": "anatomy_cancer_immunoediting",
+          "title": "Cancer immunoediting and checkpoint inhibitor therapy",
+          "description": "Outline three Es: elimination, equilibrium, escape; describe immune checkpoint blockade (anti-CTLA-4, anti-PD-1/PD-L1) releasing T cell inhibition against tumors.",
+          "depth_tags": ["immunoediting", "CTLA-4", "PD-1", "PD-L1", "immune evasion", "melanoma"]
+        }
+      ]
+    }
+  ]
+}

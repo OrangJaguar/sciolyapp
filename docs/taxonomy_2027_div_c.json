@@ -1,0 +1,1797 @@
+{
+  "season": 2027,
+  "division": "C",
+  "source": "DETAILED EVENT PROFILES",
+  "studyable_events": [
+    {
+      "id": "anatomy",
+      "name": "Anatomy and Physiology",
+      "domain": "Life, Personal & Social Science",
+      "test_component": "written_station",
+      "studyable": true,
+      "topics": [
+        {
+          "id": "anatomy_cardiovascular_system",
+          "name": "Cardiovascular System",
+          "sort": 0
+        },
+        {
+          "id": "anatomy_lymphatic_system_and_immunity",
+          "name": "Lymphatic System and Immunity",
+          "sort": 1
+        },
+        {
+          "id": "anatomy_excretory_system",
+          "name": "Excretory System",
+          "sort": 2
+        }
+      ],
+      "subtopics": [
+        {
+          "id": "anatomy_cardiovascular_system_anatomy_and_histology",
+          "topic_id": "anatomy_cardiovascular_system",
+          "name": "Cardiovascular System Anatomy and Histology",
+          "sort": 0,
+          "concepts": [
+            "Gross anatomy of heart chambers, cardiac valves, coronary circulation, histology of arterial, venous, and capillary walls",
+            "hematology components (erythrocytes, leukocytes, thrombocytes), clotting cascade"
+          ]
+        },
+        {
+          "id": "anatomy_cardiac_physiology_and_hemodynamics",
+          "topic_id": "anatomy_cardiovascular_system",
+          "name": "Cardiac Physiology and Hemodynamics",
+          "sort": 1,
+          "concepts": [
+            "Cardiac conduction system (SA node, AV node, Bundle of His, Purkinje fibers)",
+            "electrocardiogram (ECG) wave components, cardiac cycle phases",
+            "Frank-Starling law",
+            "Poiseuille's law",
+            "blood pressure regulation via baroreceptors and chemoreceptors"
+          ]
+        },
+        {
+          "id": "anatomy_lymphatic_system_and_innate_immunity",
+          "topic_id": "anatomy_lymphatic_system_and_immunity",
+          "name": "Lymphatic System and Innate Immunity",
+          "sort": 2,
+          "concepts": [
+            "Primary and secondary lymphoid organs (thymus, bone marrow, spleen, lymph nodes), lymphatic vessel network",
+            "physical and chemical innate barriers, inflammatory response",
+            "complement system activation pathways"
+          ]
+        },
+        {
+          "id": "anatomy_adaptive_immunity_and_immunoglobulins",
+          "topic_id": "anatomy_lymphatic_system_and_immunity",
+          "name": "Adaptive Immunity and Immunoglobulins",
+          "sort": 3,
+          "concepts": [
+            "B cell activation and humoral immunity",
+            "T cell cell-mediated immunity (CD4+ helper vs CD8+ cytotoxic T cells)",
+            "antigen presentation via MHC I and MHC II",
+            "antibody structures and immunoglobulin classes (IgA, IgD, IgE, IgG, IgM"
+          ]
+        },
+        {
+          "id": "anatomy_excretory_system_anatomy_and_renal_physiology",
+          "topic_id": "anatomy_excretory_system",
+          "name": "Excretory System Anatomy and Renal Physiology",
+          "sort": 4,
+          "concepts": [
+            "Macro and microanatomy of kidneys and nephrons",
+            "glomerular filtration rate (GFR) autoregulation",
+            "tubular reabsorption and secretion dynamics, countercurrent multiplier mechanism",
+            "RAAS pathway",
+            "ADH fluid regulation, acid-base balance maintenance"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "astronomy",
+      "name": "Astronomy",
+      "domain": "Earth and Space Science",
+      "test_component": "written",
+      "studyable": true,
+      "topics": [
+        {
+          "id": "astronomy_stellar_evolution",
+          "name": "Stellar evolution",
+          "sort": 0
+        },
+        {
+          "id": "astronomy_hertzsprung_russell_diagram",
+          "name": "Hertzsprung-Russell diagram",
+          "sort": 1
+        },
+        {
+          "id": "astronomy_star_clusters",
+          "name": "star clusters",
+          "sort": 2
+        },
+        {
+          "id": "astronomy_supernovae",
+          "name": "supernovae",
+          "sort": 3
+        },
+        {
+          "id": "astronomy_compact_objects",
+          "name": "compact objects",
+          "sort": 4
+        },
+        {
+          "id": "astronomy_active_galactic_nuclei",
+          "name": "active galactic nuclei",
+          "sort": 5
+        },
+        {
+          "id": "astronomy_extragalactic_astronomy",
+          "name": "extragalactic astronomy",
+          "sort": 6
+        }
+      ],
+      "subtopics": [
+        {
+          "id": "astronomy_stellar_formation_and_main_sequence_evolution",
+          "topic_id": "astronomy_stellar_evolution",
+          "name": "Stellar Formation and Main Sequence Evolution",
+          "sort": 0,
+          "concepts": [
+            "Jeans instability criteria, protostellar collapse",
+            "Hayashi tracks",
+            "proton-proton chain vs CNO cycle nuclear fusion, hydrostatic equilibrium",
+            "HR diagram main sequence turnoff analysis"
+          ]
+        },
+        {
+          "id": "astronomy_late_stage_stellar_evolution_and_remnants",
+          "topic_id": "astronomy_stellar_evolution",
+          "name": "Late-Stage Stellar Evolution and Remnants",
+          "sort": 1,
+          "concepts": [
+            "Red giant branch dynamics, helium flash, planetary nebulae, electron degeneracy pressure",
+            "Chandrasekhar limit",
+            "Type Ia vs Type II supernovae, neutron star structure",
+            "Tolman-Oppenheimer-Volkoff limit",
+            "black hole event horizons and Schwarzschild radius"
+          ]
+        },
+        {
+          "id": "astronomy_variable_stars_and_binary_systems",
+          "topic_id": "astronomy_star_clusters",
+          "name": "Variable Stars and Binary Systems",
+          "sort": 2,
+          "concepts": [
+            "Cepheid variable period-luminosity relationships",
+            "RR Lyrae stars",
+            "eclipsing binary light curve interpretation",
+            "Roche lobe overflow, accretion disk dynamics"
+          ]
+        },
+        {
+          "id": "astronomy_extragalactic_astrophysics_and_cosmology",
+          "topic_id": "astronomy_active_galactic_nuclei",
+          "name": "Extragalactic Astrophysics and Cosmology",
+          "sort": 3,
+          "concepts": [
+            "Active Galactic Nuclei classifications (quasars, blazars, Seyfert galaxies)",
+            "Hubble-Lema\u00eetre law",
+            "dark matter evidence via galaxy rotation curves",
+            "cosmic microwave background radiation features"
+          ]
+        },
+        {
+          "id": "astronomy_observational_astronomy_and_mathematical_physics",
+          "topic_id": "astronomy_extragalactic_astronomy",
+          "name": "Observational Astronomy and Mathematical Physics",
+          "sort": 4,
+          "concepts": [
+            "Stefan-Boltzmann law",
+            "Wien's displacement law, distance modulus calculations",
+            "Kepler's third law calculations, spectroscopic redshift equations"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany",
+      "name": "Botany",
+      "domain": "Life, Personal & Social Science",
+      "test_component": "written_station",
+      "studyable": true,
+      "topics": [
+        {
+          "id": "botany_plant_anatomy_and_histology",
+          "name": "Plant anatomy and histology",
+          "sort": 0
+        },
+        {
+          "id": "botany_photosynthesis_and_transpiration",
+          "name": "photosynthesis and transpiration",
+          "sort": 1
+        },
+        {
+          "id": "botany_plant_taxonomy",
+          "name": "plant taxonomy",
+          "sort": 2
+        },
+        {
+          "id": "botany_plant_diseases",
+          "name": "plant diseases",
+          "sort": 3
+        },
+        {
+          "id": "botany_nutrient_deficiencies",
+          "name": "nutrient deficiencies",
+          "sort": 4
+        },
+        {
+          "id": "botany_and_propagation_techniques",
+          "name": "and propagation techniques",
+          "sort": 5
+        }
+      ],
+      "subtopics": [
+        {
+          "id": "botany_plant_anatomy_and_histology",
+          "topic_id": "botany_plant_anatomy_and_histology",
+          "name": "Plant Anatomy and Histology",
+          "sort": 0,
+          "concepts": [
+            "Xylem (vessels, tracheids) and phloem (sieve tubes, companion cells) structure",
+            "apical and lateral meristems, leaf mesophyll architecture, stomatal complex dynamics",
+            "root histology (endodermis, Casparian strip, stele"
+          ]
+        },
+        {
+          "id": "botany_plant_physiology_and_metabolism",
+          "topic_id": "botany_plant_anatomy_and_histology",
+          "name": "Plant Physiology and Metabolism",
+          "sort": 1,
+          "concepts": [
+            "Photosynthetic light reactions",
+            "Calvin cycle (C_3)",
+            "C_4 spatial separation pathway",
+            "CAM temporal separation pathway, cohesion-tension transpiration theory",
+            "plant hormones (auxins, cytokinins, gibberellins, ABA, ethylene), photoperiodism"
+          ]
+        },
+        {
+          "id": "botany_plant_taxonomy_and_evolutionary_groups",
+          "topic_id": "botany_plant_taxonomy",
+          "name": "Plant Taxonomy and Evolutionary Groups",
+          "sort": 2,
+          "concepts": [
+            "Non-vascular plants (Bryophytes)",
+            "seedless vascular plants (Pteridophytes)",
+            "Gymnosperms",
+            "Angiosperms (Monocots vs Eudicots differentiation)",
+            "alternation of generations life cycles"
+          ]
+        },
+        {
+          "id": "botany_plant_pathology_and_nutrient_deficiencies",
+          "topic_id": "botany_nutrient_deficiencies",
+          "name": "Plant Pathology and Nutrient Deficiencies",
+          "sort": 3,
+          "concepts": [
+            "Essential macronutrients (NPK, Ca, Mg, S) and micronutrients",
+            "deficiency chlorosis and necrosis patterns",
+            "fungal pathogens (powdery mildew, rusts, blights)",
+            "bacterial pathogens (crown gall), viral pathogens (TMV"
+          ]
+        },
+        {
+          "id": "botany_horticulture_and_plant_propagation",
+          "topic_id": "botany_plant_anatomy_and_histology",
+          "name": "Horticulture and Plant Propagation",
+          "sort": 4,
+          "concepts": [
+            "Sexual reproduction vs asexual propagation (cuttings, grafting, tissue culture), soil texture analysis",
+            "soil cation exchange capacity, greenhouse management"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chem_lab",
+      "name": "Chemistry Lab",
+      "domain": "Physical Science & Chemistry",
+      "test_component": "lab_written",
+      "studyable": true,
+      "topics": [
+        {
+          "id": "chem_lab_ideal_and_real_gas_laws",
+          "name": "Ideal and Real Gas Laws",
+          "sort": 0
+        },
+        {
+          "id": "chem_lab_kinetic_molecular_theory",
+          "name": "Kinetic Molecular Theory",
+          "sort": 1
+        },
+        {
+          "id": "chem_lab_reaction_rates",
+          "name": "Reaction Rates",
+          "sort": 2
+        },
+        {
+          "id": "chem_lab_differential_and_integrated_rate_laws",
+          "name": "Differential and Integrated Rate Laws",
+          "sort": 3
+        },
+        {
+          "id": "chem_lab_arrhenius_equation",
+          "name": "Arrhenius Equation",
+          "sort": 4
+        },
+        {
+          "id": "chem_lab_catalysis",
+          "name": "Catalysis",
+          "sort": 5
+        }
+      ],
+      "subtopics": [
+        {
+          "id": "chem_lab_ideal_and_real_gas_thermodynamics",
+          "topic_id": "chem_lab_ideal_and_real_gas_laws",
+          "name": "Ideal and Real Gas Thermodynamics",
+          "sort": 0,
+          "concepts": [
+            "Ideal gas equation (PV = nRT), gas stoichiometry",
+            "Dalton's law of partial pressures",
+            "van der Waals equation for real gases, compressibility factor (Z"
+          ]
+        },
+        {
+          "id": "chem_lab_kinetic_molecular_theory_and_gas_transport",
+          "topic_id": "chem_lab_kinetic_molecular_theory",
+          "name": "Kinetic Molecular Theory and Gas Transport",
+          "sort": 1,
+          "concepts": [
+            "KMT postulates, root-mean-square velocity (v_{rms)",
+            "Maxwell-Boltzmann distribution curves",
+            "Graham's law of effusion and diffusion"
+          ]
+        },
+        {
+          "id": "chem_lab_chemical_kinetics_and_rate_law_determination",
+          "topic_id": "chem_lab_kinetic_molecular_theory",
+          "name": "Chemical Kinetics and Rate Law Determination",
+          "sort": 2,
+          "concepts": [
+            "Differential vs integrated rate laws (zero, first, second order)",
+            "reaction half-life mathematical formulations, initial rates method",
+            "spectrophotometry and Beer-Lambert law (A = \u03b5 b C"
+          ]
+        },
+        {
+          "id": "chem_lab_temperature_dependence_and_reaction_mechanisms",
+          "topic_id": "chem_lab_reaction_rates",
+          "name": "Temperature Dependence and Reaction Mechanisms",
+          "sort": 3,
+          "concepts": [
+            "Arrhenius equation (k = A e^{-E_a/RT), activation energy calculation, transition state theory, elementary steps, rate-determining step identification",
+            "homogeneous vs heterogeneous catalysts"
+          ]
+        },
+        {
+          "id": "chem_lab_laboratory_titrations_and_gas_measurements",
+          "topic_id": "chem_lab_ideal_and_real_gas_laws",
+          "name": "Laboratory Titrations and Gas Measurements",
+          "sort": 4,
+          "concepts": [
+            "Eudiometer gas collection over water, vapor pressure corrections",
+            "iodine clock reaction techniques, spectrophotometer cuvette calibration"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "circuit_lab",
+      "name": "Circuit Lab",
+      "domain": "Physical Science & Chemistry",
+      "test_component": "lab_written",
+      "studyable": true,
+      "topics": [
+        {
+          "id": "circuit_lab_dc_circuits",
+          "name": "DC circuits",
+          "sort": 0
+        },
+        {
+          "id": "circuit_lab_ac_circuits",
+          "name": "AC circuits",
+          "sort": 1
+        },
+        {
+          "id": "circuit_lab_passive_components",
+          "name": "passive components",
+          "sort": 2
+        },
+        {
+          "id": "circuit_lab_semiconductors",
+          "name": "semiconductors",
+          "sort": 3
+        },
+        {
+          "id": "circuit_lab_operational_amplifiers",
+          "name": "operational amplifiers",
+          "sort": 4
+        },
+        {
+          "id": "circuit_lab_and_digital_logic_gates",
+          "name": "and digital logic gates",
+          "sort": 5
+        }
+      ],
+      "subtopics": [
+        {
+          "id": "circuit_lab_direct_current_dc_circuit_analysis",
+          "topic_id": "circuit_lab_dc_circuits",
+          "name": "Direct Current (DC) Circuit Analysis",
+          "sort": 0,
+          "concepts": [
+            "Ohm's law",
+            "Kirchhoff's voltage and current laws (KVL/KCL)",
+            "series and parallel resistor networks",
+            "Delta-Wye transformations",
+            "Thevenin and Norton equivalent circuits",
+            "maximum power transfer theorem",
+            "nodal and mesh analysis"
+          ]
+        },
+        {
+          "id": "circuit_lab_alternating_current_ac_and_reactive_components",
+          "topic_id": "circuit_lab_passive_components",
+          "name": "Alternating Current (AC) and Reactive Components",
+          "sort": 1,
+          "concepts": [
+            "Capacitance and inductance equations",
+            "RC and RL time constants (\\tau)",
+            "sinusoidal AC waveforms (RMS values)",
+            "capacitive and inductive reactance (X_C, X_L)",
+            "RLC series/parallel resonance (\u03c90), complex impedance"
+          ]
+        },
+        {
+          "id": "circuit_lab_semiconductor_devices_and_operational_amplifiers",
+          "topic_id": "circuit_lab_operational_amplifiers",
+          "name": "Semiconductor Devices and Operational Amplifiers",
+          "sort": 2,
+          "concepts": [
+            "P-N junction diode characteristics",
+            "Zener voltage regulation",
+            "BJT and MOSFET transistor operating regions",
+            "ideal operational amplifier configurations (inverting, non-inverting, summing, buffers"
+          ]
+        },
+        {
+          "id": "circuit_lab_digital_electronics_and_logic_systems",
+          "topic_id": "circuit_lab_and_digital_logic_gates",
+          "name": "Digital Electronics and Logic Systems",
+          "sort": 3,
+          "concepts": [
+            "Boolean algebra simplifications",
+            "De Morgan's laws",
+            "standard logic gates (AND, OR, NOT, NAND, NOR, XOR, XNOR), truth table synthesis",
+            "combinational logic (multiplexers, decoders), flip-flops"
+          ]
+        },
+        {
+          "id": "circuit_lab_laboratory_instrumentation_and_measurement",
+          "topic_id": "circuit_lab_dc_circuits",
+          "name": "Laboratory Instrumentation and Measurement",
+          "sort": 4,
+          "concepts": [
+            "Digital multimeter (DMM) operation for voltage, current, and resistance",
+            "oscilloscope timebase and triggering",
+            "Wheatstone bridge measurements, breadboard prototyping techniques"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "codebusters",
+      "name": "Codebusters",
+      "domain": "Inquiry & Nature of Science",
+      "test_component": "written",
+      "studyable": true,
+      "topics": [
+        {
+          "id": "codebusters_monoalphabetic_substitution_ciphers_aristocrats_patr",
+          "name": "Monoalphabetic substitution ciphers (Aristocrats, Patristocrats, Xenocrypts",
+          "sort": 0
+        },
+        {
+          "id": "codebusters_polyalphabetic_ciphers",
+          "name": "polyalphabetic ciphers",
+          "sort": 1
+        },
+        {
+          "id": "codebusters_mathematical_ciphers_affine_hill",
+          "name": "mathematical ciphers (Affine, Hill",
+          "sort": 2
+        },
+        {
+          "id": "codebusters_transposition_ciphers",
+          "name": "transposition ciphers",
+          "sort": 3
+        },
+        {
+          "id": "codebusters_baconian_ciphers",
+          "name": "Baconian ciphers",
+          "sort": 4
+        }
+      ],
+      "subtopics": [
+        {
+          "id": "codebusters_monoalphabetic_substitution_ciphers",
+          "topic_id": "codebusters_monoalphabetic_substitution_ciphers_aristocrats_patr",
+          "name": "Monoalphabetic Substitution Ciphers",
+          "sort": 0,
+          "concepts": [
+            "Aristocrat decryption using English letter frequency and pattern recognition",
+            "Patristocrat deciphering without spaces",
+            "Xenocrypt cryptanalysis using Spanish language conventions",
+            "K1/K2/K3 keyword reconstruction"
+          ]
+        },
+        {
+          "id": "codebusters_polyalphabetic_and_transposition_ciphers",
+          "topic_id": "codebusters_polyalphabetic_ciphers",
+          "name": "Polyalphabetic and Transposition Ciphers",
+          "sort": 1,
+          "concepts": [
+            "Vigen\u00e8re cipher encryption/decryption using tabula recta",
+            "Rail Fence cipher deciphering with varied rail counts and offsets",
+            "Columnar transposition"
+          ]
+        },
+        {
+          "id": "codebusters_mathematical_and_algebraic_ciphers",
+          "topic_id": "codebusters_mathematical_ciphers_affine_hill",
+          "name": "Mathematical and Algebraic Ciphers",
+          "sort": 2,
+          "concepts": [
+            "Affine cipher math (E(x) = (ax + b) mod{26) and modular multiplicative inverse computation",
+            "Hill cipher 2 \u00d7 2 and 3 \u00d7 3 matrix multiplication and modular matrix inversion"
+          ]
+        },
+        {
+          "id": "codebusters_specialized_cryptographic_codes",
+          "topic_id": "codebusters_monoalphabetic_substitution_ciphers_aristocrats_patr",
+          "name": "Specialized Cryptographic Codes",
+          "sort": 3,
+          "concepts": [
+            "Baconian cipher variant decoding",
+            "Pollux and Morbit cipher mapping from digits to Morse code",
+            "RSA encryption modular arithmetic basics"
+          ]
+        },
+        {
+          "id": "codebusters_timed_cryptanalysis_strategies",
+          "topic_id": "codebusters_monoalphabetic_substitution_ciphers_aristocrats_patr",
+          "name": "Timed Cryptanalysis Strategies",
+          "sort": 4,
+          "concepts": [
+            "First-question timing bonus optimization",
+            "standard error threshold rules",
+            "digraph/trigraph frequency table application"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "designer_genes",
+      "name": "Designer Genes",
+      "domain": "Life, Personal & Social Science",
+      "test_component": "written",
+      "studyable": true,
+      "topics": [
+        {
+          "id": "designer_genes_inheritance_patterns",
+          "name": "Inheritance patterns",
+          "sort": 0
+        },
+        {
+          "id": "designer_genes_pedigree_analysis",
+          "name": "pedigree analysis",
+          "sort": 1
+        },
+        {
+          "id": "designer_genes_dna_replication",
+          "name": "DNA replication",
+          "sort": 2
+        },
+        {
+          "id": "designer_genes_transcription",
+          "name": "transcription",
+          "sort": 3
+        },
+        {
+          "id": "designer_genes_translation",
+          "name": "translation",
+          "sort": 4
+        },
+        {
+          "id": "designer_genes_gene_regulation_operons",
+          "name": "gene regulation operons",
+          "sort": 5
+        },
+        {
+          "id": "designer_genes_biotechnology_tools",
+          "name": "biotechnology tools",
+          "sort": 6
+        },
+        {
+          "id": "designer_genes_and_genomics",
+          "name": "and genomics",
+          "sort": 7
+        }
+      ],
+      "subtopics": [
+        {
+          "id": "designer_genes_classical_transmission_genetics",
+          "topic_id": "designer_genes_gene_regulation_operons",
+          "name": "Classical Transmission Genetics",
+          "sort": 0,
+          "concepts": [
+            "Monohybrid and dihybrid crosses, incomplete dominance, codominance, sex-linked/influenced/limited traits, pedigree pattern deduction",
+            "genetic mapping via recombination frequencies"
+          ]
+        },
+        {
+          "id": "designer_genes_molecular_biology_and_central_dogma",
+          "topic_id": "designer_genes_inheritance_patterns",
+          "name": "Molecular Biology and Central Dogma",
+          "sort": 1,
+          "concepts": [
+            "DNA double helix structural antiparallelism",
+            "semi-conservative replication machinery (helicase, primase, DNA polymerase, ligase)",
+            "transcription mechanics (promoters, pre-mRNA splicing, 5' cap, poly-A tail)",
+            "translation machinery (ribosomes, tRNA charging, codon-anticodon pairing"
+          ]
+        },
+        {
+          "id": "designer_genes_eukaryotic_and_prokaryotic_gene_regulation",
+          "topic_id": "designer_genes_gene_regulation_operons",
+          "name": "Eukaryotic and Prokaryotic Gene Regulation",
+          "sort": 2,
+          "concepts": [
+            "Prokaryotic operon models (lac inducible vs trp repressible)",
+            "eukaryotic transcription factors and enhancers",
+            "epigenetic chromatin modification (histone acetylation vs DNA methylation)",
+            "RNA interference (miRNA/siRNA"
+          ]
+        },
+        {
+          "id": "designer_genes_recombinant_dna_and_biotechnology",
+          "topic_id": "designer_genes_biotechnology_tools",
+          "name": "Recombinant DNA and Biotechnology",
+          "sort": 3,
+          "concepts": [
+            "Restriction enzyme digests, plasmid cloning vectors",
+            "PCR thermal cycling, gel electrophoresis",
+            "Sanger sequencing",
+            "Next-Gen sequencing",
+            "CRISPR-Cas9 target editing",
+            "blotting techniques (Southern, Northern, Western"
+          ]
+        },
+        {
+          "id": "designer_genes_population_genetics_and_genomics",
+          "topic_id": "designer_genes_gene_regulation_operons",
+          "name": "Population Genetics and Genomics",
+          "sort": 4,
+          "concepts": [
+            "Hardy-Weinberg equilibrium calculations (p^2 + 2pq + q^2 = 1)",
+            "evolutionary mechanics (genetic drift, bottleneck, founder effect, natural selection)",
+            "BLAST search bioinformatic analysis"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "disease_detectives",
+      "name": "Disease Detectives",
+      "domain": "Life, Personal & Social Science",
+      "test_component": "written",
+      "studyable": true,
+      "topics": [
+        {
+          "id": "disease_detectives_outbreak_investigation_steps",
+          "name": "Outbreak investigation steps",
+          "sort": 0
+        },
+        {
+          "id": "disease_detectives_modes_of_transmission",
+          "name": "modes of transmission",
+          "sort": 1
+        },
+        {
+          "id": "disease_detectives_measures_of_association",
+          "name": "measures of association",
+          "sort": 2
+        },
+        {
+          "id": "disease_detectives_diagnostic_test_evaluations",
+          "name": "diagnostic test evaluations",
+          "sort": 3
+        },
+        {
+          "id": "disease_detectives_and_public_health_intervention_strategies",
+          "name": "and public health intervention strategies",
+          "sort": 4
+        }
+      ],
+      "subtopics": [
+        {
+          "id": "disease_detectives_epidemiological_principles_and_outbreak_investigation",
+          "topic_id": "disease_detectives_outbreak_investigation_steps",
+          "name": "Epidemiological Principles and Outbreak Investigation",
+          "sort": 0,
+          "concepts": [
+            "10 steps of an outbreak investigation",
+            "epidemic curve creation and classification (point source, continuous source, propagated)",
+            "case definitions (suspected, probable, confirmed)",
+            "epidemiological triad (agent, host, environment"
+          ]
+        },
+        {
+          "id": "disease_detectives_disease_transmission_patterns_and_dynamics",
+          "topic_id": "disease_detectives_modes_of_transmission",
+          "name": "Disease Transmission Patterns and Dynamics",
+          "sort": 1,
+          "concepts": [
+            "Direct vs indirect contact, droplet, airborne, vehicle, and vector-borne transmission, reservoirs, carriers",
+            "endemic vs epidemic vs pandemic states, incubation period calculation"
+          ]
+        },
+        {
+          "id": "disease_detectives_biostatistics_and_measures_of_association",
+          "topic_id": "disease_detectives_measures_of_association",
+          "name": "Biostatistics and Measures of Association",
+          "sort": 2,
+          "concepts": [
+            "Incidence vs prevalence rates, attack rates",
+            "relative risk (RR) calculations in cohort studies",
+            "odds ratio (OR) calculations in case-control studies",
+            "2 \u00d7 2 contingency tables, attributable risk"
+          ]
+        },
+        {
+          "id": "disease_detectives_diagnostic_testing_metrics_and_public_health_surveill",
+          "topic_id": "disease_detectives_diagnostic_test_evaluations",
+          "name": "Diagnostic Testing Metrics and Public Health Surveillance",
+          "sort": 3,
+          "concepts": [
+            "Sensitivity (TP / [TP + FN])",
+            "specificity (TN / [TN + FP])",
+            "positive predictive value (PPV)",
+            "negative predictive value (NPV)",
+            "active vs passive vs sentinel surveillance systems"
+          ]
+        },
+        {
+          "id": "disease_detectives_prevention_control_and_public_health_intervention",
+          "topic_id": "disease_detectives_and_public_health_intervention_strategies",
+          "name": "Prevention, Control, and Public Health Intervention",
+          "sort": 4,
+          "concepts": [
+            "Primary, secondary, and tertiary prevention levels",
+            "herd immunity thresholds (1 - 1/R_0)",
+            "isolation vs quarantine protocols, environmental control interventions"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dynamic_planet",
+      "name": "Dynamic Planet",
+      "domain": "Earth and Space Science",
+      "test_component": "written_station",
+      "studyable": true,
+      "topics": [
+        {
+          "id": "dynamic_planet_chemical_and_physical_oceanography",
+          "name": "Chemical and physical oceanography",
+          "sort": 0
+        },
+        {
+          "id": "dynamic_planet_atmospheric_ocean_coupling",
+          "name": "atmospheric-ocean coupling",
+          "sort": 1
+        },
+        {
+          "id": "dynamic_planet_wave_mechanics",
+          "name": "wave mechanics",
+          "sort": 2
+        },
+        {
+          "id": "dynamic_planet_tides",
+          "name": "tides",
+          "sort": 3
+        },
+        {
+          "id": "dynamic_planet_marine_geology",
+          "name": "marine geology",
+          "sort": 4
+        },
+        {
+          "id": "dynamic_planet_bathymetry",
+          "name": "bathymetry",
+          "sort": 5
+        },
+        {
+          "id": "dynamic_planet_and_climate_oscillations",
+          "name": "and climate oscillations",
+          "sort": 6
+        }
+      ],
+      "subtopics": [
+        {
+          "id": "dynamic_planet_physical_and_chemical_properties_of_ocean_water",
+          "topic_id": "dynamic_planet_chemical_and_physical_oceanography",
+          "name": "Physical and Chemical Properties of Ocean Water",
+          "sort": 0,
+          "concepts": [
+            "Salinity units (ppt)",
+            "density drivers (temperature, salinity, pressure), thermocline, halocline, and pycnocline profiles, dissolved gas dynamics",
+            "Carbonate Compensation Depth (CCD"
+          ]
+        },
+        {
+          "id": "dynamic_planet_ocean_atmosphere_dynamics_and_atmospheric_circulation",
+          "topic_id": "dynamic_planet_atmospheric_ocean_coupling",
+          "name": "Ocean-Atmosphere Dynamics and Atmospheric Circulation",
+          "sort": 1,
+          "concepts": [
+            "Coriolis force deflection",
+            "Ekman spiral and transport, ocean gyre systems",
+            "thermohaline global conveyor belt circulation",
+            "coastal and equatorial upwelling/downwelling"
+          ]
+        },
+        {
+          "id": "dynamic_planet_wave_mechanics_tides_and_coastal_morphology",
+          "topic_id": "dynamic_planet_wave_mechanics",
+          "name": "Wave Mechanics, Tides, and Coastal Morphology",
+          "sort": 2,
+          "concepts": [
+            "Wave parameters (wavelength, period, speed C = L/T)",
+            "deep vs shallow water waves",
+            "wave refraction and shoaling",
+            "equilibrium vs dynamic tide theories",
+            "spring and neap tides, longshore currents, coastal erosional/depositional features"
+          ]
+        },
+        {
+          "id": "dynamic_planet_marine_geology_and_basin_bathymetry",
+          "topic_id": "dynamic_planet_marine_geology",
+          "name": "Marine Geology and Basin Bathymetry",
+          "sort": 3,
+          "concepts": [
+            "Passive vs active continental margins, abyssal plains, trenches, mid-ocean ridges, seamounts and guyots",
+            "marine sediment classifications (terrigenous, biogenous, hydrogenous)",
+            "sonar and satellite altimetry"
+          ]
+        },
+        {
+          "id": "dynamic_planet_climate_oscillations_and_marine_environmental_issues",
+          "topic_id": "dynamic_planet_and_climate_oscillations",
+          "name": "Climate Oscillations and Marine Environmental Issues",
+          "sort": 4,
+          "concepts": [
+            "El Ni\u00f1o-Southern Oscillation (ENSO) phases",
+            "Pacific Decadal Oscillation (PDO), ocean acidification chemistry, hypoxia dead zones, tsunami wave physics"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "engineering_cad",
+      "name": "Engineering CAD",
+      "domain": "Inquiry & Nature of Science",
+      "test_component": "hybrid",
+      "studyable": true,
+      "topics": [
+        {
+          "id": "engineering_cad_technical_drafting_rules",
+          "name": "Technical drafting rules",
+          "sort": 0
+        },
+        {
+          "id": "engineering_cad_3d_parametric_feature_modeling",
+          "name": "3D parametric feature modeling",
+          "sort": 1
+        },
+        {
+          "id": "engineering_cad_assembly_mating_constraints",
+          "name": "assembly mating constraints",
+          "sort": 2
+        },
+        {
+          "id": "engineering_cad_geometric_dimensioning_and_tolerancing",
+          "name": "geometric dimensioning and tolerancing",
+          "sort": 3
+        },
+        {
+          "id": "engineering_cad_and_physical_property_analysis",
+          "name": "and physical property analysis",
+          "sort": 4
+        }
+      ],
+      "subtopics": [
+        {
+          "id": "engineering_cad_technical_drafting_standards_and_projection_theory",
+          "topic_id": "engineering_cad_technical_drafting_rules",
+          "name": "Technical Drafting Standards and Projection Theory",
+          "sort": 0,
+          "concepts": [
+            "First-angle vs third-angle orthographic projections",
+            "standard multi-view alignment (front, top, side), isometric views, full/half/offset sectional views, auxiliary views"
+          ]
+        },
+        {
+          "id": "engineering_cad_parametric_3d_part_modeling",
+          "topic_id": "engineering_cad_3d_parametric_feature_modeling",
+          "name": "Parametric 3D Part Modeling",
+          "sort": 1,
+          "concepts": [
+            "2D sketch geometric constraints (concentric, parallel, tangent, perpendicular)",
+            "3D operations (extrude, revolve, sweep, loft)",
+            "detail features (fillet, chamfer, shell, pattern)",
+            "parametric feature tree hierarchy"
+          ]
+        },
+        {
+          "id": "engineering_cad_assembly_design_and_constraint_mating",
+          "topic_id": "engineering_cad_assembly_mating_constraints",
+          "name": "Assembly Design and Constraint Mating",
+          "sort": 2,
+          "concepts": [
+            "Bottom-up vs top-down assemblies",
+            "assembly mates (coincident, concentric, distance, parallel, angle)",
+            "degrees of freedom (DOF) analysis",
+            "clearance and interference detection"
+          ]
+        },
+        {
+          "id": "engineering_cad_geometric_dimensioning_and_tolerancing_gd_t",
+          "topic_id": "engineering_cad_geometric_dimensioning_and_tolerancing",
+          "name": "Geometric Dimensioning and Tolerancing (GD&T",
+          "sort": 3,
+          "concepts": [
+            "ASME Y14.5 standards, feature control frames, datum reference frames",
+            "tolerance categories (form, orientation, location, runout)",
+            "MMC/LMC conditions"
+          ]
+        },
+        {
+          "id": "engineering_cad_physical_properties_analysis_and_model_output",
+          "topic_id": "engineering_cad_and_physical_property_analysis",
+          "name": "Physical Properties Analysis and Model Output",
+          "sort": 4,
+          "concepts": [
+            "Material density assignment, volume, mass, surface area, and center of mass calculations",
+            "file export formats (.STEP, .STL, .DXF), slicer preparation"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "experimental_design",
+      "name": "Experimental Design",
+      "domain": "Inquiry & Nature of Science",
+      "test_component": "lab_written",
+      "studyable": true,
+      "topics": [
+        {
+          "id": "experimental_design_problem_statement",
+          "name": "Problem statement",
+          "sort": 0
+        },
+        {
+          "id": "experimental_design_hypothesis_creation",
+          "name": "hypothesis creation",
+          "sort": 1
+        },
+        {
+          "id": "experimental_design_variable_controls",
+          "name": "variable controls",
+          "sort": 2
+        },
+        {
+          "id": "experimental_design_experimental_setup",
+          "name": "experimental setup",
+          "sort": 3
+        },
+        {
+          "id": "experimental_design_data_collection",
+          "name": "data collection",
+          "sort": 4
+        },
+        {
+          "id": "experimental_design_graphing_standards",
+          "name": "graphing standards",
+          "sort": 5
+        },
+        {
+          "id": "experimental_design_and_statistical_error_analysis",
+          "name": "and statistical error analysis",
+          "sort": 6
+        }
+      ],
+      "subtopics": [
+        {
+          "id": "experimental_design_experimental_problem_formulation_and_hypothesis",
+          "topic_id": "experimental_design_problem_statement",
+          "name": "Experimental Problem Formulation and Hypothesis",
+          "sort": 0,
+          "concepts": [
+            "Testable problem statements identifying independent and dependent variables",
+            "directional hypothesis formulations (If ..., then ..., because"
+          ]
+        },
+        {
+          "id": "experimental_design_variable_isolation_and_experimental_setup",
+          "topic_id": "experimental_design_experimental_setup",
+          "name": "Variable Isolation and Experimental Setup",
+          "sort": 1,
+          "concepts": [
+            "Independent variable operational definition and levels",
+            "dependent variable operational definition, controlled constants identification, control group rationale"
+          ]
+        },
+        {
+          "id": "experimental_design_data_collection_measurement_and_tabulation",
+          "topic_id": "experimental_design_data_collection",
+          "name": "Data Collection, Measurement, and Tabulation",
+          "sort": 2,
+          "concepts": [
+            "Qualitative vs quantitative observations",
+            "data table formatting with labeled units",
+            "measurement precision and significant figures"
+          ]
+        },
+        {
+          "id": "experimental_design_graphical_representation_and_curve_fitting",
+          "topic_id": "experimental_design_problem_statement",
+          "name": "Graphical Representation and Curve Fitting",
+          "sort": 3,
+          "concepts": [
+            "Graph axis selection and scaling, plot titling",
+            "line of best fit determination",
+            "equation of line (y = mx + b)",
+            "coefficient of determination (R^2"
+          ]
+        },
+        {
+          "id": "experimental_design_statistical_analysis_and_experimental_evaluation",
+          "topic_id": "experimental_design_and_statistical_error_analysis",
+          "name": "Statistical Analysis and Experimental Evaluation",
+          "sort": 4,
+          "concepts": [
+            "Mean, median, mode, range, standard deviation calculations",
+            "systematic vs random error analysis",
+            "realistic experimental improvement suggestions"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "forensics",
+      "name": "Forensics",
+      "domain": "Physical Science & Chemistry",
+      "test_component": "lab_written",
+      "studyable": true,
+      "topics": [
+        {
+          "id": "forensics_qualitative_inorganic_chemical_analysis",
+          "name": "Qualitative inorganic chemical analysis",
+          "sort": 0
+        },
+        {
+          "id": "forensics_organic_polymers_and_plastics",
+          "name": "organic polymers and plastics",
+          "sort": 1
+        },
+        {
+          "id": "forensics_fiber_analysis",
+          "name": "fiber analysis",
+          "sort": 2
+        },
+        {
+          "id": "forensics_chromatography",
+          "name": "chromatography",
+          "sort": 3
+        },
+        {
+          "id": "forensics_physical_evidence",
+          "name": "physical evidence",
+          "sort": 4
+        },
+        {
+          "id": "forensics_blood_typing",
+          "name": "blood typing",
+          "sort": 5
+        },
+        {
+          "id": "forensics_and_dna_profiling",
+          "name": "and DNA profiling",
+          "sort": 6
+        }
+      ],
+      "subtopics": [
+        {
+          "id": "forensics_qualitative_chemical_analysis_of_unknown_solids_and_liquids",
+          "topic_id": "forensics_qualitative_inorganic_chemical_analysis",
+          "name": "Qualitative Chemical Analysis of Unknown Solids and Liquids",
+          "sort": 0,
+          "concepts": [
+            "Identification of white powders (NaHCO_3, Na_2CO_3, NaCl, CaSO_4, cornstarch, glucose, sucrose), solubility rules",
+            "HCl effervescence testing, iodine starch testing",
+            "Benedict's reducing sugar testing",
+            "flame tests for metal cations (Na^+, K^+, Ca^{2+, Cu^{2+, Li^+"
+          ]
+        },
+        {
+          "id": "forensics_polymers_plastics_and_fiber_identification",
+          "topic_id": "forensics_organic_polymers_and_plastics",
+          "name": "Polymers, Plastics, and Fiber Identification",
+          "sort": 1,
+          "concepts": [
+            "Synthetic resin code identification (PETE, HDPE, PVC, LDPE, PP, PS) via burn behavior and density gradient testing",
+            "natural fibers (wool, cotton, silk) vs synthetic fibers (nylon, polyester, acrylic) microscopic burn behavior"
+          ]
+        },
+        {
+          "id": "forensics_chromatography_and_chemical_spectroscopy",
+          "topic_id": "forensics_qualitative_inorganic_chemical_analysis",
+          "name": "Chromatography and Chemical Spectroscopy",
+          "sort": 2,
+          "concepts": [
+            "Thin-layer chromatography (TLC) and paper chromatography of inks/dyes",
+            "retention factor (R_f) calculations",
+            "mass spectrometry and infrared (FTIR) spectrum interpretation basics"
+          ]
+        },
+        {
+          "id": "forensics_serology_dna_analysis_and_biological_evidence",
+          "topic_id": "forensics_qualitative_inorganic_chemical_analysis",
+          "name": "Serology, DNA Analysis, and Biological Evidence",
+          "sort": 3,
+          "concepts": [
+            "ABO/Rh blood typing presumptive testing",
+            "Kastle-Meyer test, luminol chemiluminescence",
+            "gel electrophoresis DNA pattern analysis",
+            "Short Tandem Repeat (STR) profiling"
+          ]
+        },
+        {
+          "id": "forensics_physical_evidence_and_crime_scene_reconstruction",
+          "topic_id": "forensics_physical_evidence",
+          "name": "Physical Evidence and Crime Scene Reconstruction",
+          "sort": 4,
+          "concepts": [
+            "Fingerprint pattern classification (loops, whorls, arches) and minutiae matching",
+            "hair microscopic anatomy and medullary index calculation",
+            "glass fracture analysis (radial vs concentric, Becke line refractive index)",
+            "shoeprint and tire tread casting"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hovercraft",
+      "name": "Hovercraft",
+      "domain": "Physical Science & Chemistry",
+      "test_component": "build_written",
+      "studyable": true,
+      "topics": [
+        {
+          "id": "hovercraft_fluid_mechanics",
+          "name": "Fluid mechanics",
+          "sort": 0
+        },
+        {
+          "id": "hovercraft_air_cushion_pressure_dynamics",
+          "name": "air cushion pressure dynamics",
+          "sort": 1
+        },
+        {
+          "id": "hovercraft_impulse_and_momentum",
+          "name": "impulse and momentum",
+          "sort": 2
+        },
+        {
+          "id": "hovercraft_friction",
+          "name": "friction",
+          "sort": 3
+        },
+        {
+          "id": "hovercraft_electric_circuits",
+          "name": "electric circuits",
+          "sort": 4
+        },
+        {
+          "id": "hovercraft_motor_power",
+          "name": "motor power",
+          "sort": 5
+        }
+      ],
+      "subtopics": [
+        {
+          "id": "hovercraft_fluid_statics_and_air_cushion_mechanics",
+          "topic_id": "hovercraft_fluid_mechanics",
+          "name": "Fluid Statics and Air Cushion Mechanics",
+          "sort": 0,
+          "concepts": [
+            "Pascal's law",
+            "air cushion pressure differential (\u0394 P = F/A), hovercraft lift equilibrium",
+            "cushion perimeter escape dynamics",
+            "ideal gas law air density calculations"
+          ]
+        },
+        {
+          "id": "hovercraft_aerodynamic_forces_and_fluid_dynamics",
+          "topic_id": "hovercraft_fluid_mechanics",
+          "name": "Aerodynamic Forces and Fluid Dynamics",
+          "sort": 1,
+          "concepts": [
+            "Bernoulli's principle (P + \\frac{1{2\u03c1 v^2 + \u03c1 g h = constant)",
+            "Venturi effect",
+            "aerodynamic drag equation (F_d = \\frac{1{2 \u03c1 v^2 C_d A), boundary layer friction",
+            "laminar vs turbulent air flow around lift/thrust fans"
+          ]
+        },
+        {
+          "id": "hovercraft_classical_mechanics_impulse_and_momentum",
+          "topic_id": "hovercraft_impulse_and_momentum",
+          "name": "Classical Mechanics, Impulse, and Momentum",
+          "sort": 2,
+          "concepts": [
+            "Newton's laws of motion applied to thrust",
+            "momentum conservation (p = mv)",
+            "impulse-momentum theorem (J = \\int F dt = \u0394 p)",
+            "kinetic energy vs electrical power (P = F v"
+          ]
+        },
+        {
+          "id": "hovercraft_device_electromechanical_systems",
+          "topic_id": "hovercraft_fluid_mechanics",
+          "name": "Device Electromechanical Systems",
+          "sort": 3,
+          "concepts": [
+            "DC motor circuit analysis",
+            "battery voltage degradation under load",
+            "rheostat and PWM speed control circuits",
+            "fan blade pitch aerodynamic efficiency"
+          ]
+        },
+        {
+          "id": "hovercraft_performance_testing_andkinematic_calculations",
+          "topic_id": "hovercraft_fluid_mechanics",
+          "name": "Performance Testing andKinematic Calculations",
+          "sort": 4,
+          "concepts": [
+            "Mass-to-lift performance ratios",
+            "target distance stopping dynamics, deceleration vector analysis"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "protein_modeling",
+      "name": "Protein Modeling",
+      "domain": "Physical Science & Chemistry",
+      "test_component": "hybrid",
+      "studyable": true,
+      "topics": [
+        {
+          "id": "protein_modeling_amino_acid_chemical_properties",
+          "name": "Amino acid chemical properties",
+          "sort": 0
+        },
+        {
+          "id": "protein_modeling_levels_of_protein_structure",
+          "name": "levels of protein structure",
+          "sort": 1
+        },
+        {
+          "id": "protein_modeling_crispr_cas9_biochemistry",
+          "name": "CRISPR-Cas9 biochemistry",
+          "sort": 2
+        },
+        {
+          "id": "protein_modeling_base_editing_modifications",
+          "name": "base editing modifications",
+          "sort": 3
+        },
+        {
+          "id": "protein_modeling_pymol_jmol_visualization_software",
+          "name": "PyMOL/Jmol visualization software",
+          "sort": 4
+        }
+      ],
+      "subtopics": [
+        {
+          "id": "protein_modeling_amino_acid_chemistry_and_primary_structure",
+          "topic_id": "protein_modeling_amino_acid_chemical_properties",
+          "name": "Amino Acid Chemistry and Primary Structure",
+          "sort": 0,
+          "concepts": [
+            "20 standard amino acid chemical structures",
+            "side chain properties (hydrophobic, polar uncharged, positively charged, negatively charged)",
+            "peptide bond formation (N-terminus to C-terminus), isoelectric point (pI"
+          ]
+        },
+        {
+          "id": "protein_modeling_protein_secondary_tertiary_and_quaternary_folding",
+          "topic_id": "protein_modeling_levels_of_protein_structure",
+          "name": "Protein Secondary, Tertiary, and Quaternary Folding",
+          "sort": 1,
+          "concepts": [
+            "Alpha helices and beta pleated sheets hydrogen bonding patterns",
+            "tertiary side chain interactions (disulfide bonds, salt bridges, hydrophobic collapse, van der Waals forces)",
+            "Ramachandran plot angles (\\phi, \\psi), quaternary multimeric assembly"
+          ]
+        },
+        {
+          "id": "protein_modeling_molecular_visualization_software_commands_pymol_jmol",
+          "topic_id": "protein_modeling_pymol_jmol_visualization_software",
+          "name": "Molecular Visualization Software Commands (PyMOL / Jmol",
+          "sort": 2,
+          "concepts": [
+            "Command-line rendering scripts",
+            "PDB file header parsing, structural color schemes, distance measurements, hydrogen bond toggles"
+          ]
+        },
+        {
+          "id": "protein_modeling_crispr_cas9_structure_and_target_recognition_mechanics",
+          "topic_id": "protein_modeling_crispr_cas9_biochemistry",
+          "name": "CRISPR-Cas9 Structure and Target Recognition Mechanics",
+          "sort": 3,
+          "concepts": [
+            "Cas9 domain architecture (REC lobe, NUC lobe, RuvC, HNH endonuclease domains)",
+            "Protospacer Adjacent Motif (PAM sequence 5'-NGG-3')",
+            "single guide RNA (sgRNA) spacer/scaffold mechanics",
+            "R-loop formation, double-strand break cleavage"
+          ]
+        },
+        {
+          "id": "protein_modeling_base_editing_mechanics_and_cas9_variant_engineering",
+          "topic_id": "protein_modeling_base_editing_modifications",
+          "name": "Base Editing Mechanics and Cas9 Variant Engineering",
+          "sort": 4,
+          "concepts": [
+            "Catalytically inactive dCas9 and nCas9 nickase engineering",
+            "Cytidine Base Editors (CBE: C \\to T conversions)",
+            "Adenine Base Editors (ABE: A \\to G conversions)",
+            "prime editing reverse transcriptase complexes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "remote_sensing",
+      "name": "Remote Sensing",
+      "domain": "Earth and Space Science",
+      "test_component": "written_station",
+      "studyable": true,
+      "topics": [
+        {
+          "id": "remote_sensing_electromagnetic_spectrum",
+          "name": "Electromagnetic spectrum",
+          "sort": 0
+        },
+        {
+          "id": "remote_sensing_blackbody_radiation_laws",
+          "name": "blackbody radiation laws",
+          "sort": 1
+        },
+        {
+          "id": "remote_sensing_sensor_orbits_and_resolution",
+          "name": "sensor orbits and resolution",
+          "sort": 2
+        },
+        {
+          "id": "remote_sensing_digital_image_processing",
+          "name": "digital image processing",
+          "sort": 3
+        },
+        {
+          "id": "remote_sensing_vegetation_spectral_indices",
+          "name": "vegetation spectral indices",
+          "sort": 4
+        },
+        {
+          "id": "remote_sensing_climate_applications",
+          "name": "climate applications",
+          "sort": 5
+        }
+      ],
+      "subtopics": [
+        {
+          "id": "remote_sensing_electromagnetic_radiation_physics",
+          "topic_id": "remote_sensing_electromagnetic_spectrum",
+          "name": "Electromagnetic Radiation Physics",
+          "sort": 0,
+          "concepts": [
+            "Electromagnetic spectrum regions (UV, Visible, NIR, SWIR, TIR, Microwave)",
+            "Planck's law",
+            "Wien's displacement law (\u03bb_max = 2898 / T)",
+            "Stefan-Boltzmann law, atmospheric windows",
+            "atmospheric scattering (Rayleigh, Mie, Non-selective"
+          ]
+        },
+        {
+          "id": "remote_sensing_satellite_orbits_and_sensor_architectures",
+          "topic_id": "remote_sensing_sensor_orbits_and_resolution",
+          "name": "Satellite Orbits and Sensor Architectures",
+          "sort": 1,
+          "concepts": [
+            "Geostationary vs sun-synchronous polar orbits",
+            "active sensors (LiDAR, Radar) vs passive sensors (optical radiometers), spatial, spectral, radiometric, and temporal resolution trade-offs"
+          ]
+        },
+        {
+          "id": "remote_sensing_digital_image_processing_and_spatial_analysis",
+          "topic_id": "remote_sensing_digital_image_processing",
+          "name": "Digital Image Processing and Spatial Analysis",
+          "sort": 2,
+          "concepts": [
+            "Spatial filtering convolution kernels, histogram contrast stretching",
+            "supervised (Maximum Likelihood) vs unsupervised (K-means) classification",
+            "Principal Component Analysis (PCA"
+          ]
+        },
+        {
+          "id": "remote_sensing_spectral_signatures_and_band_ratio_indices",
+          "topic_id": "remote_sensing_vegetation_spectral_indices",
+          "name": "Spectral Signatures and Band Ratio Indices",
+          "sort": 3,
+          "concepts": [
+            "Vegetation, water, and soil spectral reflectance curves",
+            "Normalized Difference Vegetation Index (NDVI = \\frac{NIR - Red{NIR + Red)",
+            "Normalized Difference Water Index (NDWI)",
+            "Normalized Burn Ratio (NBR"
+          ]
+        },
+        {
+          "id": "remote_sensing_earth_system_observation_and_climate_applications",
+          "topic_id": "remote_sensing_climate_applications",
+          "name": "Earth System Observation and Climate Applications",
+          "sort": 4,
+          "concepts": [
+            "Thermal infrared land surface temperature extraction",
+            "radar altimetry ice sheet mass balance",
+            "global forest carbon stock monitoring",
+            "flood and wildfire disaster mapping"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rocks_minerals",
+      "name": "Rocks and Minerals",
+      "domain": "Earth and Space Science",
+      "test_component": "station",
+      "studyable": true,
+      "topics": [
+        {
+          "id": "rocks_minerals_mineral_identification",
+          "name": "Mineral identification",
+          "sort": 0
+        },
+        {
+          "id": "rocks_minerals_crystal_systems",
+          "name": "crystal systems",
+          "sort": 1
+        },
+        {
+          "id": "rocks_minerals_bowen_s_reaction_series",
+          "name": "Bowen's Reaction Series",
+          "sort": 2
+        },
+        {
+          "id": "rocks_minerals_rock_texture_classification",
+          "name": "rock texture classification",
+          "sort": 3
+        },
+        {
+          "id": "rocks_minerals_ore_deposits",
+          "name": "ore deposits",
+          "sort": 4
+        },
+        {
+          "id": "rocks_minerals_and_stratigraphic_mapping",
+          "name": "and stratigraphic mapping",
+          "sort": 5
+        }
+      ],
+      "subtopics": [
+        {
+          "id": "rocks_minerals_crystallography_and_mineral_physics",
+          "topic_id": "rocks_minerals_mineral_identification",
+          "name": "Crystallography and Mineral Physics",
+          "sort": 0,
+          "concepts": [
+            "6 crystal systems (Isometric, Tetragonal, Hexagonal, Orthorhombic, Monoclinic, Triclinic)",
+            "Mohs hardness scale",
+            "cleavage vs fracture patterns, specific gravity determination",
+            "optical properties (double refraction, fluorescence"
+          ]
+        },
+        {
+          "id": "rocks_minerals_igneous_petrology_and_magmatic_processes",
+          "topic_id": "rocks_minerals_mineral_identification",
+          "name": "Igneous Petrology and Magmatic Processes",
+          "sort": 1,
+          "concepts": [
+            "Bowen's Reaction Series (discontinuous vs continuous branches)",
+            "magma chemical compositions (felsic, intermediate, mafic, ultramafic)",
+            "rock textures (aphanitic, phaneritic, porphyritic, pegmatitic, vesicular, glassy)",
+            "intrusive vs extrusive landforms"
+          ]
+        },
+        {
+          "id": "rocks_minerals_sedimentary_petrology_and_stratigraphy",
+          "topic_id": "rocks_minerals_mineral_identification",
+          "name": "Sedimentary Petrology and Stratigraphy",
+          "sort": 2,
+          "concepts": [
+            "Clastic vs chemical/biochemical sedimentary rocks",
+            "grain size sorting and roundness (Wentworth scale)",
+            "sedimentary structures (cross-bedding, ripple marks, graded bedding)",
+            "stratigraphic principles (superposition, original horizontality, cross-cutting relationships"
+          ]
+        },
+        {
+          "id": "rocks_minerals_metamorphic_petrology_and_structural_geology",
+          "topic_id": "rocks_minerals_mineral_identification",
+          "name": "Metamorphic Petrology and Structural Geology",
+          "sort": 3,
+          "concepts": [
+            "Metamorphic grade index minerals (chlorite, biotite, garnet, staurolite, kyanite, sillimanite)",
+            "foliated (slate, phyllite, schist, gneiss) vs non-foliated textures",
+            "contact vs regional metamorphism",
+            "P-T phase diagrams"
+          ]
+        },
+        {
+          "id": "rocks_minerals_economic_geology_and_mineral_resources",
+          "topic_id": "rocks_minerals_mineral_identification",
+          "name": "Economic Geology and Mineral Resources",
+          "sort": 4,
+          "concepts": [
+            "Ore minerals (galena, chalcopyrite, hematite, sphalerite), hydrothermal vein deposits, placer deposits, industrial minerals",
+            "fossil fuel source rocks and traps"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "thermodynamics",
+      "name": "Thermodynamics",
+      "domain": "Physical Science & Chemistry",
+      "test_component": "build_written",
+      "studyable": true,
+      "topics": [
+        {
+          "id": "thermodynamics_laws_of_thermodynamics",
+          "name": "Laws of thermodynamics",
+          "sort": 0
+        },
+        {
+          "id": "thermodynamics_heat_capacity",
+          "name": "heat capacity",
+          "sort": 1
+        },
+        {
+          "id": "thermodynamics_heat_transfer_mechanisms_conduction_convection_ra",
+          "name": "heat transfer mechanisms (conduction, convection, radiation",
+          "sort": 2
+        },
+        {
+          "id": "thermodynamics_thermodynamic_cycles",
+          "name": "thermodynamic cycles",
+          "sort": 3
+        },
+        {
+          "id": "thermodynamics_calorimetry",
+          "name": "calorimetry",
+          "sort": 4
+        }
+      ],
+      "subtopics": [
+        {
+          "id": "thermodynamics_temperature_heat_and_thermal_expansion",
+          "topic_id": "thermodynamics_heat_capacity",
+          "name": "Temperature, Heat, and Thermal Expansion",
+          "sort": 0,
+          "concepts": [
+            "Temperature scale conversions (Kelvin, Celsius, Fahrenheit)",
+            "linear and volumetric thermal expansion (\u0394 L = \u03b1 L_0 \u0394 T)",
+            "specific heat capacity (Q = m c \u0394 T)",
+            "latent heat of phase changes (Q = m L"
+          ]
+        },
+        {
+          "id": "thermodynamics_heat_transfer_mechanisms_and_thermal_insulation",
+          "topic_id": "thermodynamics_heat_transfer_mechanisms_conduction_convection_ra",
+          "name": "Heat Transfer Mechanisms and Thermal Insulation",
+          "sort": 1,
+          "concepts": [
+            "Fourier's law of thermal conduction (Q/t = k A \\frac{\u0394 T{x), convective heat transfer",
+            "Stefan-Boltzmann law for radiation (P = \u03b5 \u03c3 A T^4)",
+            "insulation thermal resistance (R-value) multi-layer calculations"
+          ]
+        },
+        {
+          "id": "thermodynamics_laws_of_thermodynamics_and_state_functions",
+          "topic_id": "thermodynamics_laws_of_thermodynamics",
+          "name": "Laws of Thermodynamics and State Functions",
+          "sort": 2,
+          "concepts": [
+            "Zeroth law",
+            "First law (\u0394 U = Q - W)",
+            "work done by expanded gases (W = \\int P dV), enthalpy (H)",
+            "entropy (\u0394 S = \\int \\frac{dQ{T)",
+            "Second and Third laws"
+          ]
+        },
+        {
+          "id": "thermodynamics_thermodynamic_processes_and_ideal_cycles",
+          "topic_id": "thermodynamics_thermodynamic_cycles",
+          "name": "Thermodynamic Processes and Ideal Cycles",
+          "sort": 3,
+          "concepts": [
+            "Isothermal (\u0394 T = 0)",
+            "isobaric (\u0394 P = 0)",
+            "isochoric (\u0394 V = 0), and adiabatic (Q = 0) processes",
+            "PV and TS diagrams",
+            "Carnot cycle maximum efficiency (\\eta = 1 - T_C / T_H"
+          ]
+        },
+        {
+          "id": "thermodynamics_calorimetry_and_thermal_measurement_techniques",
+          "topic_id": "thermodynamics_calorimetry",
+          "name": "Calorimetry and Thermal Measurement Techniques",
+          "sort": 4,
+          "concepts": [
+            "Coffee-cup and bomb calorimetry equations",
+            "calorimeter heat capacity (C_{cal), thermocouples, thermistors",
+            "RTD temperature sensors"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "water_quality",
+      "name": "Water Quality",
+      "domain": "Life, Personal & Social Science",
+      "test_component": "lab_written",
+      "studyable": true,
+      "topics": [
+        {
+          "id": "water_quality_marine_ecosystems",
+          "name": "Marine ecosystems",
+          "sort": 0
+        },
+        {
+          "id": "water_quality_estuaries",
+          "name": "estuaries",
+          "sort": 1
+        },
+        {
+          "id": "water_quality_water_chemistry_parameters",
+          "name": "water chemistry parameters",
+          "sort": 2
+        },
+        {
+          "id": "water_quality_marine_bioindicator_species",
+          "name": "marine bioindicator species",
+          "sort": 3
+        },
+        {
+          "id": "water_quality_estuarine_hydrology",
+          "name": "estuarine hydrology",
+          "sort": 4
+        },
+        {
+          "id": "water_quality_and_salinometer_physics",
+          "name": "and salinometer physics",
+          "sort": 5
+        }
+      ],
+      "subtopics": [
+        {
+          "id": "water_quality_marine_and_estuarine_ecosystem_dynamics",
+          "topic_id": "water_quality_marine_ecosystems",
+          "name": "Marine and Estuarine Ecosystem Dynamics",
+          "sort": 0,
+          "concepts": [
+            "Estuary classifications (salt-wedge, partially mixed, well-mixed), estuarine zonation",
+            "salt marshes and mangrove ecology, intertidal stress adaptation, coral reef biomes, ocean food webs"
+          ]
+        },
+        {
+          "id": "water_quality_water_chemistry_parameters_and_quality_indices",
+          "topic_id": "water_quality_water_chemistry_parameters",
+          "name": "Water Chemistry Parameters and Quality Indices",
+          "sort": 1,
+          "concepts": [
+            "Dissolved oxygen (DO) saturation",
+            "Biochemical Oxygen Demand (BOD)",
+            "seawater pH buffering capacity, nitrate, phosphate, and ammonia nutrient cycling",
+            "ocean salinity and chlorinity calculations (Salinity = 1.80655 \u00d7 Chlorinity), eutrophication"
+          ]
+        },
+        {
+          "id": "water_quality_marine_bioindicators_and_trophic_cascades",
+          "topic_id": "water_quality_marine_bioindicator_species",
+          "name": "Marine Bioindicators and Trophic Cascades",
+          "sort": 2,
+          "concepts": [
+            "Estuarine and marine macroinvertebrates, holoplankton vs meroplankton",
+            "indicator organisms for polluted vs clean marine waters, coral bleaching indicators"
+          ]
+        },
+        {
+          "id": "water_quality_estuarine_hydrology_and_ocean_pollution",
+          "topic_id": "water_quality_estuarine_hydrology",
+          "name": "Estuarine Hydrology and Ocean Pollution",
+          "sort": 3,
+          "concepts": [
+            "Point vs non-point source pollution, thermal pollution dynamics, estuarine flushing times, ocean microplastic accumulation, heavy metal biomagnification"
+          ]
+        },
+        {
+          "id": "water_quality_salinometer_hydrometer_physics_and_calibration",
+          "topic_id": "water_quality_and_salinometer_physics",
+          "name": "Salinometer/Hydrometer Physics and Calibration",
+          "sort": 4,
+          "concepts": [
+            "Archimedes' principle (F_b = \u03c1_{fluid V_{submerged g)",
+            "density testing across 1-10\\% mass/volume salinity range"
+          ]
+        }
+      ]
+    }
+  ],
+  "excluded_events": [
+    {
+      "id": "boomilever",
+      "name": "Boomilever",
+      "domain": "Technology & Engineering",
+      "studyable": false
+    },
+    {
+      "id": "electric_vehicle",
+      "name": "Electric Vehicle",
+      "domain": "Technology & Engineering",
+      "studyable": false
+    },
+    {
+      "id": "mission_possible",
+      "name": "Mission Possible",
+      "domain": "Technology & Engineering",
+      "studyable": false
+    },
+    {
+      "id": "ping_pong_parachute",
+      "name": "Ping-Pong Parachute",
+      "domain": "Inquiry & Nature of Science",
+      "studyable": false
+    },
+    {
+      "id": "wright_stuff",
+      "name": "Wright Stuff",
+      "domain": "Technology & Engineering",
+      "studyable": false
+    }
+  ]
+}

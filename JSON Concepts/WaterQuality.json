@@ -1,0 +1,604 @@
+{
+  "event_id": "water_quality",
+  "event_name": "Water Quality",
+  "domain": "Life, Personal & Social Science",
+  "official_2027_scope": "Marine and Estuarine Ecosystems",
+  "season": 2027,
+  "division": "C",
+  "topics": [
+    {
+      "topic_id": "water_quality_marine_and_estuarine_habitats_and_zonation",
+      "title": "Marine and estuarine habitats and zonation",
+      "display_order": 1,
+      "concepts": [
+        {
+          "concept_id": "water_quality_estuary_definition_and_classification",
+          "title": "Estuary definition and geomorphic classification",
+          "description": "Define an estuary as a semi-enclosed coastal body of water with a free connection to the sea and measurable dilution by freshwater. Classify by geomorphology: drowned river valley, bar-built, tectonic, and fjord.",
+          "depth_tags": ["estuary", "drowned river valley", "bar-built", "tectonic", "fjord", "geomorphology"]
+        },
+        {
+          "concept_id": "water_quality_estuarine_circulation_types",
+          "title": "Estuarine circulation patterns",
+          "description": "Distinguish salt-wedge, partially mixed, well-mixed, and fjord circulation based on stratification and freshwater input. Explain how tidal forcing and river flow control the mixing regime.",
+          "depth_tags": ["salt-wedge", "partially mixed", "well-mixed", "fjord circulation", "stratification", "tidal mixing"]
+        },
+        {
+          "concept_id": "water_quality_intertidal_zonation_rocky_shore",
+          "title": "Intertidal zonation of rocky shores",
+          "description": "Identify spray/supralittoral, upper, middle, lower intertidal, and subtidal zones on rocky shores based on tidal exposure and characteristic organisms (e.g., barnacle line, mussel bed).",
+          "depth_tags": ["supralittoral", "upper intertidal", "middle intertidal", "lower intertidal", "barnacle line", "zonation"]
+        },
+        {
+          "concept_id": "water_quality_intertidal_zonation_sandy_beach",
+          "title": "Intertidal zonation of sandy beaches",
+          "description": "Describe zonation of sandy beaches including beach wrack, swash zone, and distribution of infauna such as sand crabs, polychaetes, and bivalves; contrast exposed vs. sheltered beaches.",
+          "depth_tags": ["swash zone", "beach wrack", "sand crab", "polychaete", "exposed beach", "sheltered beach"]
+        },
+        {
+          "concept_id": "water_quality_pelagic_depth_zones",
+          "title": "Pelagic depth zones (epipelagic to hadal)",
+          "description": "Define pelagic zones by depth and light penetration: epipelagic (0-200 m), mesopelagic (200-1000 m), bathypelagic (1000-4000 m), abyssopelagic (4000-6000 m), and hadal (>6000 m).",
+          "depth_tags": ["epipelagic", "mesopelagic", "bathypelagic", "abyssopelagic", "hadal", "photic zone"]
+        },
+        {
+          "concept_id": "water_quality_benthic_zones",
+          "title": "Benthic zonation (littoral to hadal)",
+          "description": "Distinguish benthic zones: supralittoral, littoral (intertidal), sublittoral (continental shelf), bathyal (slope), abyssal (abyssal plain), and hadal (trenches).",
+          "depth_tags": ["supralittoral", "littoral", "sublittoral", "bathyal", "abyssal", "hadal"]
+        },
+        {
+          "concept_id": "water_quality_coral_reef_types",
+          "title": "Coral reef types and formation",
+          "description": "Compare fringing, barrier, and atoll reefs; explain Darwin's subsidence theory and reef zonation (fore reef, reef crest, back reef).",
+          "depth_tags": ["fringing reef", "barrier reef", "atoll", "Darwin's subsidence", "reef zonation", "fore reef"]
+        },
+        {
+          "concept_id": "water_quality_mangrove_habitat_and_zonation",
+          "title": "Mangrove habitat and species zonation",
+          "description": "Identify mangrove zonation from seaward to landward (red mangrove Rhizophora, black mangrove Avicennia, white mangrove Laguncularia) and associated adaptations to tidal flooding and salinity.",
+          "depth_tags": ["Rhizophora", "Avicennia", "Laguncularia", "pneumatophores", "salt exclusion", "vivipary"]
+        },
+        {
+          "concept_id": "water_quality_salt_marsh_structure_and_zonation",
+          "title": "Salt marsh structure and zonation",
+          "description": "Describe low marsh (dominated by Spartina alterniflora) and high marsh (Spartina patens, Juncus) zones, tidal creek networks, and the role of flooding frequency in determining plant distribution.",
+          "depth_tags": ["low marsh", "high marsh", "Spartina alterniflora", "Spartina patens", "salinity", "tidal creek"]
+        },
+        {
+          "concept_id": "water_quality_seagrass_meadow_ecology",
+          "title": "Seagrass meadow ecology and zonation",
+          "description": "Identify common seagrass species (eelgrass Zostera marina, turtle grass Thalassia testudinum) and their depth zonation limited by light attenuation; recognize seagrasses as ecosystem engineers that stabilize sediment and provide nursery habitat.",
+          "depth_tags": ["Zostera marina", "Thalassia testudinum", "light attenuation", "rhizome", "ecosystem engineer", "seagrass bed"]
+        },
+        {
+          "concept_id": "water_quality_kelp_forest_structure",
+          "title": "Kelp forest structure and canopy layers",
+          "description": "Describe vertical structure of kelp forests: canopy (Macrocystis, Nereocystis), understory, and holdfast; explain environmental requirements (hard substrate, light, nutrient-rich upwelling).",
+          "depth_tags": ["Macrocystis", "Nereocystis", "canopy", "holdfast", "light", "nutrient upwelling"]
+        },
+        {
+          "concept_id": "water_quality_hydrothermal_vent_communities",
+          "title": "Hydrothermal vent communities and chemosynthesis",
+          "description": "Describe vent fauna (giant tube worms Riftia pachyptila, clams, shrimp) that rely on chemosynthetic bacteria oxidizing hydrogen sulfide; explain black smoker fluid chemistry and mineral chimney formation.",
+          "depth_tags": ["black smoker", "Riftia pachyptila", "chemosynthesis", "hydrogen sulfide", "thermophilic", "vent zonation"]
+        },
+        {
+          "concept_id": "water_quality_cold_seep_ecosystems",
+          "title": "Cold seep ecosystems and authigenic carbonate",
+          "description": "Explain methane seep communities supported by chemosynthetic symbionts; identify indicator species such as bathymodiolid mussels and vestimentiferan tube worms; describe formation of authigenic carbonate rocks.",
+          "depth_tags": ["cold seep", "methane", "Beggiatoa", "bathymodiolid mussels", "authigenic carbonate", "chemosynthesis"]
+        },
+        {
+          "concept_id": "water_quality_tidal_patterns_and_zonation",
+          "title": "Tidal patterns and spring-neap cycles",
+          "description": "Differentiate diurnal, semidiurnal, and mixed tidal regimes; explain spring and neap tides in relation to sun-moon alignment; relate tidal range to the vertical extent of intertidal zonation.",
+          "depth_tags": ["diurnal tide", "semidiurnal", "mixed tide", "spring tide", "neap tide", "tidal range"]
+        },
+        {
+          "concept_id": "water_quality_estuarine_salinity_zones",
+          "title": "Estuarine salinity zones and mixing",
+          "description": "Classify estuarine regions by salinity: oligohaline (0-5 ppt), mesohaline (5-18 ppt), polyhaline (18-30 ppt), and euhaline (>30 ppt); describe the longitudinal salinity gradient.",
+          "depth_tags": ["oligohaline", "mesohaline", "polyhaline", "euhaline", "salinity gradient", "estuary"]
+        }
+      ]
+    },
+    {
+      "topic_id": "water_quality_physical_and_chemical_properties_of_seawater",
+      "title": "Physical and chemical properties of seawater",
+      "display_order": 2,
+      "concepts": [
+        {
+          "concept_id": "water_quality_seawater_salinity_composition",
+          "title": "Seawater salinity: composition and definition",
+          "description": "Define salinity as total dissolved solids (g/kg); list major ions (Cl-, Na+, SO4^2-, Mg2+, Ca2+, K+) and state the rule of constant proportions (Marcet's principle).",
+          "depth_tags": ["salinity", "ppt", "psu", "major ions", "constant proportions", "chlorinity"]
+        },
+        {
+          "concept_id": "water_quality_salinity_measurement_methods",
+          "title": "Salinity measurement techniques",
+          "description": "Compare conductivity-based methods (CTD, salinometer), optical refractometer, and chemical titration (Mohr-Knudsen chlorinity) for determining salinity; convert between practical salinity units and chlorinity.",
+          "depth_tags": ["conductivity", "CTD", "refractometer", "chlorinity titration", "salinometer", "practical salinity"]
+        },
+        {
+          "concept_id": "water_quality_temperature_structure_thermocline",
+          "title": "Temperature structure: mixed layer and thermocline",
+          "description": "Describe the seasonal thermocline, permanent thermocline, surface mixed layer, and deep isothermal layer; interpret temperature-depth profiles and calculate mixed layer depth.",
+          "depth_tags": ["thermocline", "mixed layer", "seasonal thermocline", "isothermal", "temperature profile", "SST"]
+        },
+        {
+          "concept_id": "water_quality_halocline_salinity_stratification",
+          "title": "Halocline and salinity stratification",
+          "description": "Define halocline as a rapid vertical change in salinity; explain formation by freshwater input or ice melt, and identify its role in estuarine and ocean stratification.",
+          "depth_tags": ["halocline", "salinity stratification", "freshwater lens", "pycnocline", "profile", "mixing barrier"]
+        },
+        {
+          "concept_id": "water_quality_density_stratification_pycnocline",
+          "title": "Density stratification and pycnocline",
+          "description": "Explain how temperature and salinity control seawater density (sigma-t); define pycnocline as a density gradient that inhibits vertical mixing; calculate potential density.",
+          "depth_tags": ["sigma-t", "density", "pycnocline", "stratification", "potential density", "mixing"]
+        },
+        {
+          "concept_id": "water_quality_light_penetration_euphotic_zone",
+          "title": "Light penetration and euphotic depth",
+          "description": "Describe exponential attenuation of light with depth; define euphotic zone as depth where PAR reaches 1% of surface value; relate Secchi disk depth to light attenuation coefficient.",
+          "depth_tags": ["euphotic zone", "Secchi depth", "attenuation coefficient", "photic zone", "turbidity", "PAR"]
+        },
+        {
+          "concept_id": "water_quality_sound_speed_sofar_channel",
+          "title": "Sound speed in seawater and SOFAR channel",
+          "description": "Explain how temperature, salinity, and pressure affect sound speed; identify the SOFAR channel as a depth of minimum sound speed that enables long-range propagation.",
+          "depth_tags": ["sound speed", "SOFAR channel", "thermocline effect", "pressure effect", "sonar", "refraction"]
+        },
+        {
+          "concept_id": "water_quality_hydrostatic_pressure",
+          "title": "Hydrostatic pressure and depth relationship",
+          "description": "Calculate hydrostatic pressure increase with depth (approx. 1 atm per 10 m); explain effects on organism physiology and engineering constraints.",
+          "depth_tags": ["hydrostatic pressure", "depth", "atm", "pressure gradient", "compressibility", "deep-sea"]
+        },
+        {
+          "concept_id": "water_quality_dissolved_oxygen_omz",
+          "title": "Dissolved oxygen and oxygen minimum zone",
+          "description": "Describe oxygen solubility dependence on temperature and salinity; explain formation of the oxygen minimum zone (OMZ) by organic matter respiration and limited ventilation at intermediate depths.",
+          "depth_tags": ["dissolved oxygen", "oxygen minimum zone", "OMZ", "solubility", "respiration", "hypoxia"]
+        },
+        {
+          "concept_id": "water_quality_carbonate_system_equilibrium",
+          "title": "Carbonate system: CO2 equilibrium species",
+          "description": "Write the equilibrium series CO2(aq) + H2O ↔ H2CO3 ↔ HCO3- + H+ ↔ CO3^2- + 2H+; calculate the relative proportions of bicarbonate and carbonate at typical seawater pH 8.1.",
+          "depth_tags": ["CO2(aq)", "HCO3-", "CO3^2-", "carbonic acid", "pH", "bicarbonate"]
+        },
+        {
+          "concept_id": "water_quality_pH_alkalinity_buffering",
+          "title": "pH, alkalinity, and buffering capacity",
+          "description": "Define total alkalinity as acid-neutralizing capacity; explain seawater buffering by the carbonate and borate systems; identify alkalinity as a conservative tracer.",
+          "depth_tags": ["pH", "total alkalinity", "buffer", "borate", "carbonate alkalinity", "acid titration"]
+        },
+        {
+          "concept_id": "water_quality_ocean_acidification_impacts",
+          "title": "Ocean acidification: CO2 uptake and carbonate saturation",
+          "description": "Describe the decrease in pH and carbonate ion concentration due to anthropogenic CO2; explain aragonite and calcite saturation states (Ω) and their thresholds for calcifying organisms.",
+          "depth_tags": ["ocean acidification", "aragonite saturation", "calcite saturation", "pCO2", "calcifiers", "pH decrease"]
+        },
+        {
+          "concept_id": "water_quality_nutrient_profiles_nitrate_phosphate",
+          "title": "Nutrient profiles: nitrate, phosphate, silicate",
+          "description": "Describe typical vertical profiles of nitrate, phosphate, and silicate (surface depletion, deep enrichment); link to biological uptake in the photic zone and regeneration at depth.",
+          "depth_tags": ["nitrate", "phosphate", "silicate", "nutrient profile", "regeneration", "biological pump"]
+        },
+        {
+          "concept_id": "water_quality_redfield_ratio_nutrient_limitation",
+          "title": "Redfield ratio and nutrient limitation",
+          "description": "Apply the Redfield ratio C:N:P 106:16:1 to determine which nutrient limits primary production; state Liebig's Law of the Minimum and recognize nitrogen and phosphorus as common limiting nutrients.",
+          "depth_tags": ["Redfield ratio", "106:16:1", "nitrogen limitation", "phosphorus limitation", "Liebig's Law", "stoichiometry"]
+        },
+        {
+          "concept_id": "water_quality_trace_metals_micronutrients",
+          "title": "Trace metals and micronutrient limitation",
+          "description": "Explain iron limitation in High-Nutrient Low-Chlorophyll (HNLC) regions; describe the role of trace metals (Fe, Zn, Co) as enzyme cofactors and the input of iron via aeolian dust.",
+          "depth_tags": ["iron limitation", "HNLC", "trace metal", "aeolian dust", "cofactor", "phytoplankton"]
+        },
+        {
+          "concept_id": "water_quality_ts_diagram_water_masses",
+          "title": "T-S diagrams and water mass identification",
+          "description": "Interpret temperature-salinity (T-S) diagrams to identify distinct water masses; use density contours (isopycnals) to assess mixing and water mass formation.",
+          "depth_tags": ["T-S diagram", "water mass", "thermohaline", "density sigma-t", "potential temperature", "mixing"]
+        },
+        {
+          "concept_id": "water_quality_upwelling_processes",
+          "title": "Upwelling processes and water properties",
+          "description": "Describe wind-driven coastal upwelling via Ekman transport, producing cold, nutrient-rich surface water; identify major upwelling regions and characteristic sea surface temperature anomalies.",
+          "depth_tags": ["upwelling", "Ekman transport", "nutrient enrichment", "cold water", "SST anomaly", "coastal upwelling"]
+        }
+      ]
+    },
+    {
+      "topic_id": "water_quality_marine_and_estuarine_organisms_and_adaptations",
+      "title": "Marine and estuarine organisms and adaptations",
+      "display_order": 3,
+      "concepts": [
+        {
+          "concept_id": "water_quality_plankton_classification",
+          "title": "Plankton classification: phyto-, zooplankton, and size spectra",
+          "description": "Distinguish phytoplankton, zooplankton, and bacterioplankton; classify by size from femtoplankton (<0.2 µm) to megaplankton (>20 cm) and explain the concept of meroplankton vs. holoplankton.",
+          "depth_tags": ["phytoplankton", "zooplankton", "picoplankton", "nanoplankton", "microplankton", "meroplankton"]
+        },
+        {
+          "concept_id": "water_quality_diatoms_siliceous_frustules",
+          "title": "Diatoms: siliceous frustules and ecological role",
+          "description": "Identify diatom cell structure with two-valve silica frustule (centric and pennate forms); explain their importance as primary producers and their role in the silica cycle.",
+          "depth_tags": ["diatom", "frustule", "centric", "pennate", "silica", "primary producer"]
+        },
+        {
+          "concept_id": "water_quality_dinoflagellates_characteristics",
+          "title": "Dinoflagellates: flagella, bioluminescence, and HABs",
+          "description": "Describe dinoflagellate traits: two flagella, cellulosic thecal plates, bioluminescence, and role in harmful algal blooms (red tides, paralytic shellfish poisoning).",
+          "depth_tags": ["dinoflagellate", "flagella", "bioluminescence", "harmful algal bloom", "red tide", "theca"]
+        },
+        {
+          "concept_id": "water_quality_coccolithophores_calcite_plates",
+          "title": "Coccolithophores: calcareous plates and carbon cycle",
+          "description": "Recognize coccolithophores covered by calcium carbonate coccoliths; explain their contribution to the carbonate pump, ocean albedo via blooms (Emiliania huxleyi), and paleoclimate records.",
+          "depth_tags": ["coccolithophore", "coccolith", "CaCO3", "carbonate pump", "albedo", "Emiliania huxleyi"]
+        },
+        {
+          "concept_id": "water_quality_copepods_krill_zooplankton",
+          "title": "Key zooplankton: copepods and krill",
+          "description": "Describe copepod anatomy, life cycle, and role as a major link between phytoplankton and fish; highlight Antarctic krill (Euphausia superba) as a keystone prey for whales, seals, and penguins.",
+          "depth_tags": ["copepod", "krill", "Euphausia superba", "calanoid", "zooplankton", "antarctic food web"]
+        },
+        {
+          "concept_id": "water_quality_coral_zooxanthellae_symbiosis",
+          "title": "Coral-zooxanthellae symbiosis and bleaching",
+          "description": "Explain the mutualistic symbiosis between coral polyps and dinoflagellate algae Symbiodinium; describe how thermal or light stress leads to expulsion of symbionts and coral bleaching.",
+          "depth_tags": ["coral polyp", "zooxanthellae", "Symbiodinium", "bleaching", "mutualism", "calcification"]
+        },
+        {
+          "concept_id": "water_quality_mangrove_adaptations",
+          "title": "Mangrove adaptations: aerial roots and salt management",
+          "description": "Identify pneumatophores, prop roots, and knee roots; describe salt exclusion at roots, salt excretion via leaf glands, and viviparous seedlings (propagules).",
+          "depth_tags": ["pneumatophores", "prop roots", "salt glands", "vivipary", "hypocotyl", "halophyte"]
+        },
+        {
+          "concept_id": "water_quality_salt_marsh_halophyte_adaptations",
+          "title": "Salt marsh plant adaptations to salinity and anoxia",
+          "description": "Describe halophyte traits: aerenchyma for oxygen transport to roots, salt secretion via salt bladders or glands, succulence, and osmoregulation; use Spartina alterniflora and Salicornia as examples.",
+          "depth_tags": ["halophyte", "aerenchyma", "salt secretion", "succulence", "Spartina", "Salicornia"]
+        },
+        {
+          "concept_id": "water_quality_seagrass_biology",
+          "title": "Seagrass biology: submerged flowering plants",
+          "description": "Identify seagrasses as angiosperms with rhizomes, strap-like leaves, and underwater pollination (hydrophily); explain adaptations to soft anoxic sediments and importance as ecosystem engineers.",
+          "depth_tags": ["seagrass", "hydrophily", "rhizome", "aerenchyma", "Zostera", "flowering underwater"]
+        },
+        {
+          "concept_id": "water_quality_osmoregulation_marine_estuarine_fish",
+          "title": "Osmoregulation in marine and estuarine fish",
+          "description": "Compare osmoregulatory strategies: marine teleosts drink seawater and excrete excess ions via chloride cells in gills; euryhaline species (e.g., salmon, bull shark) adjust between freshwater and saltwater environments.",
+          "depth_tags": ["osmoregulation", "chloride cells", "euryhaline", "stenohaline", "ion transport", "salinity tolerance"]
+        },
+        {
+          "concept_id": "water_quality_buoyancy_mechanisms",
+          "title": "Buoyancy mechanisms in marine organisms",
+          "description": "Explain buoyancy adaptations: swim bladder gas regulation in teleost fish, lipid storage in sharks (squalene) and copepods (wax esters), gas-filled floats in siphonophores, and ammonia-rich fluids in squids.",
+          "depth_tags": ["swim bladder", "lipid buoyancy", "gas gland", "squalene", "siphonophore", "neutral buoyancy"]
+        },
+        {
+          "concept_id": "water_quality_deep_sea_adaptations",
+          "title": "Deep-sea adaptations: bioluminescence and gigantism",
+          "description": "Describe deep-sea adaptations including bioluminescence for counterillumination and prey attraction, large sensitive eyes, slow metabolism, deep-sea gigantism, and pressure-resistant enzymes.",
+          "depth_tags": ["bioluminescence", "deep-sea gigantism", "piezophile", "photophore", "large eyes", "low metabolism"]
+        },
+        {
+          "concept_id": "water_quality_intertidal_adaptations",
+          "title": "Intertidal organism adaptations to desiccation and waves",
+          "description": "Identify structural and behavioral adaptations: byssal threads and holdfasts for attachment, closing shells to reduce water loss, hiding in crevices, and physiological tolerance to temperature and salinity extremes.",
+          "depth_tags": ["desiccation tolerance", "byssus", "holdfast", "shell closing", "crevice", "thermal stress"]
+        },
+        {
+          "concept_id": "water_quality_marine_mammal_diving_adaptations",
+          "title": "Marine mammal diving physiology",
+          "description": "Explain adaptations for prolonged dives: high myoglobin concentrations in muscle, bradycardia, peripheral vasoconstriction, collapsible lungs, and efficient blood oxygen storage.",
+          "depth_tags": ["myoglobin", "bradycardia", "dive reflex", "blood oxygen", "apnea", "marine mammal"]
+        },
+        {
+          "concept_id": "water_quality_nekton_fish_body_forms",
+          "title": "Nektonic fish body forms and locomotion",
+          "description": "Relate fusiform, laterally compressed, and depressed body shapes to swimming speed and habitat; describe anguilliform, carangiform, and thunniform swimming modes and energy efficiency.",
+          "depth_tags": ["fusiform", "carangiform", "thunniform", "anguilliform", "body shape", "swimming"]
+        }
+      ]
+    },
+    {
+      "topic_id": "water_quality_food_webs_productivity_and_nutrient_cycling",
+      "title": "Food webs, productivity, and nutrient cycling",
+      "display_order": 4,
+      "concepts": [
+        {
+          "concept_id": "water_quality_trophic_levels_food_chain",
+          "title": "Trophic levels and marine food chains",
+          "description": "Classify organisms into trophic levels: primary producers, primary consumers, secondary consumers, and apex predators; construct simple grazing and detrital food chains.",
+          "depth_tags": ["trophic level", "primary producer", "consumer", "apex predator", "food chain", "energy transfer"]
+        },
+        {
+          "concept_id": "water_quality_primary_productivity_measurement",
+          "title": "Primary productivity: GPP, NPP, light-dark bottle method",
+          "description": "Define gross primary productivity (GPP) and net primary productivity (NPP); explain measurement using dissolved oxygen changes in light and dark bottles incubated in situ.",
+          "depth_tags": ["GPP", "NPP", "light bottle", "dark bottle", "dissolved oxygen", "respiration"]
+        },
+        {
+          "concept_id": "water_quality_chlorophyll_a_productivity_proxy",
+          "title": "Chlorophyll-a as productivity proxy and remote sensing",
+          "description": "Use extracted chlorophyll-a concentration as a proxy for phytoplankton biomass; interpret satellite ocean color imagery (SeaWiFS, MODIS) to map surface productivity.",
+          "depth_tags": ["chlorophyll-a", "fluorometry", "ocean color", "remote sensing", "SeaWiFS", "MODIS"]
+        },
+        {
+          "concept_id": "water_quality_limiting_nutrients_liebig",
+          "title": "Limiting nutrients and Liebig's Law of the Minimum",
+          "description": "Apply Liebig's Law: growth is limited by the nutrient in shortest supply relative to demand; identify nitrogen, phosphorus, and iron as common limiting nutrients in different ocean regions.",
+          "depth_tags": ["Liebig's Law", "nitrogen limitation", "phosphorus limitation", "iron limitation", "nutrient bioassay", "growth limitation"]
+        },
+        {
+          "concept_id": "water_quality_redfield_ratio_stoichiometry",
+          "title": "Redfield ratio and nutrient stoichiometry",
+          "description": "Use the Redfield ratio C:N:P 106:16:1 to assess nutrient limitation; calculate elemental ratios from measured nutrient concentrations and interpret deviations.",
+          "depth_tags": ["Redfield ratio", "106:16:1", "C:N:P", "stoichiometry", "nitrate:phosphate", "particulate organic matter"]
+        },
+        {
+          "concept_id": "water_quality_marine_nitrogen_cycle",
+          "title": "Marine nitrogen cycle: fixation, nitrification, denitrification",
+          "description": "Describe transformations: nitrogen fixation by cyanobacteria (Trichodesmium), nitrification (NH4+ → NO3-), denitrification and anammox in oxygen-minimum zones.",
+          "depth_tags": ["nitrogen fixation", "nitrification", "denitrification", "anammox", "Trichodesmium", "nitrate"]
+        },
+        {
+          "concept_id": "water_quality_marine_phosphorus_cycle",
+          "title": "Marine phosphorus cycle: sources and sinks",
+          "description": "Explain phosphate uptake, regeneration from organic matter, and ultimate burial as apatite; identify phosphorus limitation in oligotrophic subtropical gyres.",
+          "depth_tags": ["phosphate", "apatite", "regeneration", "upwelling", "aeolian input", "phosphorus burial"]
+        },
+        {
+          "concept_id": "water_quality_silicon_cycle_diatoms",
+          "title": "Silicon cycle and diatom utilization",
+          "description": "Describe uptake of dissolved silica by diatoms for frustule construction, regeneration via dissolution of biogenic opal, and silica limitation in the equatorial Pacific.",
+          "depth_tags": ["silicate", "diatom frustule", "biogenic silica", "silica dissolution", "opal", "Si limitation"]
+        },
+        {
+          "concept_id": "water_quality_microbial_loop",
+          "title": "Microbial loop: bacterial processing of DOM",
+          "description": "Explain how bacterioplankton consume dissolved organic matter (DOM), are grazed by nanoflagellates and ciliates, thereby channeling carbon back into the classical food web.",
+          "depth_tags": ["microbial loop", "DOM", "bacterioplankton", "nanoflagellate", "ciliate", "heterotrophic bacteria"]
+        },
+        {
+          "concept_id": "water_quality_detrital_food_web_estuary",
+          "title": "Detrital food web in estuaries",
+          "description": "Describe detritus-based pathways: decomposition of vascular plant litter (mangrove, marsh) by microbes and fungi, consumption by detritivores, and the importance of detritus in estuarine energy flow.",
+          "depth_tags": ["detritus", "detritivore", "marsh detritus", "decomposition", "infauna", "estuarine food web"]
+        },
+        {
+          "concept_id": "water_quality_biological_pump_carbon_export",
+          "title": "Biological pump: carbon export to deep sea",
+          "description": "Explain sinking of particulate organic carbon (POC) as marine snow and fecal pellets, the associated drawdown of atmospheric CO2, and the long-term sequestration of carbon in deep waters.",
+          "depth_tags": ["biological pump", "POC", "marine snow", "fecal pellets", "carbon export", "sequestration"]
+        },
+        {
+          "concept_id": "water_quality_upwelling_productivity",
+          "title": "Upwelling systems and high primary productivity",
+          "description": "Link coastal upwelling (e.g., Peru, California, Benguela currents) and equatorial upwelling to nutrient supply, elevated chlorophyll, and highly productive fisheries.",
+          "depth_tags": ["upwelling", "Peru Current", "Benguela", "California Current", "nutrient supply", "fisheries"]
+        },
+        {
+          "concept_id": "water_quality_eutrophication_hypoxia",
+          "title": "Eutrophication and hypoxia in coastal waters",
+          "description": "Explain how excess nutrient input drives algal blooms, subsequent microbial decomposition consumes oxygen, and leads to hypoxia (<2 mg/L DO) or anoxia, creating dead zones.",
+          "depth_tags": ["eutrophication", "hypoxia", "dead zone", "nutrient loading", "algal bloom", "oxygen depletion"]
+        },
+        {
+          "concept_id": "water_quality_seasonal_bloom_dynamics",
+          "title": "Seasonal phytoplankton bloom dynamics",
+          "description": "Explain the critical depth hypothesis (Sverdrup) for the spring bloom initiation; describe the interplay of light, mixing depth, and nutrients that controls bloom timing and succession.",
+          "depth_tags": ["spring bloom", "critical depth", "Sverdrup", "mixed layer depth", "light limitation", "succession"]
+        },
+        {
+          "concept_id": "water_quality_chemosynthetic_food_webs_vents",
+          "title": "Chemosynthetic food webs at hydrothermal vents",
+          "description": "Describe chemosynthetic primary production using reduced compounds (H2S, CH4) by free-living and symbiotic bacteria, supporting unique vent communities in the absence of sunlight.",
+          "depth_tags": ["chemosynthesis", "H2S", "vent bacteria", "Riftia symbiosis", "primary production", "sulfide oxidation"]
+        }
+      ]
+    },
+    {
+      "topic_id": "water_quality_water_monitoring_indicators_and_lab_analysis",
+      "title": "Water monitoring, indicators, and lab analysis",
+      "display_order": 5,
+      "concepts": [
+        {
+          "concept_id": "water_quality_key_water_quality_parameters",
+          "title": "Key water quality parameters for marine/estuarine systems",
+          "description": "List the core parameters: temperature, salinity, dissolved oxygen, pH, turbidity, nutrients (nitrate, phosphate), chlorophyll-a, and fecal coliform; understand their typical ranges and monitoring significance.",
+          "depth_tags": ["temperature", "salinity", "DO", "pH", "turbidity", "chlorophyll-a"]
+        },
+        {
+          "concept_id": "water_quality_secchi_disk_turbidity",
+          "title": "Secchi disk and turbidity measurement",
+          "description": "Measure water clarity using a Secchi disk; relate Secchi depth to turbidity (NTU) and the light attenuation coefficient; interpret as an indicator of suspended solids and algal biomass.",
+          "depth_tags": ["Secchi disk", "turbidity", "NTU", "attenuation", "visibility", "euphotic depth"]
+        },
+        {
+          "concept_id": "water_quality_dissolved_oxygen_measurement_winkler",
+          "title": "Dissolved oxygen measurement: Winkler titration and electrode",
+          "description": "Describe the Winkler method (manganous sulfate, alkaline iodide, azide modification, thiosulfate titration) and electrochemical/optical DO probes; compare accuracy, detection limit, and field suitability.",
+          "depth_tags": ["Winkler titration", "DO probe", "manganous sulfate", "thiosulfate", "electrode", "optical DO"]
+        },
+        {
+          "concept_id": "water_quality_bod5_test",
+          "title": "Biochemical oxygen demand (BOD5) test",
+          "description": "Explain the 5-day BOD test: measure initial DO, incubate in the dark at 20°C for 5 days, then measure final DO; interpret the difference as organic matter load.",
+          "depth_tags": ["BOD5", "biochemical oxygen demand", "20°C", "5-day", "organic pollution", "DO depletion"]
+        },
+        {
+          "concept_id": "water_quality_salinity_measurement_lab",
+          "title": "Salinity measurement: conductivity, refractometer, chloride titration",
+          "description": "Determine salinity using a conductivity meter (PSU scale), handheld refractometer, and Mohr titration for chlorinity with silver nitrate and potassium chromate indicator.",
+          "depth_tags": ["conductivity", "refractometer", "Mohr titration", "chlorinity", "silver nitrate", "potassium chromate"]
+        },
+        {
+          "concept_id": "water_quality_pH_measurement",
+          "title": "pH measurement: electrode and colorimetric methods",
+          "description": "Use a pH meter with glass electrode calibrated with NBS buffers; interpret color changes of indicators (bromothymol blue, phenolphthalein) for approximate pH estimation.",
+          "depth_tags": ["pH meter", "glass electrode", "buffer calibration", "bromothymol blue", "indicator", "NBS scale"]
+        },
+        {
+          "concept_id": "water_quality_nitrate_analysis_cadmium_reduction",
+          "title": "Nitrate analysis by cadmium reduction and spectrophotometry",
+          "description": "Reduce nitrate to nitrite with a cadmium column; diazotize with sulfanilamide, couple with N-(1-naphthyl)-ethylenediamine to form an azo dye; measure absorbance at 543 nm.",
+          "depth_tags": ["cadmium reduction", "nitrate", "sulfanilamide", "NED", "azo dye", "543 nm"]
+        },
+        {
+          "concept_id": "water_quality_phosphate_analysis_ascorbic_acid",
+          "title": "Phosphate analysis by ascorbic acid method",
+          "description": "React orthophosphate with ammonium molybdate and ascorbic acid to form phosphomolybdenum blue; measure absorbance at 880 nm and report as orthophosphate-P.",
+          "depth_tags": ["ascorbic acid method", "phosphate", "molybdenum blue", "ammonium molybdate", "880 nm", "orthophosphate"]
+        },
+        {
+          "concept_id": "water_quality_chlorophyll_extraction_fluorometry",
+          "title": "Chlorophyll-a extraction and fluorometry",
+          "description": "Filter water, extract pigments with 90% acetone, measure fluorescence before and after acidification to correct for phaeopigments; calculate chlorophyll-a concentration.",
+          "depth_tags": ["chlorophyll-a", "acetone extraction", "fluorometer", "acidification", "phaeopigment", "Turner design"]
+        },
+        {
+          "concept_id": "water_quality_fecal_coliform_testing",
+          "title": "Fecal coliform detection: membrane filtration and MPN",
+          "description": "Use membrane filtration with mFC agar at 44.5°C to enumerate fecal coliform colonies; explain the Most Probable Number (MPN) method and interpret results for recreational water quality.",
+          "depth_tags": ["fecal coliform", "membrane filtration", "mFC agar", "44.5°C", "MPN", "indicator bacteria"]
+        },
+        {
+          "concept_id": "water_quality_benthic_index_estuary",
+          "title": "Benthic macroinvertebrate indices for estuarine health",
+          "description": "Apply multi-metric indices such as AMBI (AZTI's Marine Biotic Index) or Benthic IBI to assess pollution and habitat quality based on benthic community composition.",
+          "depth_tags": ["AMBI", "B-IBI", "benthic index", "pollution tolerance", "macroinvertebrate", "bioassessment"]
+        },
+        {
+          "concept_id": "water_quality_indicator_species_estuarine",
+          "title": "Indicator species for estuarine water quality",
+          "description": "Identify pollution-tolerant species (e.g., Capitella capitata) and sensitive taxa (e.g., certain amphipods, eelgrass) as biological indicators to infer sediment and water quality.",
+          "depth_tags": ["Capitella capitata", "Amphipoda", "indicator species", "eelgrass", "sentinel", "bioindicator"]
+        },
+        {
+          "concept_id": "water_quality_water_quality_index_calculation",
+          "title": "Water Quality Index (WQI) calculation",
+          "description": "Compute a WQI (e.g., NSF WQI) using weighted sub-indices for parameters such as DO, pH, BOD, temperature, and nutrients; interpret the final score to classify water quality.",
+          "depth_tags": ["WQI", "sub-index", "weighting", "rating curve", "water quality class", "NSF WQI"]
+        },
+        {
+          "concept_id": "water_quality_sampling_techniques_niskin",
+          "title": "Sampling techniques: Niskin bottle and depth profiling",
+          "description": "Use a Niskin bottle rosette to collect discrete water samples at specific depths; describe CTD profiling, sample preservation (ice, filtration), and field parameter measurement.",
+          "depth_tags": ["Niskin bottle", "rosette", "CTD", "depth profile", "sample preservation", "Go-Flo"]
+        },
+        {
+          "concept_id": "water_quality_lab_quality_assurance",
+          "title": "Lab quality assurance and quality control",
+          "description": "Apply replicates, method blanks, certified standards, calibration curves, and spike recovery tests; calculate precision, accuracy, method detection limit, and control charts.",
+          "depth_tags": ["QA/QC", "calibration curve", "blank", "standard", "precision", "accuracy"]
+        }
+      ]
+    },
+    {
+      "topic_id": "water_quality_human_impacts_pollution_and_restoration",
+      "title": "Human impacts, pollution, and restoration",
+      "display_order": 6,
+      "concepts": [
+        {
+          "concept_id": "water_quality_nutrient_pollution_eutrophication",
+          "title": "Nutrient pollution and coastal eutrophication",
+          "description": "Explain sources of excess nitrogen and phosphorus (agricultural runoff, sewage) leading to eutrophication symptoms: algal blooms, reduced water clarity, and shifts in ecosystem structure.",
+          "depth_tags": ["nutrient pollution", "fertilizer", "sewage", "algal bloom", "nitrate", "phosphate"]
+        },
+        {
+          "concept_id": "water_quality_hypoxia_dead_zones",
+          "title": "Hypoxia and dead zones in coastal waters",
+          "description": "Describe formation of seasonal hypoxic zones (<2 mg/L DO) due to nutrient-fueled algal blooms and stratification; analyze the Gulf of Mexico dead zone as a case study.",
+          "depth_tags": ["hypoxia", "dead zone", "Gulf of Mexico", "stratification", "nutrient loading", "oxygen depletion"]
+        },
+        {
+          "concept_id": "water_quality_oil_spill_impacts_remediation",
+          "title": "Oil spill impacts and remediation techniques",
+          "description": "Outline physical (booms, skimmers, in-situ burning) and chemical (dispersants) cleanup methods; explain bioremediation using hydrocarbon-degrading bacteria and trade-offs of each approach.",
+          "depth_tags": ["oil spill", "booms", "dispersant", "skimmer", "bioremediation", "hydrocarbon-degrading bacteria"]
+        },
+        {
+          "concept_id": "water_quality_microplastic_pollution",
+          "title": "Microplastic pollution: sources and ecological effects",
+          "description": "Identify primary (microbeads, fibers) and secondary (fragmented debris) microplastics; describe ingestion by marine organisms, trophic transfer, and vector for adsorbed pollutants (POPs).",
+          "depth_tags": ["microplastic", "primary microplastic", "fiber", "ingestion", "trophic transfer", "POP adsorption"]
+        },
+        {
+          "concept_id": "water_quality_heavy_metal_mercury_biomagnification",
+          "title": "Heavy metal pollution: mercury and biomagnification",
+          "description": "Explain sources of mercury (coal combustion, artisanal mining), microbial methylation to methylmercury, and its biomagnification in marine food webs leading to human health risks (Minamata disease).",
+          "depth_tags": ["mercury", "methylmercury", "biomagnification", "bioaccumulation", "Minamata", "neurotoxin"]
+        },
+        {
+          "concept_id": "water_quality_persistent_organic_pollutants",
+          "title": "Persistent organic pollutants: DDT, PCBs, dioxins",
+          "description": "Describe POPs characteristics: persistence, lipophilicity, long-range transport; illustrate bioaccumulation and impacts (e.g., DDT-induced eggshell thinning in birds, endocrine disruption).",
+          "depth_tags": ["DDT", "PCBs", "dioxins", "bioaccumulation", "biomagnification", "endocrine disruptor"]
+        },
+        {
+          "concept_id": "water_quality_sewage_pathogen_indicators",
+          "title": "Sewage pollution and pathogen indicators",
+          "description": "Discuss sewage contamination assessed by fecal indicator bacteria (fecal coliform, enterococci); link to waterborne disease outbreaks, shellfish bed closures, and beach advisories.",
+          "depth_tags": ["sewage", "fecal coliform", "enterococci", "pathogen", "shellfish bed closure", "beach advisory"]
+        },
+        {
+          "concept_id": "water_quality_ocean_acidification_impacts_calcifiers",
+          "title": "Ocean acidification impacts on calcifying organisms",
+          "description": "Explain how reduced carbonate ion concentration and lower aragonite saturation state decrease calcification rates in corals, pteropods, foraminifera, and coralline algae.",
+          "depth_tags": ["ocean acidification", "aragonite undersaturation", "calcification", "pteropod", "coral", "carbonate ion"]
+        },
+        {
+          "concept_id": "water_quality_coral_bleaching_thermal_stress",
+          "title": "Coral bleaching: thermal stress and zooxanthellae expulsion",
+          "description": "Describe mechanism: elevated sea surface temperature causes oxidative stress in Symbiodinium, leading to breakdown of symbiosis and loss of pigment; link to mass bleaching events and climate change.",
+          "depth_tags": ["coral bleaching", "thermal stress", "SST anomaly", "Symbiodinium", "oxidative stress", "mass bleaching"]
+        },
+        {
+          "concept_id": "water_quality_invasive_species_ballast_water",
+          "title": "Invasive marine species and ballast water introduction",
+          "description": "Identify pathways (ballast water, hull fouling) and high-impact invaders (lionfish Pterois, European green crab Carcinus maenas); describe ecological and economic consequences.",
+          "depth_tags": ["ballast water", "lionfish", "Carcinus maenas", "invasive species", "ecological impact", "biocontrol"]
+        },
+        {
+          "concept_id": "water_quality_coastal_habitat_loss_trawling_sea_level",
+          "title": "Coastal habitat loss: trawling, development, and sea level rise",
+          "description": "Describe destruction of benthic habitat by bottom trawling and dredging, loss of mangroves and seagrasses to coastal urbanization, and wetland drowning due to sea level rise and coastal squeeze.",
+          "depth_tags": ["bottom trawling", "coastal development", "sea level rise", "mangrove loss", "coastal squeeze", "erosion"]
+        },
+        {
+          "concept_id": "water_quality_overfishing_bycatch",
+          "title": "Overfishing and bycatch",
+          "description": "Define maximum sustainable yield (MSY) and overexploitation; discuss bycatch of non-target species (sea turtles, dolphins, sharks) and cascading trophic effects of removing top predators.",
+          "depth_tags": ["overfishing", "bycatch", "MSY", "fishery collapse", "trophic cascade", "discards"]
+        },
+        {
+          "concept_id": "water_quality_marine_protected_areas",
+          "title": "Marine Protected Areas (MPAs) and fisheries management",
+          "description": "Design MPAs: no-take zones, size, connectivity; evaluate evidence for biodiversity increase, fish stock spillover, and larval export; relate to ecosystem-based management.",
+          "depth_tags": ["MPA", "no-take zone", "connectivity", "spillover", "biodiversity", "fishery management"]
+        },
+        {
+          "concept_id": "water_quality_coral_reef_restoration",
+          "title": "Coral reef restoration techniques",
+          "description": "Explain coral gardening, microfragmentation, artificial reef deployment, and larval enhancement; discuss genetic diversity and scalability challenges.",
+          "depth_tags": ["coral gardening", "microfragmentation", "artificial reef", "larval enhancement", "coral restoration", "nursery"]
+        },
+        {
+          "concept_id": "water_quality_mangrove_seagrass_restoration",
+          "title": "Mangrove and seagrass restoration techniques",
+          "description": "Describe replanting of mangroves and seagrasses, hydrological restoration to reestablish tidal flow, and use of living shorelines; identify success indicators such as habitat function and erosion control.",
+          "depth_tags": ["restoration", "mangrove planting", "seagrass restoration", "living shoreline", "ecosystem services", "hydrological restoration"]
+        }
+      ]
+    }
+  ]
+}

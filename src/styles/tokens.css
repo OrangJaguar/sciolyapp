@@ -1,20 +1,34 @@
 :root {
+  /* Surfaces */
   --void: #050505;
   --surface: #111111;
   --surface-elevated: #1a1a1a;
   --surface-high: #242424;
+
+  /* Accents */
   --cyan: #00f0ff;
   --cyan-dim: rgba(0, 240, 255, 0.35);
   --cyan-glow: rgba(0, 240, 255, 0.45);
+  --cyan-stripe: #007a82;
   --alert: #ff2a2a;
   --success: #00ff66;
+
+  /* Text */
   --text: #ffffff;
   --text-muted: #888888;
   --text-dim: #555555;
+  --on-accent: #000000;
+
+  /* Borders */
   --ghost-border: rgba(132, 148, 149, 0.18);
   --ghost-border-active: rgba(0, 240, 255, 0.45);
+
+  /* Type */
   --font-display: 'Space Grotesk', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --label-size: 0.78rem;
+
+  /* Shape */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 20px;

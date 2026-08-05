@@ -1,0 +1,430 @@
+{
+  "event_id": "chem_lab",
+  "event_name": "Chemistry Lab",
+  "domain": "Physical Science & Chemistry",
+  "official_2027_scope": "Gas Laws & Kinetics",
+  "season": 2027,
+  "division": "C",
+  "topics": [
+    {
+      "topic_id": "chem_lab_gas_variables_and_named_gas_laws",
+      "title": "Gas variables and named gas laws",
+      "display_order": 1,
+      "concepts": [
+        {
+          "concept_id": "chem_lab_pressure_measurement_and_units",
+          "title": "Pressure measurement and units",
+          "description": "Convert between common pressure units (atm, mmHg, torr, Pa, bar) and interpret open-end/closed-end manometer and barometer readings.",
+          "depth_tags": ["pressure units", "manometer", "barometer", "mmHg", "atm", "Pa"]
+        },
+        {
+          "concept_id": "chem_lab_temperature_scales_and_absolute_zero",
+          "title": "Temperature scales and absolute zero",
+          "description": "Convert between Celsius and Kelvin (K = °C + 273.15) and explain why gas law calculations require absolute temperature.",
+          "depth_tags": ["Kelvin", "Celsius", "absolute zero", "temperature conversion", "K = °C + 273.15"]
+        },
+        {
+          "concept_id": "chem_lab_boyles_law",
+          "title": "Boyle's Law (P–V inverse relationship)",
+          "description": "Apply P₁V₁ = P₂V₂ at constant temperature and amount; explain the inverse relationship using particle collision frequency.",
+          "depth_tags": ["P1V1=P2V2", "inverse relationship", "constant n,T", "pressure", "volume"]
+        },
+        {
+          "concept_id": "chem_lab_charles_law",
+          "title": "Charles's Law (V–T direct relationship)",
+          "description": "Use V₁/T₁ = V₂/T₂ with absolute temperatures for a fixed amount of gas at constant pressure; explain the direct relationship.",
+          "depth_tags": ["V1/T1=V2/T2", "direct relationship", "constant n,P", "temperature", "volume"]
+        },
+        {
+          "concept_id": "chem_lab_gay_lussacs_law",
+          "title": "Gay-Lussac's Law (P–T direct relationship)",
+          "description": "Apply P₁/T₁ = P₂/T₂ at constant volume and amount; relate the direct P–T relationship to increased particle kinetic energy.",
+          "depth_tags": ["P1/T1=P2/T2", "direct relationship", "constant n,V", "pressure", "temperature"]
+        },
+        {
+          "concept_id": "chem_lab_avogadros_law",
+          "title": "Avogadro's Law (V ∝ n)",
+          "description": "Recognize that equal volumes of gases at the same temperature and pressure contain equal numbers of moles; use V₁/n₁ = V₂/n₂.",
+          "depth_tags": ["V∝n", "equal volumes equal moles", "Avogadro's hypothesis", "moles", "constant T,P"]
+        },
+        {
+          "concept_id": "chem_lab_combined_gas_law",
+          "title": "Combined Gas Law",
+          "description": "Combine Boyle's, Charles's, and Gay-Lussac's laws into P₁V₁/T₁ = P₂V₂/T₂ for a fixed amount of gas undergoing multiple variable changes.",
+          "depth_tags": ["combined gas law", "P1V1/T1=P2V2/T2", "constant n", "multi-variable changes"]
+        },
+        {
+          "concept_id": "chem_lab_daltons_law_of_partial_pressures",
+          "title": "Dalton's Law of Partial Pressures",
+          "description": "Calculate total pressure of a gas mixture as the sum of partial pressures; relate partial pressure to mole fraction (Pᵢ = Xᵢ P_total).",
+          "depth_tags": ["partial pressure", "mole fraction", "P_total = ΣP_i", "gas mixtures", "Dalton's law"]
+        },
+        {
+          "concept_id": "chem_lab_grahams_law_of_effusion",
+          "title": "Graham's Law of Effusion",
+          "description": "Apply rate₁/rate₂ = √(M₂/M₁) to compare effusion/diffusion rates; relate effusion rate to root-mean-square speed.",
+          "depth_tags": ["effusion", "rate ∝ 1/√M", "molar mass", "diffusion", "Graham's law"]
+        },
+        {
+          "concept_id": "chem_lab_standard_temperature_and_pressure_stp",
+          "title": "Standard temperature and pressure (STP)",
+          "description": "Define STP as 0 °C (273.15 K) and 1 atm, and recall that one mole of an ideal gas occupies 22.4 L at STP.",
+          "depth_tags": ["STP", "standard molar volume", "22.4 L/mol", "273.15 K", "1 atm"]
+        }
+      ]
+    },
+    {
+      "topic_id": "chem_lab_ideal_gas_law_stoichiometry_and_gas_calculations",
+      "title": "Ideal gas law, stoichiometry, and gas calculations",
+      "display_order": 2,
+      "concepts": [
+        {
+          "concept_id": "chem_lab_ideal_gas_law_equation",
+          "title": "Ideal gas law equation PV=nRT",
+          "description": "Use PV = nRT to relate pressure, volume, moles, and temperature of an ideal gas; identify the conditions where the ideal gas law is applicable.",
+          "depth_tags": ["PV=nRT", "ideal gas", "n", "R", "state equation"]
+        },
+        {
+          "concept_id": "chem_lab_universal_gas_constant_R",
+          "title": "Universal gas constant R values",
+          "description": "Select the appropriate R value (0.08206 L·atm/mol·K, 8.314 J/mol·K, 62.36 L·torr/mol·K) based on the pressure and volume units in a calculation.",
+          "depth_tags": ["R value", "0.08206", "8.314", "62.36", "unit conversion"]
+        },
+        {
+          "concept_id": "chem_lab_standard_molar_volume",
+          "title": "Standard molar volume (22.4 L/mol)",
+          "description": "Derive the molar volume of an ideal gas at STP (22.4 L/mol) from PV=nRT and apply it in stoichiometric gas volume calculations.",
+          "depth_tags": ["22.4 L/mol", "standard molar volume", "STP", "PV=nRT", "molar volume"]
+        },
+        {
+          "concept_id": "chem_lab_volume_volume_gas_stoichiometry",
+          "title": "Volume–volume gas stoichiometry",
+          "description": "Use Avogadro's law and balanced equations to relate volumes of gaseous reactants and products at constant temperature and pressure.",
+          "depth_tags": ["volume ratios", "Avogadro's law", "stoichiometry", "same T,P", "gas reactions"]
+        },
+        {
+          "concept_id": "chem_lab_mass_volume_gas_stoichiometry",
+          "title": "Mass–volume gas stoichiometry",
+          "description": "Convert between mass of a substance and volume of a gas using molar mass and the ideal gas law at non‑STP conditions.",
+          "depth_tags": ["mass to volume", "PV=nRT", "molar mass", "stoichiometry", "non‑STP"]
+        },
+        {
+          "concept_id": "chem_lab_gas_density_from_ideal_gas_law",
+          "title": "Gas density from ideal gas law",
+          "description": "Derive and apply d = PM/RT to calculate gas density at given P and T, or to determine molar mass from density.",
+          "depth_tags": ["d=PM/RT", "density", "molar mass", "gas density", "ideal gas law derivation"]
+        },
+        {
+          "concept_id": "chem_lab_determining_molar_mass_of_a_gas",
+          "title": "Determining molar mass of a gas",
+          "description": "Calculate the molar mass of an unknown gas from experimental mass, volume, temperature, and pressure using M = mRT/(PV).",
+          "depth_tags": ["M = mRT/PV", "molar mass determination", "gas sample", "ideal gas law", "experimental data"]
+        },
+        {
+          "concept_id": "chem_lab_gas_collection_over_water",
+          "title": "Gas collection over water correction",
+          "description": "Correct for water vapor pressure when collecting a gas over water: P_dry gas = P_total − P_H₂O, then use the dry gas pressure in ideal gas calculations.",
+          "depth_tags": ["water displacement", "vapor pressure", "Dalton's law", "P_dry", "eudiometer"]
+        },
+        {
+          "concept_id": "chem_lab_partial_pressure_and_mole_fraction",
+          "title": "Partial pressure and mole fraction calculations",
+          "description": "Calculate partial pressure from mole fraction and total pressure (Pᵢ = Xᵢ P_total), or find mole fraction from partial pressure data.",
+          "depth_tags": ["P_i = X_i P_total", "mole fraction", "partial pressure", "gas mixtures", "Dalton's law application"]
+        }
+      ]
+    },
+    {
+      "topic_id": "chem_lab_kinetic_molecular_theory_and_particle_behavior",
+      "title": "Kinetic molecular theory and particle behavior",
+      "display_order": 3,
+      "concepts": [
+        {
+          "concept_id": "chem_lab_km_postulates",
+          "title": "Postulates of kinetic molecular theory",
+          "description": "List and explain the five main KMT postulates: particles in constant random motion, negligible volume, elastic collisions, no intermolecular forces, and average KE proportional to temperature.",
+          "depth_tags": ["KMT postulates", "elastic collisions", "negligible volume", "no IMFs", "KE ∝ T"]
+        },
+        {
+          "concept_id": "chem_lab_temperature_and_average_kinetic_energy",
+          "title": "Temperature and average kinetic energy",
+          "description": "Relate absolute temperature to average translational kinetic energy: KE_avg = (3/2)RT per mole and KE_avg = (3/2)k_B T per molecule.",
+          "depth_tags": ["KE = 3/2 RT", "Boltzmann constant", "temperature", "kinetic energy", "molecular speed"]
+        },
+        {
+          "concept_id": "chem_lab_root_mean_square_speed",
+          "title": "Root-mean-square speed (u_rms)",
+          "description": "Calculate u_rms = √(3RT/M) using molar mass in kg/mol; explain why heavier molecules move slower at the same temperature.",
+          "depth_tags": ["u_rms", "3RT/M", "molar mass in kg", "molecular speed", "kinetic energy"]
+        },
+        {
+          "concept_id": "chem_lab_maxwell_boltzmann_distribution",
+          "title": "Maxwell–Boltzmann speed distribution",
+          "description": "Sketch and interpret the distribution of molecular speeds; predict how temperature and molar mass shift the peak height and distribution width.",
+          "depth_tags": ["Maxwell-Boltzmann", "speed distribution", "peak shift", "temperature effect", "molar mass effect"]
+        },
+        {
+          "concept_id": "chem_lab_km_explanation_boyles_law",
+          "title": "Kinetic explanation of Boyle's Law",
+          "description": "Use KMT to explain why pressure increases when volume decreases: more frequent wall collisions per unit area at constant temperature.",
+          "depth_tags": ["collision frequency", "inverse P-V", "KMT explanation", "constant T", "particle collisions"]
+        },
+        {
+          "concept_id": "chem_lab_km_explanation_charles_law",
+          "title": "Kinetic explanation of Charles's Law",
+          "description": "Explain with KMT why volume increases with temperature at constant pressure: faster particles strike walls harder, expanding the container until pressure equalizes.",
+          "depth_tags": ["particle speed", "wall collisions", "thermal expansion", "constant P", "KMT"]
+        },
+        {
+          "concept_id": "chem_lab_km_explanation_daltons_law",
+          "title": "Kinetic explanation of Dalton's Law",
+          "description": "Explain why each gas in a mixture behaves independently and contributes to total pressure proportionally to its mole fraction, according to KMT.",
+          "depth_tags": ["independent behavior", "partial pressure", "KMT", "gas mixtures", "collision independence"]
+        },
+        {
+          "concept_id": "chem_lab_effusion_and_grahams_law_derivation",
+          "title": "Effusion and Graham's Law derivation",
+          "description": "Derive Graham's law from u_rms: effusion rate ∝ average speed ∝ 1/√M, and use rate₁/rate₂ = √(M₂/M₁).",
+          "depth_tags": ["effusion", "Graham's law", "u_rms", "molar mass", "rate derivation"]
+        },
+        {
+          "concept_id": "chem_lab_real_gases_compressibility_factor",
+          "title": "Real gases and compressibility factor Z",
+          "description": "Use the compressibility factor Z = PV/nRT to quantify deviations from ideality; Z < 1 indicates dominant attractive forces, Z > 1 indicates dominant repulsive forces.",
+          "depth_tags": ["compressibility factor", "Z=PV/nRT", "non-ideal behavior", "attractive forces", "repulsive forces"]
+        },
+        {
+          "concept_id": "chem_lab_van_der_waals_equation",
+          "title": "Van der Waals equation",
+          "description": "Apply the van der Waals equation (P + a n²/V²)(V – nb) = nRT; interpret a and b as corrections for intermolecular attraction and finite particle volume.",
+          "depth_tags": ["van der Waals", "a constant", "b constant", "excluded volume", "intermolecular forces"]
+        },
+        {
+          "concept_id": "chem_lab_conditions_for_ideal_gas_behavior",
+          "title": "Conditions for ideal gas behavior",
+          "description": "Identify that real gases approach ideality at low pressure (large intermolecular distances) and high temperature (high kinetic energy overcomes attractions).",
+          "depth_tags": ["low P", "high T", "ideal behavior", "real gases", "KMT limits"]
+        }
+      ]
+    },
+    {
+      "topic_id": "chem_lab_reaction_rates_and_rate_laws",
+      "title": "Reaction rates and rate laws",
+      "display_order": 4,
+      "concepts": [
+        {
+          "concept_id": "chem_lab_reaction_rate_definition",
+          "title": "Reaction rate definition",
+          "description": "Express average and instantaneous reaction rates using concentration changes over time, e.g., rate = –Δ[A]/Δt, accounting for stoichiometric coefficients.",
+          "depth_tags": ["rate definition", "-Δ[A]/Δt", "M/s", "stoichiometric coefficients", "instantaneous rate"]
+        },
+        {
+          "concept_id": "chem_lab_rate_law_and_reaction_order",
+          "title": "Rate law and reaction order",
+          "description": "Write the differential rate law rate = k[A]^m[B]^n, and determine the order with respect to each reactant and the overall order.",
+          "depth_tags": ["rate law", "order", "m", "n", "k"]
+        },
+        {
+          "concept_id": "chem_lab_method_of_initial_rates",
+          "title": "Method of initial rates",
+          "description": "Determine rate law exponents by comparing initial rates from experiments where one reactant concentration changes while others are held constant.",
+          "depth_tags": ["initial rates", "comparison method", "exponents", "rate law determination", "experimental data"]
+        },
+        {
+          "concept_id": "chem_lab_rate_constant_units",
+          "title": "Rate constant units by overall order",
+          "description": "Deduce units of the rate constant k: zero-order (M·s⁻¹), first-order (s⁻¹), second-order (M⁻¹·s⁻¹), etc., from the overall reaction order.",
+          "depth_tags": ["rate constant units", "zero order", "first order", "second order", "k units"]
+        },
+        {
+          "concept_id": "chem_lab_zero_order_integrated_rate_law",
+          "title": "Zero-order integrated rate law",
+          "description": "Apply [A] = –kt + [A]₀ and half-life t₁/₂ = [A]₀/(2k) for zero-order reactions; interpret linear [A] vs t plots.",
+          "depth_tags": ["zero-order", "[A] = -kt + [A]₀", "half-life formula", "linear plot", "slope = -k"]
+        },
+        {
+          "concept_id": "chem_lab_first_order_integrated_rate_law",
+          "title": "First-order integrated rate law",
+          "description": "Use ln[A] = –kt + ln[A]₀ and constant half-life t₁/₂ = 0.693/k; identify linearity in ln[A] vs t graphs.",
+          "depth_tags": ["first-order", "ln[A] = -kt + ln[A]₀", "t₁/₂ = 0.693/k", "half-life constant", "linear ln plot"]
+        },
+        {
+          "concept_id": "chem_lab_second_order_integrated_rate_law",
+          "title": "Second-order integrated rate law (single reactant)",
+          "description": "Apply 1/[A] = kt + 1/[A]₀ and half-life t₁/₂ = 1/(k[A]₀) for second-order A → products; identify linear 1/[A] vs t plots.",
+          "depth_tags": ["second-order", "1/[A] = kt + 1/[A]₀", "half-life formula", "linear plot", "reciprocal concentration"]
+        },
+        {
+          "concept_id": "chem_lab_graphical_determination_of_order",
+          "title": "Graphical determination of reaction order",
+          "description": "Determine the order by testing which plot yields a straight line: [A] vs t (zero), ln[A] vs t (first), or 1/[A] vs t (second).",
+          "depth_tags": ["linearization", "graphical analysis", "order determination", "integrated rate law plots", "linear regression"]
+        },
+        {
+          "concept_id": "chem_lab_elementary_reactions_and_molecularity",
+          "title": "Elementary reactions and molecularity",
+          "description": "Classify elementary steps as unimolecular, bimolecular, or termolecular; write rate laws directly from the stoichiometry of an elementary step.",
+          "depth_tags": ["elementary step", "molecularity", "unimolecular", "bimolecular", "termolecular"]
+        },
+        {
+          "concept_id": "chem_lab_rate_determining_step",
+          "title": "Rate-determining step in mechanisms",
+          "description": "Identify the slowest elementary step as the rate-determining step, and confirm that its derived rate law matches the experimentally determined rate law.",
+          "depth_tags": ["rate-determining step", "slow step", "mechanism", "rate law match", "reaction coordinate"]
+        },
+        {
+          "concept_id": "chem_lab_intermediates_and_catalysts_in_mechanisms",
+          "title": "Intermediates vs. catalysts in mechanisms",
+          "description": "Distinguish reactive intermediates (produced then consumed) from catalysts (not consumed, regenerated); explain why intermediates do not appear in the overall rate law.",
+          "depth_tags": ["intermediate", "catalyst", "mechanism", "consumed", "regenerated", "rate law"]
+        }
+      ]
+    },
+    {
+      "topic_id": "chem_lab_factors_affecting_reaction_rates",
+      "title": "Factors affecting reaction rates",
+      "display_order": 5,
+      "concepts": [
+        {
+          "concept_id": "chem_lab_collision_theory",
+          "title": "Collision theory of reaction rates",
+          "description": "Explain that reactions require collisions with energy ≥ activation energy and proper orientation; relate collision frequency to concentration and temperature.",
+          "depth_tags": ["collision theory", "activation energy", "orientation", "effective collisions", "collision frequency"]
+        },
+        {
+          "concept_id": "chem_lab_activation_energy_and_energy_profiles",
+          "title": "Activation energy and energy profiles",
+          "description": "Interpret potential energy diagrams: identify activation energy (Ea), transition state, and enthalpy change (ΔH) for exothermic and endothermic reactions.",
+          "depth_tags": ["Ea", "transition state", "ΔH", "energy diagram", "exothermic", "endothermic"]
+        },
+        {
+          "concept_id": "chem_lab_arrhenius_equation",
+          "title": "Arrhenius equation",
+          "description": "Use k = A e^(–Ea/RT) and its linear form ln k = ln A – (Ea/R)(1/T) to calculate activation energy or rate constants at different temperatures.",
+          "depth_tags": ["Arrhenius", "k = A e^(-Ea/RT)", "ln k vs 1/T", "activation energy calculation", "A factor"]
+        },
+        {
+          "concept_id": "chem_lab_temperature_effect_on_rate",
+          "title": "Temperature effect on reaction rate",
+          "description": "Use the Maxwell–Boltzmann distribution to explain why a small temperature increase sharply raises the fraction of molecules with energy ≥ Ea, accelerating the reaction.",
+          "depth_tags": ["temperature dependence", "Boltzmann distribution", "fraction with E≥Ea", "rate increase", "kinetic energy"]
+        },
+        {
+          "concept_id": "chem_lab_concentration_effect_on_rate",
+          "title": "Effect of concentration on reaction rate",
+          "description": "Relate increased reactant concentration to higher collision frequency and explain the effect predicted by the rate law; note zero-order independence.",
+          "depth_tags": ["concentration effect", "collision frequency", "rate law", "zero-order exception", "kinetics"]
+        },
+        {
+          "concept_id": "chem_lab_surface_area_effect",
+          "title": "Effect of surface area on rate",
+          "description": "Explain that dividing a solid reactant into smaller particles increases exposed surface area, leading to more frequent collisions and a faster reaction rate.",
+          "depth_tags": ["surface area", "solid reactant", "rate increase", "heterogeneous reaction", "particle size"]
+        },
+        {
+          "concept_id": "chem_lab_nature_of_reactants",
+          "title": "Nature of reactants and reaction rate",
+          "description": "Correlate reaction rate with bond strengths, physical state (s, l, g, aq), and whether the reaction is homogeneous or heterogeneous.",
+          "depth_tags": ["bond strength", "physical state", "homogeneous", "heterogeneous", "reactivity"]
+        },
+        {
+          "concept_id": "chem_lab_catalysis_and_activation_energy",
+          "title": "Catalysis and activation energy",
+          "description": "Define a catalyst as a substance that provides an alternative pathway with a lower activation energy, speeding the reaction without being consumed.",
+          "depth_tags": ["catalyst", "lower Ea", "alternative pathway", "regenerated", "reaction rate"]
+        },
+        {
+          "concept_id": "chem_lab_homogeneous_vs_heterogeneous_catalysts",
+          "title": "Homogeneous vs. heterogeneous catalysts",
+          "description": "Distinguish homogeneous catalysts (same phase as reactants) from heterogeneous catalysts (different phase); give examples such as enzymes and solid metal surfaces.",
+          "depth_tags": ["homogeneous catalyst", "heterogeneous catalyst", "phase", "enzyme", "surface catalysis"]
+        },
+        {
+          "concept_id": "chem_lab_reaction_coordinate_diagram_with_catalyst",
+          "title": "Reaction coordinate diagram with a catalyst",
+          "description": "Draw and interpret a potential energy diagram showing a catalyzed pathway with a lower activation energy hump while ΔH remains unchanged.",
+          "depth_tags": ["catalyst", "energy diagram", "lower Ea", "same ΔH", "transition state"]
+        }
+      ]
+    },
+    {
+      "topic_id": "chem_lab_lab_methods_graphs_and_experimental_analysis",
+      "title": "Lab methods, graphs, and experimental analysis",
+      "display_order": 6,
+      "concepts": [
+        {
+          "concept_id": "chem_lab_manometer_and_barometer_operation",
+          "title": "Manometer and barometer operation",
+          "description": "Read open‑end and closed‑end manometers to determine gas pressure; interpret mercury barometer readings for atmospheric pressure.",
+          "depth_tags": ["manometer", "open-end", "closed-end", "barometer", "pressure measurement"]
+        },
+        {
+          "concept_id": "chem_lab_gas_volume_measurement_techniques",
+          "title": "Gas volume measurement techniques",
+          "description": "Describe the use of gas syringes, eudiometers, and water displacement with graduated cylinders for collecting and measuring gas volumes.",
+          "depth_tags": ["gas syringe", "eudiometer", "water displacement", "gas collection", "volume reading"]
+        },
+        {
+          "concept_id": "chem_lab_water_displacement_vapor_pressure_correction",
+          "title": "Water displacement and vapor pressure correction",
+          "description": "Perform gas collection over water, apply Dalton's law to correct for water vapor pressure, and ensure temperature equilibrium before measuring.",
+          "depth_tags": ["water displacement", "vapor pressure correction", "Dalton's law", "eudiometer", "P_H2O"]
+        },
+        {
+          "concept_id": "chem_lab_dumas_method_for_molar_mass",
+          "title": "Dumas method for molar mass of a volatile liquid",
+          "description": "Determine the molar mass of a volatile liquid by vaporizing it in a flask of known volume, measuring mass, and applying PV = nRT.",
+          "depth_tags": ["Dumas method", "volatile liquid", "molar mass", "PV=nRT", "vaporization"]
+        },
+        {
+          "concept_id": "chem_lab_vapor_density_direct_measurement",
+          "title": "Vapor density by direct measurement",
+          "description": "Measure the mass of a known volume of gas at controlled T and P to calculate molar mass using M = mRT/PV.",
+          "depth_tags": ["gas density", "molar mass", "direct measurement", "M=mRT/PV", "gas sample"]
+        },
+        {
+          "concept_id": "chem_lab_monitoring_reaction_progress",
+          "title": "Monitoring reaction progress",
+          "description": "Describe methods to follow concentration over time: spectrophotometry (absorbance), titration of aliquots, pressure change (gases), and conductivity.",
+          "depth_tags": ["spectrophotometry", "titration", "pressure monitoring", "concentration vs time", "aliquot"]
+        },
+        {
+          "concept_id": "chem_lab_initial_rates_method_lab",
+          "title": "Initial rates method in the lab",
+          "description": "Design experiments to measure initial rates by varying initial concentrations and extracting the instantaneous slope at t = 0 for rate law determination.",
+          "depth_tags": ["initial rates", "experimental design", "slope at t=0", "rate law determination", "concentration variation"]
+        },
+        {
+          "concept_id": "chem_lab_clock_reactions_for_kinetics",
+          "title": "Clock reactions for kinetics",
+          "description": "Use the iodine clock reaction or similar systems to determine rate by measuring the time until a sudden color change, relating time to initial rate.",
+          "depth_tags": ["clock reaction", "iodine clock", "thiosulfate", "time to color change", "rate determination"]
+        },
+        {
+          "concept_id": "chem_lab_graphical_analysis_of_kinetics_data",
+          "title": "Graphical analysis of kinetics data",
+          "description": "Create and interpret plots of [A] vs t, ln[A] vs t, and 1/[A] vs t to determine reaction order and extract the rate constant from the linear slope.",
+          "depth_tags": ["graphical analysis", "integrated rate law plots", "order determination", "slope", "linear regression"]
+        },
+        {
+          "concept_id": "chem_lab_activation_energy_experimental_determination",
+          "title": "Experimental determination of activation energy",
+          "description": "Measure rate constants at multiple temperatures, construct an Arrhenius plot (ln k vs 1/T), and calculate Ea from slope = –Ea/R.",
+          "depth_tags": ["Arrhenius plot", "activation energy", "slope = -Ea/R", "multiple temperatures", "rate constant"]
+        },
+        {
+          "concept_id": "chem_lab_temperature_control_and_quenching",
+          "title": "Temperature control and quenching techniques",
+          "description": "Use water baths or heating blocks for precise temperature regulation; stop a reaction by rapid cooling (quenching) or by adding a quenching reagent.",
+          "depth_tags": ["water bath", "temperature control", "quenching", "reaction stop", "aliquot"]
+        },
+        {
+          "concept_id": "chem_lab_error_analysis_gas_kinetics_experiments",
+          "title": "Error analysis in gas and kinetics experiments",
+          "description": "Identify common error sources: gas leaks, incomplete vaporization, temperature fluctuations, timing errors, parallax; calculate percent error and suggest improvements.",
+          "depth_tags": ["error analysis", "percent error", "gas leaks", "timing", "parallax", "systematic errors"]
+        }
+      ]
+    }
+  ]
+}
