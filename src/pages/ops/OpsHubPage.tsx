@@ -120,9 +120,9 @@ const cards: OpsCard[] = [
     title: ['Binder', 'Planner'],
     badge: null,
     bullets: [
-      'Structure your event binder',
-      'Track section gaps',
-      'Vision audit coming later',
+      'Front + back cheat-sheet audit',
+      'Concept checklist + history',
+      'Vision coach vs Catalog',
     ],
     glow: 'radial-gradient(ellipse 80% 70% at 50% 28%, rgba(0,240,255,0.18), transparent 70%)',
     Visual: BinderVisual,

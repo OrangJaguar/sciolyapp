@@ -7,6 +7,7 @@ import {
   fetchEventMedia,
   parseCommaTags,
   setEventMediaActive,
+  uploadEventMediaFile,
   type CatalogEvent,
 } from '../../lib/adminCatalog'
 import { adminErrorMessage } from '../../lib/adminQuestions'
@@ -18,8 +19,11 @@ export function MediaStudio({ events }: { events: CatalogEvent[] }) {
   const [eventId, setEventId] = useState(firstEvent?.id ?? '')
   const [label, setLabel] = useState('')
   const [sourceUrl, setSourceUrl] = useState('')
+  const [file, setFile] = useState<File | null>(null)
   const [tags, setTags] = useState('')
+  const [description, setDescription] = useState('')
   const [notes, setNotes] = useState('')
+  const [specificity, setSpecificity] = useState<'broad' | 'specific'>('broad')
   const [actionNote, setActionNote] = useState<string | null>(null)
 
   const mediaQuery = useQuery({
@@ -34,27 +38,48 @@ export function MediaStudio({ events }: { events: CatalogEvent[] }) {
   const addMutation = useMutation({
     mutationFn: async () => {
       if (!label.trim()) throw new Error('Label is required')
-      const url = new URL(sourceUrl)
-      if (!['http:', 'https:'].includes(url.protocol)) {
-        throw new Error('URL must use http or https')
-      }
+      if (!description.trim()) throw new Error('Description is required')
       const userId = user?.id ?? profile?.id
       if (!userId) throw new Error('No authenticated admin user')
+
+      let sourceUrlFinal: string | null = null
+      let storagePath: string | null = null
+
+      if (file) {
+        const uploaded = await uploadEventMediaFile(eventId, file)
+        sourceUrlFinal = uploaded.publicUrl
+        storagePath = uploaded.storagePath
+      } else if (sourceUrl.trim()) {
+        const url = new URL(sourceUrl.trim())
+        if (!['http:', 'https:'].includes(url.protocol)) {
+          throw new Error('URL must use http or https')
+        }
+        sourceUrlFinal = url.toString()
+      } else {
+        throw new Error('Upload a file or paste a public URL')
+      }
+
       await addEventMedia({
         eventId,
         label,
-        sourceUrl: url.toString(),
+        sourceUrl: sourceUrlFinal,
+        storagePath,
         tags: parseCommaTags(tags),
         notes,
+        description,
+        specificity,
         userId,
       })
     },
     onSuccess: async () => {
       setLabel('')
       setSourceUrl('')
+      setFile(null)
       setTags('')
+      setDescription('')
       setNotes('')
-      setActionNote('Media reference registered')
+      setSpecificity('broad')
+      setActionNote('Media registered')
       await qc.invalidateQueries({ queryKey: ['admin-event-media'] })
     },
     onError: (error) => setActionNote(adminErrorMessage(error)),
@@ -72,7 +97,7 @@ export function MediaStudio({ events }: { events: CatalogEvent[] }) {
   const deleteMutation = useMutation({
     mutationFn: deleteEventMedia,
     onSuccess: async () => {
-      setActionNote('Media reference removed')
+      setActionNote('Media removed')
       await qc.invalidateQueries({ queryKey: ['admin-event-media'] })
     },
     onError: (error) => setActionNote(adminErrorMessage(error)),
@@ -106,14 +131,48 @@ export function MediaStudio({ events }: { events: CatalogEvent[] }) {
             />
           </label>
           <label className="block space-y-1">
+            <span className="label-caps text-[9px] text-dim">Upload image</span>
+            <input
+              type="file"
+              accept="image/png,image/jpeg,image/webp,image/gif"
+              className="field-input text-[10px]"
+              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+            />
+          </label>
+          <label className="block space-y-1">
             <span className="label-caps text-[9px] text-dim">
-              Public source URL
+              Or public URL
             </span>
             <input
               value={sourceUrl}
               onChange={(event) => setSourceUrl(event.target.value)}
               placeholder="https://…"
               className="field-input data-mono text-[10px]"
+            />
+          </label>
+          <label className="block space-y-1">
+            <span className="label-caps text-[9px] text-dim">Specificity</span>
+            <select
+              className="field-input"
+              value={specificity}
+              onChange={(e) =>
+                setSpecificity(e.target.value as 'broad' | 'specific')
+              }
+            >
+              <option value="broad">Broad (reusable)</option>
+              <option value="specific">Specific (tight tag match)</option>
+            </select>
+          </label>
+          <label className="block space-y-1">
+            <span className="label-caps text-[9px] text-dim">
+              Description (for Generate menu)
+            </span>
+            <textarea
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+              rows={3}
+              placeholder="What the figure shows and which question styles it supports…"
+              className="field-input resize-y"
             />
           </label>
           <label className="block space-y-1">
@@ -129,13 +188,13 @@ export function MediaStudio({ events }: { events: CatalogEvent[] }) {
           </label>
           <label className="block space-y-1">
             <span className="label-caps text-[9px] text-dim">
-              Usage / rights notes
+              Rights / notes
             </span>
             <textarea
               value={notes}
               onChange={(event) => setNotes(event.target.value)}
-              rows={3}
-              placeholder="Source, license, what question styles may use it…"
+              rows={2}
+              placeholder="Source, license…"
               className="field-input resize-y"
             />
           </label>
@@ -145,17 +204,18 @@ export function MediaStudio({ events }: { events: CatalogEvent[] }) {
               addMutation.isPending ||
               !eventId ||
               !label.trim() ||
-              !sourceUrl.trim()
+              !description.trim() ||
+              (!file && !sourceUrl.trim())
             }
             onClick={() => addMutation.mutate()}
             className="hud-pill hud-pill-active w-full py-1.5 text-[10px] disabled:opacity-40"
           >
-            {addMutation.isPending ? 'Registering…' : 'Register media'}
+            {addMutation.isPending ? 'Saving…' : 'Add media'}
           </button>
           {actionNote ? (
             <p
               className={`text-[10px] ${
-                /denied|fail|error|required|url/i.test(actionNote)
+                /denied|fail|error|required|url|upload/i.test(actionNote)
                   ? 'text-alert'
                   : 'text-cyan'
               }`}
@@ -173,7 +233,7 @@ export function MediaStudio({ events }: { events: CatalogEvent[] }) {
               {events.find((event) => event.id === eventId)?.name ?? eventId}
             </p>
             <p className="data-mono text-[9px] text-dim">
-              {items.length} asset{items.length === 1 ? '' : 's'}
+              {items.length} asset{items.length === 1 ? '' : 's'} · aim 15–40
             </p>
           </div>
         </div>
@@ -192,94 +252,96 @@ export function MediaStudio({ events }: { events: CatalogEvent[] }) {
               <div>
                 <p className="text-xs text-muted">No media for this event yet.</p>
                 <p className="mt-1 text-[10px] text-dim">
-                  Register a trusted URL using the form.
+                  Upload a figure or register a trusted URL.
                 </p>
               </div>
             </div>
           ) : null}
           <ul className="grid gap-2 xl:grid-cols-2 2xl:grid-cols-3">
-            {items.map((item) => (
-              <li
-                key={item.id}
-                className={`overflow-hidden rounded-xl border bg-void ${
-                  item.active ? 'border-white/10' : 'border-alert/20 opacity-60'
-                }`}
-              >
-                {item.source_url ? (
-                  <div className="flex h-28 items-center justify-center overflow-hidden bg-white/[0.03]">
-                    <img
-                      src={item.source_url}
-                      alt={item.label}
-                      loading="lazy"
-                      className="max-h-full max-w-full object-contain"
-                    />
-                  </div>
-                ) : null}
-                <div className="p-2.5">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <p className="truncate text-xs text-white">{item.label}</p>
-                      <a
-                        href={item.source_url ?? '#'}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="mt-0.5 block truncate data-mono text-[8px] text-cyan hover:underline"
-                      >
-                        {item.source_url ?? item.storage_path}
-                      </a>
+            {items.map((item) => {
+              const src = item.source_url
+              return (
+                <li
+                  key={item.id}
+                  className={`overflow-hidden rounded-xl border bg-void ${
+                    item.active
+                      ? 'border-white/10'
+                      : 'border-alert/20 opacity-60'
+                  }`}
+                >
+                  {src ? (
+                    <div className="flex h-28 items-center justify-center overflow-hidden bg-white/[0.03]">
+                      <img
+                        src={src}
+                        alt={item.label}
+                        loading="lazy"
+                        className="max-h-full max-w-full object-contain"
+                      />
                     </div>
+                  ) : null}
+                  <div className="p-2.5">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="truncate text-xs text-white">
+                          {item.label}
+                        </p>
+                        <p className="data-mono text-[8px] text-dim">
+                          {item.specificity}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        disabled={activeMutation.isPending}
+                        onClick={() =>
+                          activeMutation.mutate({
+                            id: item.id,
+                            active: !item.active,
+                          })
+                        }
+                        className={`hud-pill shrink-0 px-2 py-0.5 text-[8px] ${
+                          item.active ? 'hud-pill-active' : ''
+                        }`}
+                      >
+                        {item.active ? 'Active' : 'Disabled'}
+                      </button>
+                    </div>
+                    {item.description ? (
+                      <p className="mt-1.5 text-[10px] leading-relaxed text-muted">
+                        {item.description}
+                      </p>
+                    ) : null}
+                    {item.tags.length > 0 ? (
+                      <div className="mt-1.5 flex flex-wrap gap-1">
+                        {item.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full border border-white/10 px-2 py-0.5 data-mono text-[8px] text-muted"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
                     <button
                       type="button"
-                      disabled={activeMutation.isPending}
-                      onClick={() =>
-                        activeMutation.mutate({
-                          id: item.id,
-                          active: !item.active,
-                        })
-                      }
-                      className={`hud-pill shrink-0 px-2 py-0.5 text-[8px] ${
-                        item.active ? 'hud-pill-active' : ''
-                      }`}
+                      disabled={deleteMutation.isPending}
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            `Remove “${item.label}” from the media library?`,
+                          )
+                        ) {
+                          deleteMutation.mutate(item.id)
+                        }
+                      }}
+                      className="mt-2 text-[9px] uppercase tracking-wider text-alert hover:underline"
                     >
-                      {item.active ? 'Active' : 'Disabled'}
+                      Remove
                     </button>
                   </div>
-                  {item.tags.length > 0 ? (
-                    <div className="mt-1.5 flex flex-wrap gap-1">
-                      {item.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full border border-white/10 px-2 py-0.5 data-mono text-[8px] text-muted"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  ) : null}
-                  {item.notes ? (
-                    <p className="mt-1.5 text-[10px] leading-relaxed text-dim">
-                      {item.notes}
-                    </p>
-                  ) : null}
-                  <button
-                    type="button"
-                    disabled={deleteMutation.isPending}
-                    onClick={() => {
-                      if (
-                        window.confirm(
-                          `Remove “${item.label}” from the media library?`,
-                        )
-                      ) {
-                        deleteMutation.mutate(item.id)
-                      }
-                    }}
-                    className="mt-2 text-[9px] uppercase tracking-wider text-alert hover:underline"
-                  >
-                    Remove reference
-                  </button>
-                </div>
-              </li>
-            ))}
+                </li>
+              )
+            })}
           </ul>
         </div>
       </section>

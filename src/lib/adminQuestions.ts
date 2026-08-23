@@ -104,6 +104,25 @@ export async function fetchEventNameMap(): Promise<Map<string, string>> {
   return new Map((data ?? []).map((e) => [e.id as string, e.name as string]))
 }
 
+export async function fetchQuestionsForConcept(
+  conceptId: string,
+): Promise<AdminQuestion[]> {
+  if (!supabase) throw new Error('Supabase not configured')
+  const { data, error } = await supabase
+    .from('questions')
+    .select(ADMIN_SELECT)
+    .eq('concept_id', conceptId)
+    .in('status', ['live', 'draft'])
+    .order('created_at', { ascending: false })
+  if (error) throw error
+  const out: AdminQuestion[] = []
+  for (const row of data ?? []) {
+    const q = parseAdminQuestion(row as Record<string, unknown>)
+    if (q) out.push(q)
+  }
+  return out
+}
+
 export function adminErrorMessage(err: unknown): string {
   if (!(err instanceof Error)) return 'Request failed'
   const msg = err.message

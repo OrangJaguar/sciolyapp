@@ -4,9 +4,11 @@ import { AppShell } from './components/shell/AppShell'
 import { isSupabaseConfigured } from './lib/supabase'
 import { LoginPage } from './pages/auth/LoginPage'
 import { SetupPage } from './pages/auth/SetupPage'
-import { AdminPage } from './pages/admin/AdminPage'
-import { AdminComingSoon, AdminShell } from './pages/admin/AdminShell'
+import { ReviewPage } from './pages/admin/ReviewPage'
+import { AdminShell } from './pages/admin/AdminShell'
 import { CatalogPage } from './pages/admin/CatalogPage'
+import { GeneratePage } from './pages/admin/GeneratePage'
+import { ImportPage } from './pages/admin/ImportPage'
 import { CommsPage } from './pages/cmd/CommsPage'
 import { LeaderboardPage } from './pages/cmd/LeaderboardPage'
 import { MissionsPage } from './pages/cmd/MissionsPage'
@@ -17,7 +19,7 @@ import { CasualArenaPage } from './pages/ops/CasualArenaPage'
 import { TimedConfigPage } from './pages/ops/TimedConfigPage'
 import { TimedExamPage } from './pages/ops/TimedExamPage'
 import { TimedAutopsyPage } from './pages/ops/TimedAutopsyPage'
-import { BinderStubPage } from './pages/placeholders/StubPages'
+import { BinderPage } from './pages/ops/BinderPage'
 import { ProfilePage } from './pages/profile/ProfilePage'
 
 function shellRoutes() {
@@ -34,39 +36,15 @@ function shellRoutes() {
       <Route path="/ops/timed" element={<TimedConfigPage />} />
       <Route path="/ops/timed/exam" element={<TimedExamPage />} />
       <Route path="/ops/timed/autopsy" element={<TimedAutopsyPage />} />
-      <Route path="/ops/binder" element={<BinderStubPage />} />
+      <Route path="/ops/binder" element={<BinderPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route element={<RequireAdmin />}>
         <Route path="/admin" element={<AdminShell />}>
           <Route index element={<Navigate to="/admin/catalog" replace />} />
           <Route path="catalog" element={<CatalogPage />} />
-          <Route
-            path="generate"
-            element={
-              <AdminComingSoon
-                eyebrow="Generation engine"
-                title="Batch planner lands in Plan 23"
-                plan="PLAN 23 · NIM KEY REQUIRED BEFORE BUILD"
-              >
-                Plan concept coverage, difficulty mix, and model routing; then run
-                resumable, rate-limited jobs into the draft queue.
-              </AdminComingSoon>
-            }
-          />
-          <Route path="review" element={<AdminPage />} />
-          <Route
-            path="import"
-            element={
-              <AdminComingSoon
-                eyebrow="Import pipeline"
-                title="Raw tests + structured import"
-                plan="PLAN 25 · NO NIM KEY REQUIRED"
-              >
-                Parse pasted practice tests and CSV/JSON, map them to concepts,
-                and manage uploaded event media before committing drafts.
-              </AdminComingSoon>
-            }
-          />
+          <Route path="generate" element={<GeneratePage />} />
+          <Route path="review" element={<ReviewPage />} />
+          <Route path="import" element={<ImportPage />} />
         </Route>
       </Route>
     </>

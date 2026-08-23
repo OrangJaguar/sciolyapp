@@ -49,11 +49,13 @@ export type Coverage = {
 
 export type PromptPack = {
   id: string
-  scope_type: 'master' | 'event' | 'topic'
+  scope_type: 'master' | 'event' | 'topic' | 'binder_master'
   scope_id: string | null
   name: string
   system_body: string
   few_shots: unknown[]
+  /** Event-only: binder audit criteria / event addendum. Empty on master packs. */
+  binder_criteria: string
   active: boolean
   version: number
   updated_at: string
@@ -67,6 +69,8 @@ export type EventMedia = {
   storage_path: string | null
   tags: string[]
   notes: string
+  description: string
+  specificity: 'broad' | 'specific'
   active: boolean
   created_at: string
   updated_at: string
@@ -175,12 +179,15 @@ export async function fetchPromptPacks(): Promise<PromptPack[]> {
   const { data, error } = await requireSupabase()
     .from('prompt_packs')
     .select(
-      'id, scope_type, scope_id, name, system_body, few_shots, active, version, updated_at',
+      'id, scope_type, scope_id, name, system_body, few_shots, binder_criteria, active, version, updated_at',
     )
     .order('scope_type')
     .order('name')
   if (error) throw error
-  return (data ?? []) as PromptPack[]
+  return ((data ?? []) as PromptPack[]).map((row) => ({
+    ...row,
+    binder_criteria: String(row.binder_criteria ?? ''),
+  }))
 }
 
 export async function ensurePromptPack(input: {
@@ -202,11 +209,26 @@ export async function ensurePromptPack(input: {
   return id
 }
 
+/** Ensures global binder critic pack exists (after SCIOLY-0817 migration). */
+export async function ensureBinderMasterPack(): Promise<void> {
+  const { error } = await requireSupabase().from('prompt_packs').upsert(
+    {
+      id: 'binder_master',
+      scope_type: 'binder_master',
+      scope_id: null,
+      name: 'Binder Master Critic',
+    },
+    { onConflict: 'id', ignoreDuplicates: true },
+  )
+  if (error) throw error
+}
+
 export async function savePromptPack(input: {
   id: string
   name: string
   systemBody: string
   fewShots: unknown[]
+  binderCriteria?: string
   active: boolean
   version: number
   userId: string
@@ -217,6 +239,7 @@ export async function savePromptPack(input: {
       name: input.name.trim(),
       system_body: input.systemBody,
       few_shots: input.fewShots,
+      binder_criteria: input.binderCriteria ?? '',
       active: input.active,
       version: input.version + 1,
       updated_by: input.userId,
@@ -230,30 +253,61 @@ export async function fetchEventMedia(): Promise<EventMedia[]> {
   const { data, error } = await requireSupabase()
     .from('event_media')
     .select(
-      'id, event_id, label, source_url, storage_path, tags, notes, active, created_at, updated_at',
+      'id, event_id, label, source_url, storage_path, tags, notes, description, specificity, active, created_at, updated_at',
     )
     .order('created_at', { ascending: false })
   if (error) throw error
-  return (data ?? []) as EventMedia[]
+  return (data ?? []).map((row) => ({
+    ...(row as EventMedia),
+    description: String((row as EventMedia).description ?? ''),
+    specificity:
+      (row as EventMedia).specificity === 'specific' ? 'specific' : 'broad',
+  }))
 }
 
 export async function addEventMedia(input: {
   eventId: string
   label: string
-  sourceUrl: string
+  sourceUrl?: string | null
+  storagePath?: string | null
   tags: string[]
-  notes: string
+  notes?: string
+  description: string
+  specificity?: 'broad' | 'specific'
   userId: string
 }) {
+  const sourceUrl = input.sourceUrl?.trim() || null
+  const storagePath = input.storagePath?.trim() || null
+  if (!sourceUrl && !storagePath) {
+    throw new Error('Provide a public URL or upload a file')
+  }
   const { error } = await requireSupabase().from('event_media').insert({
     event_id: input.eventId,
     label: input.label.trim(),
-    source_url: input.sourceUrl.trim(),
+    source_url: sourceUrl,
+    storage_path: storagePath,
     tags: input.tags,
-    notes: input.notes.trim(),
+    notes: (input.notes ?? '').trim(),
+    description: input.description.trim(),
+    specificity: input.specificity ?? 'broad',
     created_by: input.userId,
   })
   if (error) throw error
+}
+
+/** Upload image to event-media bucket; returns public URL + storage path. */
+export async function uploadEventMediaFile(
+  eventId: string,
+  file: File,
+): Promise<{ publicUrl: string; storagePath: string }> {
+  const ext = file.name.split('.').pop()?.toLowerCase() || 'png'
+  const path = `${eventId}/${crypto.randomUUID()}.${ext}`
+  const { error } = await requireSupabase().storage
+    .from('event-media')
+    .upload(path, file, { contentType: file.type, upsert: false })
+  if (error) throw error
+  const { data } = requireSupabase().storage.from('event-media').getPublicUrl(path)
+  return { publicUrl: data.publicUrl, storagePath: path }
 }
 
 export async function setEventMediaActive(id: string, active: boolean) {

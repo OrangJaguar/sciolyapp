@@ -30,18 +30,18 @@ export function TopBar() {
           </div>
 
           <XpBar progress={hud.progress} xpLabel={hud.xpLabel} />
+
+          <CmdOpsToggle />
+
+          <Link
+            to="/profile"
+            aria-label="Profile"
+            className="shrink-0 text-cyan/80 transition-colors hover:text-cyan"
+          >
+            <RadarIcon className="h-9 w-9 lg:h-10 lg:w-10" />
+          </Link>
         </>
       )}
-
-      <CmdOpsToggle />
-
-      <Link
-        to="/profile"
-        aria-label="Profile"
-        className="shrink-0 text-cyan/80 transition-colors hover:text-cyan"
-      >
-        <RadarIcon className="h-9 w-9 lg:h-10 lg:w-10" />
-      </Link>
     </header>
   )
 }

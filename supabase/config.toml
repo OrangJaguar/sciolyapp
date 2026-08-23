@@ -1,0 +1,8 @@
+[functions.generate-worker]
+verify_jwt = true
+
+[functions.critic-worker]
+verify_jwt = true
+
+[functions.binder-audit]
+verify_jwt = true

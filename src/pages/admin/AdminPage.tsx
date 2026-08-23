@@ -157,8 +157,7 @@ export function AdminPage() {
             ) : null}
             {!queueQuery.isLoading && drafts.length === 0 ? (
               <li className="px-3 py-6 text-center text-xs text-muted">
-                Queue empty. Generate (Plan 23) and Import (Plan 25) feed drafts
-                here.
+                Queue empty. Generate and Import feed drafts here.
               </li>
             ) : null}
             {drafts.map((d) => {

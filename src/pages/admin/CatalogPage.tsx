@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { fetchCatalogSnapshot } from '../../lib/adminCatalog'
 import { adminErrorMessage } from '../../lib/adminQuestions'
@@ -9,18 +9,14 @@ import { PromptStudio } from './PromptStudio'
 
 type CatalogView = 'curriculum' | 'prompts' | 'media'
 
-const views: Array<{
-  id: CatalogView
-  label: string
-  detail: string
-}> = [
-  { id: 'curriculum', label: 'Curriculum', detail: 'Taxonomy + Clinic guides' },
-  { id: 'prompts', label: 'Prompt packs', detail: 'Master + event + topic' },
-  { id: 'media', label: 'Event media', detail: 'Reusable image references' },
-]
+function parseView(raw: string | null): CatalogView {
+  if (raw === 'prompts' || raw === 'media') return raw
+  return 'curriculum'
+}
 
 export function CatalogPage() {
-  const [view, setView] = useState<CatalogView>('curriculum')
+  const [params] = useSearchParams()
+  const view = parseView(params.get('v'))
   const catalogQuery = useQuery({
     queryKey: ['admin-catalog'],
     queryFn: fetchCatalogSnapshot,
@@ -38,7 +34,7 @@ export function CatalogPage() {
   if (catalogQuery.isLoading) {
     return (
       <div className="hud-panel flex h-full items-center justify-center p-6 text-sm text-muted">
-        Loading catalog…
+        Loading…
       </div>
     )
   }
@@ -57,34 +53,16 @@ export function CatalogPage() {
   }
 
   return (
-    <div className="flex h-full min-h-0 flex-col gap-2 overflow-hidden">
-      <div className="flex shrink-0 flex-wrap gap-1.5">
-        {views.map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            title={item.detail}
-            onClick={() => setView(item.id)}
-            className={`hud-pill px-2.5 py-1 text-[10px] ${
-              view === item.id ? 'hud-pill-active' : ''
-            }`}
-          >
-            {item.label}
-          </button>
-        ))}
-      </div>
-
-      <div className="min-h-0 flex-1 overflow-hidden">
-        {view === 'curriculum' ? (
-          <CatalogCurriculum snapshot={catalogQuery.data} />
-        ) : null}
-        {view === 'prompts' ? (
-          <PromptStudio snapshot={catalogQuery.data} />
-        ) : null}
-        {view === 'media' ? (
-          <MediaStudio events={catalogQuery.data.events} />
-        ) : null}
-      </div>
+    <div className="h-full min-h-0 overflow-hidden">
+      {view === 'curriculum' ? (
+        <CatalogCurriculum snapshot={catalogQuery.data} />
+      ) : null}
+      {view === 'prompts' ? (
+        <PromptStudio snapshot={catalogQuery.data} />
+      ) : null}
+      {view === 'media' ? (
+        <MediaStudio events={catalogQuery.data.events} />
+      ) : null}
     </div>
   )
 }
