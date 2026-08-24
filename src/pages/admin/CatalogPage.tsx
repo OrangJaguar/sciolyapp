@@ -61,7 +61,7 @@ export function CatalogPage() {
         <PromptStudio snapshot={catalogQuery.data} />
       ) : null}
       {view === 'media' ? (
-        <MediaStudio events={catalogQuery.data.events} />
+        <MediaStudio snapshot={catalogQuery.data} />
       ) : null}
     </div>
   )

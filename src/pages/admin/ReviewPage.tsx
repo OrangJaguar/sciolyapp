@@ -396,7 +396,7 @@ export function ReviewPage() {
 
       <div className="grid min-h-0 flex-1 gap-2 lg:grid-cols-[minmax(220px,300px)_1fr]">
         <div className="hud-panel flex min-h-0 flex-col overflow-hidden">
-          <div className="flex items-center justify-between border-b border-white/5 px-3 py-2">
+          <div className="flex items-center justify-between border-b border-subtle px-3 py-2">
             <p className="label-caps text-[9px] text-dim">
               {mode === 'waiting'
                 ? 'Waiting for critic'
@@ -442,7 +442,7 @@ export function ReviewPage() {
                   <li key={q.id}>
                     <div
                       className={`flex items-start gap-1 rounded-lg px-1 py-1 ${
-                        active ? 'bg-cyan/10' : 'hover:bg-white/5'
+                        active ? 'bg-cyan/10' : 'hover:bg-[var(--surface-hover)]'
                       }`}
                     >
                       {mode === 'human' ? (
@@ -469,7 +469,7 @@ export function ReviewPage() {
                           {conceptName(q.concept_id)}
                           {q.needs_fix ? ' · fix' : ''}
                         </p>
-                        <p className="mt-0.5 line-clamp-2 text-[11px] text-white">
+                        <p className="mt-0.5 line-clamp-2 text-[11px] text-foreground">
                           {q.stem}
                         </p>
                       </button>
@@ -552,7 +552,7 @@ export function ReviewPage() {
                   {selected.critic_audit ? ' · audit' : ''}
                 </p>
                 {selected.critic_notes ? (
-                  <pre className="max-h-28 overflow-auto whitespace-pre-wrap rounded bg-black/30 p-2 text-[10px] text-muted">
+                  <pre className="max-h-28 overflow-auto whitespace-pre-wrap rounded bg-[var(--surface-high)] p-2 text-[10px] text-muted">
                     {selected.critic_notes}
                   </pre>
                 ) : null}

@@ -118,8 +118,8 @@ export function PromptStudio({ snapshot }: { snapshot: CatalogSnapshot }) {
                     onClick={() => setSelectedId(pack.id)}
                     className={`mb-0.5 w-full rounded-lg px-2 py-1.5 text-left ${
                       selected?.id === pack.id
-                        ? 'bg-cyan/10 text-white'
-                        : 'text-muted hover:bg-white/5 hover:text-white'
+                        ? 'bg-cyan/10 text-foreground'
+                        : 'text-muted hover:bg-[var(--surface-hover)] hover:text-foreground'
                     }`}
                   >
                     <span className="block text-[11px] leading-snug">
@@ -141,7 +141,7 @@ export function PromptStudio({ snapshot }: { snapshot: CatalogSnapshot }) {
           })}
         </div>
 
-        <div className="shrink-0 space-y-1.5 border-t border-white/5 p-2">
+        <div className="shrink-0 space-y-1.5 border-t border-subtle p-2">
           <p className="label-caps text-[9px] text-dim">Add event pack</p>
           <p className="text-[9px] leading-snug text-dim">
             You need one event pack per studyable event. Topic overlays are
@@ -181,7 +181,7 @@ export function PromptStudio({ snapshot }: { snapshot: CatalogSnapshot }) {
             {showAdvancedTopic ? 'Hide topic overlays' : 'Topic overlays'}
           </button>
           {showAdvancedTopic ? (
-            <div className="space-y-1.5 border-t border-white/5 pt-1.5">
+            <div className="space-y-1.5 border-t border-subtle pt-1.5">
               <select
                 value={newScope === 'topic' ? newScopeId : ''}
                 onChange={(event) => {
@@ -344,7 +344,7 @@ function PromptEditor({
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="shrink-0 border-b border-white/5 px-3 py-2">
+      <div className="shrink-0 border-b border-subtle px-3 py-2">
         <div className="flex flex-wrap items-start justify-between gap-2">
           <div className="min-w-0">
             <p className="label-caps text-[9px] text-cyan">{layerCopy.title}</p>
@@ -392,7 +392,7 @@ function PromptEditor({
         </label>
 
         {pack.scope_type === 'master' || pack.scope_type === 'binder_master' ? (
-          <div className="rounded-lg border border-white/10 bg-void p-2.5">
+          <div className="rounded-lg border border-subtle bg-void p-2.5">
             <p className="label-caps text-[9px] text-dim">Few-shots</p>
             <p className="mt-1 text-[10px] leading-snug text-muted">
               {pack.scope_type === 'binder_master'
@@ -449,7 +449,7 @@ function PromptEditor({
         )}
 
         {pack.scope_type === 'event' ? (
-          <label className="block space-y-1 border-t border-white/10 pt-3">
+          <label className="block space-y-1 border-t border-subtle pt-3">
             <span className="label-caps text-[9px] text-dim">
               Binder audit criteria · this event
             </span>
@@ -468,7 +468,7 @@ function PromptEditor({
           </label>
         ) : null}
 
-        <div className="rounded-lg border border-white/10 bg-void p-2.5">
+        <div className="rounded-lg border border-subtle bg-void p-2.5">
           <p className="label-caps text-[9px] text-dim">
             {pack.scope_type === 'binder_master'
               ? 'What Binder Audit will send'
@@ -498,7 +498,7 @@ function PromptEditor({
         </div>
       </div>
 
-      <div className="flex shrink-0 items-center gap-2 border-t border-white/5 px-3 py-2">
+      <div className="flex shrink-0 items-center gap-2 border-t border-subtle px-3 py-2">
         <button
           type="button"
           disabled={

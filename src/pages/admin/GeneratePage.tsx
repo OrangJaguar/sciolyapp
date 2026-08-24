@@ -509,7 +509,7 @@ export function GeneratePage() {
   const renderPreview = () => {
     if (!preview) return null
     return (
-      <div className="mt-4 rounded-xl border border-white/10 bg-black/20 p-4">
+      <div className="mt-4 rounded-xl border border-subtle bg-[var(--surface-high)] p-4">
         <p className="label-caps text-[9px] text-dim">Preview</p>
         <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
           <Stat label="Concepts" value={String(preview.concept_count)} />
@@ -660,7 +660,7 @@ export function GeneratePage() {
         {tab === 'jobs' ? (
           <div className="grid gap-2 lg:grid-cols-[minmax(240px,320px)_1fr]">
             <div className="hud-panel overflow-hidden">
-              <div className="border-b border-white/5 px-3 py-2">
+              <div className="border-b border-subtle px-3 py-2">
                 <p className="label-caps text-[9px] text-dim">Recent jobs</p>
               </div>
               <ul className="max-h-[32rem] overflow-y-auto p-2">
@@ -670,7 +670,7 @@ export function GeneratePage() {
                   <li
                     key={job.id}
                     className={`mb-1 flex items-start gap-1 rounded-lg ${
-                      activeJobId === job.id ? 'bg-cyan/10' : 'hover:bg-white/5'
+                      activeJobId === job.id ? 'bg-cyan/10' : 'hover:bg-[var(--surface-hover)]'
                     }`}
                   >
                     <button
@@ -681,7 +681,7 @@ export function GeneratePage() {
                       <p className="label-caps text-[8px] text-dim">
                         {job.kind} · {job.status}
                       </p>
-                      <p className="mt-0.5 text-[11px] leading-snug text-white">
+                      <p className="mt-0.5 text-[11px] leading-snug text-foreground">
                         {summary.title}
                       </p>
                       <p className="mt-1 data-mono text-[9px] leading-snug text-muted">
@@ -722,7 +722,7 @@ export function GeneratePage() {
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <p className="label-caps text-[9px] text-dim">Active job</p>
-                      <h2 className="mt-1 font-display text-lg text-white">
+                      <h2 className="mt-1 font-display text-lg text-foreground">
                         {
                           describeGenerationJob(activeJob, eventNameById).title
                         }
@@ -795,7 +795,7 @@ export function GeneratePage() {
                     </div>
                   </div>
 
-                  <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
+                  <div className="mt-4 h-2 overflow-hidden rounded-full bg-[var(--surface-hover)]">
                     <div
                       className="h-full bg-cyan transition-all"
                       style={{ width: `${jobProgress(activeJob)}%` }}
@@ -836,10 +836,10 @@ export function GeneratePage() {
                       return (
                         <li
                           key={item.id}
-                          className="rounded-lg border border-white/5 px-3 py-2 text-[11px]"
+                          className="rounded-lg border border-subtle px-3 py-2 text-[11px]"
                         >
                           <div className="flex items-center justify-between gap-2">
-                            <span className="text-white">{item.concept_id}</span>
+                            <span className="text-foreground">{item.concept_id}</span>
                             <span className="data-mono text-[9px] text-dim">
                               Pass {item.pass} · {item.status}
                               {runningAge ? ` · ${runningAge}` : ''}
@@ -936,7 +936,7 @@ export function GeneratePage() {
                                   Copy trace
                                 </button>
                               </div>
-                              <pre className="max-h-72 overflow-auto whitespace-pre-wrap rounded bg-black/40 p-2 data-mono text-[9px] text-muted">
+                              <pre className="max-h-72 overflow-auto whitespace-pre-wrap rounded bg-[var(--surface-high)] p-2 data-mono text-[9px] text-muted">
                                 {item.raw_excerpt?.trim()
                                   ? item.raw_excerpt
                                   : 'No model output stored (failed before NIM, or excerpt empty).'}
@@ -1008,9 +1008,9 @@ export function GeneratePage() {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-white/5 px-3 py-2">
+    <div className="rounded-lg border border-subtle px-3 py-2">
       <p className="label-caps text-[8px] text-dim">{label}</p>
-      <p className="mt-1 data-mono text-sm text-white">{value}</p>
+      <p className="mt-1 data-mono text-sm text-foreground">{value}</p>
     </div>
   )
 }

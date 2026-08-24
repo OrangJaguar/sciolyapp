@@ -361,7 +361,7 @@ export function CasualArenaPage() {
       <div className="flex h-full min-h-0 items-center justify-center p-4">
         <div className="hud-panel w-full max-w-lg p-8 text-center">
           <p className="label-caps">Session complete</p>
-          <p className="mt-4 text-3xl font-medium text-white">
+          <p className="mt-4 text-3xl font-medium text-foreground">
             {summary.correct}
             <span className="text-muted"> / </span>
             {summary.answered}
@@ -403,7 +403,7 @@ export function CasualArenaPage() {
             <button
               type="button"
               onClick={restart}
-              className="hud-pill bg-cyan px-5 py-2.5 text-sm font-bold text-black"
+              className="hud-pill bg-cyan px-5 py-2.5 text-sm font-bold text-[var(--on-accent)]"
             >
               Run again
             </button>
@@ -423,7 +423,7 @@ export function CasualArenaPage() {
         <ClinicOverlay payload={clinic} onComplete={onClinicComplete} />
       )}
       <div className="flex shrink-0 items-center gap-3 pb-3">
-        <p className="data-mono shrink-0 text-sm text-white">
+        <p className="data-mono shrink-0 text-sm text-foreground">
           Q {index + 1}/{total}
         </p>
         <div className="relative h-2 min-w-0 flex-1 overflow-hidden rounded-pill bg-surface-high">
@@ -450,7 +450,7 @@ export function CasualArenaPage() {
 
       <div className="hud-panel flex min-h-0 flex-1 flex-col overflow-hidden">
         <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5 md:px-8 md:py-6">
-          <p className="text-xl leading-snug font-medium text-white md:text-2xl md:leading-snug">
+          <p className="text-xl leading-snug font-medium text-foreground md:text-2xl md:leading-snug">
             {current.stem}
           </p>
 
@@ -461,10 +461,10 @@ export function CasualArenaPage() {
               const showResult = revealed
               const isCorrect = key === current.correct_key
               let stateClass =
-                'border-white/20 hover:border-cyan/50 hover:bg-white/[0.03]'
+                'border-subtle hover:border-cyan/50 hover:bg-[var(--surface-hover)]'
               if (isSelected && !showResult) {
                 stateClass =
-                  'border-cyan bg-cyan/10 shadow-[0_0_20px_rgba(0,240,255,0.12)]'
+                  'border-cyan bg-cyan/10 shadow-[0_0_20px_var(--accent-dim)]'
               }
               if (showResult && isCorrect) {
                 stateClass =
@@ -472,7 +472,7 @@ export function CasualArenaPage() {
               } else if (showResult && isSelected && !isCorrect) {
                 stateClass = 'border-alert bg-alert/10'
               } else if (showResult) {
-                stateClass = 'border-white/10 opacity-50'
+                stateClass = 'border-subtle opacity-50'
               }
 
               return (
@@ -486,17 +486,17 @@ export function CasualArenaPage() {
                   <span
                     className={`data-mono flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-sm font-bold ${
                       isSelected && !showResult
-                        ? 'bg-cyan text-black'
+                        ? 'bg-cyan text-[var(--on-accent)]'
                         : showResult && isCorrect
-                          ? 'bg-success text-black'
+                          ? 'bg-success text-[var(--on-accent)]'
                           : showResult && isSelected
-                            ? 'bg-alert text-white'
+                            ? 'bg-alert text-foreground'
                             : 'bg-surface-high text-muted'
                     }`}
                   >
                     {i + 1}
                   </span>
-                  <span className="pt-1 text-sm text-white md:text-base">
+                  <span className="pt-1 text-sm text-foreground md:text-base">
                     {label}
                   </span>
                 </button>
@@ -519,13 +519,13 @@ export function CasualArenaPage() {
           )}
         </div>
 
-        <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-t border-white/10 px-5 py-3 md:px-8">
+        <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-t border-subtle px-5 py-3 md:px-8">
           <div className="flex items-center gap-3">
             <button
               type="button"
               disabled={revealed}
               onClick={skip}
-              className="hud-pill border border-white/20 px-5 py-2.5 text-sm text-white transition hover:border-cyan/40 disabled:opacity-40"
+              className="hud-pill border border-subtle px-5 py-2.5 text-sm text-foreground transition hover:border-cyan/40 disabled:opacity-40"
             >
               Skip Question
             </button>
@@ -543,7 +543,7 @@ export function CasualArenaPage() {
               type="button"
               disabled={!selected && !revealed}
               onClick={goNext}
-              className="hud-pill bg-cyan px-6 py-2.5 text-sm font-bold tracking-wide text-black shadow-[0_0_18px_var(--cyan-dim)] transition enabled:hover:brightness-110 disabled:cursor-not-allowed disabled:bg-surface-high disabled:text-dim disabled:shadow-none"
+              className="hud-pill bg-cyan px-6 py-2.5 text-sm font-bold tracking-wide text-[var(--on-accent)] shadow-[0_0_18px_var(--cyan-dim)] transition enabled:hover:brightness-110 disabled:cursor-not-allowed disabled:bg-surface-high disabled:text-dim disabled:shadow-none"
             >
               {revealed ? (index + 1 >= total ? 'Finish' : 'Next') : 'Check'}
             </button>

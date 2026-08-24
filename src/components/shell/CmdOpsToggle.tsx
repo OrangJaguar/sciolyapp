@@ -21,7 +21,7 @@ export function CmdOpsToggle() {
       {mode !== 'none' && (
         <span
           aria-hidden
-          className="pointer-events-none absolute top-1 bottom-1 w-[calc(50%-4px)] rounded-pill bg-cyan shadow-[0_0_16px_var(--cyan-glow)] transition-transform duration-300 ease-out"
+          className="pointer-events-none absolute top-1 bottom-1 w-[calc(50%-4px)] rounded-pill bg-accent shadow-[0_0_16px_var(--accent-glow)] transition-transform duration-300 ease-out"
           style={{
             left: 4,
             transform: mode === 'ops' ? 'translateX(100%)' : 'translateX(0)',

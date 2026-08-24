@@ -87,7 +87,7 @@ function LoginForm() {
     <div className="flex min-h-dvh flex-col bg-void">
       <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-5 py-8">
         <p className="label-caps mb-2">scioly.app</p>
-        <h1 className="text-3xl font-bold tracking-wide text-white uppercase">
+        <h1 className="text-3xl font-bold tracking-wide text-foreground uppercase">
           {mode === 'signin' ? 'Sign In' : 'Create Account'}
         </h1>
         <p className="mt-2 text-sm text-muted">
@@ -99,7 +99,7 @@ function LoginForm() {
             type="button"
             onClick={() => setMode('signin')}
             className={`flex-1 cursor-pointer rounded-pill py-2 text-xs font-bold tracking-[0.14em] ${
-              mode === 'signin' ? 'bg-cyan text-black' : 'text-muted'
+              mode === 'signin' ? 'bg-cyan text-[var(--on-accent)]' : 'text-muted'
             }`}
           >
             SIGN IN
@@ -108,7 +108,7 @@ function LoginForm() {
             type="button"
             onClick={() => setMode('signup')}
             className={`flex-1 cursor-pointer rounded-pill py-2 text-xs font-bold tracking-[0.14em] ${
-              mode === 'signup' ? 'bg-cyan text-black' : 'text-muted'
+              mode === 'signup' ? 'bg-cyan text-[var(--on-accent)]' : 'text-muted'
             }`}
           >
             SIGN UP
@@ -132,7 +132,7 @@ function LoginForm() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 w-full rounded-md border border-[var(--ghost-border)] bg-surface px-3 py-2.5 text-white outline-none focus:border-cyan"
+              className="mt-1 w-full rounded-md border border-[var(--ghost-border)] bg-surface px-3 py-2.5 text-foreground outline-none focus:border-accent"
               autoComplete="email"
             />
           </label>
@@ -144,7 +144,7 @@ function LoginForm() {
               minLength={6}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 w-full rounded-md border border-[var(--ghost-border)] bg-surface px-3 py-2.5 text-white outline-none focus:border-cyan"
+              className="mt-1 w-full rounded-md border border-[var(--ghost-border)] bg-surface px-3 py-2.5 text-foreground outline-none focus:border-accent"
               autoComplete={
                 mode === 'signin' ? 'current-password' : 'new-password'
               }
@@ -167,7 +167,7 @@ function LoginForm() {
           type="button"
           onClick={google}
           disabled={busy}
-          className="hud-pill mt-3 w-full cursor-pointer py-3 text-sm text-white"
+          className="hud-pill mt-3 w-full cursor-pointer py-3 text-sm text-foreground"
         >
           Continue with Google
         </button>

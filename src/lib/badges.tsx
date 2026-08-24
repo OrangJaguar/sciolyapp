@@ -109,7 +109,7 @@ export function BadgeMark({
   id: BadgeId
   earned: boolean
 }): ReactNode {
-  const cls = earned ? 'text-cyan' : 'text-dim'
+  const cls = earned ? 'text-accent' : 'text-dim'
   const common = `h-8 w-8 ${cls}`
   switch (id) {
     case 'first_blood':

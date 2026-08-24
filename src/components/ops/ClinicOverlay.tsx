@@ -207,16 +207,16 @@ export function ClinicOverlay({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-overlay p-4 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       aria-labelledby="clinic-title"
     >
-      <div className="hud-panel relative flex max-h-[min(90dvh,720px)] w-full max-w-2xl flex-col overflow-hidden border-cyan/40 shadow-[0_0_48px_rgba(0,240,255,0.15)]">
-        <div className="flex shrink-0 items-center justify-between border-b border-white/10 px-5 py-3">
+      <div className="hud-panel relative flex max-h-[min(90dvh,720px)] w-full max-w-2xl flex-col overflow-hidden border-cyan/40 shadow-[0_0_48px_var(--accent-dim)]">
+        <div className="flex shrink-0 items-center justify-between border-b border-subtle px-5 py-3">
           <div>
             <p className="label-caps text-cyan">Clinic interrupt</p>
-            <h2 id="clinic-title" className="mt-1 text-lg font-medium text-white">
+            <h2 id="clinic-title" className="mt-1 text-lg font-medium text-foreground">
               {title}
             </h2>
           </div>
@@ -226,7 +226,7 @@ export function ClinicOverlay({
                 key={s}
                 className={`data-mono rounded-pill px-2.5 py-1 text-[10px] uppercase tracking-wider ${
                   step === s
-                    ? 'bg-cyan text-black'
+                    ? 'bg-cyan text-[var(--on-accent)]'
                     : 'bg-surface-high text-dim'
                 }`}
               >
@@ -244,7 +244,7 @@ export function ClinicOverlay({
           {step === 'read' && !contentQuery.isLoading && (
             <div>
               <p className="label-caps mb-3">Read</p>
-              <p className="text-base leading-relaxed whitespace-pre-wrap text-white/90">
+              <p className="text-base leading-relaxed whitespace-pre-wrap text-foreground/90">
                 {readBody}
               </p>
             </div>
@@ -255,7 +255,7 @@ export function ClinicOverlay({
               <p className="label-caps mb-3">See</p>
               {seeBody ? (
                 <div
-                  className="clinic-see space-y-2 text-sm leading-relaxed text-white/85 [&_strong]:text-cyan"
+                  className="clinic-see space-y-2 text-sm leading-relaxed text-foreground/85 [&_strong]:text-cyan"
                   dangerouslySetInnerHTML={{ __html: seeBody }}
                 />
               ) : (
@@ -264,7 +264,7 @@ export function ClinicOverlay({
                   <p className="mt-3 text-sm text-muted">
                     No SEE content for this concept yet. Mentally picture the
                     key relationship for{' '}
-                    <span className="text-white">{title}</span>.
+                    <span className="text-foreground">{title}</span>.
                   </p>
                 </div>
               )}
@@ -279,11 +279,11 @@ export function ClinicOverlay({
                   Fallback check — run Plan 11 guide seed for concept DO items.
                 </p>
               )}
-              <p className="text-base text-white">{doQuestion.stem}</p>
+              <p className="text-base text-foreground">{doQuestion.stem}</p>
               <div className="mt-4 flex flex-col gap-2">
                 {DO_OPTIONS.map((key, i) => {
                   const isPick = picked === key
-                  let cls = 'border-white/20 hover:border-cyan/50'
+                  let cls = 'border-subtle hover:border-cyan/50'
                   if (doChecked && key === doQuestion.correct) {
                     cls = 'border-success bg-success/10'
                   } else if (doChecked && isPick && !doPassed) {
@@ -306,7 +306,7 @@ export function ClinicOverlay({
                       <span className="data-mono flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-surface-high text-xs text-muted">
                         {i + 1}
                       </span>
-                      <span className="text-sm text-white">
+                      <span className="text-sm text-foreground">
                         {doQuestion.options[key]}
                       </span>
                     </button>
@@ -336,14 +336,14 @@ export function ClinicOverlay({
           )}
         </div>
 
-        <div className="flex shrink-0 items-center justify-between gap-3 border-t border-white/10 px-5 py-3">
+        <div className="flex shrink-0 items-center justify-between gap-3 border-t border-subtle px-5 py-3">
           <p className="text-xs text-dim">Complete DO to resume · Esc blocked</p>
           <div className="flex gap-2">
             {step === 'read' && (
               <button
                 type="button"
                 onClick={() => setStep('see')}
-                className="hud-pill bg-cyan px-5 py-2 text-sm font-bold text-black"
+                className="hud-pill bg-cyan px-5 py-2 text-sm font-bold text-[var(--on-accent)]"
               >
                 Next · SEE
               </button>
@@ -353,14 +353,14 @@ export function ClinicOverlay({
                 <button
                   type="button"
                   onClick={() => setStep('read')}
-                  className="hud-pill border border-white/20 px-4 py-2 text-sm text-muted"
+                  className="hud-pill border border-subtle px-4 py-2 text-sm text-muted"
                 >
                   Back
                 </button>
                 <button
                   type="button"
                   onClick={() => setStep('do')}
-                  className="hud-pill bg-cyan px-5 py-2 text-sm font-bold text-black"
+                  className="hud-pill bg-cyan px-5 py-2 text-sm font-bold text-[var(--on-accent)]"
                 >
                   Next · DO
                 </button>
@@ -371,7 +371,7 @@ export function ClinicOverlay({
                 <button
                   type="button"
                   onClick={() => setStep('see')}
-                  className="hud-pill border border-white/20 px-4 py-2 text-sm text-muted"
+                  className="hud-pill border border-subtle px-4 py-2 text-sm text-muted"
                 >
                   Back
                 </button>
@@ -379,7 +379,7 @@ export function ClinicOverlay({
                   type="button"
                   disabled={!picked}
                   onClick={checkDo}
-                  className="hud-pill bg-cyan px-5 py-2 text-sm font-bold text-black disabled:opacity-40"
+                  className="hud-pill bg-cyan px-5 py-2 text-sm font-bold text-[var(--on-accent)] disabled:opacity-40"
                 >
                   Check
                 </button>
@@ -390,7 +390,7 @@ export function ClinicOverlay({
                 type="button"
                 disabled={awarding}
                 onClick={() => void continueFromDo()}
-                className="hud-pill bg-cyan px-5 py-2 text-sm font-bold text-black shadow-[0_0_18px_var(--cyan-dim)] disabled:opacity-60"
+                className="hud-pill bg-cyan px-5 py-2 text-sm font-bold text-[var(--on-accent)] shadow-[0_0_18px_var(--cyan-dim)] disabled:opacity-60"
               >
                 {awarding ? 'Saving…' : 'Return to Arena'}
               </button>

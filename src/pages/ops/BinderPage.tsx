@@ -50,7 +50,7 @@ const LOAD_HINTS: Array<{ match: string; label: string }> = [
 ]
 
 const MARK_STYLE: Record<BinderMarkStatus, string> = {
-  empty: 'border-white/15 text-dim',
+  empty: 'border-subtle text-dim',
   thin: 'border-alert/40 text-alert',
   solid: 'border-success/50 text-success',
 }
@@ -437,7 +437,7 @@ export function BinderPage() {
                   </button>
                 </div>
               </div>
-              <div className="flex h-2 overflow-hidden rounded-full bg-white/10">
+              <div className="flex h-2 overflow-hidden rounded-full bg-[var(--surface-hover)]">
                 <div
                   className="bg-success/80"
                   style={{
@@ -467,9 +467,9 @@ export function BinderPage() {
                     return (
                       <li
                         key={c.id}
-                        className="flex items-center justify-between gap-2 rounded-lg border border-white/5 px-2 py-1.5"
+                        className="flex items-center justify-between gap-2 rounded-lg border border-subtle px-2 py-1.5"
                       >
-                        <span className="min-w-0 truncate text-[11px] text-white">
+                        <span className="min-w-0 truncate text-[11px] text-foreground">
                           {c.name}
                           {mark?.source === 'manual' ? (
                             <span className="ml-1 text-[8px] text-dim">
@@ -524,7 +524,7 @@ export function BinderPage() {
               {(sectionsQuery.data ?? []).map((section) => (
                 <li
                   key={section.id}
-                  className="rounded-xl border border-white/10 p-2.5"
+                  className="rounded-xl border border-subtle p-2.5"
                 >
                   <input
                     className="field-input text-[11px]"
@@ -621,7 +621,7 @@ export function BinderPage() {
               {(historyQuery.data ?? []).map((row) => (
                 <li
                   key={row.id}
-                  className="flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2"
+                  className="flex items-center gap-2 rounded-lg border border-subtle px-3 py-2"
                 >
                   <button
                     type="button"
@@ -636,7 +636,7 @@ export function BinderPage() {
                       }
                     }}
                   >
-                    <span className="block text-[11px] text-white">
+                    <span className="block text-[11px] text-foreground">
                       {new Date(row.created_at).toLocaleString()}
                     </span>
                     <span className="data-mono text-[10px] text-cyan">
@@ -724,7 +724,7 @@ export function BinderPage() {
         <div className="grid min-h-0 flex-1 gap-3 overflow-hidden lg:grid-cols-[minmax(240px,32%)_1fr]">
           <div className="hud-panel min-h-0 overflow-y-auto p-4">
             <p className="data-mono text-[10px] text-dim">{active.status}</p>
-            <p className="mt-1 font-display text-3xl text-white">
+            <p className="mt-1 font-display text-3xl text-foreground">
               {displayScore ?? '—'}
               <span className="text-base text-muted"> / 100</span>
             </p>
@@ -742,7 +742,7 @@ export function BinderPage() {
                 {Object.entries(result.scores).map(([k, v]) => (
                   <div
                     key={k}
-                    className="rounded-lg border border-white/10 px-2 py-1.5"
+                    className="rounded-lg border border-subtle px-2 py-1.5"
                   >
                     <p className="label-caps text-[8px] text-dim">{k}</p>
                     <p className="data-mono text-sm text-cyan">{v}/5</p>
@@ -768,7 +768,7 @@ export function BinderPage() {
                 <ul className="mt-1 space-y-1.5 text-[11px] text-muted">
                   {result.gaps.map((g) => (
                     <li key={`${g.concept_id}-${g.why}`}>
-                      <span className="text-white">{g.name}</span>
+                      <span className="text-foreground">{g.name}</span>
                       <span className="text-dim"> · {g.why}</span>
                     </li>
                   ))}
@@ -825,7 +825,7 @@ export function BinderPage() {
                     : undefined)
                 }
                 alt="Front"
-                className="w-full rounded-lg border border-white/10 object-contain"
+                className="w-full rounded-lg border border-subtle object-contain"
               />
               {(backPreview || active.back_path) && (
                 <img
@@ -836,7 +836,7 @@ export function BinderPage() {
                       : undefined)
                   }
                   alt="Back"
-                  className="w-full rounded-lg border border-white/10 object-contain"
+                  className="w-full rounded-lg border border-subtle object-contain"
                 />
               )}
             </div>
@@ -845,7 +845,7 @@ export function BinderPage() {
       ) : (
         <div className="hud-panel min-h-0 flex-1 space-y-4 overflow-y-auto p-5">
           <div className="grid gap-4 sm:grid-cols-2">
-            <label className="flex cursor-pointer flex-col gap-2 rounded-xl border border-white/15 bg-white/[0.03] p-3 transition-colors hover:border-cyan/40">
+            <label className="flex cursor-pointer flex-col gap-2 rounded-xl border border-subtle bg-[var(--surface-hover)] p-3 transition-colors hover:border-cyan/40">
               <span className="label-caps text-[9px] text-dim">Front</span>
               <span className="hud-pill hud-pill-active w-fit px-2.5 py-1 text-[9px]">
                 Choose photo
@@ -869,7 +869,7 @@ export function BinderPage() {
               />
             </label>
 
-            <label className="flex cursor-pointer flex-col gap-2 rounded-xl border border-dashed border-cyan/30 bg-cyan/[0.04] p-3 transition-colors hover:border-cyan/60">
+            <label className="flex cursor-pointer flex-col gap-2 rounded-xl border border-dashed border-cyan/30 bg-accent/[0.04] p-3 transition-colors hover:border-cyan/60">
               <span className="label-caps text-[9px] text-dim">Back</span>
               <span className="hud-pill hud-pill-active w-fit px-2.5 py-1 text-[9px]">
                 Choose photo

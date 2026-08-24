@@ -6,6 +6,10 @@
   --color-surface: var(--surface);
   --color-surface-elevated: var(--surface-elevated);
   --color-surface-high: var(--surface-high);
+  --color-accent: var(--accent);
+  --color-foreground: var(--text);
+  --color-overlay: var(--overlay);
+  --color-border-subtle: var(--border-subtle);
   --color-cyan: var(--cyan);
   --color-cyan-dim: var(--cyan-dim);
   --color-alert: var(--alert);
@@ -64,6 +68,18 @@ input {
   font: inherit;
 }
 
+.text-foreground {
+  color: var(--text);
+}
+
+.bg-overlay {
+  background: var(--overlay);
+}
+
+.border-subtle {
+  border-color: var(--border-subtle);
+}
+
 .hud-panel {
   background: var(--surface);
   border: 1px solid var(--ghost-border);
@@ -88,32 +104,32 @@ input {
 
 .hud-pill:hover {
   color: var(--text);
-  border-color: rgba(255, 255, 255, 0.22);
+  border-color: var(--border-hover);
 }
 
 .hud-pill-active {
-  background: var(--cyan);
+  background: var(--accent);
   color: var(--on-accent);
-  border-color: var(--cyan);
-  box-shadow: 0 0 18px var(--cyan-glow);
+  border-color: var(--accent);
+  box-shadow: 0 0 18px var(--accent-glow);
 }
 
 .stripe-progress {
   background-image: repeating-linear-gradient(
     -45deg,
-    var(--cyan),
-    var(--cyan) 6px,
-    var(--cyan-stripe) 6px,
-    var(--cyan-stripe) 12px
+    var(--accent),
+    var(--accent) 6px,
+    var(--accent-stripe) 6px,
+    var(--accent-stripe) 12px
   );
-  box-shadow: 0 0 12px var(--cyan-dim);
+  box-shadow: 0 0 12px var(--accent-dim);
 }
 
 .label-caps {
   font-size: var(--label-size);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--cyan);
+  color: var(--accent);
   font-weight: 600;
 }
 
@@ -125,7 +141,7 @@ input {
   display: block;
   width: 100%;
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--border-subtle);
   background: var(--void);
   padding: 0.35rem 0.55rem;
   color: var(--text);
@@ -134,7 +150,7 @@ input {
 }
 
 .field-input:focus {
-  border-color: var(--cyan);
+  border-color: var(--accent);
 }
 
 textarea.field-input {
@@ -146,10 +162,10 @@ textarea.field-input {
   border: 1px solid var(--ghost-border);
 }
 
-/* HUD scrollbars — track blends with panels, thumb is cyan */
+/* Scrollbars — track blends with panels, thumb uses accent */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--cyan) var(--surface);
+  scrollbar-color: var(--accent) var(--surface);
 }
 
 *::-webkit-scrollbar {
@@ -163,13 +179,14 @@ textarea.field-input {
 }
 
 *::-webkit-scrollbar-thumb {
-  background: var(--cyan);
+  background: var(--accent);
   border-radius: 999px;
   border: 2px solid var(--surface);
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: #5ff8ff;
+  background: var(--accent);
+  filter: brightness(1.15);
 }
 
 *::-webkit-scrollbar-corner {

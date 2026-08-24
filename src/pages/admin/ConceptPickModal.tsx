@@ -93,21 +93,21 @@ export function ConceptPickModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-overlay p-4"
       onClick={onClose}
       role="presentation"
     >
       <div
-        className="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0b1220] shadow-2xl"
+        className="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-subtle bg-surface-elevated shadow-2xl"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-label="Select concepts"
       >
-        <div className="flex items-start justify-between gap-3 border-b border-white/10 px-4 py-3">
+        <div className="flex items-start justify-between gap-3 border-b border-subtle px-4 py-3">
           <div>
             <p className="label-caps text-[9px] text-dim">Pick concepts</p>
-            <h2 className="font-display text-lg text-white">{eventName}</h2>
+            <h2 className="font-display text-lg text-foreground">{eventName}</h2>
             <p className="mt-1 text-[11px] text-muted">
               Select up to {maxSelect}. Leave empty on the Workbench to auto-pick
               gap concepts.
@@ -118,7 +118,7 @@ export function ConceptPickModal({
           </button>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 border-b border-white/5 px-4 py-2">
+        <div className="flex flex-wrap items-center gap-2 border-b border-subtle px-4 py-2">
           <input
             type="search"
             placeholder="Search concepts…"
@@ -154,19 +154,19 @@ export function ConceptPickModal({
             if (concepts.length === 0) return null
             const open = openTopicId === topic.id
             return (
-              <div key={topic.id} className="mb-1 rounded-lg border border-white/5">
+              <div key={topic.id} className="mb-1 rounded-lg border border-subtle">
                 <button
                   type="button"
                   className="flex w-full items-center justify-between px-3 py-2 text-left"
                   onClick={() => setOpenTopicId(open ? null : topic.id)}
                 >
-                  <span className="text-[12px] text-white">{topic.name}</span>
+                  <span className="text-[12px] text-foreground">{topic.name}</span>
                   <span className="data-mono text-[9px] text-dim">
                     {concepts.length} · {open ? '−' : '+'}
                   </span>
                 </button>
                 {open ? (
-                  <ul className="border-t border-white/5 px-2 py-1">
+                  <ul className="border-t border-subtle px-2 py-1">
                     {concepts.map((concept) => {
                       const checked = selected.includes(concept.id)
                       const gap = gapFor(coverageMap.get(concept.id), targetPerConcept)
@@ -175,7 +175,7 @@ export function ConceptPickModal({
                         <li key={concept.id}>
                           <label
                             className={`flex cursor-pointer items-start gap-2 rounded-lg px-2 py-1.5 ${
-                              disabled ? 'opacity-40' : 'hover:bg-white/5'
+                              disabled ? 'opacity-40' : 'hover:bg-[var(--surface-hover)]'
                             }`}
                           >
                             <input
@@ -203,7 +203,7 @@ export function ConceptPickModal({
           })}
         </div>
 
-        <div className="flex flex-wrap justify-end gap-2 border-t border-white/10 px-4 py-3">
+        <div className="flex flex-wrap justify-end gap-2 border-t border-subtle px-4 py-3">
           <button type="button" className="hud-pill px-3 py-1.5 text-[10px]" onClick={onClose}>
             Cancel
           </button>

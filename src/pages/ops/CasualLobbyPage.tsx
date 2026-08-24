@@ -135,7 +135,7 @@ export function CasualLobbyPage() {
   return (
     <div className="flex h-full min-h-0 flex-col gap-4 lg:flex-row">
       <aside className="hud-panel flex min-h-0 w-full shrink-0 flex-col overflow-hidden lg:w-[280px]">
-        <div className="border-b border-white/10 px-4 py-3">
+        <div className="border-b border-subtle px-4 py-3">
           <p className="label-caps">Events</p>
           <p className="mt-1 text-xs text-dim">Studyable now · rest locked</p>
         </div>
@@ -169,13 +169,13 @@ export function CasualLobbyPage() {
                 }}
                 className={`mb-1 flex w-full items-center justify-between rounded-md px-3 py-2.5 text-left transition-colors ${
                   active
-                    ? 'bg-cyan text-black'
-                    : 'text-white hover:bg-surface-high'
+                    ? 'bg-cyan text-[var(--on-accent)]'
+                    : 'text-foreground hover:bg-surface-high'
                 }`}
               >
                 <span className="text-sm font-medium">{ev.name}</span>
                 <span
-                  className={`data-mono text-[10px] ${active ? 'text-black/70' : 'text-cyan'}`}
+                  className={`data-mono text-[10px] ${active ? 'text-[var(--on-accent)]/70' : 'text-cyan'}`}
                 >
                   {n}Q
                 </span>
@@ -205,7 +205,7 @@ export function CasualLobbyPage() {
       </aside>
 
       <section className="hud-panel flex min-h-0 flex-1 flex-col overflow-hidden">
-        <div className="flex shrink-0 items-start justify-between gap-3 border-b border-white/10 px-5 py-4">
+        <div className="flex shrink-0 items-start justify-between gap-3 border-b border-subtle px-5 py-4">
           <div>
             <Link
               to="/ops"
@@ -213,7 +213,7 @@ export function CasualLobbyPage() {
             >
               ← OPS
             </Link>
-            <h1 className="mt-2 text-2xl font-medium text-white md:text-3xl">
+            <h1 className="mt-2 text-2xl font-medium text-foreground md:text-3xl">
               Casual Mode
             </h1>
             <p className="mt-1 text-sm text-muted">
@@ -228,7 +228,7 @@ export function CasualLobbyPage() {
             type="button"
             disabled={!canStart}
             onClick={startSession}
-            className="hud-pill shrink-0 bg-cyan px-6 py-3 text-sm font-bold tracking-wide text-black shadow-[0_0_20px_var(--cyan-dim)] transition enabled:hover:brightness-110 disabled:cursor-not-allowed disabled:bg-surface-high disabled:text-dim disabled:shadow-none"
+            className="hud-pill shrink-0 bg-cyan px-6 py-3 text-sm font-bold tracking-wide text-[var(--on-accent)] shadow-[0_0_20px_var(--cyan-dim)] transition enabled:hover:brightness-110 disabled:cursor-not-allowed disabled:bg-surface-high disabled:text-dim disabled:shadow-none"
           >
             START
           </button>
@@ -267,7 +267,7 @@ export function CasualLobbyPage() {
           )}
         </div>
 
-        <div className="shrink-0 border-t border-white/10 px-5 py-3 data-mono text-xs text-dim">
+        <div className="shrink-0 border-t border-subtle px-5 py-3 data-mono text-xs text-dim">
           Selection · {selectedEventId ?? '—'} · topic={topicId} ·{' '}
           {liveForSelection} live
         </div>
@@ -296,11 +296,11 @@ function TopicCard({
       onClick={onClick}
       className={`rounded-lg border px-4 py-3 text-left transition ${
         active
-          ? 'border-cyan bg-cyan/10 shadow-[0_0_18px_rgba(0,240,255,0.12)]'
-          : 'border-white/15 hover:border-cyan/40'
+          ? 'border-cyan bg-cyan/10 shadow-[0_0_18px_var(--accent-dim)]'
+          : 'border-subtle hover:border-cyan/40'
       } ${disabled ? 'cursor-not-allowed opacity-40' : ''}`}
     >
-      <p className="text-sm font-medium text-white">{title}</p>
+      <p className="text-sm font-medium text-foreground">{title}</p>
       <p className="mt-1 data-mono text-[11px] text-cyan">{subtitle}</p>
     </button>
   )

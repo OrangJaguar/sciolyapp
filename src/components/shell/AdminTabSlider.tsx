@@ -62,7 +62,7 @@ export function AdminTabSlider() {
       >
         <span
           aria-hidden
-          className="pointer-events-none absolute top-1 bottom-1 left-1 w-[calc(25%-2px)] rounded-pill bg-cyan shadow-[0_0_16px_var(--cyan-glow)] transition-transform duration-300 ease-out"
+          className="pointer-events-none absolute top-1 bottom-1 left-1 w-[calc(25%-2px)] rounded-pill bg-accent shadow-[0_0_16px_var(--accent-glow)] transition-transform duration-300 ease-out"
           style={{ transform: `translateX(${mainIndex * 100}%)` }}
         />
         {mainTabs.map((tab, tabIndex) => (
@@ -101,7 +101,7 @@ export function AdminTabSlider() {
               className={`rounded-pill border px-3 py-2 text-[10px] tracking-[0.06em] transition-colors ${
                 active
                   ? 'border-cyan/50 bg-cyan/10 font-semibold text-cyan'
-                  : 'border-transparent font-medium text-dim hover:border-white/10 hover:text-muted'
+                  : 'border-transparent font-medium text-dim hover:border-subtle hover:text-muted'
               }`}
             >
               {item.label}

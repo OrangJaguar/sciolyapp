@@ -201,7 +201,7 @@ export function CommsPage() {
               value={joinCode}
               onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
               placeholder="JOIN CODE"
-              className="w-full rounded-md border border-white/15 bg-void px-3 py-2.5 data-mono text-sm tracking-widest text-[var(--text)] outline-none focus:border-cyan"
+              className="w-full rounded-md border border-subtle bg-void px-3 py-2.5 data-mono text-sm tracking-widest text-[var(--text)] outline-none focus:border-accent"
               autoComplete="off"
             />
             {joinError && <p className="text-sm text-alert">{joinError}</p>}
@@ -335,7 +335,7 @@ export function CommsPage() {
 
             {officer && (
               <form
-                className="mt-3 shrink-0 space-y-2 border-t border-white/10 pt-3"
+                className="mt-3 shrink-0 space-y-2 border-t border-subtle pt-3"
                 onSubmit={(e: FormEvent) => {
                   e.preventDefault()
                   if (!draft.trim()) return
@@ -348,7 +348,7 @@ export function CommsPage() {
                   rows={3}
                   maxLength={2000}
                   placeholder="Transmit to squad…"
-                  className="w-full resize-none rounded-md border border-white/15 bg-void px-3 py-2.5 text-sm text-[var(--text)] outline-none focus:border-cyan"
+                  className="w-full resize-none rounded-md border border-subtle bg-void px-3 py-2.5 text-sm text-[var(--text)] outline-none focus:border-accent"
                 />
                 {createMutation.error && (
                   <p className="text-xs text-alert">
@@ -567,17 +567,17 @@ function RosterAdminModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-[2px]"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-overlay p-4 backdrop-blur-[2px]"
       role="dialog"
       aria-modal="true"
       aria-label="Edit squad roster"
       onClick={onClose}
     >
       <div
-        className="hud-panel flex max-h-[min(90dvh,820px)] w-full max-w-3xl flex-col overflow-hidden border-cyan/30 shadow-[0_0_48px_rgba(0,240,255,0.12)]"
+        className="hud-panel flex max-h-[min(90dvh,820px)] w-full max-w-3xl flex-col overflow-hidden border-cyan/30 shadow-[0_0_48px_var(--accent-dim)]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex shrink-0 items-start justify-between gap-3 border-b border-white/10 px-5 py-4">
+        <div className="flex shrink-0 items-start justify-between gap-3 border-b border-subtle px-5 py-4">
           <div>
             <p className="label-caps">Roster Admin</p>
             <h2 className="mt-1 text-2xl font-medium text-[var(--text)]">
@@ -597,7 +597,7 @@ function RosterAdminModal({
           </button>
         </div>
 
-        <div className="shrink-0 space-y-2 border-b border-white/10 px-5 py-3">
+        <div className="shrink-0 space-y-2 border-b border-subtle px-5 py-3">
           <div className="flex flex-wrap items-center gap-3">
             {codesQuery.data && (
               <div className="flex min-w-0 flex-1 flex-wrap gap-4 data-mono text-xs text-muted">
@@ -620,7 +620,7 @@ function RosterAdminModal({
               <select
                 value={eventFilter}
                 onChange={(e) => setEventFilter(e.target.value)}
-                className="max-w-[14rem] rounded-md border border-white/15 bg-void px-2 py-1.5 text-xs text-[var(--text)] outline-none focus:border-cyan"
+                className="max-w-[14rem] rounded-md border border-subtle bg-void px-2 py-1.5 text-xs text-[var(--text)] outline-none focus:border-accent"
               >
                 <option value="">All members</option>
                 {events.map((ev) => (
@@ -661,7 +661,7 @@ function RosterAdminModal({
             return (
               <div
                 key={m.user_id}
-                className="rounded-md border border-white/10 bg-surface-elevated p-4"
+                className="rounded-md border border-subtle bg-surface-elevated p-4"
               >
                 <div className="flex flex-wrap items-center gap-3">
                   <span className="flex h-9 w-9 items-center justify-center rounded-full border border-cyan/40 data-mono text-xs text-cyan">
@@ -683,7 +683,7 @@ function RosterAdminModal({
                           role: e.target.value as TeamRole,
                         })
                       }
-                      className="rounded-md border border-white/15 bg-void px-2 py-1.5 data-mono text-xs text-[var(--text)] outline-none focus:border-cyan"
+                      className="rounded-md border border-subtle bg-void px-2 py-1.5 data-mono text-xs text-[var(--text)] outline-none focus:border-accent"
                     >
                       {roleOptions.map((r) => (
                         <option key={r} value={r}>

@@ -97,20 +97,20 @@ export function EventBankModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-overlay p-4"
       role="dialog"
       aria-modal="true"
       aria-label={`${eventName} question bank`}
       onClick={onClose}
     >
       <div
-        className="flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#111] shadow-2xl"
+        className="flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-subtle bg-surface-elevated shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-start justify-between gap-3 border-b border-white/10 px-4 py-3">
+        <div className="flex items-start justify-between gap-3 border-b border-subtle px-4 py-3">
           <div>
             <p className="label-caps text-[9px] text-dim">Event bank</p>
-            <h2 className="mt-0.5 font-display text-lg text-white">{eventName}</h2>
+            <h2 className="mt-0.5 font-display text-lg text-foreground">{eventName}</h2>
             <p className="mt-1 data-mono text-[10px] text-muted">
               {totals.concepts} concepts · {totals.live} live · {totals.draft} draft
               {' · '}target {targetPerConcept}/concept
@@ -125,7 +125,7 @@ export function EventBankModal({
           </button>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 border-b border-white/5 px-4 py-2">
+        <div className="flex flex-wrap items-center gap-2 border-b border-subtle px-4 py-2">
           <input
             type="search"
             placeholder="Filter concepts…"
@@ -181,7 +181,7 @@ export function EventBankModal({
           })}
         </div>
 
-        <p className="border-t border-white/5 px-4 py-2 text-[10px] text-dim">
+        <p className="border-t border-subtle px-4 py-2 text-[10px] text-dim">
           Read-only. Edit drafts in Review; taxonomy in Catalog.
         </p>
       </div>
@@ -222,13 +222,13 @@ function TopicBlock({
   onToggleQuestion: (id: string) => void
 }) {
   return (
-    <div className="mb-2 overflow-hidden rounded-xl border border-white/10">
+    <div className="mb-2 overflow-hidden rounded-xl border border-subtle">
       <button
         type="button"
         onClick={onToggle}
-        className="flex w-full items-center justify-between gap-2 bg-white/[0.03] px-3 py-2 text-left"
+        className="flex w-full items-center justify-between gap-2 bg-[var(--surface-hover)] px-3 py-2 text-left"
       >
-        <span className="text-xs text-white">{topic.name}</span>
+        <span className="text-xs text-foreground">{topic.name}</span>
         <span className="data-mono text-[9px] text-dim">
           {concepts.length} concepts · {open ? '▾' : '▸'}
         </span>
@@ -246,7 +246,7 @@ function TopicBlock({
                 <button
                   type="button"
                   onClick={() => onToggleConcept(concept.id)}
-                  className="flex w-full items-start justify-between gap-2 px-3 py-2 text-left hover:bg-white/5"
+                  className="flex w-full items-start justify-between gap-2 px-3 py-2 text-left hover:bg-[var(--surface-hover)]"
                 >
                   <span className="min-w-0">
                     <span className="block text-[11px] text-muted">{concept.name}</span>
@@ -265,7 +265,7 @@ function TopicBlock({
                   </span>
                 </button>
                 {conceptOpen ? (
-                  <div className="border-t border-white/5 bg-black/30 px-3 py-2">
+                  <div className="border-t border-subtle bg-[var(--surface-high)] px-3 py-2">
                     {questionsLoading ? (
                       <p className="text-[10px] text-dim">Loading questions…</p>
                     ) : !questions || questions.length === 0 ? (
@@ -279,7 +279,7 @@ function TopicBlock({
                               <button
                                 type="button"
                                 onClick={() => onToggleQuestion(q.id)}
-                                className="w-full rounded-lg px-2 py-1.5 text-left hover:bg-white/5"
+                                className="w-full rounded-lg px-2 py-1.5 text-left hover:bg-[var(--surface-hover)]"
                               >
                                 <span className="data-mono text-[8px] text-dim">
                                   {index + 1}. {q.status}
@@ -289,7 +289,7 @@ function TopicBlock({
                                 </span>
                               </button>
                               {qOpen ? (
-                                <div className="mt-1 mb-2 rounded-lg border border-white/5 bg-black/40 px-2 py-2 data-mono text-[9px] text-dim">
+                                <div className="mt-1 mb-2 rounded-lg border border-subtle bg-[var(--surface-high)] px-2 py-2 data-mono text-[9px] text-dim">
                                   {(['A', 'B', 'C', 'D'] as const).map((key) => (
                                     <p
                                       key={key}

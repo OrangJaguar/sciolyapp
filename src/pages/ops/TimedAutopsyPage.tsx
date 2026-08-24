@@ -205,7 +205,7 @@ export function TimedAutopsyPage() {
           >
             ← Timed
           </Link>
-          <h1 className="mt-1 text-2xl font-medium text-white md:text-3xl">
+          <h1 className="mt-1 text-2xl font-medium text-foreground md:text-3xl">
             Autopsy
           </h1>
           <p className="mt-1 text-sm text-muted">
@@ -280,7 +280,7 @@ export function TimedAutopsyPage() {
                 <p className="data-mono text-xs text-dim">Q{i + 1}</p>
                 <StatusPill status={g.status} />
               </div>
-              <p className="mt-2 text-sm text-white">{g.question.stem}</p>
+              <p className="mt-2 text-sm text-foreground">{g.question.stem}</p>
               {g.conceptName && (
                 <p className="mt-2 text-xs text-cyan">
                   Concept · {g.conceptName}
@@ -309,13 +309,13 @@ export function TimedAutopsyPage() {
       <div className="flex shrink-0 flex-wrap gap-3">
         <Link
           to="/ops/timed"
-          className="hud-pill bg-cyan px-5 py-2.5 text-sm font-bold text-black"
+          className="hud-pill bg-cyan px-5 py-2.5 text-sm font-bold text-[var(--on-accent)]"
         >
           Run again
         </Link>
         <Link
           to="/ops"
-          className="hud-pill border border-white/20 px-5 py-2.5 text-sm text-muted"
+          className="hud-pill border border-subtle px-5 py-2.5 text-sm text-muted"
         >
           OPS
         </Link>

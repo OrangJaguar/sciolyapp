@@ -91,7 +91,7 @@ export function MissionsPage() {
       <div className="mx-auto flex h-full max-w-md flex-col justify-center gap-4 p-6">
         <div className="hud-panel p-6">
           <p className="label-caps">Freelancer</p>
-          <h1 className="mt-2 text-2xl font-medium text-white">Join a unit</h1>
+          <h1 className="mt-2 text-2xl font-medium text-foreground">Join a unit</h1>
           <p className="mt-2 text-sm text-muted">
             Missions require a team. Enter a join code from your captain or
             coach.
@@ -107,7 +107,7 @@ export function MissionsPage() {
               value={joinCode}
               onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
               placeholder="JOIN CODE"
-              className="w-full rounded-md border border-white/15 bg-void px-3 py-2.5 data-mono text-sm tracking-widest text-white outline-none focus:border-cyan"
+              className="w-full rounded-md border border-subtle bg-void px-3 py-2.5 data-mono text-sm tracking-widest text-foreground outline-none focus:border-accent"
               autoComplete="off"
             />
             {joinError && <p className="text-sm text-alert">{joinError}</p>}
@@ -386,12 +386,12 @@ function CreateMissionForm({
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="e.g. 25 casual Chem Lab answers"
-        className="w-full rounded-md border border-white/15 bg-surface px-2.5 py-2 text-sm text-white outline-none focus:border-cyan"
+        className="w-full rounded-md border border-subtle bg-surface px-2.5 py-2 text-sm text-foreground outline-none focus:border-accent"
       />
       <select
         value={eventId}
         onChange={(e) => setEventId(e.target.value)}
-        className="w-full rounded-md border border-white/15 bg-surface px-2.5 py-2 text-sm text-white outline-none focus:border-cyan"
+        className="w-full rounded-md border border-subtle bg-surface px-2.5 py-2 text-sm text-foreground outline-none focus:border-accent"
       >
         <option value="">Any studyable event</option>
         {events.map((ev) => (
@@ -404,7 +404,7 @@ function CreateMissionForm({
         <select
           value={goalType}
           onChange={(e) => setGoalType(e.target.value as MissionGoalType)}
-          className="rounded-md border border-white/15 bg-surface px-2.5 py-2 text-sm text-white outline-none focus:border-cyan"
+          className="rounded-md border border-subtle bg-surface px-2.5 py-2 text-sm text-foreground outline-none focus:border-accent"
         >
           <option value="answered">Answered</option>
           <option value="correct">Correct</option>
@@ -414,14 +414,14 @@ function CreateMissionForm({
           min={1}
           value={targetValue}
           onChange={(e) => setTargetValue(Number(e.target.value) || 1)}
-          className="rounded-md border border-white/15 bg-surface px-2.5 py-2 data-mono text-sm text-white outline-none focus:border-cyan"
+          className="rounded-md border border-subtle bg-surface px-2.5 py-2 data-mono text-sm text-foreground outline-none focus:border-accent"
         />
       </div>
       <input
         type="datetime-local"
         value={deadlineLocal}
         onChange={(e) => setDeadlineLocal(e.target.value)}
-        className="w-full rounded-md border border-white/15 bg-surface px-2.5 py-2 data-mono text-sm text-white outline-none focus:border-cyan"
+        className="w-full rounded-md border border-subtle bg-surface px-2.5 py-2 data-mono text-sm text-foreground outline-none focus:border-accent"
       />
       {error && <p className="text-xs text-alert">{error}</p>}
       <button

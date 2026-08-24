@@ -125,7 +125,7 @@ export function VaultPage() {
       <div className="mx-auto flex h-full max-w-md flex-col justify-center gap-4 p-6">
         <div className="hud-panel p-6">
           <p className="label-caps">Freelancer</p>
-          <h1 className="mt-2 text-2xl font-medium text-white">Join a unit</h1>
+          <h1 className="mt-2 text-2xl font-medium text-foreground">Join a unit</h1>
           <p className="mt-2 text-sm text-muted">
             Vault is team-scoped. Enter a join code from your captain or coach.
           </p>
@@ -140,7 +140,7 @@ export function VaultPage() {
               value={joinCode}
               onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
               placeholder="JOIN CODE"
-              className="w-full rounded-md border border-white/15 bg-void px-3 py-2.5 data-mono text-sm tracking-widest text-white outline-none focus:border-cyan"
+              className="w-full rounded-md border border-subtle bg-void px-3 py-2.5 data-mono text-sm tracking-widest text-foreground outline-none focus:border-accent"
               autoComplete="off"
             />
             {joinError && <p className="text-sm text-alert">{joinError}</p>}
@@ -168,7 +168,7 @@ export function VaultPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search..."
-          className="w-full bg-transparent text-sm text-white outline-none placeholder:text-dim"
+          className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-dim"
         />
       </div>
 
@@ -199,7 +199,7 @@ export function VaultPage() {
                     className={`flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm tracking-wide uppercase transition-colors ${
                       isOpen
                         ? 'bg-surface-high text-cyan'
-                        : 'text-white hover:bg-surface-elevated'
+                        : 'text-foreground hover:bg-surface-elevated'
                     }`}
                   >
                     <FolderIcon open={isOpen} />
@@ -251,7 +251,7 @@ export function VaultPage() {
                                 href={item.url}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="min-w-0 flex-1 truncate text-white hover:text-cyan"
+                                className="min-w-0 flex-1 truncate text-foreground hover:text-cyan"
                                 title={item.url}
                               >
                                 {item.title}
@@ -318,7 +318,7 @@ export function VaultPage() {
                       href={item.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-xs font-semibold tracking-wide text-white uppercase hover:text-cyan"
+                      className="text-xs font-semibold tracking-wide text-foreground uppercase hover:text-cyan"
                     >
                       {item.title}
                     </a>
@@ -400,18 +400,18 @@ function AddResourceForm({
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Title"
-        className="w-full rounded-md border border-white/15 bg-surface px-2.5 py-2 text-sm text-white outline-none focus:border-cyan"
+        className="w-full rounded-md border border-subtle bg-surface px-2.5 py-2 text-sm text-foreground outline-none focus:border-accent"
       />
       <input
         value={url}
         onChange={(e) => setUrl(e.target.value)}
         placeholder="https://…"
-        className="w-full rounded-md border border-white/15 bg-surface px-2.5 py-2 text-sm text-white outline-none focus:border-cyan"
+        className="w-full rounded-md border border-subtle bg-surface px-2.5 py-2 text-sm text-foreground outline-none focus:border-accent"
       />
       <select
         value={category}
         onChange={(e) => setCategory(e.target.value as VaultCategory)}
-        className="w-full rounded-md border border-white/15 bg-surface px-2.5 py-2 text-sm text-white outline-none focus:border-cyan"
+        className="w-full rounded-md border border-subtle bg-surface px-2.5 py-2 text-sm text-foreground outline-none focus:border-accent"
       >
         <option value="link">Link</option>
         <option value="doc">Doc</option>

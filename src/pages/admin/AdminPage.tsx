@@ -143,7 +143,7 @@ export function AdminPage() {
   return (
     <div className="flex h-full min-h-0 w-full flex-col gap-2 overflow-y-auto lg:grid lg:grid-cols-[minmax(220px,280px)_1fr] lg:gap-2 lg:overflow-hidden">
       <aside className="hud-panel flex min-h-[16rem] shrink-0 flex-col overflow-hidden lg:min-h-0 lg:shrink">
-          <div className="shrink-0 border-b border-white/5 px-3 py-2">
+          <div className="shrink-0 border-b border-subtle px-3 py-2">
             <p className="label-caps text-[9px] text-dim">Drafts</p>
             <p className="mt-0.5 data-mono text-[9px] text-muted">
               {queueQuery.isLoading ? '…' : `${drafts.length} waiting`}
@@ -169,8 +169,8 @@ export function AdminPage() {
                     onClick={() => setSelectedId(d.id)}
                     className={`w-full rounded-lg px-2 py-1.5 text-left transition-colors ${
                       active
-                        ? 'bg-cyan/10 text-white'
-                        : 'text-muted hover:bg-white/5 hover:text-white'
+                        ? 'bg-cyan/10 text-foreground'
+                        : 'text-muted hover:bg-[var(--surface-hover)] hover:text-foreground'
                     }`}
                   >
                     <p className="label-caps text-[8px] text-dim">
@@ -193,7 +193,7 @@ export function AdminPage() {
             </div>
           ) : (
             <>
-              <div className="shrink-0 border-b border-white/5 px-3 py-2">
+              <div className="shrink-0 border-b border-subtle px-3 py-2">
                 <p className="data-mono text-[9px] text-muted">
                   {eventName(selected.event_id)} · {selected.question_type} ·{' '}
                   {selected.citation || 'no citation'}
@@ -298,7 +298,7 @@ export function AdminPage() {
                 ) : null}
               </div>
 
-              <div className="flex shrink-0 flex-wrap gap-1.5 border-t border-white/5 px-3 py-2">
+              <div className="flex shrink-0 flex-wrap gap-1.5 border-t border-subtle px-3 py-2">
                 <button
                   type="button"
                   disabled={busy || !formValid(form)}

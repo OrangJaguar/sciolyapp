@@ -1,36 +1,122 @@
+/* Shared shape + type tokens (theme-independent) */
 :root {
-  /* Surfaces */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --label-size: 0.78rem;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+}
+
+/* HUD — cyan sci-fi ops center (default) */
+:root,
+[data-theme='hud'] {
   --void: #050505;
   --surface: #111111;
   --surface-elevated: #1a1a1a;
   --surface-high: #242424;
+  --surface-hover: rgba(255, 255, 255, 0.05);
 
-  /* Accents */
-  --cyan: #00f0ff;
-  --cyan-dim: rgba(0, 240, 255, 0.35);
-  --cyan-glow: rgba(0, 240, 255, 0.45);
-  --cyan-stripe: #007a82;
+  --accent: #00f0ff;
+  --accent-dim: rgba(0, 240, 255, 0.35);
+  --accent-glow: rgba(0, 240, 255, 0.45);
+  --accent-stripe: #007a82;
+
+  --cyan: var(--accent);
+  --cyan-dim: var(--accent-dim);
+  --cyan-glow: var(--accent-glow);
+  --cyan-stripe: var(--accent-stripe);
+
   --alert: #ff2a2a;
   --success: #00ff66;
 
-  /* Text */
   --text: #ffffff;
   --text-muted: #888888;
   --text-dim: #555555;
   --on-accent: #000000;
 
-  /* Borders */
   --ghost-border: rgba(132, 148, 149, 0.18);
   --ghost-border-active: rgba(0, 240, 255, 0.45);
+  --border-subtle: rgba(255, 255, 255, 0.15);
+  --border-hover: rgba(255, 255, 255, 0.22);
 
-  /* Type */
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-  --label-size: 0.78rem;
+  --overlay: rgba(0, 0, 0, 0.75);
+  --accent-border: rgba(0, 240, 255, 0.4);
+  --card-glow: radial-gradient(ellipse 80% 70% at 50% 28%, rgba(0, 240, 255, 0.18), transparent 70%);
+  --card-glow-hover: linear-gradient(135deg, rgba(0, 240, 255, 0.08) 0%, transparent 42%, transparent 58%, rgba(0, 240, 255, 0.06) 100%);
+}
 
-  /* Shape */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  --radius-pill: 999px;
+/* Sleek — pure black/white wireframe */
+[data-theme='sleek'] {
+  --void: #000000;
+  --surface: #000000;
+  --surface-elevated: #0a0a0a;
+  --surface-high: #141414;
+  --surface-hover: rgba(255, 255, 255, 0.06);
+
+  --accent: #ffffff;
+  --accent-dim: rgba(255, 255, 255, 0.25);
+  --accent-glow: transparent;
+  --accent-stripe: #888888;
+
+  --cyan: var(--accent);
+  --cyan-dim: var(--accent-dim);
+  --cyan-glow: var(--accent-glow);
+  --cyan-stripe: var(--accent-stripe);
+
+  --alert: #ff4444;
+  --success: #44ff88;
+
+  --text: #ffffff;
+  --text-muted: #aaaaaa;
+  --text-dim: #666666;
+  --on-accent: #000000;
+
+  --ghost-border: rgba(255, 255, 255, 0.35);
+  --ghost-border-active: rgba(255, 255, 255, 0.65);
+  --border-subtle: rgba(255, 255, 255, 0.2);
+  --border-hover: rgba(255, 255, 255, 0.45);
+
+  --overlay: rgba(0, 0, 0, 0.75);
+  --accent-border: rgba(255, 255, 255, 0.4);
+  --card-glow: none;
+  --card-glow-hover: none;
+}
+
+/* Paper — white background, black ink */
+[data-theme='paper'] {
+  --void: #ffffff;
+  --surface: #ffffff;
+  --surface-elevated: #f7f7f7;
+  --surface-high: #eeeeee;
+  --surface-hover: rgba(0, 0, 0, 0.04);
+
+  --accent: #000000;
+  --accent-dim: rgba(0, 0, 0, 0.2);
+  --accent-glow: transparent;
+  --accent-stripe: #888888;
+
+  --cyan: var(--accent);
+  --cyan-dim: var(--accent-dim);
+  --cyan-glow: var(--accent-glow);
+  --cyan-stripe: var(--accent-stripe);
+
+  --alert: #cc0000;
+  --success: #008833;
+
+  --text: #000000;
+  --text-muted: #555555;
+  --text-dim: #888888;
+  --on-accent: #ffffff;
+
+  --ghost-border: rgba(0, 0, 0, 0.35);
+  --ghost-border-active: rgba(0, 0, 0, 0.65);
+  --border-subtle: rgba(0, 0, 0, 0.15);
+  --border-hover: rgba(0, 0, 0, 0.35);
+
+  --overlay: rgba(0, 0, 0, 0.45);
+  --accent-border: rgba(0, 0, 0, 0.4);
+  --card-glow: none;
+  --card-glow-hover: none;
 }

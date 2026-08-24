@@ -318,11 +318,44 @@ export async function setEventMediaActive(id: string, active: boolean) {
   if (error) throw error
 }
 
-export async function deleteEventMedia(id: string) {
+export async function updateEventMedia(input: {
+  id: string
+  label: string
+  tags: string[]
+  notes?: string
+  description: string
+  specificity: 'broad' | 'specific'
+}) {
+  const { error } = await requireSupabase()
+    .from('event_media')
+    .update({
+      label: input.label.trim(),
+      tags: input.tags,
+      notes: (input.notes ?? '').trim(),
+      description: input.description.trim(),
+      specificity: input.specificity,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', input.id)
+  if (error) throw error
+}
+
+export async function deleteEventMedia(item: {
+  id: string
+  storage_path?: string | null
+}) {
+  if (item.storage_path) {
+    const { error: storageError } = await requireSupabase()
+      .storage.from('event-media')
+      .remove([item.storage_path])
+    if (storageError && !/not found|404/i.test(storageError.message)) {
+      throw storageError
+    }
+  }
   const { error } = await requireSupabase()
     .from('event_media')
     .delete()
-    .eq('id', id)
+    .eq('id', item.id)
   if (error) throw error
 }
 
@@ -335,4 +368,13 @@ export function parseCommaTags(value: string): string[] {
         .filter(Boolean),
     ),
   ]
+}
+
+/** Slugify a topic name into a stable Generate-matching tag. */
+export function mediaTagFromName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_|_$/g, '')
+    .slice(0, 48)
 }

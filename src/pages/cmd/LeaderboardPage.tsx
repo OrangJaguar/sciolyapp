@@ -102,7 +102,7 @@ export function LeaderboardPage() {
               value={joinCode}
               onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
               placeholder="JOIN CODE"
-              className="w-full rounded-md border border-white/15 bg-void px-3 py-2.5 data-mono text-sm tracking-widest text-[var(--text)] outline-none focus:border-cyan"
+              className="w-full rounded-md border border-subtle bg-void px-3 py-2.5 data-mono text-sm tracking-widest text-[var(--text)] outline-none focus:border-accent"
               autoComplete="off"
             />
             {joinError && <p className="text-sm text-alert">{joinError}</p>}
@@ -231,7 +231,7 @@ export function LeaderboardPage() {
               key={row.user_id}
               className={`flex items-center gap-4 rounded-pill border px-4 py-2.5 ${
                 isMe
-                  ? 'border-cyan/60 bg-cyan/10 shadow-[0_0_18px_rgba(0,240,255,0.12)]'
+                  ? 'border-cyan/60 bg-cyan/10 shadow-[0_0_18px_var(--accent-dim)]'
                   : 'border-[var(--ghost-border)] bg-surface-elevated'
               } ${tone === 'dim' && !isMe ? 'opacity-45' : ''}`}
             >

@@ -314,7 +314,7 @@ export function TimedExamPage() {
     <div className="flex h-full min-h-0 flex-col">
       <div className="flex shrink-0 flex-wrap items-center gap-3 pb-3">
         <p className="label-caps text-cyan">Black Box</p>
-        <p className="data-mono text-sm text-white">
+        <p className="data-mono text-sm text-foreground">
           Q {index + 1}/{total}
         </p>
         <div className="relative h-2 min-w-0 flex-1 overflow-hidden rounded-pill bg-surface-high">
@@ -343,7 +343,7 @@ export function TimedExamPage() {
               submitExam('manual')
             }
           }}
-          className="hud-pill bg-cyan px-4 py-2 text-sm font-bold text-black"
+          className="hud-pill bg-cyan px-4 py-2 text-sm font-bold text-[var(--on-accent)]"
         >
           Submit
         </button>
@@ -354,7 +354,7 @@ export function TimedExamPage() {
           <p className="text-xs text-dim">
             No Clinic · no mid-run feedback · crash-protected
           </p>
-          <p className="mt-3 text-xl leading-snug font-medium text-white md:text-2xl">
+          <p className="mt-3 text-xl leading-snug font-medium text-foreground md:text-2xl">
             {current.stem}
           </p>
           <div className="mt-6 flex flex-col gap-3">
@@ -367,20 +367,20 @@ export function TimedExamPage() {
                   onClick={() => pick(key)}
                   className={`flex w-full items-start gap-3 rounded-lg border px-3 py-3 text-left transition md:px-4 ${
                     isSelected
-                      ? 'border-cyan bg-cyan/10 shadow-[0_0_18px_rgba(0,240,255,0.12)]'
-                      : 'border-white/20 hover:border-cyan/50'
+                      ? 'border-cyan bg-cyan/10 shadow-[0_0_18px_var(--accent-dim)]'
+                      : 'border-subtle hover:border-cyan/50'
                   }`}
                 >
                   <span
                     className={`data-mono flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-sm font-bold ${
                       isSelected
-                        ? 'bg-cyan text-black'
+                        ? 'bg-cyan text-[var(--on-accent)]'
                         : 'bg-surface-high text-muted'
                     }`}
                   >
                     {i + 1}
                   </span>
-                  <span className="pt-1 text-sm text-white md:text-base">
+                  <span className="pt-1 text-sm text-foreground md:text-base">
                     {current.options[key]}
                   </span>
                 </button>
@@ -389,13 +389,13 @@ export function TimedExamPage() {
           </div>
         </div>
 
-        <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-t border-white/10 px-5 py-3 md:px-8">
+        <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-t border-subtle px-5 py-3 md:px-8">
           <div className="flex items-center gap-2">
             <button
               type="button"
               disabled={index <= 0}
               onClick={() => go(-1)}
-              className="hud-pill border border-white/20 px-4 py-2 text-sm text-white disabled:opacity-40"
+              className="hud-pill border border-subtle px-4 py-2 text-sm text-foreground disabled:opacity-40"
             >
               Prev
             </button>
@@ -403,7 +403,7 @@ export function TimedExamPage() {
               type="button"
               disabled={index >= total - 1}
               onClick={() => go(1)}
-              className="hud-pill border border-white/20 px-4 py-2 text-sm text-white disabled:opacity-40"
+              className="hud-pill border border-subtle px-4 py-2 text-sm text-foreground disabled:opacity-40"
             >
               Next
             </button>
@@ -422,7 +422,7 @@ export function TimedExamPage() {
                   onClick={() => setIndex(i)}
                   className={`data-mono h-7 w-7 rounded-md text-[10px] font-bold transition ${
                     active
-                      ? 'bg-cyan text-black'
+                      ? 'bg-cyan text-[var(--on-accent)]'
                       : marked
                         ? 'bg-cyan/25 text-cyan'
                         : 'bg-surface-high text-dim'

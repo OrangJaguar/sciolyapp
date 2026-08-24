@@ -201,7 +201,7 @@ export function ImportPage() {
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <label className="flex cursor-pointer items-center gap-2 rounded-pill border border-white/15 bg-white/[0.04] px-3 py-2 transition-colors hover:border-cyan/40 hover:bg-cyan/5">
+                <label className="flex cursor-pointer items-center gap-2 rounded-pill border border-subtle bg-[var(--surface-hover)] px-3 py-2 transition-colors hover:border-cyan/40 hover:bg-cyan/5">
                   <span className="hud-pill hud-pill-active shrink-0 px-2.5 py-1 text-[9px]">
                     Choose
                   </span>
@@ -220,7 +220,7 @@ export function ImportPage() {
                     }}
                   />
                 </label>
-                <label className="flex cursor-pointer items-center gap-2 rounded-pill border border-white/15 bg-white/[0.04] px-3 py-2 transition-colors hover:border-cyan/40 hover:bg-cyan/5">
+                <label className="flex cursor-pointer items-center gap-2 rounded-pill border border-subtle bg-[var(--surface-hover)] px-3 py-2 transition-colors hover:border-cyan/40 hover:bg-cyan/5">
                   <span className="hud-pill hud-pill-active shrink-0 px-2.5 py-1 text-[9px]">
                     Choose
                   </span>
@@ -327,7 +327,7 @@ export function ImportPage() {
                   return (
                     <div
                       key={`row-${index}`}
-                      className="rounded-xl border border-white/10 p-3"
+                      className="rounded-xl border border-subtle p-3"
                     >
                       <p className="text-[10px] text-dim">#{index + 1}</p>
                       <textarea
@@ -430,10 +430,10 @@ export function ImportPage() {
                 (batchesQuery.data ?? []).map((batch) => (
                   <li
                     key={batch.id}
-                    className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-white/10 px-3 py-2"
+                    className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-subtle px-3 py-2"
                   >
                     <div>
-                      <p className="text-[11px] text-white">{batch.label}</p>
+                      <p className="text-[11px] text-foreground">{batch.label}</p>
                       <p className="data-mono text-[9px] text-dim">
                         {eventName(batch.event_id)} · {batch.source} ·{' '}
                         {batch.row_count} · {batch.status}

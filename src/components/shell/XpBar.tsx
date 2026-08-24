@@ -8,7 +8,7 @@ export function XpBar({ progress, xpLabel }: XpBarProps) {
 
   return (
     <div className="flex min-w-0 flex-1 items-center gap-4 px-2 lg:px-4">
-      <div className="relative h-4 min-w-0 flex-1 overflow-hidden rounded-pill border border-cyan/40 bg-surface-elevated lg:h-5">
+      <div className="relative h-4 min-w-0 flex-1 overflow-hidden rounded-pill border border-accent/40 bg-surface-elevated lg:h-5">
         <div
           className="stripe-progress h-full rounded-pill"
           style={{ width: `${pct}%` }}

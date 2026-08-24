@@ -138,8 +138,8 @@ export function CatalogCurriculum({
               }}
               className={`flex w-full items-center gap-2 rounded-lg px-2 py-1 text-left ${
                 event.id === selectedEvent.id
-                  ? 'bg-cyan/10 text-white'
-                  : 'text-muted hover:bg-white/5 hover:text-white'
+                  ? 'bg-cyan/10 text-foreground'
+                  : 'text-muted hover:bg-[var(--surface-hover)] hover:text-foreground'
               }`}
             >
               <span className="min-w-0 flex-1 truncate text-xs">
@@ -167,7 +167,7 @@ export function CatalogCurriculum({
 
       <div className="grid min-h-0 flex-1 gap-2 overflow-y-auto lg:grid-cols-[minmax(240px,300px)_1fr] lg:overflow-hidden">
       <section className="hud-panel flex min-h-[18rem] flex-col overflow-hidden lg:min-h-0">
-        <div className="shrink-0 border-b border-white/5 p-2">
+        <div className="shrink-0 border-b border-subtle p-2">
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
               <p className="truncate label-caps text-[9px] text-dim">
@@ -245,7 +245,7 @@ export function CatalogCurriculum({
                 <button
                   type="button"
                   onClick={() => toggleTopic(topic.id)}
-                  className="flex w-full items-center gap-1.5 rounded-md px-1.5 py-1 text-left hover:bg-white/5"
+                  className="flex w-full items-center gap-1.5 rounded-md px-1.5 py-1 text-left hover:bg-[var(--surface-hover)]"
                 >
                   <span
                     aria-hidden
@@ -276,8 +276,8 @@ export function CatalogCurriculum({
                           onClick={() => setConceptId(concept.id)}
                           className={`mb-0.5 ml-2.5 w-[calc(100%-0.625rem)] rounded-lg px-2 py-1 text-left ${
                             active
-                              ? 'bg-cyan/10 text-white'
-                              : 'text-muted hover:bg-white/5 hover:text-white'
+                              ? 'bg-cyan/10 text-foreground'
+                              : 'text-muted hover:bg-[var(--surface-hover)] hover:text-foreground'
                           }`}
                         >
                           <span className="block text-[11px] leading-snug">
@@ -395,10 +395,10 @@ function ConceptEditor({
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="shrink-0 border-b border-white/5 px-3 py-2">
+      <div className="shrink-0 border-b border-subtle px-3 py-2">
         <div className="flex flex-wrap items-start justify-between gap-2">
           <div className="min-w-0">
-            <h2 className="text-sm text-white">{concept.name}</h2>
+            <h2 className="text-sm text-foreground">{concept.name}</h2>
             <p className="mt-0.5 truncate data-mono text-[8px] text-dim">
               {concept.id}
             </p>
@@ -450,7 +450,7 @@ function ConceptEditor({
               />
             </Field>
 
-            <div className="border-t border-white/5 pt-3">
+            <div className="border-t border-subtle pt-3">
               <div className="mb-2 flex items-center justify-between gap-2">
                 <p className="label-caps text-[9px] text-cyan">
                   Clinic guide · READ / SEE / DO
@@ -541,7 +541,7 @@ function ConceptEditor({
         )}
       </div>
 
-      <div className="flex shrink-0 items-center gap-2 border-t border-white/5 px-3 py-2">
+      <div className="flex shrink-0 items-center gap-2 border-t border-subtle px-3 py-2">
         <button
           type="button"
           disabled={saveMutation.isPending}
@@ -583,25 +583,25 @@ function ClinicPreview({
     <div className="space-y-4">
       <div>
         <p className="label-caps text-[9px] text-cyan">READ</p>
-        <h3 className="mt-1 text-sm text-white">{title}</h3>
+        <h3 className="mt-1 text-sm text-foreground">{title}</h3>
         <p className="mt-2 whitespace-pre-wrap text-xs leading-relaxed text-muted">
           {readBody || 'No READ paragraph yet.'}
         </p>
       </div>
-      <div className="border-t border-white/5 pt-3">
+      <div className="border-t border-subtle pt-3">
         <p className="label-caps text-[9px] text-cyan">SEE</p>
         {seeHtml ? (
           <div
-            className="mt-2 rounded-lg border border-white/10 bg-void p-2.5 text-xs text-muted"
+            className="mt-2 rounded-lg border border-subtle bg-void p-2.5 text-xs text-muted"
             dangerouslySetInnerHTML={{ __html: seeHtml }}
           />
         ) : (
           <p className="mt-1.5 text-xs text-dim">No SEE visual yet.</p>
         )}
       </div>
-      <div className="border-t border-white/5 pt-3">
+      <div className="border-t border-subtle pt-3">
         <p className="label-caps text-[9px] text-cyan">DO</p>
-        <p className="mt-1.5 text-xs text-white">
+        <p className="mt-1.5 text-xs text-foreground">
           {doPrompt || 'No DO check yet.'}
         </p>
         <div className="mt-2 space-y-1.5">
@@ -610,8 +610,8 @@ function ClinicPreview({
               key={key}
               className={`rounded-lg border px-2.5 py-1.5 text-xs ${
                 key === correct
-                  ? 'border-success/40 bg-success/5 text-white'
-                  : 'border-white/10 text-muted'
+                  ? 'border-success/40 bg-success/5 text-foreground'
+                  : 'border-subtle text-muted'
               }`}
             >
               <span className="mr-2 data-mono text-cyan">{key}</span>

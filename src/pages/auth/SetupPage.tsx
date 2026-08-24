@@ -84,7 +84,7 @@ export function SetupPage() {
     <div className="flex h-dvh flex-col bg-void">
       <div className="mx-auto flex w-full max-w-lg flex-1 flex-col justify-center px-5">
         <p className="label-caps mb-2">Setup · Step {step}/3</p>
-        <h1 className="text-3xl font-bold tracking-wide text-white uppercase">
+        <h1 className="text-3xl font-bold tracking-wide text-foreground uppercase">
           Deploy Profile
         </h1>
 
@@ -98,7 +98,7 @@ export function SetupPage() {
                   value={handle}
                   onChange={(e) => setHandle(e.target.value)}
                   placeholder="operative_alpha"
-                  className="w-full bg-transparent py-2.5 text-white outline-none"
+                  className="w-full bg-transparent py-2.5 text-foreground outline-none"
                   autoComplete="username"
                 />
               </div>
@@ -133,7 +133,7 @@ export function SetupPage() {
                   type="button"
                   onClick={() => setDivision(d)}
                   className={`hud-pill py-4 text-sm ${
-                    division === d ? 'hud-pill-active' : 'text-white'
+                    division === d ? 'hud-pill-active' : 'text-foreground'
                   }`}
                 >
                   Division {d}
@@ -144,7 +144,7 @@ export function SetupPage() {
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                className="hud-pill flex-1 py-3 text-sm text-white"
+                className="hud-pill flex-1 py-3 text-sm text-foreground"
               >
                 Back
               </button>
@@ -167,7 +167,7 @@ export function SetupPage() {
                 type="button"
                 onClick={() => setFreelancer(true)}
                 className={`hud-pill py-4 text-sm ${
-                  freelancer ? 'hud-pill-active' : 'text-white'
+                  freelancer ? 'hud-pill-active' : 'text-foreground'
                 }`}
               >
                 Freelancer
@@ -176,7 +176,7 @@ export function SetupPage() {
                 type="button"
                 onClick={() => setFreelancer(false)}
                 className={`hud-pill py-4 text-sm ${
-                  !freelancer ? 'hud-pill-active' : 'text-white'
+                  !freelancer ? 'hud-pill-active' : 'text-foreground'
                 }`}
               >
                 Join Team
@@ -192,7 +192,7 @@ export function SetupPage() {
                   value={joinCode}
                   onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
                   maxLength={6}
-                  className="data-mono mt-1 w-full rounded-md border border-[var(--ghost-border)] bg-surface px-3 py-2.5 tracking-[0.3em] text-white outline-none focus:border-cyan"
+                  className="data-mono mt-1 w-full rounded-md border border-[var(--ghost-border)] bg-surface px-3 py-2.5 tracking-[0.3em] text-foreground outline-none focus:border-accent"
                   placeholder="ABC123"
                   required={!freelancer}
                 />
@@ -205,7 +205,7 @@ export function SetupPage() {
               <button
                 type="button"
                 onClick={() => setStep(2)}
-                className="hud-pill flex-1 py-3 text-sm text-white"
+                className="hud-pill flex-1 py-3 text-sm text-foreground"
               >
                 Back
               </button>
