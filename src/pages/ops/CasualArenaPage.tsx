@@ -6,9 +6,14 @@ import {
   clinicMissThreshold,
   type ClinicPayload,
 } from '../../components/ops/ClinicOverlay'
+import { PracticeCommitFeedback } from '../../components/ops/PracticeCommitFeedback'
+import {
+  CASUAL_PRACTICE_SHORTCUTS,
+  PracticeChrome,
+  type PracticeNavigatorItem,
+} from '../../components/ops/practice/PracticeChrome'
 import { useAuth } from '../../features/auth/AuthProvider'
 import {
-  ARENA_SESSION_CAP,
   fetchArenaQuestionBank,
   optionIndexFromKey,
   optionKeyFromIndex,
@@ -17,18 +22,49 @@ import {
   submitCasualSession,
   type SubmitCasualSessionResult,
 } from '../../lib/casualCommit'
-import { formatXp, rankFromXp } from '../../lib/progression'
+import { playPracticeSfx } from '../../lib/practiceSfx'
+import {
+  itemFromQuestion,
+  savePracticeSummary,
+} from '../../lib/practiceSummary'
 import { isSupabaseConfigured } from '../../lib/supabase'
+import { formatExamClock } from '../../lib/timedExamStorage'
 import type { Question } from '../../lib/types'
 
-type LocalAnswer = {
+type GradedAnswer = {
+  questionId: string
+  selected: Question['correct_key']
+  correct: boolean
+  responseMs: number
+}
+
+type CommitAnswer = {
   questionId: string
   selected: Question['correct_key'] | null
   skipped: boolean
   correct: boolean | null
+  responseMs: number | null
 }
 
 const OPTION_KEYS = ['A', 'B', 'C', 'D'] as const
+
+function gradesToCommitList(
+  grades: Record<number, GradedAnswer>,
+): CommitAnswer[] {
+  return Object.keys(grades)
+    .map(Number)
+    .sort((a, b) => a - b)
+    .map((i) => {
+      const g = grades[i]!
+      return {
+        questionId: g.questionId,
+        selected: g.selected,
+        skipped: false,
+        correct: g.correct,
+        responseMs: g.responseMs,
+      }
+    })
+}
 
 export function CasualArenaPage() {
   const navigate = useNavigate()
@@ -51,9 +87,11 @@ export function CasualArenaPage() {
 
   const questions = bankQuery.data ?? []
   const [index, setIndex] = useState(0)
-  const [selected, setSelected] = useState<Question['correct_key'] | null>(null)
-  const [revealed, setRevealed] = useState(false)
-  const [answers, setAnswers] = useState<LocalAnswer[]>([])
+  const [drafts, setDrafts] = useState<
+    Record<number, Question['correct_key'] | null>
+  >({})
+  const [grades, setGrades] = useState<Record<number, GradedAnswer>>({})
+  const [maxReached, setMaxReached] = useState(0)
   const [done, setDone] = useState(false)
   const [sessionToken, setSessionToken] = useState(() => crypto.randomUUID())
   const [commitResult, setCommitResult] =
@@ -66,49 +104,148 @@ export function CasualArenaPage() {
     {},
   )
   const [clinicCleared, setClinicCleared] = useState<string[]>([])
-  /** After clinic closes, advance using this pending entry path */
+  const [paused, setPaused] = useState(false)
+  const [timerHidden, setTimerHidden] = useState(false)
+  const [elapsedTick, setElapsedTick] = useState(0)
   const clinicResume = useRef<'advance' | 'finish' | null>(null)
-  const answersSnapshot = useRef<LocalAnswer[]>([])
+  const gradesSnapshot = useRef<Record<number, GradedAnswer>>({})
+  const shownAtByIndex = useRef<Record<number, number>>({})
+  const sessionStartedAtRef = useRef(Date.now())
+  const pausedAtRef = useRef<number | null>(null)
+  const pausedTotalRef = useRef(0)
 
   const current = questions[index] ?? null
   const total = questions.length
-  const progress = total === 0 ? 0 : (index + (revealed || done ? 1 : 0)) / total
+  const grade = grades[index] ?? null
+  const selected = grade?.selected ?? drafts[index] ?? null
+  const revealed = grade != null
+  const checkedCount = Object.keys(grades).length
+  const progress = total === 0 ? 0 : checkedCount / total
+  const onLast = index >= total - 1
+
+  const sessionElapsedSec = useMemo(() => {
+    void elapsedTick
+    const now =
+      paused && pausedAtRef.current != null ? pausedAtRef.current : Date.now()
+    return Math.max(
+      0,
+      Math.floor(
+        (now - sessionStartedAtRef.current - pausedTotalRef.current) / 1000,
+      ),
+    )
+  }, [elapsedTick, paused])
+
+  const navigatorItems: PracticeNavigatorItem[] = useMemo(() => {
+    const reach = Math.min(total - 1, Math.max(maxReached, index))
+    const items: PracticeNavigatorItem[] = []
+    for (let i = 0; i <= reach; i += 1) {
+      if (i === index) {
+        items.push({ index: i, state: 'current' })
+        continue
+      }
+      const g = grades[i]
+      if (!g) {
+        items.push({ index: i, state: 'neutral' })
+      } else if (g.correct) {
+        items.push({ index: i, state: 'correct' })
+      } else {
+        items.push({ index: i, state: 'incorrect' })
+      }
+    }
+    return items
+  }, [total, maxReached, index, grades])
 
   const summary = useMemo(() => {
-    const graded = answers.filter((a) => !a.skipped)
-    const correct = graded.filter((a) => a.correct).length
+    const list = gradesToCommitList(grades)
+    const correct = list.filter((a) => a.correct).length
     return {
       correct,
-      answered: graded.length,
-      skipped: answers.filter((a) => a.skipped).length,
-      total: answers.length,
+      answered: list.length,
+      skipped: 0,
+      total: list.length,
     }
-  }, [answers])
+  }, [grades])
 
-  const resetQuestionState = useCallback(() => {
-    setSelected(null)
-    setRevealed(false)
+  useEffect(() => {
+    if (shownAtByIndex.current[index] == null) {
+      shownAtByIndex.current[index] = Date.now()
+    }
+    setMaxReached((m) => Math.max(m, index))
+  }, [index])
+
+  useEffect(() => {
+    if (done || clinic) return
+    const id = window.setInterval(() => setElapsedTick((t) => t + 1), 250)
+    return () => window.clearInterval(id)
+  }, [done, clinic])
+
+  const setPausedSafe = useCallback((next: boolean) => {
+    if (next) {
+      if (pausedAtRef.current == null) pausedAtRef.current = Date.now()
+      setPaused(true)
+      return
+    }
+    if (pausedAtRef.current != null) {
+      pausedTotalRef.current += Date.now() - pausedAtRef.current
+      pausedAtRef.current = null
+    }
+    setPaused(false)
   }, [])
 
+  const sessionDurationSec = useCallback(() => {
+    const now =
+      paused && pausedAtRef.current != null ? pausedAtRef.current : Date.now()
+    return Math.max(
+      0,
+      Math.floor(
+        (now - sessionStartedAtRef.current - pausedTotalRef.current) / 1000,
+      ),
+    )
+  }, [paused])
+
   const finalizeSession = useCallback(
-    async (finalAnswers: LocalAnswer[]) => {
+    async (finalGrades: Record<number, GradedAnswer>) => {
       if (!eventId || commitLock.current) return
       commitLock.current = true
       setCommitting(true)
       setCommitError(null)
+      const list = gradesToCommitList(finalGrades)
       try {
         const result = await submitCasualSession({
           sessionToken,
           eventId,
           topicId: topicId === 'all' ? 'all' : topicId,
-          answers: finalAnswers.map((a) => ({
+          answers: list.map((a) => ({
             question_id: a.questionId,
             skipped: a.skipped,
             is_correct: a.correct,
+            response_ms: a.responseMs,
           })),
         })
         setCommitResult(result)
         await refreshProfile()
+
+        const items = Object.keys(finalGrades)
+          .map(Number)
+          .sort((a, b) => a - b)
+          .flatMap((i) => {
+            const q = questions[i]
+            const g = finalGrades[i]
+            if (!q || !g) return []
+            return [itemFromQuestion(q, g.selected, i)]
+          })
+
+        savePracticeSummary({
+          v: 1,
+          mode: 'casual',
+          eventId,
+          topicId: topicId === 'all' ? 'all' : topicId,
+          durationSec: sessionDurationSec(),
+          items,
+          commit: result,
+          createdAt: new Date().toISOString(),
+        })
+        navigate('/cmd/missions')
       } catch (err) {
         commitLock.current = false
         const msg =
@@ -119,67 +256,93 @@ export function CasualArenaPage() {
         setCommitting(false)
       }
     },
-    [eventId, topicId, sessionToken, refreshProfile],
+    [
+      eventId,
+      topicId,
+      sessionToken,
+      refreshProfile,
+      questions,
+      sessionDurationSec,
+      navigate,
+    ],
   )
 
-  const commitAndAdvance = useCallback(
-    (entry: LocalAnswer, fromQuestion: Question | null = current) => {
-      const nextAnswers = [...answers, entry]
-      setAnswers(nextAnswers)
-      answersSnapshot.current = nextAnswers
+  const endSession = useCallback(
+    (finalGrades: Record<number, GradedAnswer> = grades) => {
+      gradesSnapshot.current = finalGrades
+      setDone(true)
+      void finalizeSession(finalGrades)
+    },
+    [grades, finalizeSession],
+  )
 
-      const conceptId = fromQuestion?.concept_id
-      const missed =
-        !entry.skipped && entry.correct === false && Boolean(conceptId)
+  const maybeOpenClinic = useCallback(
+    (
+      entry: GradedAnswer,
+      fromQuestion: Question,
+      atIndex: number,
+      nextGrades: Record<number, GradedAnswer>,
+    ): boolean => {
+      const conceptId = fromQuestion.concept_id
+      if (entry.correct || !conceptId) return false
+      if (clinicCleared.includes(conceptId) || clinic) return false
 
-      if (
-        missed &&
-        conceptId &&
-        !clinicCleared.includes(conceptId) &&
-        !clinic
-      ) {
-        const nextMiss = (conceptMisses[conceptId] ?? 0) + 1
-        const nextMisses = { ...conceptMisses, [conceptId]: nextMiss }
-        setConceptMisses(nextMisses)
+      const nextMiss = (conceptMisses[conceptId] ?? 0) + 1
+      setConceptMisses((prev) => ({ ...prev, [conceptId]: nextMiss }))
 
-        const inBank = questions.filter((q) => q.concept_id === conceptId)
-          .length
-        const threshold = clinicMissThreshold(inBank)
+      const inBank = questions.filter((q) => q.concept_id === conceptId).length
+      const threshold = clinicMissThreshold(inBank)
+      if (nextMiss < threshold) return false
 
-        if (nextMiss >= threshold) {
-          clinicResume.current = index + 1 >= total ? 'finish' : 'advance'
-          setClinic({
-            conceptId,
-            conceptName: conceptId.replace(/_/g, ' '),
-            sessionToken,
-            lastStem: fromQuestion?.stem,
-          })
-          return
-        }
-      }
-
-      if (index + 1 >= total) {
-        setDone(true)
-        void finalizeSession(nextAnswers)
-        return
-      }
-      setIndex((i) => i + 1)
-      resetQuestionState()
+      clinicResume.current = atIndex + 1 >= total ? 'finish' : 'advance'
+      gradesSnapshot.current = nextGrades
+      setClinic({
+        conceptId,
+        conceptName: conceptId.replace(/_/g, ' '),
+        sessionToken,
+        lastStem: fromQuestion.stem,
+      })
+      return true
     },
     [
-      answers,
-      index,
-      total,
-      current,
       clinic,
       clinicCleared,
       conceptMisses,
       questions,
-      finalizeSession,
-      resetQuestionState,
+      total,
       sessionToken,
     ],
   )
+
+  const checkAnswer = useCallback(() => {
+    if (!current || revealed || paused || clinic) return
+    if (!selected) return
+
+    const shownAt = shownAtByIndex.current[index] ?? Date.now()
+    const responseMs = Math.max(0, Date.now() - shownAt)
+    const correct = selected === current.correct_key
+    const entry: GradedAnswer = {
+      questionId: current.id,
+      selected,
+      correct,
+      responseMs,
+    }
+    const nextGrades = { ...grades, [index]: entry }
+    setGrades(nextGrades)
+    gradesSnapshot.current = nextGrades
+    playPracticeSfx(correct ? 'correct' : 'wrong')
+
+    maybeOpenClinic(entry, current, index, nextGrades)
+  }, [
+    current,
+    revealed,
+    paused,
+    clinic,
+    selected,
+    index,
+    grades,
+    maybeOpenClinic,
+  ])
 
   const onClinicComplete = useCallback(
     (_xpAwarded: number) => {
@@ -194,73 +357,95 @@ export function CasualArenaPage() {
 
       const resume = clinicResume.current
       clinicResume.current = null
-      resetQuestionState()
 
       if (resume === 'finish') {
-        setDone(true)
-        void finalizeSession(answersSnapshot.current)
+        endSession(gradesSnapshot.current)
         return
       }
       if (resume === 'advance') {
-        setIndex((i) => i + 1)
+        setIndex((i) => Math.min(i + 1, Math.max(0, total - 1)))
       }
     },
-    [clinic, finalizeSession, resetQuestionState, refreshProfile],
+    [clinic, endSession, refreshProfile, total],
   )
 
-  const revealOrGrade = useCallback(() => {
-    if (!current || revealed) return
-    if (!selected) return
-    setRevealed(true)
-  }, [current, revealed, selected])
-
   const goNext = useCallback(() => {
-    if (!current) return
-    if (!revealed) {
-      revealOrGrade()
+    if (!current || paused || clinic) return
+    if (!revealed) return
+    if (onLast) {
+      endSession()
       return
     }
-    commitAndAdvance({
-      questionId: current.id,
-      selected,
-      skipped: false,
-      correct: selected === current.correct_key,
-    })
-  }, [current, revealed, selected, revealOrGrade, commitAndAdvance])
-
-  const skip = useCallback(() => {
-    if (!current || revealed) return
-    commitAndAdvance({
-      questionId: current.id,
-      selected: null,
-      skipped: true,
-      correct: null,
-    })
-  }, [current, revealed, commitAndAdvance])
+    setIndex((i) => i + 1)
+  }, [current, paused, clinic, revealed, onLast, endSession])
 
   const pick = useCallback(
     (key: Question['correct_key']) => {
-      if (!current || revealed) return
-      setSelected(key)
+      if (!current || revealed || paused || clinic) return
+      setDrafts((prev) => ({ ...prev, [index]: key }))
     },
-    [current, revealed],
+    [current, revealed, paused, clinic, index],
   )
+
+  const requestEnd = useCallback(() => {
+    if (paused || clinic) return
+    const n = Object.keys(grades).length
+    if (
+      !window.confirm(
+        n === 0
+          ? 'End session with no checked answers?'
+          : `End session with ${n} checked answer${n === 1 ? '' : 's'}?`,
+      )
+    ) {
+      return
+    }
+    endSession()
+  }, [paused, clinic, grades, endSession])
 
   const restart = useCallback(() => {
     commitLock.current = false
     clinicResume.current = null
+    sessionStartedAtRef.current = Date.now()
+    pausedAtRef.current = null
+    pausedTotalRef.current = 0
+    shownAtByIndex.current = {}
+    gradesSnapshot.current = {}
+    setPaused(false)
+    setTimerHidden(false)
     setSessionToken(crypto.randomUUID())
     setCommitResult(null)
     setCommitError(null)
     setIndex(0)
-    setAnswers([])
+    setDrafts({})
+    setGrades({})
+    setMaxReached(0)
     setDone(false)
     setClinic(null)
     setConceptMisses({})
     setClinicCleared([])
-    resetQuestionState()
     void bankQuery.refetch()
-  }, [bankQuery, resetQuestionState])
+  }, [bankQuery])
+
+  const exitArena = useCallback(() => {
+    if (window.confirm('Exit arena and return to lobby?')) {
+      navigate('/ops/casual')
+    }
+  }, [navigate])
+
+  const jumpTo = useCallback(
+    (target: number) => {
+      if (paused || clinic) return
+      if (target < 0 || target >= total) return
+      if (target > maxReached) return
+      setIndex(target)
+    },
+    [paused, clinic, total, maxReached],
+  )
+
+  const goBack = useCallback(() => {
+    if (index <= 0) return
+    jumpTo(index - 1)
+  }, [index, jumpTo])
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -270,21 +455,40 @@ export function CasualArenaPage() {
 
       if (e.key === 'Escape') {
         e.preventDefault()
-        if (window.confirm('Exit arena and return to lobby?')) {
-          navigate('/ops/casual')
+        exitArena()
+        return
+      }
+
+      if (e.key === 'p' || e.key === 'P') {
+        e.preventDefault()
+        setPausedSafe(!paused)
+        return
+      }
+
+      if (e.key === 'h' || e.key === 'H') {
+        e.preventDefault()
+        setTimerHidden((v) => !v)
+        return
+      }
+
+      if (paused) return
+
+      if (e.key === 'Enter') {
+        e.preventDefault()
+        if (!revealed) {
+          checkAnswer()
+        } else {
+          goNext()
         }
         return
       }
 
-      if (e.key === 's' || e.key === 'S') {
-        e.preventDefault()
-        skip()
-        return
-      }
-
-      if (e.key === ' ' || e.key === 'Enter') {
-        e.preventDefault()
-        goNext()
+      // Space only advances after check (avoid accidental check)
+      if (e.key === ' ') {
+        if (revealed) {
+          e.preventDefault()
+          goNext()
+        }
         return
       }
 
@@ -298,7 +502,17 @@ export function CasualArenaPage() {
 
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [done, clinic, goNext, skip, pick, navigate])
+  }, [
+    done,
+    clinic,
+    paused,
+    revealed,
+    checkAnswer,
+    goNext,
+    pick,
+    exitArena,
+    setPausedSafe,
+  ])
 
   if (!eventId) {
     return (
@@ -343,7 +557,7 @@ export function CasualArenaPage() {
     return (
       <ArenaMessage
         title="Empty bank"
-        body="No live MCQs for this event/topic. Re-run Plan 04 seed."
+        body="No live MCQs for this event/topic. Seed live questions in Supabase or pick another scope."
         actionTo="/ops/casual"
         actionLabel="Back to lobby"
       />
@@ -351,42 +565,38 @@ export function CasualArenaPage() {
   }
 
   if (done) {
-    const xpLine = commitResult
-      ? `+${commitResult.xp_awarded} XP · total ${formatXp(commitResult.xp_total)} · ${rankFromXp(commitResult.xp_total)}`
-      : committing
-        ? 'Saving progress…'
-        : null
-
     return (
       <div className="flex h-full min-h-0 items-center justify-center p-4">
         <div className="hud-panel w-full max-w-lg p-8 text-center">
-          <p className="label-caps">Session complete</p>
+          <p className="label-caps">
+            {commitError ? 'Could not save' : 'Saving session…'}
+          </p>
           <p className="mt-4 text-3xl font-medium text-foreground">
             {summary.correct}
             <span className="text-muted"> / </span>
             {summary.answered}
           </p>
           <p className="mt-2 text-sm text-muted">
-            Correct of answered · {summary.skipped} skipped
+            {commitError
+              ? 'Fix the save, then your summary opens on CMD.'
+              : 'Opening summary on CMD…'}
           </p>
-          {xpLine && (
-            <p className="mt-4 data-mono text-sm text-cyan">{xpLine}</p>
-          )}
-          {commitResult && (
-            <p className="mt-1 text-xs text-dim">
-              Streak {commitResult.streak}
-              {commitResult.already_committed ? ' · replay ignored' : ''}
-            </p>
-          )}
+          <div className="mx-auto mt-4 max-w-md">
+            <PracticeCommitFeedback
+              result={commitResult}
+              committing={committing}
+            />
+          </div>
           {commitError && (
             <div className="mt-4 space-y-2">
               <p className="text-sm text-alert">{commitError}</p>
               <p className="text-xs text-dim">
-                If RPC missing, run 20260804_session_commit.sql in Supabase.
+                Could not save session — check Supabase RPCs / network, then
+                retry.
               </p>
               <button
                 type="button"
-                onClick={() => void finalizeSession(answers)}
+                onClick={() => void finalizeSession(gradesSnapshot.current)}
                 className="hud-pill border border-alert/40 px-4 py-2 text-sm text-alert"
               >
                 Retry save
@@ -416,140 +626,137 @@ export function CasualArenaPage() {
   if (!current) return null
 
   const correctIdx = optionIndexFromKey(current.correct_key)
+  const primaryLabel = onLast ? 'End session' : 'Next'
 
   return (
     <div className="flex h-full min-h-0 flex-col">
       {clinic && (
         <ClinicOverlay payload={clinic} onComplete={onClinicComplete} />
       )}
-      <div className="flex shrink-0 items-center gap-3 pb-3">
-        <p className="data-mono shrink-0 text-sm text-foreground">
-          Q {index + 1}/{total}
+      <PracticeChrome
+        current={index + 1}
+        total={total}
+        progressRatio={progress}
+        navigatorItems={navigatorItems}
+        onJump={jumpTo}
+        timerLabel={formatExamClock(sessionElapsedSec)}
+        timerHidden={timerHidden}
+        onTimerHiddenChange={setTimerHidden}
+        paused={paused}
+        onPausedChange={setPausedSafe}
+        onExit={exitArena}
+        showBack={index > 0}
+        onBack={goBack}
+        primaryLabel={primaryLabel}
+        primaryDisabled={!revealed || paused}
+        onPrimary={goNext}
+        shortcuts={CASUAL_PRACTICE_SHORTCUTS}
+        endSlot={
+          <button
+            type="button"
+            disabled={paused}
+            onClick={requestEnd}
+            className="hud-pill border border-subtle px-4 py-2 text-sm text-muted transition hover:border-alert/40 hover:text-alert disabled:opacity-40"
+          >
+            End
+          </button>
+        }
+      >
+        <p className="text-xl leading-snug font-medium text-foreground md:text-2xl md:leading-snug">
+          {current.stem}
         </p>
-        <div className="relative h-2 min-w-0 flex-1 overflow-hidden rounded-pill bg-surface-high">
-          <div
-            className="absolute inset-y-0 left-0 rounded-pill bg-cyan transition-[width] duration-300"
-            style={{ width: `${Math.min(100, progress * 100)}%` }}
-          />
-        </div>
-        <p className="data-mono hidden shrink-0 text-[10px] text-dim sm:block">
-          cap {ARENA_SESSION_CAP}
-        </p>
-        <button
-          type="button"
-          onClick={() => {
-            if (window.confirm('Exit arena and return to lobby?')) {
-              navigate('/ops/casual')
+
+        <div className="mt-8 flex flex-col gap-3">
+          {OPTION_KEYS.map((key, i) => {
+            const label = current.options[key]
+            const isSelected = selected === key
+            const isCorrect = key === current.correct_key
+            let stateClass =
+              'border-subtle hover:border-cyan/50 hover:bg-[var(--surface-hover)]'
+            if (isSelected && !revealed) {
+              stateClass =
+                'border-cyan bg-cyan/10 shadow-[0_0_20px_var(--accent-dim)]'
             }
-          }}
-          className="shrink-0 text-sm text-muted transition hover:text-cyan"
-        >
-          Exit
-        </button>
-      </div>
+            if (revealed && isCorrect) {
+              stateClass = 'choice-glow-correct'
+            } else if (revealed && isSelected && !isCorrect) {
+              stateClass = 'choice-glow-wrong'
+            } else if (revealed) {
+              stateClass = 'border-subtle opacity-50'
+            }
 
-      <div className="hud-panel flex min-h-0 flex-1 flex-col overflow-hidden">
-        <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5 md:px-8 md:py-6">
-          <p className="text-xl leading-snug font-medium text-foreground md:text-2xl md:leading-snug">
-            {current.stem}
-          </p>
-
-          <div className="mt-6 flex flex-col gap-3">
-            {OPTION_KEYS.map((key, i) => {
-              const label = current.options[key]
-              const isSelected = selected === key
-              const showResult = revealed
-              const isCorrect = key === current.correct_key
-              let stateClass =
-                'border-subtle hover:border-cyan/50 hover:bg-[var(--surface-hover)]'
-              if (isSelected && !showResult) {
-                stateClass =
-                  'border-cyan bg-cyan/10 shadow-[0_0_20px_var(--accent-dim)]'
-              }
-              if (showResult && isCorrect) {
-                stateClass =
-                  'border-success bg-success/10 shadow-[0_0_18px_rgba(0,255,102,0.12)]'
-              } else if (showResult && isSelected && !isCorrect) {
-                stateClass = 'border-alert bg-alert/10'
-              } else if (showResult) {
-                stateClass = 'border-subtle opacity-50'
-              }
-
-              return (
-                <button
-                  key={key}
-                  type="button"
-                  disabled={revealed}
-                  onClick={() => pick(key)}
-                  className={`flex w-full items-start gap-3 rounded-lg border px-3 py-3 text-left transition md:px-4 md:py-3.5 ${stateClass}`}
+            return (
+              <div
+                key={key}
+                role="button"
+                tabIndex={revealed || paused ? -1 : 0}
+                aria-disabled={revealed || paused}
+                aria-pressed={isSelected}
+                onClick={() => {
+                  if (!revealed && !paused) pick(key)
+                }}
+                onKeyDown={(e) => {
+                  if (revealed || paused) return
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    pick(key)
+                  }
+                }}
+                className={`flex w-full items-center gap-3 rounded-xl border px-3 py-3.5 text-left transition md:px-4 md:py-4 ${stateClass} ${
+                  revealed || paused ? 'cursor-default' : 'cursor-pointer'
+                }`}
+              >
+                <span
+                  className={`data-mono flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-sm font-bold ${
+                    isSelected && !revealed
+                      ? 'bg-cyan text-[var(--on-accent)]'
+                      : revealed && isCorrect
+                        ? 'bg-success text-[var(--on-accent)]'
+                        : revealed && isSelected
+                          ? 'bg-alert text-foreground'
+                          : 'bg-surface-high text-muted'
+                  }`}
                 >
-                  <span
-                    className={`data-mono flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-sm font-bold ${
-                      isSelected && !showResult
-                        ? 'bg-cyan text-[var(--on-accent)]'
-                        : showResult && isCorrect
-                          ? 'bg-success text-[var(--on-accent)]'
-                          : showResult && isSelected
-                            ? 'bg-alert text-foreground'
-                            : 'bg-surface-high text-muted'
-                    }`}
+                  {i + 1}
+                </span>
+                <span className="min-w-0 flex-1 pt-0.5 text-sm text-foreground md:text-base">
+                  {label}
+                </span>
+                {isSelected && !revealed && !paused ? (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      checkAnswer()
+                    }}
+                    className="hud-pill shrink-0 bg-cyan px-3 py-1.5 text-[10px] font-bold tracking-wide text-[var(--on-accent)] shadow-[0_0_14px_var(--cyan-dim)]"
                   >
-                    {i + 1}
-                  </span>
-                  <span className="pt-1 text-sm text-foreground md:text-base">
-                    {label}
-                  </span>
-                </button>
-              )
-            })}
-          </div>
+                    Check
+                  </button>
+                ) : null}
+              </div>
+            )
+          })}
+        </div>
 
-          {revealed && (
-            <div className="mt-5 rounded-lg border border-cyan/25 bg-cyan/5 px-4 py-3">
-              <p className="label-caps text-cyan">
-                {selected === current.correct_key ? 'Correct' : 'Incorrect'}
-                {selected !== current.correct_key && correctIdx >= 0
-                  ? ` · answer ${correctIdx + 1}`
-                  : ''}
+        {revealed && (
+          <div className="mt-6 rounded-xl border border-subtle/80 px-4 py-3">
+            <p className="label-caps text-cyan">
+              {grade?.correct ? 'Correct' : 'Incorrect'}
+              {!grade?.correct && correctIdx >= 0
+                ? ` · answer ${correctIdx + 1}`
+                : ''}
+            </p>
+            {current.explanation ? (
+              <p className="mt-2 text-sm text-muted">{current.explanation}</p>
+            ) : (
+              <p className="mt-2 text-sm text-dim">
+                No explanation for this item yet.
               </p>
-              {current.explanation && (
-                <p className="mt-2 text-sm text-muted">{current.explanation}</p>
-              )}
-            </div>
-          )}
-        </div>
-
-        <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-t border-subtle px-5 py-3 md:px-8">
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              disabled={revealed}
-              onClick={skip}
-              className="hud-pill border border-subtle px-5 py-2.5 text-sm text-foreground transition hover:border-cyan/40 disabled:opacity-40"
-            >
-              Skip Question
-            </button>
-            <span className="hidden text-xs text-dim sm:inline">
-              Press <span className="text-muted">S</span> to skip
-            </span>
+            )}
           </div>
-          <div className="flex items-center gap-3">
-            <span className="hidden text-xs text-dim sm:inline">
-              <span className="text-muted">1–4</span> select ·{' '}
-              <span className="text-muted">Enter</span> /{' '}
-              <span className="text-muted">Space</span> advance
-            </span>
-            <button
-              type="button"
-              disabled={!selected && !revealed}
-              onClick={goNext}
-              className="hud-pill bg-cyan px-6 py-2.5 text-sm font-bold tracking-wide text-[var(--on-accent)] shadow-[0_0_18px_var(--cyan-dim)] transition enabled:hover:brightness-110 disabled:cursor-not-allowed disabled:bg-surface-high disabled:text-dim disabled:shadow-none"
-            >
-              {revealed ? (index + 1 >= total ? 'Finish' : 'Next') : 'Check'}
-            </button>
-          </div>
-        </div>
-      </div>
+        )}
+      </PracticeChrome>
     </div>
   )
 }

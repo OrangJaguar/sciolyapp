@@ -1,28 +1,29 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../../features/auth/AuthProvider'
 import { fetchQuestionsByIds } from '../../lib/arenaBank'
-import { formatXp, rankFromXp } from '../../lib/progression'
-import { isSupabaseConfigured, supabase } from '../../lib/supabase'
 import {
-  submitTimedSession,
-  type SubmitTimedSessionResult,
-} from '../../lib/timedCommit'
+  itemFromQuestion,
+  savePracticeSummary,
+} from '../../lib/practiceSummary'
+import { isSupabaseConfigured, supabase } from '../../lib/supabase'
+import { submitTimedSession } from '../../lib/timedCommit'
 import {
   clearTimedExam,
   loadTimedExam,
+  timedElapsedMs,
+  timedResponseMs,
   type TimedExamPersisted,
 } from '../../lib/timedExamStorage'
 import type { Question } from '../../lib/types'
 
-type RowGrade = {
-  question: Question
-  selected: Question['correct_key'] | null
-  status: 'correct' | 'incorrect' | 'blank'
-  conceptName: string | null
-}
-
+/**
+ * Thin commit bridge after Black Box submit.
+ * On success → CMD + PracticeSummaryModal (Plan 04).
+ * On failure → retry UI stays here.
+ */
 export function TimedAutopsyPage() {
+  const navigate = useNavigate()
   const { refreshProfile } = useAuth()
   const [params] = useSearchParams()
   const session = params.get('session')
@@ -36,11 +37,10 @@ export function TimedAutopsyPage() {
   const [conceptNames, setConceptNames] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [commitResult, setCommitResult] =
-    useState<SubmitTimedSessionResult | null>(null)
   const [commitError, setCommitError] = useState<string | null>(null)
   const [committing, setCommitting] = useState(false)
   const commitLock = useRef(false)
+  const navigatedRef = useRef(false)
 
   useEffect(() => {
     if (!snapshot?.questionIds.length) {
@@ -85,45 +85,12 @@ export function TimedAutopsyPage() {
     }
   }, [snapshot])
 
-  const grades: RowGrade[] = useMemo(() => {
-    if (!snapshot) return []
-    return questions.map((q) => {
-      const selected = snapshot.answers[q.id] ?? null
-      let status: RowGrade['status'] = 'blank'
-      if (selected != null) {
-        status = selected === q.correct_key ? 'correct' : 'incorrect'
-      }
-      return {
-        question: q,
-        selected,
-        status,
-        conceptName: q.concept_id
-          ? (conceptNames[q.concept_id] ?? q.concept_id)
-          : null,
-      }
-    })
-  }, [questions, snapshot, conceptNames])
-
-  const summary = useMemo(() => {
-    const correct = grades.filter((g) => g.status === 'correct').length
-    const incorrect = grades.filter((g) => g.status === 'incorrect').length
-    const blank = grades.filter((g) => g.status === 'blank').length
-    const weak = [
-      ...new Set(
-        grades
-          .filter((g) => g.status === 'incorrect' && g.conceptName)
-          .map((g) => g.conceptName as string),
-      ),
-    ]
-    return { correct, incorrect, blank, total: grades.length, weak }
-  }, [grades])
-
   async function runCommit(snap: TimedExamPersisted, qs: Question[]) {
     if (!isSupabaseConfigured) {
       setCommitError('Supabase not configured')
       return
     }
-    if (commitLock.current) return
+    if (commitLock.current || navigatedRef.current) return
     commitLock.current = true
     setCommitting(true)
     setCommitError(null)
@@ -133,24 +100,79 @@ export function TimedAutopsyPage() {
         const q = byId.get(id)
         const selected = snap.answers[id] ?? null
         if (!q || selected == null) {
-          return { question_id: id, skipped: true, is_correct: null }
+          return {
+            question_id: id,
+            skipped: true,
+            is_correct: null,
+            response_ms: null,
+          }
         }
         return {
           question_id: id,
           skipped: false,
           is_correct: selected === q.correct_key,
+          response_ms: timedResponseMs(snap, id),
         }
       })
 
+      const timeLimitMs = Math.max(0, snap.seconds) * 1000
       const result = await submitTimedSession({
         sessionToken: snap.session,
         eventId: snap.eventId,
         topicId: snap.topicId === 'all' ? 'all' : snap.topicId,
         answers: payload,
+        elapsedMs: timedElapsedMs(snap),
+        timeLimitMs,
       })
-      setCommitResult(result)
       await refreshProfile()
+
+      const items = snap.questionIds.map((id, index) => {
+        const q = byId.get(id)
+        if (!q) {
+          return itemFromQuestion(
+            {
+              id,
+              event_id: snap.eventId,
+              topic_id: null,
+              concept_id: null,
+              question_type: 'mcq',
+              status: 'live',
+              stem: 'Question unavailable',
+              options: { A: '', B: '', C: '', D: '' },
+              correct_key: 'A',
+              explanation: '',
+            },
+            snap.answers[id] ?? null,
+            index,
+          )
+        }
+        return itemFromQuestion(
+          q,
+          snap.answers[id] ?? null,
+          index,
+          q.concept_id ? (conceptNames[q.concept_id] ?? null) : null,
+        )
+      })
+
+      const durationSec = Math.max(
+        0,
+        Math.round(timedElapsedMs(snap) / 1000),
+      )
+
+      savePracticeSummary({
+        v: 1,
+        mode: 'timed',
+        eventId: snap.eventId,
+        topicId: snap.topicId === 'all' ? 'all' : snap.topicId,
+        durationSec,
+        items,
+        commit: result,
+        createdAt: new Date().toISOString(),
+        timedReason: reason,
+      })
       clearTimedExam(snap.session)
+      navigatedRef.current = true
+      navigate('/cmd/missions', { replace: true })
     } catch (err) {
       commitLock.current = false
       setCommitError(
@@ -163,7 +185,7 @@ export function TimedAutopsyPage() {
 
   useEffect(() => {
     if (!snapshot || questions.length === 0) return
-    if (commitResult || commitError || committing) return
+    if (commitError || committing || navigatedRef.current) return
     void runCommit(snapshot, questions)
     // one-shot on graded load
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -187,162 +209,62 @@ export function TimedAutopsyPage() {
     )
   }
 
-  if (loading) {
-    return <Shell title="Running autopsy…" body="Grading sealed answers." />
+  if (loading || (committing && !commitError)) {
+    return (
+      <Shell
+        title={loading ? 'Running autopsy…' : 'Saving session…'}
+        body={
+          loading
+            ? 'Grading sealed answers.'
+            : 'Writing XP, then opening your summary on CMD.'
+        }
+      />
+    )
   }
 
   if (error) {
     return <Shell title="Autopsy error" body={error} />
   }
 
-  return (
-    <div className="flex h-full min-h-0 flex-col gap-3">
-      <div className="flex shrink-0 flex-wrap items-end justify-between gap-3">
-        <div>
-          <Link
-            to="/ops/timed"
-            className="text-xs tracking-wide text-muted hover:text-cyan"
+  if (commitError) {
+    return (
+      <div className="flex h-full min-h-0 items-center justify-center p-4">
+        <div className="hud-panel w-full max-w-lg p-8 text-center">
+          <p className="label-caps">Could not save</p>
+          <p className="mt-4 text-sm text-alert">{commitError}</p>
+          <p className="mt-2 text-xs text-dim">
+            Check Supabase RPCs / network, then retry. Your sealed answers are
+            still on this device.
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              commitLock.current = false
+              setCommitError(null)
+              void runCommit(snapshot, questions)
+            }}
+            className="mt-6 hud-pill border border-alert/40 px-4 py-2 text-sm text-alert"
           >
-            ← Timed
-          </Link>
-          <h1 className="mt-1 text-2xl font-medium text-foreground md:text-3xl">
-            Autopsy
-          </h1>
-          <p className="mt-1 text-sm text-muted">
-            Submit · <span className="text-cyan">{reason}</span> · session{' '}
-            {session.slice(0, 8)}…
-          </p>
-        </div>
-        <div className="text-right">
-          <p className="data-mono text-3xl font-semibold text-cyan">
-            {summary.correct}
-            <span className="text-muted">/{summary.total}</span>
-          </p>
-          <p className="text-xs text-dim">
-            {summary.incorrect} wrong · {summary.blank} blank
-          </p>
-        </div>
-      </div>
-
-      <div className="hud-panel shrink-0 px-5 py-4">
-        {committing && (
-          <p className="data-mono text-sm text-cyan">Committing timed XP…</p>
-        )}
-        {commitResult && (
-          <p className="data-mono text-sm text-cyan">
-            +{commitResult.xp_awarded} XP · total{' '}
-            {formatXp(commitResult.xp_total)} ·{' '}
-            {rankFromXp(commitResult.xp_total)} · streak {commitResult.streak}
-            {commitResult.already_committed ? ' · already saved' : ''}
-          </p>
-        )}
-        {commitError && (
-          <div className="space-y-2">
-            <p className="text-sm text-alert">{commitError}</p>
-            <p className="text-xs text-dim">
-              If RPC missing, run 20260804_timed_commit.sql (SCIOLY-0804-TIMED).
-            </p>
-            <button
-              type="button"
-              onClick={() => {
-                commitLock.current = false
-                setCommitError(null)
-                void runCommit(snapshot, questions)
-              }}
-              className="hud-pill border border-alert/40 px-4 py-2 text-sm text-alert"
+            Retry save
+          </button>
+          <div className="mt-4">
+            <Link
+              to="/ops/timed"
+              className="text-sm text-muted hover:text-cyan"
             >
-              Retry save
-            </button>
+              Back to Timed config
+            </Link>
           </div>
-        )}
-        {summary.weak.length > 0 && (
-          <div className={commitResult || commitError || committing ? 'mt-3' : ''}>
-            <p className="label-caps mb-2">Weak concepts this run</p>
-            <div className="flex flex-wrap gap-2">
-              {summary.weak.map((name) => (
-                <span
-                  key={name}
-                  className="rounded-pill border border-alert/40 bg-alert/10 px-3 py-1 text-xs text-alert"
-                >
-                  {name}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
+        </div>
       </div>
-
-      <div className="hud-panel min-h-0 flex-1 overflow-y-auto">
-        <ul className="divide-y divide-white/10">
-          {grades.map((g, i) => (
-            <li key={g.question.id} className="px-5 py-4">
-              <div className="flex flex-wrap items-start justify-between gap-2">
-                <p className="data-mono text-xs text-dim">Q{i + 1}</p>
-                <StatusPill status={g.status} />
-              </div>
-              <p className="mt-2 text-sm text-foreground">{g.question.stem}</p>
-              {g.conceptName && (
-                <p className="mt-2 text-xs text-cyan">
-                  Concept · {g.conceptName}
-                </p>
-              )}
-              <p className="mt-2 text-xs text-muted">
-                Your answer:{' '}
-                {g.selected
-                  ? `${g.selected}. ${g.question.options[g.selected]}`
-                  : '— blank —'}
-              </p>
-              {g.status !== 'correct' && (
-                <p className="mt-1 text-xs text-success">
-                  Correct: {g.question.correct_key}.{' '}
-                  {g.question.options[g.question.correct_key]}
-                </p>
-              )}
-              {g.question.explanation && (
-                <p className="mt-2 text-xs text-dim">{g.question.explanation}</p>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="flex shrink-0 flex-wrap gap-3">
-        <Link
-          to="/ops/timed"
-          className="hud-pill bg-cyan px-5 py-2.5 text-sm font-bold text-[var(--on-accent)]"
-        >
-          Run again
-        </Link>
-        <Link
-          to="/ops"
-          className="hud-pill border border-subtle px-5 py-2.5 text-sm text-muted"
-        >
-          OPS
-        </Link>
-      </div>
-    </div>
-  )
-}
-
-function StatusPill({ status }: { status: RowGrade['status'] }) {
-  if (status === 'correct') {
-    return (
-      <span className="rounded-pill bg-success/20 px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-success uppercase">
-        Correct
-      </span>
     )
   }
-  if (status === 'incorrect') {
-    return (
-      <span className="rounded-pill bg-alert/20 px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-alert uppercase">
-        Incorrect
-      </span>
-    )
-  }
+
   return (
-    <span className="rounded-pill bg-surface-high px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-dim uppercase">
-      Blank
-    </span>
+    <Shell
+      title="Opening summary…"
+      body="Redirecting to CMD."
+    />
   )
 }
 

@@ -74,7 +74,7 @@ function LoginForm() {
     try {
       const { error: err } = await requireSupabase().auth.signInWithOAuth({
         provider: 'google',
-        options: { redirectTo: `${window.location.origin}/cmd/missions` },
+        options: { redirectTo: `${window.location.origin}/setup` },
       })
       if (err) throw err
     } catch (err) {

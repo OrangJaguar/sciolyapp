@@ -1,6 +1,9 @@
 [functions.generate-worker]
 verify_jwt = true
 
+[functions.generate-dispatcher]
+verify_jwt = false
+
 [functions.critic-worker]
 verify_jwt = true
 

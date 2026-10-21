@@ -2,13 +2,14 @@ import { serve } from 'https://deno.land/std@0.224.0/http/server.ts'
 import {
   buildSystemPrompt,
   buildUserPrompt,
-  callNim,
+  callChatModel,
   createUserClient,
   emitCount,
   extractJsonArray,
   isInsideRunWindow,
   parseMcq,
   repairJson,
+  resolveChatProvider,
   type GenerationContext,
   type ParsedMcq,
 } from '../_shared/generation.ts'
@@ -112,8 +113,7 @@ serve(async (req) => {
     const ctx = contextRaw as GenerationContext
     const systemPrompt = buildSystemPrompt(ctx)
     const userPrompt = buildUserPrompt(ctx)
-    const provider = String(config.provider ?? 'nim')
-    const usePro = provider === 'deepseek_pro' || provider === 'pro'
+    const chatProvider = resolveChatProvider(String(config.provider ?? 'nim'))
     const need = emitCount(ctx)
 
     let rawContent = ''
@@ -121,21 +121,31 @@ serve(async (req) => {
     let finishReason: string | null = null
 
     try {
-      if (provider.startsWith('deepseek')) {
-        throw new Error(
-          'Paid DeepSeek provider is not wired yet — use provider=nim for Plan 23 tests',
-        )
-      }
-
-      const nim = await callNim(systemPrompt, userPrompt, usePro)
-      rawContent = nim.content
-      tokenUsage = nim.usage
-      finishReason = nim.finishReason
+      const llm = await callChatModel(systemPrompt, userPrompt, chatProvider)
+      rawContent = llm.content
+      tokenUsage = llm.usage
+      finishReason = llm.finishReason
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'NIM request failed'
-      const diagnosis = /timeout|aborted|AbortError/i.test(message)
-        ? 'nim_timeout'
-        : 'nim_error'
+      const message = err instanceof Error ? err.message : 'LLM request failed'
+      const diagnosis = classifyLlmError(message, chatProvider)
+      // Transient rate limits: requeue instead of permanently failing the item.
+      if (diagnosis === 'deepseek_429' || diagnosis === 'rate_limited') {
+        await supabase.rpc('admin_generation_requeue_item', {
+          p_item_id: item.id,
+          p_error: message,
+          p_diagnosis: diagnosis,
+        })
+        return json({
+          processed: true,
+          failed: false,
+          requeued: true,
+          error: message,
+          diagnosis,
+          finishReason,
+          usage: tokenUsage,
+          provider: chatProvider,
+        })
+      }
       await failItem(supabase, item.id, {
         error: message,
         finishReason,
@@ -149,6 +159,7 @@ serve(async (req) => {
         diagnosis,
         finishReason,
         usage: tokenUsage,
+        provider: chatProvider,
       })
     }
 
@@ -163,6 +174,7 @@ serve(async (req) => {
         const repaired = await repairJson(
           rawContent,
           parseErr instanceof Error ? parseErr.message : 'parse error',
+          chatProvider,
         )
         arrayRaw = extractJsonArray(repaired)
       }
@@ -349,6 +361,19 @@ serve(async (req) => {
     return json({ error: message, diagnosis: 'worker_crash' }, 500)
   }
 })
+
+function classifyLlmError(
+  message: string,
+  provider: 'nim' | 'deepseek_flash' | 'deepseek_pro',
+): string {
+  if (/deepseek_429|\b429\b|rate.?limit/i.test(message)) {
+    return provider.startsWith('deepseek') ? 'deepseek_429' : 'rate_limited'
+  }
+  if (/timeout|aborted|AbortError/i.test(message)) {
+    return provider.startsWith('deepseek') ? 'deepseek_timeout' : 'nim_timeout'
+  }
+  return provider.startsWith('deepseek') ? 'deepseek_error' : 'nim_error'
+}
 
 function looksLikeCotDump(row: unknown): boolean {
   if (!row || typeof row !== 'object') return false

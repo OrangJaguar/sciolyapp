@@ -31,23 +31,50 @@ function BinderVisual() {
 
 function CasualVisual() {
   return (
-    <svg viewBox="0 0 200 160" className="h-full w-full" aria-hidden>
+    <svg
+      viewBox="0 0 200 160"
+      className="h-full w-full overflow-hidden"
+      aria-hidden
+    >
       <g
         transform="translate(100 82)"
         fill="none"
         stroke="currentColor"
         strokeWidth="1.2"
       >
-        <circle r="54" opacity="0.25" />
-        <circle r="38" opacity="0.4" />
-        <circle r="22" opacity="0.55" />
-        <circle r="6" fill="currentColor" stroke="none" opacity="0.95" />
-        <line x1="0" y1="-54" x2="0" y2="54" opacity="0.25" />
-        <line x1="-54" y1="0" x2="54" y2="0" opacity="0.25" />
-        <g className="origin-center animate-none transition-transform duration-700 ease-out group-hover:rotate-[70deg]">
-          <path d="M0 0 L38 -28" strokeWidth="1.5" opacity="0.85" />
-          <circle cx="32" cy="-24" r="3.5" fill="currentColor" stroke="none" />
+        <circle
+          r="52"
+          opacity="0.22"
+          className="transition-[opacity,stroke-width] duration-500 group-hover:opacity-40"
+        />
+        <circle
+          r="36"
+          opacity="0.38"
+          className="transition-opacity duration-500 group-hover:opacity-55"
+        />
+        <circle
+          r="20"
+          opacity="0.55"
+          className="transition-opacity duration-500 group-hover:opacity-75"
+        />
+        <line x1="0" y1="-52" x2="0" y2="52" opacity="0.2" />
+        <line x1="-52" y1="0" x2="52" y2="0" opacity="0.2" />
+        {/* Needle pivots at origin — short tip stays inside outer ring */}
+        <g
+          className="transition-transform duration-700 ease-out group-hover:rotate-[55deg]"
+          style={{ transformOrigin: '0px 0px' }}
+        >
+          <path d="M0 0 L24 -18" strokeWidth="1.6" opacity="0.9" />
+          <circle cx="22" cy="-16" r="3" fill="currentColor" stroke="none" />
         </g>
+        <circle r="4" fill="currentColor" stroke="none" opacity="0.95" />
+        <circle
+          r="28"
+          strokeDasharray="4 10"
+          opacity="0.35"
+          className="transition-transform duration-1000 ease-out group-hover:rotate-[-25deg]"
+          style={{ transformOrigin: '0px 0px' }}
+        />
       </g>
     </svg>
   )

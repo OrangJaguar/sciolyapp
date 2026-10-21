@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { BadgeMark, badgeName, badgeXp } from '../../lib/badges'
 import { XP_AWARDS } from '../../lib/progression'
+import type { NewlyUnlockedBadge } from '../../lib/practiceCommit'
 import { supabase } from '../../lib/supabase'
+import { clientTimezone } from '../../lib/timezone'
 
 export type ClinicPayload = {
   conceptId: string
@@ -63,13 +66,30 @@ async function awardClinicDo(conceptId: string, sessionToken: string) {
   const { data, error } = await supabase.rpc('complete_clinic_do', {
     p_concept_id: conceptId,
     p_session_token: sessionToken,
+    p_timezone: clientTimezone(),
   })
   if (error) throw error
-  return data as {
-    already_awarded: boolean
-    xp_awarded: number
-    xp_total: number
-    concept_id: string
+  const row = (data ?? {}) as Record<string, unknown>
+  const rawUnlocks = row.newly_unlocked
+  const newly_unlocked: NewlyUnlockedBadge[] = Array.isArray(rawUnlocks)
+    ? rawUnlocks
+        .map((u) => {
+          if (!u || typeof u !== 'object') return null
+          const o = u as Record<string, unknown>
+          const id = typeof o.id === 'string' ? o.id : null
+          if (!id) return null
+          return { id, xp: Number(o.xp ?? 0) }
+        })
+        .filter((u): u is NewlyUnlockedBadge => u != null)
+    : []
+  return {
+    already_awarded: Boolean(row.already_awarded),
+    xp_awarded: Number(row.xp_awarded ?? 0),
+    xp_total: Number(row.xp_total ?? 0),
+    streak: Number(row.streak ?? 0),
+    cap_hit: Boolean(row.cap_hit),
+    concept_id: String(row.concept_id ?? conceptId),
+    newly_unlocked,
   }
 }
 
@@ -87,6 +107,8 @@ export function ClinicOverlay({
   const [awarding, setAwarding] = useState(false)
   const [awardError, setAwardError] = useState<string | null>(null)
   const [xpGained, setXpGained] = useState<number | null>(null)
+  const [capHit, setCapHit] = useState(false)
+  const [unlocked, setUnlocked] = useState<NewlyUnlockedBadge[]>([])
 
   const contentQuery = useQuery({
     queryKey: ['clinic-content', payload.conceptId],
@@ -193,6 +215,8 @@ export function ClinicOverlay({
         payload.sessionToken,
       )
       setXpGained(result.xp_awarded)
+      setCapHit(result.cap_hit)
+      setUnlocked(result.newly_unlocked)
       onComplete(result.xp_awarded)
     } catch (err) {
       const msg =
@@ -276,7 +300,7 @@ export function ClinicOverlay({
               <p className="label-caps mb-3">Do</p>
               {!doQuestion.fromGuide && (
                 <p className="mb-2 text-xs text-dim">
-                  Fallback check — run Plan 11 guide seed for concept DO items.
+                  Fallback check — seed a live concept guide DO item in Supabase.
                 </p>
               )}
               <p className="text-base text-foreground">{doQuestion.stem}</p>
@@ -319,13 +343,44 @@ export function ClinicOverlay({
                 </p>
               )}
               {doPassed && (
-                <p className="mt-3 text-sm text-success">
-                  Cleared
-                  {xpGained != null
-                    ? ` · +${xpGained} XP`
-                    : ` · +${XP_AWARDS.clinicDoCompleted} XP on return`}
-                  .
-                </p>
+                <div className="mt-3 space-y-1">
+                  <p className="text-sm text-success">
+                    Cleared
+                    {xpGained != null
+                      ? ` · +${xpGained} XP`
+                      : ` · +${XP_AWARDS.clinicDoCompleted} XP on return`}
+                    .
+                  </p>
+                  {capHit && (
+                    <p className="text-xs text-dim">
+                      Daily practice XP cap reached (200 base).
+                    </p>
+                  )}
+                  {unlocked.length > 0 && (
+                    <ul className="mt-2 flex flex-wrap gap-2">
+                      {unlocked.map((u) => {
+                        const xp = u.xp || badgeXp(u.id)
+                        return (
+                          <li
+                            key={u.id}
+                            className="flex items-center gap-2 rounded-lg border border-cyan/35 bg-cyan/10 px-2.5 py-1.5"
+                          >
+                            <BadgeMark id={u.id} earned />
+                            <span className="text-xs text-foreground">
+                              {badgeName(u.id)}
+                              {xp > 0 ? (
+                                <span className="data-mono text-cyan">
+                                  {' '}
+                                  · +{xp}
+                                </span>
+                              ) : null}
+                            </span>
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  )}
+                </div>
               )}
               {awardError && (
                 <p className="mt-2 text-xs text-alert">

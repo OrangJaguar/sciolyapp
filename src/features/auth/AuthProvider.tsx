@@ -4,6 +4,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react'
@@ -11,12 +12,23 @@ import type { Session, User } from '@supabase/supabase-js'
 import { isSupabaseConfigured, supabase } from '../../lib/supabase'
 import type { Profile } from '../../lib/types'
 
+export type ProfileStatus = 'loading' | 'ready' | 'missing'
+
 type AuthContextValue = {
+  /** Auth client initialized (session known). Profile may still be loading. */
   ready: boolean
   configured: boolean
   session: Session | null
   user: User | null
   profile: Profile | null
+  /**
+   * When session exists:
+   * - loading — fetch in flight
+   * - ready — profile row loaded
+   * - missing — fetch finished, no row (or error)
+   * When no session: ready (N/A).
+   */
+  profileStatus: ProfileStatus
   refreshProfile: () => Promise<Profile | null>
   signOut: () => Promise<void>
 }
@@ -41,21 +53,46 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(!isSupabaseConfigured)
   const [session, setSession] = useState<Session | null>(null)
   const [profile, setProfile] = useState<Profile | null>(null)
+  const [profileStatus, setProfileStatus] = useState<ProfileStatus>(
+    isSupabaseConfigured ? 'loading' : 'ready',
+  )
+  const profileUidRef = useRef<string | null>(null)
+
+  const applyProfileForUser = useCallback(async (userId: string) => {
+    setProfileStatus('loading')
+    // Drop previous user's profile immediately on uid change
+    if (profileUidRef.current !== userId) {
+      setProfile(null)
+      profileUidRef.current = userId
+    }
+    const next = await fetchProfile(userId)
+    // Ignore stale responses if user changed mid-flight
+    if (profileUidRef.current !== userId) return null
+    setProfile(next)
+    setProfileStatus(next ? 'ready' : 'missing')
+    return next
+  }, [])
+
+  const clearProfile = useCallback(() => {
+    profileUidRef.current = null
+    setProfile(null)
+    setProfileStatus('ready')
+  }, [])
 
   const refreshProfile = useCallback(async () => {
-    const uid = session?.user?.id ?? (await supabase?.auth.getUser())?.data.user?.id
+    const uid =
+      session?.user?.id ?? (await supabase?.auth.getUser())?.data.user?.id
     if (!uid) {
-      setProfile(null)
+      clearProfile()
       return null
     }
-    const next = await fetchProfile(uid)
-    setProfile(next)
-    return next
-  }, [session?.user?.id])
+    return applyProfileForUser(uid)
+  }, [session?.user?.id, applyProfileForUser, clearProfile])
 
   useEffect(() => {
     if (!supabase) {
       setReady(true)
+      setProfileStatus('ready')
       return
     }
 
@@ -65,19 +102,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (cancelled) return
       setSession(data.session)
       if (data.session?.user) {
-        setProfile(await fetchProfile(data.session.user.id))
+        await applyProfileForUser(data.session.user.id)
+      } else {
+        clearProfile()
       }
-      setReady(true)
+      if (!cancelled) setReady(true)
     })
 
     const { data: sub } = supabase.auth.onAuthStateChange((_event, next) => {
       setSession(next)
       if (next?.user) {
-        void fetchProfile(next.user.id).then((p) => {
-          if (!cancelled) setProfile(p)
-        })
+        void applyProfileForUser(next.user.id)
       } else {
-        setProfile(null)
+        clearProfile()
       }
     })
 
@@ -85,12 +122,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       cancelled = true
       sub.subscription.unsubscribe()
     }
-  }, [])
+  }, [applyProfileForUser, clearProfile])
 
   const signOut = useCallback(async () => {
     if (supabase) await supabase.auth.signOut()
-    setProfile(null)
-  }, [])
+    clearProfile()
+  }, [clearProfile])
 
   const value = useMemo<AuthContextValue>(
     () => ({
@@ -99,10 +136,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       session,
       user: session?.user ?? null,
       profile,
+      profileStatus: session ? profileStatus : 'ready',
       refreshProfile,
       signOut,
     }),
-    [ready, session, profile, refreshProfile, signOut],
+    [
+      ready,
+      session,
+      profile,
+      profileStatus,
+      refreshProfile,
+      signOut,
+    ],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

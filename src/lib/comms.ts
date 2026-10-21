@@ -8,10 +8,13 @@ import type { TeamRole } from './types'
 
 export { fetchTeamContext, isOfficerPlus, joinTeamByCode }
 
+export type CoverageStatus = 'assigned' | 'training' | 'ready'
+
 export type RosterMember = {
   user_id: string
   role: TeamRole
   handle: string
+  display_name: string | null
   avatar_id: string
 }
 
@@ -23,6 +26,44 @@ export type TeamPost = {
   is_pinned: boolean
   created_at: string
   author_handle: string
+}
+
+export type EventCoverage = {
+  user_id: string
+  event_id: string
+  status: CoverageStatus
+}
+
+export type TeamEventOption = {
+  id: string
+  name: string
+  studyable: boolean
+}
+
+const COVERAGE_CYCLE: Array<CoverageStatus | 'off'> = [
+  'assigned',
+  'training',
+  'ready',
+  'off',
+]
+
+export function nextCoverageStatus(
+  current: CoverageStatus | null,
+): CoverageStatus | 'off' {
+  if (!current) return 'assigned'
+  const i = COVERAGE_CYCLE.indexOf(current)
+  return COVERAGE_CYCLE[(i + 1) % COVERAGE_CYCLE.length]!
+}
+
+export function coverageLabel(status: CoverageStatus): string {
+  switch (status) {
+    case 'assigned':
+      return 'Assigned'
+    case 'training':
+      return 'Training'
+    case 'ready':
+      return 'Ready'
+  }
 }
 
 export async function fetchTeamRoster(teamId: string): Promise<RosterMember[]> {
@@ -40,14 +81,19 @@ export async function fetchTeamRoster(teamId: string): Promise<RosterMember[]> {
   const ids = rows.map((r) => r.user_id)
   const { data: profiles, error: pErr } = await supabase
     .from('profiles')
-    .select('id, handle, avatar_id')
+    .select('id, handle, display_name, avatar_id')
     .in('id', ids)
   if (pErr) throw pErr
 
   const byId = new Map(
-    ((profiles ?? []) as Array<{ id: string; handle: string; avatar_id: string }>).map(
-      (p) => [p.id, p],
-    ),
+    (
+      (profiles ?? []) as Array<{
+        id: string
+        handle: string
+        display_name: string | null
+        avatar_id: string
+      }>
+    ).map((p) => [p.id, p]),
   )
 
   const roleRank: Record<TeamRole, number> = {
@@ -64,6 +110,7 @@ export async function fetchTeamRoster(teamId: string): Promise<RosterMember[]> {
         user_id: r.user_id,
         role: r.role,
         handle: p?.handle ?? 'unknown',
+        display_name: p?.display_name?.trim() || null,
         avatar_id: p?.avatar_id ?? 'default',
       }
     })
@@ -155,34 +202,39 @@ export async function deleteTeamPost(postId: string) {
 }
 
 export function formatRole(role: TeamRole): string {
-  return role.toUpperCase()
+  switch (role) {
+    case 'coach':
+      return 'Coach'
+    case 'captain':
+      return 'Captain'
+    case 'officer':
+      return 'Officer'
+    case 'member':
+      return 'Member'
+  }
 }
 
 export function canManageRoster(role: TeamRole | null): boolean {
   return role === 'captain' || role === 'coach'
 }
 
-export type EventAssign = {
-  user_id: string
-  event_id: string
-}
-
-export type TeamEventOption = {
-  id: string
-  name: string
-  studyable: boolean
-}
-
-export async function fetchTeamEventAssigns(
+export async function fetchTeamEventCoverage(
   teamId: string,
-): Promise<EventAssign[]> {
+): Promise<EventCoverage[]> {
   if (!supabase) throw new Error('Supabase not configured')
   const { data, error } = await supabase
     .from('team_event_coverage')
-    .select('user_id, event_id')
+    .select('user_id, event_id, status')
     .eq('team_id', teamId)
   if (error) throw error
-  return (data ?? []) as EventAssign[]
+  return (data ?? []) as EventCoverage[]
+}
+
+/** @deprecated Prefer fetchTeamEventCoverage */
+export async function fetchTeamEventAssigns(
+  teamId: string,
+): Promise<EventCoverage[]> {
+  return fetchTeamEventCoverage(teamId)
 }
 
 export async function fetchActiveEvents(): Promise<TeamEventOption[]> {
@@ -210,20 +262,16 @@ export async function fetchTeamJoinCodes(teamId: string) {
   } | null
 }
 
-export async function assignTeamEvent(userId: string, eventId: string) {
+export async function setEventCoverage(
+  userId: string,
+  eventId: string,
+  status: CoverageStatus | 'off',
+) {
   if (!supabase) throw new Error('Supabase not configured')
-  const { error } = await supabase.rpc('assign_team_event', {
+  const { error } = await supabase.rpc('set_event_coverage', {
     p_user_id: userId,
     p_event_id: eventId,
-  })
-  if (error) throw error
-}
-
-export async function unassignTeamEvent(userId: string, eventId: string) {
-  if (!supabase) throw new Error('Supabase not configured')
-  const { error } = await supabase.rpc('unassign_team_event', {
-    p_user_id: userId,
-    p_event_id: eventId,
+    p_status: status,
   })
   if (error) throw error
 }

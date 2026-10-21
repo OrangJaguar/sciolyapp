@@ -1,4 +1,18 @@
 import { supabase } from './supabase'
+import {
+  defaultWindowForProvider,
+  formatWindowSummary,
+  type GenerationWindowConfig,
+} from './generationWindow'
+
+export type { GenerationWindowConfig } from './generationWindow'
+export {
+  deepseekRateLabel,
+  defaultWindowForProvider,
+  formatWindowSummary,
+  isDeepseekPeakUtc,
+  isInsideRunWindow,
+} from './generationWindow'
 
 export type GenerationPassMode = 'A_only' | 'A_then_B' | 'top_up'
 export type GenerationMode =
@@ -7,13 +21,6 @@ export type GenerationMode =
   | 'top_up'
   | 'workbench'
 export type GenerationProvider = 'nim' | 'deepseek_flash' | 'deepseek_pro' | 'auto'
-
-export type GenerationWindowConfig = {
-  enabled: boolean
-  tz: string
-  start: string
-  end: string
-}
 
 export type GenerationJobConfig = {
   mode: GenerationMode
@@ -29,9 +36,11 @@ export type GenerationJobConfig = {
   fillGap?: boolean
   /** Blank / undefined / 0 = all gap concepts (campaign season default). */
   limitConcepts?: number
-  /** Parallel NIM calls while draining a job (default 3). Claim stays A→B ordered. */
+  /** Parallel calls while draining a job. Claim stays A→B ordered. */
   concurrency?: number
   window: GenerationWindowConfig
+  /** ISO timestamp — dispatcher skips until this (set after 429 bursts). */
+  drain_backoff_until?: string
 }
 
 export type GenerationBlocker = {
@@ -144,24 +153,64 @@ export const DEFAULT_GENERATION_CONFIG: GenerationJobConfig = {
   // undefined = all concepts below target (season GO)
   limitConcepts: undefined,
   concurrency: 3,
-  window: {
-    enabled: false,
-    tz: 'America/Chicago',
-    start: '08:00',
-    end: '22:00',
-  },
+  window: defaultWindowForProvider('nim'),
 }
 
 export const GENERATION_CONCURRENCY_MIN = 1
+/** @deprecated Use maxConcurrencyForProvider — kept as NIM ceiling. */
 export const GENERATION_CONCURRENCY_MAX = 8
+/** Browser Live boost pool — server dispatcher owns high N. */
+export const CLIENT_DRAIN_CONCURRENCY_MAX = 32
 
-export function clampConcurrency(raw: unknown): number {
+export const CONCURRENCY_PRESETS = [
+  3, 8, 16, 32, 64, 128, 256, 500, 1000, 2500,
+] as const
+
+export function maxConcurrencyForProvider(
+  provider: GenerationProvider | string | null | undefined,
+): number {
+  const p = String(provider ?? 'nim').toLowerCase()
+  if (p === 'deepseek_flash' || p === 'deepseek' || p === 'auto') return 2500
+  if (p === 'deepseek_pro' || p === 'pro') return 500
+  return 8
+}
+
+export function defaultConcurrencyForProvider(
+  provider: GenerationProvider | string | null | undefined,
+): number {
+  const p = String(provider ?? 'nim').toLowerCase()
+  if (p === 'deepseek_flash' || p === 'deepseek' || p === 'auto') return 64
+  if (p === 'deepseek_pro' || p === 'pro') return 32
+  return 3
+}
+
+export function clampConcurrency(
+  raw: unknown,
+  provider?: GenerationProvider | string | null,
+): number {
   const n = typeof raw === 'number' ? raw : Number(raw)
-  if (!Number.isFinite(n)) return 3
+  const max = maxConcurrencyForProvider(provider)
+  const fallback = defaultConcurrencyForProvider(provider)
+  if (!Number.isFinite(n)) return fallback
+  return Math.min(max, Math.max(GENERATION_CONCURRENCY_MIN, Math.round(n)))
+}
+
+/** Cap used when the Admin tab pumps workers (not the job’s stored concurrency). */
+export function clampClientDrainConcurrency(
+  raw: unknown,
+  provider?: GenerationProvider | string | null,
+): number {
   return Math.min(
-    GENERATION_CONCURRENCY_MAX,
-    Math.max(GENERATION_CONCURRENCY_MIN, Math.round(n)),
+    CLIENT_DRAIN_CONCURRENCY_MAX,
+    clampConcurrency(raw, provider),
   )
+}
+
+export function concurrencyPresetsForProvider(
+  provider: GenerationProvider | string | null | undefined,
+): number[] {
+  const max = maxConcurrencyForProvider(provider)
+  return CONCURRENCY_PRESETS.filter((n) => n <= max)
 }
 
 /** Strip limitConcepts from RPC payload when blank so SQL treats as unlimited. */
@@ -172,6 +221,7 @@ export function serializeGenerationConfig(
   if (next.limitConcepts == null || next.limitConcepts <= 0) {
     delete next.limitConcepts
   }
+  next.concurrency = clampConcurrency(next.concurrency ?? 3, next.provider)
   return next
 }
 
@@ -340,12 +390,16 @@ export async function invokeGenerateWorker(
     const msg = error.message ?? 'Edge function invoke failed'
     if (/Failed to send a request to the Edge Function|FunctionsFetchError|Failed to fetch|404|not found/i.test(msg)) {
       throw new Error(
-        'generate-worker is not deployed (or not reachable). Run: supabase login && supabase link --project-ref ormtobpwgmmeanqctduz && supabase functions deploy generate-worker — then set NVIDIA_NIM_* secrets in Supabase → Edge Functions → Secrets.',
+        'generate-worker is not deployed (or not reachable). Run: supabase functions deploy generate-worker — then set DEEPSEEK_* and/or NVIDIA_NIM_* secrets in Supabase → Edge Functions → Secrets.',
       )
     }
-    if (/NVIDIA_NIM_API_KEY|401|403|FunctionsRelayError/i.test(msg)) {
+    if (
+      /DEEPSEEK_API_KEY|DEEPSEEK_KEY|NVIDIA_NIM_API_KEY|401|403|FunctionsRelayError/i.test(
+        msg,
+      )
+    ) {
       throw new Error(
-        `${msg} — set NVIDIA_NIM_* secrets in Supabase → Edge Functions → Secrets`,
+        `${msg} — set DEEPSEEK_API_KEY (DeepSeek jobs) and/or NVIDIA_NIM_* (NIM jobs) in Supabase → Edge Functions → Secrets`,
       )
     }
     throw new Error(msg)
@@ -367,15 +421,16 @@ export type ParallelDrainBatch = {
 export async function invokeGenerateWorkerBatch(
   jobId: string,
   concurrency: number,
+  provider?: GenerationProvider | string | null,
 ): Promise<ParallelDrainBatch> {
   // Unstick zombies before draining (also happens inside claim SQL)
   try {
-    await recoverStaleGenerationItems(jobId, 240)
+    await recoverStaleGenerationItems(jobId, 360)
   } catch {
     // non-fatal if migration not applied yet
   }
 
-  const n = clampConcurrency(concurrency)
+  const n = clampClientDrainConcurrency(concurrency, provider)
   const settled = await Promise.allSettled(
     Array.from({ length: n }, () => invokeGenerateWorker(jobId)),
   )
@@ -421,10 +476,11 @@ export async function invokeGenerateWorkerBatch(
 export function summarizeWorkerBatch(
   batch: ParallelDrainBatch,
   requestedConcurrency: number,
+  provider?: GenerationProvider | string | null,
 ): string {
   const processed = batch.ticks.filter((t) => t.processed)
   const idle = batch.ticks.filter((t) => t.idle || (t.done && !t.processed)).length
-  const n = clampConcurrency(requestedConcurrency)
+  const n = clampClientDrainConcurrency(requestedConcurrency, provider)
 
   if (batch.errors.length > 0 && processed.length === 0) {
     return batch.errors[0] ?? 'Worker batch failed'
@@ -459,15 +515,40 @@ export function summarizeWorkerBatch(
   return bits.join(' · ')
 }
 
-export function estimatePaidUsd(preview: GenerationPreview, provider: GenerationProvider) {
-  if (provider === 'nim') return null
+/**
+ * Rough USD estimate using DeepSeek list rates (cache-miss input).
+ * Off-peak ≈ ½ peak. Flash off-peak $0.15/$0.60 · Pro $0.66/$1.98 per 1M in/out.
+ */
+export function estimatePaidUsd(
+  preview: GenerationPreview,
+  provider: GenerationProvider,
+  opts?: { rate?: 'offpeak' | 'peak' },
+) {
+  if (provider === 'nim' || provider === 'auto') return null
   const requests = preview.request_count
-  // Short explanations ~200 tokens/Q after Plan 27 packs
   const outputTokens = preview.question_count * 200
   const inputTokens = requests * 6000
-  const outputRate = provider === 'deepseek_pro' ? 1.98 : 0.66
-  const inputRate = provider === 'deepseek_pro' ? 0.66 : 0.22
-  return ((inputTokens / 1_000_000) * inputRate + (outputTokens / 1_000_000) * outputRate)
+  const peak = opts?.rate === 'peak'
+  const outputRate =
+    provider === 'deepseek_pro'
+      ? peak
+        ? 3.96
+        : 1.98
+      : peak
+        ? 1.2
+        : 0.6
+  const inputRate =
+    provider === 'deepseek_pro'
+      ? peak
+        ? 1.32
+        : 0.66
+      : peak
+        ? 0.3
+        : 0.15
+  return (
+    (inputTokens / 1_000_000) * inputRate +
+    (outputTokens / 1_000_000) * outputRate
+  )
 }
 
 export function jobProgress(job: GenerationJob): number {
@@ -526,16 +607,29 @@ export function describeGenerationJob(
           ? `Top-up · ${eventLabel}`
           : `Fill · ${eventLabel}`
 
+  const windowNote = formatWindowSummary(config.window, config.provider)
+  const pauseNote =
+    job.status === 'paused' && job.pause_reason
+      ? job.pause_reason === 'manual'
+        ? 'paused by admin'
+        : `paused: ${job.pause_reason}`
+      : null
+
   const detail = [
     mode === 'workbench' && (config.conceptIds?.length ?? 0) > 0
       ? `${config.conceptIds!.length} picked`
       : limit,
     `${config.questionsPerCall ?? 8}/call`,
-    `×${clampConcurrency(config.concurrency ?? 3)}`,
+    `×${clampConcurrency(config.concurrency ?? 3, config.provider)}`,
     `target ${config.targetPerConcept ?? 30}`,
+    config.provider ?? 'nim',
+    windowNote,
+    pauseNote,
     `${job.questions_written} drafts`,
     `${jobProgress(job)}%`,
-  ].join(' · ')
+  ]
+    .filter(Boolean)
+    .join(' · ')
 
   return { title, detail }
 }
@@ -545,10 +639,25 @@ export function estimateEtaMinutes(
   requestCount: number,
   concurrency = 3,
   secondsPerCall = 60,
+  provider?: GenerationProvider | string | null,
 ): number {
-  const c = clampConcurrency(concurrency)
+  const c = clampConcurrency(concurrency, provider)
   if (requestCount <= 0) return 0
   return Math.max(1, Math.ceil((requestCount * secondsPerCall) / c / 60))
+}
+
+export async function invokeGenerateDispatcher(opts?: {
+  jobId?: string
+  burstCap?: number
+}): Promise<Record<string, unknown>> {
+  const { data, error } = await requireSupabase().functions.invoke(
+    'generate-dispatcher',
+    { body: { jobId: opts?.jobId ?? null, burstCap: opts?.burstCap ?? 50 } },
+  )
+  if (error) {
+    throw new Error(error.message ?? 'generate-dispatcher invoke failed')
+  }
+  return (data ?? {}) as Record<string, unknown>
 }
 
 export function sleep(ms: number) {

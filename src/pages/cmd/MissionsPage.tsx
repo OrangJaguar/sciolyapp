@@ -2,6 +2,7 @@ import { useMemo, useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '../../features/auth/AuthProvider'
+import { NoTeamPanel } from '../../components/team/NoTeamPanel'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import {
   createTeamMission,
@@ -11,7 +12,6 @@ import {
   fetchTeamContext,
   formatDeadline,
   isOfficerPlus,
-  joinTeamByCode,
   syncMyMissionProgress,
   tMinus,
   type MissionGoalType,
@@ -35,8 +35,13 @@ export function MissionsPage() {
     queryKey: ['missions-list', teamId, userId],
     enabled: isSupabaseConfigured && Boolean(userId && teamId),
     queryFn: async () => {
-      const sync = await syncMyMissionProgress()
-      if (sync.xp_awarded > 0) await refreshProfile()
+      // Sync is best-effort — empty teams / RPC hiccups must not look like a load failure
+      try {
+        await syncMyMissionProgress()
+        await refreshProfile()
+      } catch (err) {
+        console.warn('sync_my_mission_progress', err)
+      }
       return fetchMyMissions(teamId!, userId!)
     },
   })
@@ -61,22 +66,6 @@ export function MissionsPage() {
   const nearest = upcoming[0] ?? null
 
   const [showCreate, setShowCreate] = useState(false)
-  const [joinCode, setJoinCode] = useState('')
-  const [joinError, setJoinError] = useState<string | null>(null)
-
-  const joinMutation = useMutation({
-    mutationFn: () => joinTeamByCode(joinCode),
-    onSuccess: async () => {
-      setJoinError(null)
-      setJoinCode('')
-      await refreshProfile()
-      void qc.invalidateQueries({ queryKey: ['missions-team'] })
-      void qc.invalidateQueries({ queryKey: ['missions-list'] })
-    },
-    onError: (err) => {
-      setJoinError(err instanceof Error ? err.message : 'Join failed')
-    },
-  })
 
   if (!isSupabaseConfigured) {
     return (
@@ -88,39 +77,13 @@ export function MissionsPage() {
 
   if (!teamId) {
     return (
-      <div className="mx-auto flex h-full max-w-md flex-col justify-center gap-4 p-6">
-        <div className="hud-panel p-6">
-          <p className="label-caps">Freelancer</p>
-          <h1 className="mt-2 text-2xl font-medium text-foreground">Join a unit</h1>
-          <p className="mt-2 text-sm text-muted">
-            Missions require a team. Enter a join code from your captain or
-            coach.
-          </p>
-          <form
-            className="mt-5 space-y-3"
-            onSubmit={(e) => {
-              e.preventDefault()
-              joinMutation.mutate()
-            }}
-          >
-            <input
-              value={joinCode}
-              onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
-              placeholder="JOIN CODE"
-              className="w-full rounded-md border border-subtle bg-void px-3 py-2.5 data-mono text-sm tracking-widest text-foreground outline-none focus:border-accent"
-              autoComplete="off"
-            />
-            {joinError && <p className="text-sm text-alert">{joinError}</p>}
-            <button
-              type="submit"
-              disabled={joinCode.trim().length < 4 || joinMutation.isPending}
-              className="hud-pill hud-pill-active w-full py-3 text-sm disabled:opacity-40"
-            >
-              {joinMutation.isPending ? 'Joining…' : 'JOIN TEAM'}
-            </button>
-          </form>
-        </div>
-      </div>
+      <NoTeamPanel
+        reason="Missions require a team. Join with a code or start your own squad."
+        onReady={async () => {
+          void qc.invalidateQueries({ queryKey: ['missions-team'] })
+          void qc.invalidateQueries({ queryKey: ['missions-list'] })
+        }}
+      />
     )
   }
 
@@ -178,19 +141,30 @@ export function MissionsPage() {
           {missionsQuery.isLoading && (
             <p className="text-base text-muted">Syncing missions…</p>
           )}
-          {missionsQuery.error && (
-            <p className="text-base text-alert">
-              {missionsQuery.error instanceof Error
-                ? missionsQuery.error.message
-                : 'Failed to load missions'}
-            </p>
+          {missionsQuery.isError && (
+            <div className="mb-3 space-y-2">
+              <p className="text-base text-alert">
+                {missionsQuery.error instanceof Error
+                  ? missionsQuery.error.message
+                  : 'Could not load missions'}
+              </p>
+              <button
+                type="button"
+                onClick={() => void missionsQuery.refetch()}
+                className="hud-pill border border-alert/40 px-3 py-1.5 text-[10px] text-alert"
+              >
+                Retry
+              </button>
+            </div>
           )}
 
           <ul className="space-y-3.5">
             {upcoming.map((item) => (
               <MissionListItem key={item.id} item={item} />
             ))}
-            {!missionsQuery.isLoading && upcoming.length === 0 && (
+            {!missionsQuery.isLoading &&
+              !missionsQuery.isError &&
+              upcoming.length === 0 && (
               <li className="text-base text-muted">
                 {officer
                   ? 'No upcoming missions. Create one for the squad.'

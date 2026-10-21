@@ -1,4 +1,11 @@
+import { useCallback, useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
+import { PracticeSummaryModal } from '../ops/practice/PracticeSummaryModal'
+import {
+  clearPracticeSummary,
+  loadPracticeSummary,
+  type PracticeSummaryPayload,
+} from '../../lib/practiceSummary'
 import { BottomNav } from './BottomNav'
 import { SiteFooter } from './SiteFooter'
 import { TopBar } from './TopBar'
@@ -6,6 +13,16 @@ import { TopBar } from './TopBar'
 export function AppShell() {
   const { pathname } = useLocation()
   const showCmdNav = pathname.startsWith('/cmd')
+  const [summary, setSummary] = useState<PracticeSummaryPayload | null>(null)
+
+  useEffect(() => {
+    setSummary(loadPracticeSummary())
+  }, [pathname])
+
+  const closeSummary = useCallback(() => {
+    clearPracticeSummary()
+    setSummary(null)
+  }, [])
 
   return (
     <div className="flex h-dvh flex-col overflow-hidden bg-void">
@@ -22,6 +39,9 @@ export function AppShell() {
           <SiteFooter />
         </div>
       </div>
+      {summary ? (
+        <PracticeSummaryModal payload={summary} onClose={closeSummary} />
+      ) : null}
     </div>
   )
 }

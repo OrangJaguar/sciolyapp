@@ -3,9 +3,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import {
   clampConcurrency,
+  CLIENT_DRAIN_CONCURRENCY_MAX,
+  concurrencyPresetsForProvider,
   createGenerationJob,
   clearIncompleteGeneration,
   DEFAULT_GENERATION_CONFIG,
+  deepseekRateLabel,
+  defaultConcurrencyForProvider,
+  defaultWindowForProvider,
   deleteGenerationJob,
   describeGenerationJob,
   diagnoseGenerationItem,
@@ -15,8 +20,12 @@ import {
   fetchGenerationJobs,
   formatRunningAge,
   formatTokenUsage,
+  formatWindowSummary,
+  invokeGenerateDispatcher,
   invokeGenerateWorkerBatch,
+  isInsideRunWindow,
   jobProgress,
+  maxConcurrencyForProvider,
   previewGeneration,
   retryFailedGenerationItems,
   setGenerationJobStatus,
@@ -26,7 +35,9 @@ import {
   type GenerationJobConfig,
   type GenerationMode,
   type GenerationPreview,
+  type GenerationProvider,
 } from '../../lib/adminGenerate'
+import { isDeepseekProvider } from '../../lib/generationWindow'
 import { fetchCatalogSnapshot } from '../../lib/adminCatalog'
 import { adminErrorMessage } from '../../lib/adminQuestions'
 import { isSupabaseConfigured } from '../../lib/supabase'
@@ -73,6 +84,12 @@ export function GeneratePage() {
   const [pickedConceptIds, setPickedConceptIds] = useState<string[]>([])
   const [pickOpen, setPickOpen] = useState(false)
   const [bankEventId, setBankEventId] = useState<string | null>(null)
+  const [rateNow, setRateNow] = useState(() => deepseekRateLabel())
+
+  useEffect(() => {
+    const id = window.setInterval(() => setRateNow(deepseekRateLabel()), 30_000)
+    return () => window.clearInterval(id)
+  }, [])
 
   const catalogQuery = useQuery({
     queryKey: ['admin-catalog'],
@@ -154,8 +171,30 @@ export function GeneratePage() {
     onSuccess: async (jobId) => {
       setActiveJobId(jobId)
       setTab('jobs')
-      setNote('Job started — worker draining queue')
+      setNote(
+        'Job started — server dispatcher drains off-peak; this tab Live-boosts up to 32.',
+      )
       await qc.invalidateQueries({ queryKey: ['admin-generation-jobs'] })
+    },
+    onError: (err) => setNote(adminErrorMessage(err)),
+  })
+
+  const dispatchMutation = useMutation({
+    mutationFn: () =>
+      invokeGenerateDispatcher({
+        jobId: activeJobId ?? undefined,
+        burstCap: 50,
+      }),
+    onSuccess: async (result) => {
+      setWorkerNote(
+        `Dispatcher: launched ${String(result.totalLaunched ?? 0)} (jobs ${String(result.jobs ?? 0)})`,
+      )
+      await qc.invalidateQueries({ queryKey: ['admin-generation-jobs'] })
+      if (activeJobId) {
+        await qc.invalidateQueries({
+          queryKey: ['admin-generation-items', activeJobId],
+        })
+      }
     },
     onError: (err) => setNote(adminErrorMessage(err)),
   })
@@ -215,14 +254,27 @@ export function GeneratePage() {
 
     let cancelled = false
     let consecutiveFailures = 0
-    const concurrency = clampConcurrency(activeJob.config?.concurrency ?? 3)
+    const provider = activeJob.config?.provider
+    const stored = clampConcurrency(
+      activeJob.config?.concurrency ?? 3,
+      provider,
+    )
+    const concurrency = Math.min(CLIENT_DRAIN_CONCURRENCY_MAX, stored)
 
     const run = async () => {
-      setWorkerNote(`Draining ×${concurrency} parallel…`)
+      setWorkerNote(
+        `Live boost ×${concurrency}${
+          stored > concurrency ? ` (job target ${stored}; server owns the rest)` : ''
+        }…`,
+      )
 
       while (!cancelled) {
         try {
-          const batch = await invokeGenerateWorkerBatch(activeJobId, concurrency)
+          const batch = await invokeGenerateWorkerBatch(
+            activeJobId,
+            concurrency,
+            provider,
+          )
           consecutiveFailures = 0
 
           await qc.invalidateQueries({ queryKey: ['admin-generation-jobs'] })
@@ -231,7 +283,9 @@ export function GeneratePage() {
           })
 
           if (batch.allOutsideWindow) {
-            setWorkerNote('Outside run window — waiting 60s')
+            setWorkerNote(
+              `Outside run window (${deepseekRateLabel()}) — waiting 60s`,
+            )
             await sleep(60_000)
             continue
           }
@@ -252,7 +306,7 @@ export function GeneratePage() {
             batch.ticks.length > 0 &&
             batch.ticks.every((t) => t.idle)
           ) {
-            setWorkerNote(`×${concurrency} pool · waiting on in-flight items`)
+            setWorkerNote(`×${concurrency} Live boost · waiting on in-flight`)
             await sleep(2000)
             continue
           }
@@ -262,7 +316,7 @@ export function GeneratePage() {
             throw new Error(batch.errors[0] ?? 'Worker batch failed')
           }
 
-          setWorkerNote(summarizeWorkerBatch(batch, concurrency))
+          setWorkerNote(summarizeWorkerBatch(batch, concurrency, provider))
 
           if (batch.anyProcessed) {
             await qc.invalidateQueries({ queryKey: ['admin-drafts'] })
@@ -283,7 +337,7 @@ export function GeneratePage() {
               'worker_unreachable',
             )
             setNote(
-              'Worker paused after 3 failed batch invokes — no NIM calls were made. Deploy generate-worker, then Resume.',
+              'Live boost paused after 3 failed batch invokes. Deploy generate-worker / check network, then Resume. Server dispatcher may still drain if cron is on.',
             )
             await qc.invalidateQueries({ queryKey: ['admin-generation-jobs'] })
             break
@@ -298,11 +352,24 @@ export function GeneratePage() {
     return () => {
       cancelled = true
     }
-  }, [activeJobId, activeJob?.status, activeJob?.config?.concurrency, qc])
+  }, [
+    activeJobId,
+    activeJob?.status,
+    activeJob?.config?.concurrency,
+    activeJob?.config?.provider,
+    qc,
+  ])
 
+  const allowPeak = Boolean(workbenchConfig.window?.allowPeak)
   const currentPreviewCost = preview
-    ? estimatePaidUsd(preview, workbenchConfig.provider)
+    ? estimatePaidUsd(preview, workbenchConfig.provider, {
+        rate: allowPeak ? 'peak' : 'offpeak',
+      })
     : null
+  const peakPreviewCost =
+    preview && !allowPeak && isDeepseekProvider(workbenchConfig.provider)
+      ? estimatePaidUsd(preview, workbenchConfig.provider, { rate: 'peak' })
+      : null
 
   if (!isSupabaseConfigured) {
     return (
@@ -332,7 +399,9 @@ export function GeneratePage() {
   const renderKnobs = (
     config: GenerationJobConfig,
     setConfig: (next: GenerationJobConfig) => void,
-  ) => (
+  ) => {
+    const windowOpenNow = isInsideRunWindow(config.window, config.provider)
+    return (
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
       <label className="flex flex-col gap-1.5">
         <span className="label-caps text-[9px] text-dim">Mode</span>
@@ -392,37 +461,79 @@ export function GeneratePage() {
       </label>
 
       <label className="flex flex-col gap-1.5">
-        <span className="label-caps text-[9px] text-dim">Parallel calls</span>
+        <span className="label-caps text-[9px] text-dim">
+          Parallel calls (max {maxConcurrencyForProvider(config.provider)})
+        </span>
         <input
           type="number"
           min={1}
-          max={8}
-          value={config.concurrency ?? 3}
+          max={maxConcurrencyForProvider(config.provider)}
+          value={config.concurrency ?? defaultConcurrencyForProvider(config.provider)}
           onChange={(e) =>
             setConfig({
               ...config,
-              concurrency: clampConcurrency(Number(e.target.value) || 3),
+              concurrency: clampConcurrency(
+                Number(e.target.value) ||
+                  defaultConcurrencyForProvider(config.provider),
+                config.provider,
+              ),
             })
           }
           className="field-input"
         />
+        <div className="flex flex-wrap gap-1">
+          {concurrencyPresetsForProvider(config.provider).map((n) => (
+            <button
+              key={n}
+              type="button"
+              className={`rounded px-1.5 py-0.5 text-[9px] data-mono ${
+                (config.concurrency ?? 0) === n
+                  ? 'bg-cyan/20 text-cyan'
+                  : 'bg-[var(--surface-hover)] text-dim hover:text-foreground'
+              }`}
+              onClick={() =>
+                setConfig({
+                  ...config,
+                  concurrency: clampConcurrency(n, config.provider),
+                })
+              }
+            >
+              {n}
+            </button>
+          ))}
+        </div>
+        <span className="text-[9px] text-dim">
+          Job target for server drain. This tab Live-boosts ≤
+          {CLIENT_DRAIN_CONCURRENCY_MAX}. Defaults:{' '}
+          Flash 64 · Pro 32 · NIM 3.
+        </span>
       </label>
 
       <label className="flex flex-col gap-1.5">
         <span className="label-caps text-[9px] text-dim">Provider</span>
         <select
           value={config.provider}
-          onChange={(e) =>
+          onChange={(e) => {
+            const provider = e.target.value as GenerationProvider
+            const prevDeep = isDeepseekProvider(config.provider)
+            const nextDeep = isDeepseekProvider(provider)
+            const nextWindow =
+              prevDeep === nextDeep && config.window
+                ? config.window
+                : defaultWindowForProvider(provider)
             setConfig({
               ...config,
-              provider: e.target.value as GenerationJobConfig['provider'],
+              provider,
+              window: nextWindow,
+              concurrency: defaultConcurrencyForProvider(provider),
             })
-          }
+          }}
           className="field-input"
         >
           <option value="nim">NIM (free test)</option>
-          <option value="deepseek_flash">DeepSeek Flash (wire later)</option>
-          <option value="deepseek_pro">DeepSeek Pro (wire later)</option>
+          <option value="deepseek_flash">DeepSeek Flash</option>
+          <option value="deepseek_pro">DeepSeek Pro</option>
+          <option value="auto">Auto (DeepSeek if keyed, else NIM)</option>
         </select>
       </label>
 
@@ -487,24 +598,165 @@ export function GeneratePage() {
         <span className="text-xs text-muted">Include media menu</span>
       </label>
 
-      <label className="flex items-center gap-2 self-end pb-2">
-        <input
-          type="checkbox"
-          checked={Boolean(config.window?.enabled)}
-          onChange={(e) =>
-            setConfig({
-              ...config,
-              window: {
-                ...(config.window ?? DEFAULT_GENERATION_CONFIG.window),
-                enabled: e.target.checked,
-              },
-            })
-          }
-        />
-        <span className="text-xs text-muted">Run window (off-peak)</span>
-      </label>
+      <div className="flex flex-col gap-2 self-end pb-2 sm:col-span-2 xl:col-span-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={Boolean(config.window?.enabled)}
+              onChange={(e) =>
+                setConfig({
+                  ...config,
+                  window: {
+                    ...(config.window ?? defaultWindowForProvider(config.provider)),
+                    enabled: e.target.checked,
+                    mode:
+                      config.window?.mode ??
+                      (isDeepseekProvider(config.provider)
+                        ? 'deepseek_offpeak'
+                        : 'custom'),
+                  },
+                })
+              }
+            />
+            <span className="text-xs text-muted">Respect run window</span>
+          </label>
+          <span
+            className={`data-mono text-[10px] ${
+              rateNow === 'OFF-PEAK' ? 'text-success' : 'text-alert'
+            }`}
+          >
+            Now: {rateNow}
+            {config.window?.enabled
+              ? windowOpenNow
+                ? ' · window open'
+                : ' · waiting'
+              : ' · window off'}
+          </span>
+        </div>
+
+        {config.window?.enabled ? (
+          <div className="grid gap-3 rounded-lg border border-subtle bg-[var(--surface-high)] p-3 sm:grid-cols-2">
+            <label className="flex flex-col gap-1.5">
+              <span className="label-caps text-[9px] text-dim">Window mode</span>
+              <select
+                value={config.window?.mode ?? 'deepseek_offpeak'}
+                onChange={(e) =>
+                  setConfig({
+                    ...config,
+                    window: {
+                      ...(config.window ??
+                        defaultWindowForProvider(config.provider)),
+                      mode: e.target.value as 'deepseek_offpeak' | 'custom',
+                      enabled: true,
+                    },
+                  })
+                }
+                className="field-input"
+              >
+                <option value="deepseek_offpeak">
+                  DeepSeek off-peak (UTC)
+                </option>
+                <option value="custom">Custom timezone window</option>
+              </select>
+              <span className="text-[9px] text-dim">
+                Peak Mon–Fri UTC 01:00–04:00 and 06:00–10:00 (2× price). Off-peak
+                is everything else.
+              </span>
+            </label>
+
+            {(config.window?.mode ?? 'deepseek_offpeak') ===
+            'deepseek_offpeak' ? (
+              <label className="flex items-center gap-2 self-end pb-2">
+                <input
+                  type="checkbox"
+                  checked={Boolean(config.window?.allowPeak)}
+                  onChange={(e) =>
+                    setConfig({
+                      ...config,
+                      window: {
+                        ...(config.window ??
+                          defaultWindowForProvider(config.provider)),
+                        allowPeak: e.target.checked,
+                        enabled: true,
+                        mode: 'deepseek_offpeak',
+                      },
+                    })
+                  }
+                />
+                <span className="text-xs text-muted">
+                  Allow peak (2× DeepSeek cost)
+                </span>
+              </label>
+            ) : (
+              <div className="grid grid-cols-3 gap-2">
+                <label className="flex flex-col gap-1">
+                  <span className="label-caps text-[9px] text-dim">TZ</span>
+                  <input
+                    value={config.window?.tz ?? 'America/Chicago'}
+                    onChange={(e) =>
+                      setConfig({
+                        ...config,
+                        window: {
+                          ...(config.window ??
+                            defaultWindowForProvider(config.provider)),
+                          tz: e.target.value,
+                          mode: 'custom',
+                          enabled: true,
+                        },
+                      })
+                    }
+                    className="field-input"
+                  />
+                </label>
+                <label className="flex flex-col gap-1">
+                  <span className="label-caps text-[9px] text-dim">Start</span>
+                  <input
+                    type="time"
+                    value={config.window?.start ?? '08:00'}
+                    onChange={(e) =>
+                      setConfig({
+                        ...config,
+                        window: {
+                          ...(config.window ??
+                            defaultWindowForProvider(config.provider)),
+                          start: e.target.value,
+                          mode: 'custom',
+                          enabled: true,
+                        },
+                      })
+                    }
+                    className="field-input"
+                  />
+                </label>
+                <label className="flex flex-col gap-1">
+                  <span className="label-caps text-[9px] text-dim">End</span>
+                  <input
+                    type="time"
+                    value={config.window?.end ?? '22:00'}
+                    onChange={(e) =>
+                      setConfig({
+                        ...config,
+                        window: {
+                          ...(config.window ??
+                            defaultWindowForProvider(config.provider)),
+                          end: e.target.value,
+                          mode: 'custom',
+                          enabled: true,
+                        },
+                      })
+                    }
+                    className="field-input"
+                  />
+                </label>
+              </div>
+            )}
+          </div>
+        ) : null}
+      </div>
     </div>
   )
+  }
 
   const renderPreview = () => {
     if (!preview) return null
@@ -520,6 +772,8 @@ export function GeneratePage() {
             value={`~${estimateEtaMinutes(
               preview.request_count,
               workbenchConfig.concurrency,
+              60,
+              workbenchConfig.provider,
             )} min`}
           />
         </div>
@@ -542,10 +796,16 @@ export function GeneratePage() {
         </p>
         {currentPreviewCost != null ? (
           <p className="mt-2 text-xs text-muted">
-            Est. paid cost ~${currentPreviewCost.toFixed(2)} (off-peak heuristic)
+            Est. paid ~${currentPreviewCost.toFixed(2)} (
+            {allowPeak ? 'peak rates · allow peak on' : 'off-peak rates'})
+            {peakPreviewCost != null
+              ? ` · peak would be ~$${peakPreviewCost.toFixed(2)}`
+              : ''}
           </p>
         ) : (
-          <p className="mt-2 text-xs text-cyan">NIM test credits — not a paid run</p>
+          <p className="mt-2 text-xs text-cyan">
+            NIM / Auto without DeepSeek key — not a paid DeepSeek run
+          </p>
         )}
         {preview.blockers.length > 0 ? (
           <ul className="mt-3 space-y-1">
@@ -630,7 +890,22 @@ export function GeneratePage() {
                   preview.blockers.length > 0 ||
                   preview.request_count === 0
                 }
-                onClick={() => startMutation.mutate(resolveJobConfig())}
+                onClick={() => {
+                  const cfg = resolveJobConfig()
+                  const n = clampConcurrency(
+                    cfg.concurrency ?? 3,
+                    cfg.provider,
+                  )
+                  if (
+                    n >= 500 &&
+                    !window.confirm(
+                      `Start with concurrency ${n}? Server drain will fan out aggressively during off-peak. Continue?`,
+                    )
+                  ) {
+                    return
+                  }
+                  startMutation.mutate(cfg)
+                }}
               >
                 GO
               </button>
@@ -731,6 +1006,33 @@ export function GeneratePage() {
                         {describeGenerationJob(activeJob, eventNameById).detail}
                       </p>
                       <p className="mt-0.5 data-mono text-[9px] text-dim">{activeJob.id}</p>
+                      {(() => {
+                        const win = formatWindowSummary(
+                          activeJob.config?.window,
+                          activeJob.config?.provider,
+                        )
+                        if (!win) return null
+                        const open = isInsideRunWindow(
+                          activeJob.config?.window,
+                          activeJob.config?.provider,
+                        )
+                        return (
+                          <p
+                            className={`mt-1 text-[10px] ${
+                              open ? 'text-success' : 'text-alert'
+                            }`}
+                          >
+                            {win}
+                            {open
+                              ? ' · window open now'
+                              : ' · outside window (worker idle)'}
+                            {activeJob.status === 'paused' &&
+                            activeJob.pause_reason === 'manual'
+                              ? ' · paused by admin'
+                              : ''}
+                          </p>
+                        )
+                      })()}
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {activeJob.status === 'running' ? (
@@ -802,10 +1104,17 @@ export function GeneratePage() {
                     />
                   </div>
 
-                  <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
+                  <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-6">
                     <Stat
                       label="Done"
                       value={`${activeJob.items_done}/${activeJob.items_total}`}
+                    />
+                    <Stat
+                      label="In flight"
+                      value={String(
+                        (itemsQuery.data ?? []).filter((i) => i.status === 'running')
+                          .length,
+                      )}
                     />
                     <Stat
                       label="Partial"
@@ -821,10 +1130,42 @@ export function GeneratePage() {
                     />
                   </div>
 
+                  <p className="mt-2 data-mono text-[10px] text-muted">
+                    Target ×
+                    {clampConcurrency(
+                      activeJob.config?.concurrency ?? 3,
+                      activeJob.config?.provider,
+                    )}{' '}
+                    · Live boost ≤{CLIENT_DRAIN_CONCURRENCY_MAX}
+                    {activeJob.config?.drain_backoff_until &&
+                    Date.parse(String(activeJob.config.drain_backoff_until)) >
+                      Date.now()
+                      ? ` · 429 backoff until ${new Date(
+                          String(activeJob.config.drain_backoff_until),
+                        ).toLocaleTimeString()}`
+                      : ''}
+                  </p>
+
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      className="hud-pill px-2 py-1 text-[10px]"
+                      disabled={
+                        dispatchMutation.isPending ||
+                        activeJob.status === 'done' ||
+                        activeJob.status === 'cancelled'
+                      }
+                      onClick={() => dispatchMutation.mutate()}
+                    >
+                      Pump dispatcher
+                    </button>
+                  </div>
+
                   <p className="mt-3 text-xs text-muted">
-                    Drafts landed ≠ live bank. Pass A drains before Pass B. Under-delivery
-                    requeues up to 2 shortfall calls, then marks partial. Items stuck
-                    running &gt;4 min auto-requeue on next claim (worker timeout/crash).
+                    Server cron/dispatcher owns high concurrency with the tab closed.
+                    This page Live-boosts while open. 429s requeue items + brief backoff.
+                    Drafts landed ≠ live bank. Pass A before Pass B. Stale running &gt;6 min
+                    auto-requeue on next claim.
                   </p>
 
                   <ul className="mt-4 max-h-[28rem] space-y-1 overflow-y-auto">

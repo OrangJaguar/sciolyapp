@@ -1,44 +1,48 @@
 import { useMemo, useState, type FormEvent, type MouseEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '../../features/auth/AuthProvider'
+import { MemberIntelDrawer } from '../../components/team/MemberIntelDrawer'
+import { NoTeamPanel } from '../../components/team/NoTeamPanel'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import type { TeamRole } from '../../lib/types'
 import {
-  assignTeamEvent,
   canManageRoster,
+  coverageLabel,
   createTeamPost,
   deleteTeamPost,
   fetchActiveEvents,
   fetchTeamContext,
-  fetchTeamEventAssigns,
+  fetchTeamEventCoverage,
   fetchTeamJoinCodes,
   fetchTeamPosts,
   fetchTeamRoster,
   formatRole,
   isOfficerPlus,
-  joinTeamByCode,
+  nextCoverageStatus,
   postAgo,
   removeTeamMember,
+  setEventCoverage,
   setPostPinned,
   setTeamMemberRole,
-  unassignTeamEvent,
+  type CoverageStatus,
+  type EventCoverage,
   type RosterMember,
   type TeamPost,
 } from '../../lib/comms'
 
 export function CommsPage() {
-  const { profile, refreshProfile, user } = useAuth()
+  const { profile, user } = useAuth()
   const qc = useQueryClient()
   const userId = user?.id ?? profile?.id ?? null
   const teamId = profile?.team_id ?? null
 
-  const [joinCode, setJoinCode] = useState('')
-  const [joinError, setJoinError] = useState<string | null>(null)
   const [draft, setDraft] = useState('')
   const [pinOnCreate, setPinOnCreate] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
+  const [intelUserId, setIntelUserId] = useState<string | null>(null)
   const [hoverTip, setHoverTip] = useState<{
     handle: string
+    displayName: string | null
     role: string
     events: string[]
     x: number
@@ -59,6 +63,7 @@ export function CommsPage() {
     if (y + approxH > window.innerHeight - 8) y = e.clientY - approxH - pad
     setHoverTip({
       handle: m.handle,
+      displayName: m.display_name,
       role: formatRole(m.role),
       events: names,
       x: Math.max(8, x),
@@ -78,9 +83,9 @@ export function CommsPage() {
     enabled: isSupabaseConfigured && Boolean(teamId),
   })
 
-  const assignsQuery = useQuery({
-    queryKey: ['comms-assigns', teamId],
-    queryFn: () => fetchTeamEventAssigns(teamId!),
+  const coverageQuery = useQuery({
+    queryKey: ['comms-coverage', teamId],
+    queryFn: () => fetchTeamEventCoverage(teamId!),
     enabled: isSupabaseConfigured && Boolean(teamId),
   })
 
@@ -95,22 +100,6 @@ export function CommsPage() {
     queryFn: () => fetchTeamPosts(teamId!),
     enabled: isSupabaseConfigured && Boolean(teamId),
     refetchInterval: 30_000,
-  })
-
-  const joinMutation = useMutation({
-    mutationFn: () => joinTeamByCode(joinCode),
-    onSuccess: async () => {
-      setJoinError(null)
-      setJoinCode('')
-      await refreshProfile()
-      void qc.invalidateQueries({ queryKey: ['comms-team'] })
-      void qc.invalidateQueries({ queryKey: ['comms-roster'] })
-      void qc.invalidateQueries({ queryKey: ['comms-posts'] })
-      void qc.invalidateQueries({ queryKey: ['comms-assigns'] })
-    },
-    onError: (err) => {
-      setJoinError(err instanceof Error ? err.message : 'Join failed')
-    },
   })
 
   const invalidatePosts = () =>
@@ -144,6 +133,12 @@ export function CommsPage() {
 
   const officer = isOfficerPlus(teamQuery.data?.role ?? null)
   const manager = canManageRoster(teamQuery.data?.role ?? null)
+
+  const codesQuery = useQuery({
+    queryKey: ['comms-codes', teamId],
+    queryFn: () => fetchTeamJoinCodes(teamId!),
+    enabled: isSupabaseConfigured && Boolean(teamId) && manager,
+  })
   const posts = postsQuery.data ?? []
   const pinned = posts.filter((p) => p.is_pinned)
   const stream = posts.filter((p) => !p.is_pinned)
@@ -154,22 +149,22 @@ export function CommsPage() {
     () => new Map(events.map((e) => [e.id, e.name])),
     [events],
   )
-  const eventsByUser = useMemo(() => {
-    const m = new Map<string, string[]>()
-    for (const a of assignsQuery.data ?? []) {
-      const list = m.get(a.user_id) ?? []
-      list.push(a.event_id)
-      m.set(a.user_id, list)
+  const coverageByUser = useMemo(() => {
+    const m = new Map<string, EventCoverage[]>()
+    for (const row of coverageQuery.data ?? []) {
+      const list = m.get(row.user_id) ?? []
+      list.push(row)
+      m.set(row.user_id, list)
     }
     return m
-  }, [assignsQuery.data])
+  }, [coverageQuery.data])
   const countByEvent = useMemo(() => {
     const m = new Map<string, number>()
-    for (const a of assignsQuery.data ?? []) {
-      m.set(a.event_id, (m.get(a.event_id) ?? 0) + 1)
+    for (const row of coverageQuery.data ?? []) {
+      m.set(row.event_id, (m.get(row.event_id) ?? 0) + 1)
     }
     return m
-  }, [assignsQuery.data])
+  }, [coverageQuery.data])
 
   if (!isSupabaseConfigured) {
     return (
@@ -181,40 +176,15 @@ export function CommsPage() {
 
   if (!teamId) {
     return (
-      <div className="mx-auto flex h-full max-w-md flex-col justify-center gap-4 p-6">
-        <div className="hud-panel p-6">
-          <p className="label-caps">Freelancer</p>
-          <h1 className="mt-2 text-2xl font-medium text-[var(--text)]">
-            Join a unit
-          </h1>
-          <p className="mt-2 text-sm text-muted">
-            Comms is team-scoped. Enter a join code from your captain or coach.
-          </p>
-          <form
-            className="mt-5 space-y-3"
-            onSubmit={(e) => {
-              e.preventDefault()
-              joinMutation.mutate()
-            }}
-          >
-            <input
-              value={joinCode}
-              onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
-              placeholder="JOIN CODE"
-              className="w-full rounded-md border border-subtle bg-void px-3 py-2.5 data-mono text-sm tracking-widest text-[var(--text)] outline-none focus:border-accent"
-              autoComplete="off"
-            />
-            {joinError && <p className="text-sm text-alert">{joinError}</p>}
-            <button
-              type="submit"
-              disabled={joinCode.trim().length < 4 || joinMutation.isPending}
-              className="hud-pill hud-pill-active w-full py-3 text-sm disabled:opacity-40"
-            >
-              {joinMutation.isPending ? 'Joining…' : 'JOIN TEAM'}
-            </button>
-          </form>
-        </div>
-      </div>
+      <NoTeamPanel
+        reason="Comms is team-scoped. Join with a code or start your own squad."
+        onReady={async () => {
+          void qc.invalidateQueries({ queryKey: ['comms-team'] })
+          void qc.invalidateQueries({ queryKey: ['comms-roster'] })
+          void qc.invalidateQueries({ queryKey: ['comms-posts'] })
+          void qc.invalidateQueries({ queryKey: ['comms-coverage'] })
+        }}
+      />
     )
   }
 
@@ -243,34 +213,76 @@ export function CommsPage() {
           {rosterQuery.error && (
             <p className="text-xs text-alert">Roster failed</p>
           )}
+          {manager && roster.length <= 1 && codesQuery.data ? (
+            <div className="mb-3 shrink-0 rounded-md border border-cyan/20 bg-cyan/5 p-2.5">
+              <p className="text-[10px] leading-snug text-muted">
+                Invite teammates with your codes (also in EDIT).
+              </p>
+              <p className="mt-1.5 data-mono text-[10px] text-cyan">
+                Student {codesQuery.data.join_code_student}
+              </p>
+              <p className="data-mono text-[10px] text-cyan">
+                Coach {codesQuery.data.join_code_admin}
+              </p>
+            </div>
+          ) : null}
           <ul className="min-h-0 space-y-1 overflow-y-auto overflow-x-hidden">
             {roster.map((m) => {
-              const evIds = eventsByUser.get(m.user_id) ?? []
-              const names = evIds.map((id) => eventName.get(id) ?? id)
+              const cov = coverageByUser.get(m.user_id) ?? []
+              const names = cov.map((c) => {
+                const label = eventName.get(c.event_id) ?? c.event_id
+                return `${label} · ${coverageLabel(c.status)}`
+              })
+              const initials = (m.display_name || m.handle)
+                .slice(0, 2)
+                .toUpperCase()
               return (
                 <li key={m.user_id}>
-                  <div
-                    className="flex cursor-default items-center gap-2 rounded-md px-1 py-1.5 transition hover:bg-surface-elevated"
+                  <button
+                    type="button"
+                    className={`flex w-full items-center gap-2 rounded-md px-1 py-1.5 text-left transition hover:bg-surface-elevated ${
+                      manager ? 'cursor-pointer' : 'cursor-default'
+                    }`}
                     onMouseEnter={(e) => showTip(e, m, names)}
                     onMouseMove={(e) => showTip(e, m, names)}
                     onMouseLeave={() => setHoverTip(null)}
+                    onClick={() => {
+                      if (!manager) return
+                      setHoverTip(null)
+                      setIntelUserId(m.user_id)
+                    }}
                   >
                     <span
                       className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-cyan/40 bg-surface-elevated data-mono text-[9px] text-cyan"
                       aria-hidden
                     >
-                      {m.handle.slice(0, 2).toUpperCase()}
+                      {initials}
                     </span>
-                    <p
-                      className={`min-w-0 flex-1 truncate text-xs ${
-                        m.user_id === userId
-                          ? 'text-cyan'
-                          : 'text-[var(--text)]'
-                      }`}
-                    >
-                      @{m.handle}
-                    </p>
-                  </div>
+                    <div className="min-w-0 flex-1">
+                      {m.display_name ? (
+                        <p
+                          className={`truncate text-xs ${
+                            m.user_id === userId
+                              ? 'text-cyan'
+                              : 'text-[var(--text)]'
+                          }`}
+                        >
+                          {m.display_name}
+                        </p>
+                      ) : null}
+                      <p
+                        className={`truncate text-[10px] ${
+                          m.display_name
+                            ? 'text-dim'
+                            : m.user_id === userId
+                              ? 'text-cyan'
+                              : 'text-[var(--text)]'
+                        }`}
+                      >
+                        @{m.handle}
+                      </p>
+                    </div>
+                  </button>
                 </li>
               )
             })}
@@ -387,7 +399,18 @@ export function CommsPage() {
           className="pointer-events-none fixed z-[60] w-52 rounded-md border border-cyan/30 bg-surface-elevated p-3 shadow-[0_12px_40px_rgba(0,0,0,0.65)]"
           style={{ left: hoverTip.x, top: hoverTip.y }}
         >
-          <p className="truncate text-xs font-medium text-[var(--text)]">
+          {hoverTip.displayName ? (
+            <p className="truncate text-xs font-medium text-[var(--text)]">
+              {hoverTip.displayName}
+            </p>
+          ) : null}
+          <p
+            className={`truncate text-xs ${
+              hoverTip.displayName
+                ? 'text-dim'
+                : 'font-medium text-[var(--text)]'
+            }`}
+          >
             @{hoverTip.handle}
           </p>
           <p className="mt-1 data-mono text-[10px] text-cyan">{hoverTip.role}</p>
@@ -414,15 +437,28 @@ export function CommsPage() {
           squadName={team?.name ?? 'Squad'}
           roster={roster}
           events={events}
-          eventsByUser={eventsByUser}
+          coverageByUser={coverageByUser}
           countByEvent={countByEvent}
           onClose={() => setEditOpen(false)}
           onChanged={() => {
             void qc.invalidateQueries({ queryKey: ['comms-roster', teamId] })
-            void qc.invalidateQueries({ queryKey: ['comms-assigns', teamId] })
+            void qc.invalidateQueries({ queryKey: ['comms-coverage', teamId] })
           }}
         />
       )}
+
+      {intelUserId && userId && manager ? (
+        <MemberIntelDrawer
+          userId={intelUserId}
+          selfId={userId}
+          selfRole={teamQuery.data?.role ?? null}
+          onClose={() => setIntelUserId(null)}
+          onChanged={() => {
+            void qc.invalidateQueries({ queryKey: ['comms-roster', teamId] })
+            void qc.invalidateQueries({ queryKey: ['comms-coverage', teamId] })
+          }}
+        />
+      ) : null}
     </>
   )
 }
@@ -485,7 +521,7 @@ function RosterAdminModal({
   squadName,
   roster,
   events,
-  eventsByUser,
+  coverageByUser,
   countByEvent,
   onClose,
   onChanged,
@@ -496,7 +532,7 @@ function RosterAdminModal({
   squadName: string
   roster: RosterMember[]
   events: Array<{ id: string; name: string; studyable: boolean }>
-  eventsByUser: Map<string, string[]>
+  coverageByUser: Map<string, EventCoverage[]>
   countByEvent: Map<string, number>
   onClose: () => void
   onChanged: () => void
@@ -512,9 +548,11 @@ function RosterAdminModal({
   const filteredRoster = useMemo(() => {
     if (!eventFilter) return roster
     return roster.filter((m) =>
-      (eventsByUser.get(m.user_id) ?? []).includes(eventFilter),
+      (coverageByUser.get(m.user_id) ?? []).some(
+        (c) => c.event_id === eventFilter,
+      ),
     )
-  }, [roster, eventsByUser, eventFilter])
+  }, [roster, coverageByUser, eventFilter])
 
   const roleMutation = useMutation({
     mutationFn: ({ userId, role }: { userId: string; role: TeamRole }) =>
@@ -537,27 +575,23 @@ function RosterAdminModal({
       setError(err instanceof Error ? err.message : 'Remove failed'),
   })
 
-  const assignMutation = useMutation({
-    mutationFn: ({ userId, eventId }: { userId: string; eventId: string }) =>
-      assignTeamEvent(userId, eventId),
+  const coverageMutation = useMutation({
+    mutationFn: ({
+      userId,
+      eventId,
+      status,
+    }: {
+      userId: string
+      eventId: string
+      status: CoverageStatus | 'off'
+    }) => setEventCoverage(userId, eventId, status),
     onSuccess: () => {
       setError(null)
       setAddingFor(null)
       onChanged()
     },
     onError: (err) =>
-      setError(err instanceof Error ? err.message : 'Assign failed'),
-  })
-
-  const unassignMutation = useMutation({
-    mutationFn: ({ userId, eventId }: { userId: string; eventId: string }) =>
-      unassignTeamEvent(userId, eventId),
-    onSuccess: () => {
-      setError(null)
-      onChanged()
-    },
-    onError: (err) =>
-      setError(err instanceof Error ? err.message : 'Unassign failed'),
+      setError(err instanceof Error ? err.message : 'Coverage update failed'),
   })
 
   const roleOptions: TeamRole[] =
@@ -584,8 +618,8 @@ function RosterAdminModal({
               {squadName.toUpperCase()}
             </h2>
             <p className="mt-1 text-sm text-muted">
-              Roles, event partners (max 2 per event), remove members. People can
-              hold any number of events.
+              Roles, event coverage (max 2 partners). Tap a chip to cycle
+              Assigned → Training → Ready → Off.
             </p>
           </div>
           <button
@@ -602,13 +636,13 @@ function RosterAdminModal({
             {codesQuery.data && (
               <div className="flex min-w-0 flex-1 flex-wrap gap-4 data-mono text-xs text-muted">
                 <span>
-                  Student join{' '}
+                  Student invite{' '}
                   <span className="text-cyan">
                     {codesQuery.data.join_code_student}
                   </span>
                 </span>
                 <span>
-                  Admin join{' '}
+                  Coach invite{' '}
                   <span className="text-cyan">
                     {codesQuery.data.join_code_admin}
                   </span>
@@ -633,7 +667,7 @@ function RosterAdminModal({
           </div>
           {eventFilter && (
             <p className="data-mono text-[11px] text-dim">
-              Showing {filteredRoster.length} assigned to{' '}
+              Showing {filteredRoster.length} on{' '}
               {events.find((e) => e.id === eventFilter)?.name ?? eventFilter}
             </p>
           )}
@@ -644,20 +678,22 @@ function RosterAdminModal({
           {filteredRoster.length === 0 && (
             <p className="text-sm text-dim">
               {eventFilter
-                ? 'Nobody assigned to this event yet.'
+                ? 'Nobody on this event yet.'
                 : 'No teammates on roster.'}
             </p>
           )}
           {filteredRoster.map((m) => {
-            const assigned = eventsByUser.get(m.user_id) ?? []
+            const coverage = coverageByUser.get(m.user_id) ?? []
+            const assignedIds = new Set(coverage.map((c) => c.event_id))
             const isSelf = m.user_id === selfId
-            // Person can hold many events; dropdown only hides ones they already have.
-            // Still hide events that already have 2 partners (unless this person is one).
             const available = events.filter((ev) => {
-              if (assigned.includes(ev.id)) return false
+              if (assignedIds.has(ev.id)) return false
               const n = countByEvent.get(ev.id) ?? 0
               return n < 2
             })
+            const initials = (m.display_name || m.handle)
+              .slice(0, 2)
+              .toUpperCase()
             return (
               <div
                 key={m.user_id}
@@ -665,12 +701,24 @@ function RosterAdminModal({
               >
                 <div className="flex flex-wrap items-center gap-3">
                   <span className="flex h-9 w-9 items-center justify-center rounded-full border border-cyan/40 data-mono text-xs text-cyan">
-                    {m.handle.slice(0, 2).toUpperCase()}
+                    {initials}
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-[var(--text)]">
+                    {m.display_name ? (
+                      <p className="text-sm font-medium text-[var(--text)]">
+                        {m.display_name}
+                        {isSelf ? ' · YOU' : ''}
+                      </p>
+                    ) : null}
+                    <p
+                      className={`text-sm ${
+                        m.display_name
+                          ? 'text-dim'
+                          : 'font-medium text-[var(--text)]'
+                      }`}
+                    >
                       @{m.handle}
-                      {isSelf ? ' · YOU' : ''}
+                      {!m.display_name && isSelf ? ' · YOU' : ''}
                     </p>
                   </div>
                   {!isSelf ? (
@@ -683,7 +731,7 @@ function RosterAdminModal({
                           role: e.target.value as TeamRole,
                         })
                       }
-                      className="rounded-md border border-subtle bg-void px-2 py-1.5 data-mono text-xs text-[var(--text)] outline-none focus:border-accent"
+                      className="rounded-md border border-subtle bg-void px-2 py-1.5 text-xs text-[var(--text)] outline-none focus:border-accent"
                     >
                       {roleOptions.map((r) => (
                         <option key={r} value={r}>
@@ -695,18 +743,19 @@ function RosterAdminModal({
                       )}
                     </select>
                   ) : (
-                    <span className="data-mono text-xs text-dim">
-                      {formatRole(m.role)}
-                    </span>
+                    <span className="text-xs text-dim">{formatRole(m.role)}</span>
                   )}
                   {!isSelf && (
                     <button
                       type="button"
                       disabled={removeMutation.isPending}
                       onClick={() => {
+                        const label = m.display_name
+                          ? `${m.display_name} (@${m.handle})`
+                          : `@${m.handle}`
                         if (
                           window.confirm(
-                            `Remove @${m.handle} from the team? They become a freelancer.`,
+                            `Remove ${label} from the team? They will practice solo until they rejoin.`,
                           )
                         ) {
                           removeMutation.mutate(m.user_id)
@@ -720,31 +769,37 @@ function RosterAdminModal({
                 </div>
 
                 <div className="mt-3 flex flex-wrap items-center gap-2">
-                  {assigned.length === 0 && (
+                  {coverage.length === 0 && (
                     <span className="text-xs text-dim">No events</span>
                   )}
-                  {assigned.map((eid) => {
-                    const ev = events.find((e) => e.id === eid)
+                  {coverage.map((c) => {
+                    const ev = events.find((e) => e.id === c.event_id)
                     return (
-                      <span
-                        key={eid}
-                        className="inline-flex items-center gap-1.5 rounded-pill border border-cyan/30 bg-cyan/10 px-2.5 py-1 text-xs text-cyan"
+                      <button
+                        key={c.event_id}
+                        type="button"
+                        disabled={coverageMutation.isPending}
+                        title="Click to cycle: Assigned → Training → Ready → Off"
+                        onClick={() =>
+                          coverageMutation.mutate({
+                            userId: m.user_id,
+                            eventId: c.event_id,
+                            status: nextCoverageStatus(c.status),
+                          })
+                        }
+                        className={`inline-flex items-center gap-1.5 rounded-pill border px-2.5 py-1 text-xs ${
+                          c.status === 'ready'
+                            ? 'border-success/40 bg-success/10 text-success'
+                            : c.status === 'training'
+                              ? 'border-[var(--ghost-border-active)] bg-surface-high text-foreground'
+                              : 'border-cyan/30 bg-cyan/10 text-cyan'
+                        }`}
                       >
-                        {ev?.name ?? eid}
-                        <button
-                          type="button"
-                          title="Remove event"
-                          onClick={() =>
-                            unassignMutation.mutate({
-                              userId: m.user_id,
-                              eventId: eid,
-                            })
-                          }
-                          className="text-dim hover:text-alert"
-                        >
-                          ×
-                        </button>
-                      </span>
+                        <span>{ev?.name ?? c.event_id}</span>
+                        <span className="data-mono text-[9px] opacity-80">
+                          {coverageLabel(c.status)}
+                        </span>
+                      </button>
                     )
                   })}
                   {addingFor === m.user_id ? (
@@ -758,9 +813,10 @@ function RosterAdminModal({
                           setAddingFor(null)
                           return
                         }
-                        assignMutation.mutate({
+                        coverageMutation.mutate({
                           userId: m.user_id,
                           eventId: v,
+                          status: 'assigned',
                         })
                       }}
                       onBlur={() => {
@@ -786,7 +842,7 @@ function RosterAdminModal({
                       title={
                         available.length === 0
                           ? 'No more events available (already assigned or full at 2/2)'
-                          : 'Add another event'
+                          : 'Add event (starts as Assigned)'
                       }
                     >
                       + EVENT

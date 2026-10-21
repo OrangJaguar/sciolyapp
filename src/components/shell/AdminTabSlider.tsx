@@ -5,6 +5,7 @@ const mainTabs = [
   { to: '/admin/generate', label: 'GENERATE' },
   { to: '/admin/review', label: 'REVIEW' },
   { to: '/admin/import', label: 'IMPORT' },
+  { to: '/admin/coaches', label: 'COACHES' },
 ] as const
 
 type Secondary = { value: string; label: string }
@@ -28,12 +29,14 @@ const secondaryBySection: Record<string, Secondary[]> = {
     { value: 'import', label: 'Import' },
     { value: 'batches', label: 'Batches' },
   ],
+  coaches: [{ value: 'queue', label: 'Queue' }],
 }
 
 function sectionKey(pathname: string): keyof typeof secondaryBySection {
   if (pathname.startsWith('/admin/generate')) return 'generate'
   if (pathname.startsWith('/admin/review')) return 'review'
   if (pathname.startsWith('/admin/import')) return 'import'
+  if (pathname.startsWith('/admin/coaches')) return 'coaches'
   return 'catalog'
 }
 
@@ -62,7 +65,7 @@ export function AdminTabSlider() {
       >
         <span
           aria-hidden
-          className="pointer-events-none absolute top-1 bottom-1 left-1 w-[calc(25%-2px)] rounded-pill bg-accent shadow-[0_0_16px_var(--accent-glow)] transition-transform duration-300 ease-out"
+          className="pointer-events-none absolute top-1 bottom-1 left-1 w-[calc(20%-2px)] rounded-pill bg-accent shadow-[0_0_16px_var(--accent-glow)] transition-transform duration-300 ease-out"
           style={{ transform: `translateX(${mainIndex * 100}%)` }}
         />
         {mainTabs.map((tab, tabIndex) => (

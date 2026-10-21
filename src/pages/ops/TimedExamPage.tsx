@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import {
+  PracticeChrome,
+  TIMED_PRACTICE_SHORTCUTS,
+  type PracticeNavigatorItem,
+} from '../../components/ops/practice/PracticeChrome'
+import {
   fetchArenaQuestionBank,
   fetchQuestionsByIds,
   optionKeyFromIndex,
@@ -30,13 +35,19 @@ export function TimedExamPage() {
 
   const [questions, setQuestions] = useState<Question[]>([])
   const [answers, setAnswers] = useState<TimedAnswerMap>({})
+  const [shownAtMs, setShownAtMs] = useState<Record<string, number>>({})
+  const [answeredAtMs, setAnsweredAtMs] = useState<Record<string, number>>({})
   const [index, setIndex] = useState(0)
   const [deadlineIso, setDeadlineIso] = useState<string | null>(null)
+  const [startedAtIso, setStartedAtIso] = useState<string | null>(null)
   const [left, setLeft] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [booting, setBooting] = useState(true)
+  const [paused, setPaused] = useState(false)
+  const [timerHidden, setTimerHidden] = useState(false)
   const submittedRef = useRef(false)
+  const pausedRemainingRef = useRef<number | null>(null)
 
   const configOk =
     Boolean(session) &&
@@ -52,21 +63,35 @@ export function TimedExamPage() {
     [answers],
   )
 
+  const navigatorItems: PracticeNavigatorItem[] = useMemo(() => {
+    return questions.map((q, i) => {
+      if (i === index) return { index: i, state: 'current' as const }
+      if (answers[q.id] != null) return { index: i, state: 'answered' as const }
+      return { index: i, state: 'blank' as const }
+    })
+  }, [questions, index, answers])
+
   const persist = useCallback(
     (patch: Partial<TimedExamPersisted>) => {
-      if (!session || !eventId || !deadlineIso) return
+      if (!session || !eventId || !deadlineIso || !startedAtIso) return
       const base: TimedExamPersisted = {
-        v: 1,
+        v: 2,
         session,
         eventId,
         topicId,
         count,
         seconds,
         deadlineIso,
+        startedAtIso,
+        submittedAtIso: null,
         questionIds: questions.map((q) => q.id),
         answers,
+        shownAtMs,
+        answeredAtMs,
         index,
         status: 'active',
+        pausedRemainingSec: paused ? (pausedRemainingRef.current ?? left) : null,
+        timerHidden,
         ...patch,
       }
       saveTimedExam(base)
@@ -78,9 +103,15 @@ export function TimedExamPage() {
       count,
       seconds,
       deadlineIso,
+      startedAtIso,
       questions,
       answers,
+      shownAtMs,
+      answeredAtMs,
       index,
+      paused,
+      left,
+      timerHidden,
     ],
   )
 
@@ -88,10 +119,145 @@ export function TimedExamPage() {
     (reason: 'manual' | 'timeout') => {
       if (!session || submittedRef.current) return
       submittedRef.current = true
-      persist({ status: 'submitted', answers, index })
-      navigate(`/ops/timed/autopsy?session=${encodeURIComponent(session)}&reason=${reason}`)
+      const submittedAtIso = new Date().toISOString()
+      persist({
+        status: 'submitted',
+        answers,
+        index,
+        shownAtMs,
+        answeredAtMs,
+        submittedAtIso,
+        pausedRemainingSec: null,
+      })
+      navigate(
+        `/ops/timed/autopsy?session=${encodeURIComponent(session)}&reason=${reason}`,
+      )
     },
-    [session, persist, answers, index, navigate],
+    [session, persist, answers, index, shownAtMs, answeredAtMs, navigate],
+  )
+
+  const setPausedSafe = useCallback(
+    (next: boolean) => {
+      if (next) {
+        if (paused) return
+        const rem =
+          deadlineIso != null ? remainingSeconds(deadlineIso) : left
+        pausedRemainingRef.current = rem
+        setLeft(rem)
+        setPaused(true)
+        if (session && eventId && deadlineIso && startedAtIso) {
+          saveTimedExam({
+            v: 2,
+            session,
+            eventId,
+            topicId,
+            count,
+            seconds,
+            deadlineIso,
+            startedAtIso,
+            submittedAtIso: null,
+            questionIds: questions.map((q) => q.id),
+            answers,
+            shownAtMs,
+            answeredAtMs,
+            index,
+            status: 'active',
+            pausedRemainingSec: rem,
+            timerHidden,
+          })
+        }
+        return
+      }
+      if (!paused) return
+      const rem = pausedRemainingRef.current ?? left
+      const nextDeadline = new Date(Date.now() + rem * 1000).toISOString()
+      pausedRemainingRef.current = null
+      setDeadlineIso(nextDeadline)
+      setLeft(rem)
+      setPaused(false)
+      if (session && eventId && startedAtIso) {
+        saveTimedExam({
+          v: 2,
+          session,
+          eventId,
+          topicId,
+          count,
+          seconds,
+          deadlineIso: nextDeadline,
+          startedAtIso,
+          submittedAtIso: null,
+          questionIds: questions.map((q) => q.id),
+          answers,
+          shownAtMs,
+          answeredAtMs,
+          index,
+          status: 'active',
+          pausedRemainingSec: null,
+          timerHidden,
+        })
+      }
+    },
+    [
+      paused,
+      deadlineIso,
+      left,
+      session,
+      eventId,
+      startedAtIso,
+      topicId,
+      count,
+      seconds,
+      questions,
+      answers,
+      shownAtMs,
+      answeredAtMs,
+      index,
+      timerHidden,
+    ],
+  )
+
+  const onTimerHiddenChange = useCallback(
+    (hidden: boolean) => {
+      setTimerHidden(hidden)
+      if (!session || !eventId || !deadlineIso || !startedAtIso) return
+      saveTimedExam({
+        v: 2,
+        session,
+        eventId,
+        topicId,
+        count,
+        seconds,
+        deadlineIso,
+        startedAtIso,
+        submittedAtIso: null,
+        questionIds: questions.map((q) => q.id),
+        answers,
+        shownAtMs,
+        answeredAtMs,
+        index,
+        status: 'active',
+        pausedRemainingSec: paused
+          ? (pausedRemainingRef.current ?? left)
+          : null,
+        timerHidden: hidden,
+      })
+    },
+    [
+      session,
+      eventId,
+      deadlineIso,
+      startedAtIso,
+      topicId,
+      count,
+      seconds,
+      questions,
+      answers,
+      shownAtMs,
+      answeredAtMs,
+      index,
+      paused,
+      left,
+    ],
   )
 
   // Boot: resume or fresh
@@ -127,23 +293,61 @@ export function TimedExamPage() {
           if (qs.length === 0) throw new Error('Could not restore question set')
           setQuestions(qs)
           setAnswers(existing.answers ?? {})
+          setShownAtMs(existing.shownAtMs ?? {})
+          setAnsweredAtMs(existing.answeredAtMs ?? {})
           setIndex(
             Math.min(
               Math.max(0, existing.index),
               Math.max(0, qs.length - 1),
             ),
           )
-          setDeadlineIso(existing.deadlineIso)
-          const rem = remainingSeconds(existing.deadlineIso)
-          setLeft(rem)
-          if (rem <= 0) {
-            submittedRef.current = true
-            saveTimedExam({ ...existing, status: 'submitted' })
-            navigate(
-              `/ops/timed/autopsy?session=${encodeURIComponent(session!)}&reason=timeout`,
-              { replace: true },
-            )
-            return
+          setStartedAtIso(existing.startedAtIso)
+          setTimerHidden(Boolean(existing.timerHidden))
+
+          const pausedRem =
+            typeof existing.pausedRemainingSec === 'number'
+              ? existing.pausedRemainingSec
+              : null
+
+          if (pausedRem != null) {
+            pausedRemainingRef.current = pausedRem
+            setPaused(true)
+            setLeft(pausedRem)
+            setDeadlineIso(existing.deadlineIso)
+            if (pausedRem <= 0) {
+              submittedRef.current = true
+              const submittedAtIso = new Date().toISOString()
+              saveTimedExam({
+                ...existing,
+                status: 'submitted',
+                submittedAtIso,
+                pausedRemainingSec: null,
+              })
+              navigate(
+                `/ops/timed/autopsy?session=${encodeURIComponent(session!)}&reason=timeout`,
+                { replace: true },
+              )
+              return
+            }
+          } else {
+            setDeadlineIso(existing.deadlineIso)
+            const rem = remainingSeconds(existing.deadlineIso)
+            setLeft(rem)
+            if (rem <= 0) {
+              submittedRef.current = true
+              const submittedAtIso = new Date().toISOString()
+              saveTimedExam({
+                ...existing,
+                status: 'submitted',
+                submittedAtIso,
+                pausedRemainingSec: null,
+              })
+              navigate(
+                `/ops/timed/autopsy?session=${encodeURIComponent(session!)}&reason=timeout`,
+                { replace: true },
+              )
+              return
+            }
           }
         } else {
           const qs = await fetchArenaQuestionBank({
@@ -153,26 +357,44 @@ export function TimedExamPage() {
           })
           if (cancelled) return
           if (qs.length === 0) throw new Error('No live questions for this config')
-          const deadline = new Date(Date.now() + seconds * 1000).toISOString()
+          const now = Date.now()
+          const started = new Date(now).toISOString()
+          const deadline = new Date(now + seconds * 1000).toISOString()
+          const firstId = qs[0]?.id
+          const initialShown: Record<string, number> = firstId
+            ? { [firstId]: now }
+            : {}
           const initial: TimedExamPersisted = {
-            v: 1,
+            v: 2,
             session: session!,
             eventId: eventId!,
             topicId,
             count,
             seconds,
             deadlineIso: deadline,
+            startedAtIso: started,
+            submittedAtIso: null,
             questionIds: qs.map((q) => q.id),
             answers: {},
+            shownAtMs: initialShown,
+            answeredAtMs: {},
             index: 0,
             status: 'active',
+            pausedRemainingSec: null,
+            timerHidden: false,
           }
           saveTimedExam(initial)
           setQuestions(qs)
           setAnswers({})
+          setShownAtMs(initialShown)
+          setAnsweredAtMs({})
           setIndex(0)
           setDeadlineIso(deadline)
+          setStartedAtIso(started)
           setLeft(seconds)
+          setPaused(false)
+          setTimerHidden(false)
+          pausedRemainingRef.current = null
         }
       } catch (err) {
         if (!cancelled) {
@@ -192,17 +414,56 @@ export function TimedExamPage() {
     }
   }, [configOk, session, eventId, topicId, count, seconds, navigate])
 
-  // Persist answers/index while active
+  // Record first-seen timestamp when landing on a question
   useEffect(() => {
-    if (booting || loading || !deadlineIso || !session || questions.length === 0) {
+    if (booting || loading || !current || submittedRef.current) return
+    setShownAtMs((prev) => {
+      if (prev[current.id] != null) return prev
+      return { ...prev, [current.id]: Date.now() }
+    })
+  }, [current, booting, loading])
+
+  // Persist answers/index/timings while active
+  useEffect(() => {
+    if (
+      booting ||
+      loading ||
+      !deadlineIso ||
+      !startedAtIso ||
+      !session ||
+      questions.length === 0
+    ) {
       return
     }
-    persist({ answers, index, status: 'active' })
-  }, [answers, index, deadlineIso, session, questions.length, booting, loading, persist])
+    persist({
+      answers,
+      index,
+      shownAtMs,
+      answeredAtMs,
+      status: 'active',
+      pausedRemainingSec: paused ? (pausedRemainingRef.current ?? left) : null,
+      timerHidden,
+    })
+  }, [
+    answers,
+    index,
+    shownAtMs,
+    answeredAtMs,
+    deadlineIso,
+    startedAtIso,
+    session,
+    questions.length,
+    booting,
+    loading,
+    persist,
+    paused,
+    left,
+    timerHidden,
+  ])
 
-  // Tick
+  // Tick (frozen while paused — hidden timer still ticks when not paused)
   useEffect(() => {
-    if (!deadlineIso || submittedRef.current) return
+    if (!deadlineIso || submittedRef.current || paused) return
     const tick = () => {
       const rem = remainingSeconds(deadlineIso)
       setLeft(rem)
@@ -211,22 +472,64 @@ export function TimedExamPage() {
     tick()
     const id = window.setInterval(tick, 250)
     return () => window.clearInterval(id)
-  }, [deadlineIso, submitExam])
+  }, [deadlineIso, submitExam, paused])
 
   const pick = useCallback(
     (key: Question['correct_key']) => {
-      if (!current || submittedRef.current) return
+      if (!current || submittedRef.current || paused) return
+      const now = Date.now()
       setAnswers((prev) => ({ ...prev, [current.id]: key }))
+      setAnsweredAtMs((prev) => ({ ...prev, [current.id]: now }))
+      setShownAtMs((prev) =>
+        prev[current.id] != null ? prev : { ...prev, [current.id]: now },
+      )
     },
-    [current],
+    [current, paused],
   )
 
   const go = useCallback(
     (delta: number) => {
+      if (paused) return
       setIndex((i) => Math.min(total - 1, Math.max(0, i + delta)))
     },
-    [total],
+    [total, paused],
   )
+
+  const jumpTo = useCallback(
+    (target: number) => {
+      if (paused) return
+      setIndex(Math.min(total - 1, Math.max(0, target)))
+    },
+    [total, paused],
+  )
+
+  const exitExam = useCallback(() => {
+    if (
+      window.confirm(
+        'Abandon Black Box? Progress for this session will be cleared.',
+      )
+    ) {
+      if (session) clearTimedExam(session)
+      navigate('/ops/timed')
+    }
+  }, [session, navigate])
+
+  const onPrimary = useCallback(() => {
+    if (paused) return
+    if (index >= total - 1) {
+      if (
+        window.confirm(
+          answeredCount < total
+            ? `Submit with ${total - answeredCount} unanswered?`
+            : 'Submit Black Box for autopsy?',
+        )
+      ) {
+        submitExam('manual')
+      }
+      return
+    }
+    go(1)
+  }, [paused, index, total, answeredCount, submitExam, go])
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -236,25 +539,44 @@ export function TimedExamPage() {
 
       if (e.key === 'Escape') {
         e.preventDefault()
-        if (
-          window.confirm(
-            'Abandon Black Box? Progress for this session will be cleared.',
-          )
-        ) {
-          if (session) clearTimedExam(session)
-          navigate('/ops/timed')
-        }
+        exitExam()
         return
       }
 
-      if (e.key === 'ArrowRight' || e.key === 'n' || e.key === 'N') {
+      if (e.key === 'p' || e.key === 'P') {
+        e.preventDefault()
+        setPausedSafe(!paused)
+        return
+      }
+
+      if (e.key === 'h' || e.key === 'H') {
+        e.preventDefault()
+        onTimerHiddenChange(!timerHidden)
+        return
+      }
+
+      if (paused) return
+
+      if (
+        e.key === 'ArrowRight' ||
+        e.key === 'n' ||
+        e.key === 'N' ||
+        e.key === ']'
+      ) {
         e.preventDefault()
         go(1)
         return
       }
-      if (e.key === 'ArrowLeft' || e.key === 'p' || e.key === 'P') {
+      if (e.key === 'ArrowLeft' || e.key === '[') {
         e.preventDefault()
         go(-1)
+        return
+      }
+
+      // Enter = Next only (never silent Submit on last)
+      if (e.key === 'Enter') {
+        e.preventDefault()
+        if (index < total - 1) go(1)
         return
       }
 
@@ -267,7 +589,19 @@ export function TimedExamPage() {
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [loading, booting, go, pick, session, navigate])
+  }, [
+    loading,
+    booting,
+    go,
+    pick,
+    exitExam,
+    paused,
+    setPausedSafe,
+    timerHidden,
+    onTimerHiddenChange,
+    index,
+    total,
+  ])
 
   if (!session || !eventId || count < 1 || seconds < 60) {
     return (
@@ -309,132 +643,70 @@ export function TimedExamPage() {
 
   const selected = answers[current.id] ?? null
   const urgent = left <= 60
+  const onLast = index >= total - 1
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="flex shrink-0 flex-wrap items-center gap-3 pb-3">
-        <p className="label-caps text-cyan">Black Box</p>
-        <p className="data-mono text-sm text-foreground">
-          Q {index + 1}/{total}
+      <PracticeChrome
+        current={index + 1}
+        total={total}
+        progressRatio={total === 0 ? 0 : answeredCount / total}
+        navigatorItems={navigatorItems}
+        onJump={jumpTo}
+        timerLabel={formatExamClock(left)}
+        timerUrgent={urgent}
+        timerHidden={timerHidden}
+        onTimerHiddenChange={onTimerHiddenChange}
+        paused={paused}
+        onPausedChange={setPausedSafe}
+        onExit={exitExam}
+        exitLabel="Exit"
+        showBack={index > 0}
+        onBack={() => go(-1)}
+        primaryLabel={onLast ? 'Submit' : 'Next'}
+        primaryDisabled={paused}
+        onPrimary={onPrimary}
+        shortcuts={TIMED_PRACTICE_SHORTCUTS}
+      >
+        <p className="text-xs text-dim">
+          No mid-run feedback · crash-protected · {answeredCount}/{total}{' '}
+          answered
         </p>
-        <div className="relative h-2 min-w-0 flex-1 overflow-hidden rounded-pill bg-surface-high">
-          <div
-            className="absolute inset-y-0 left-0 rounded-pill bg-cyan/80 transition-[width] duration-200"
-            style={{ width: `${((index + 1) / total) * 100}%` }}
-          />
-        </div>
-        <p
-          className={`data-mono text-lg font-bold tabular-nums ${
-            urgent ? 'text-alert' : 'text-cyan'
-          }`}
-        >
-          {formatExamClock(left)}
+        <p className="mt-4 text-xl leading-snug font-medium text-foreground md:text-2xl">
+          {current.stem}
         </p>
-        <button
-          type="button"
-          onClick={() => {
-            if (
-              window.confirm(
-                answeredCount < total
-                  ? `Submit with ${total - answeredCount} unanswered?`
-                  : 'Submit Black Box for autopsy?',
-              )
-            ) {
-              submitExam('manual')
-            }
-          }}
-          className="hud-pill bg-cyan px-4 py-2 text-sm font-bold text-[var(--on-accent)]"
-        >
-          Submit
-        </button>
-      </div>
-
-      <div className="hud-panel flex min-h-0 flex-1 flex-col overflow-hidden border-cyan/30">
-        <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5 md:px-8">
-          <p className="text-xs text-dim">
-            No Clinic · no mid-run feedback · crash-protected
-          </p>
-          <p className="mt-3 text-xl leading-snug font-medium text-foreground md:text-2xl">
-            {current.stem}
-          </p>
-          <div className="mt-6 flex flex-col gap-3">
-            {OPTION_KEYS.map((key, i) => {
-              const isSelected = selected === key
-              return (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => pick(key)}
-                  className={`flex w-full items-start gap-3 rounded-lg border px-3 py-3 text-left transition md:px-4 ${
+        <div className="mt-8 flex flex-col gap-3">
+          {OPTION_KEYS.map((key, i) => {
+            const isSelected = selected === key
+            return (
+              <button
+                key={key}
+                type="button"
+                disabled={paused}
+                onClick={() => pick(key)}
+                className={`flex w-full items-start gap-3 rounded-xl border px-3 py-3.5 text-left transition md:px-4 md:py-4 ${
+                  isSelected
+                    ? 'border-cyan bg-cyan/10 shadow-[0_0_18px_var(--accent-dim)]'
+                    : 'border-subtle hover:border-cyan/50'
+                }`}
+              >
+                <span
+                  className={`data-mono flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-sm font-bold ${
                     isSelected
-                      ? 'border-cyan bg-cyan/10 shadow-[0_0_18px_var(--accent-dim)]'
-                      : 'border-subtle hover:border-cyan/50'
-                  }`}
-                >
-                  <span
-                    className={`data-mono flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-sm font-bold ${
-                      isSelected
-                        ? 'bg-cyan text-[var(--on-accent)]'
-                        : 'bg-surface-high text-muted'
-                    }`}
-                  >
-                    {i + 1}
-                  </span>
-                  <span className="pt-1 text-sm text-foreground md:text-base">
-                    {current.options[key]}
-                  </span>
-                </button>
-              )
-            })}
-          </div>
-        </div>
-
-        <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-t border-subtle px-5 py-3 md:px-8">
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              disabled={index <= 0}
-              onClick={() => go(-1)}
-              className="hud-pill border border-subtle px-4 py-2 text-sm text-foreground disabled:opacity-40"
-            >
-              Prev
-            </button>
-            <button
-              type="button"
-              disabled={index >= total - 1}
-              onClick={() => go(1)}
-              className="hud-pill border border-subtle px-4 py-2 text-sm text-foreground disabled:opacity-40"
-            >
-              Next
-            </button>
-            <span className="hidden text-xs text-dim sm:inline">
-              {answeredCount}/{total} answered · 1–4 select
-            </span>
-          </div>
-          <div className="flex max-w-full flex-wrap gap-1">
-            {questions.map((q, i) => {
-              const marked = answers[q.id] != null
-              const active = i === index
-              return (
-                <button
-                  key={q.id}
-                  type="button"
-                  onClick={() => setIndex(i)}
-                  className={`data-mono h-7 w-7 rounded-md text-[10px] font-bold transition ${
-                    active
                       ? 'bg-cyan text-[var(--on-accent)]'
-                      : marked
-                        ? 'bg-cyan/25 text-cyan'
-                        : 'bg-surface-high text-dim'
+                      : 'bg-surface-high text-muted'
                   }`}
                 >
                   {i + 1}
-                </button>
-              )
-            })}
-          </div>
+                </span>
+                <span className="pt-1 text-sm text-foreground md:text-base">
+                  {current.options[key]}
+                </span>
+              </button>
+            )
+          })}
         </div>
-      </div>
+      </PracticeChrome>
     </div>
   )
 }

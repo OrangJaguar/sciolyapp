@@ -1,6 +1,7 @@
 import { useMemo, useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '../../features/auth/AuthProvider'
+import { NoTeamPanel } from '../../components/team/NoTeamPanel'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import {
   addVaultResource,
@@ -11,7 +12,6 @@ import {
   fetchTeamVaultResources,
   fetchVaultEvents,
   isOfficerPlus,
-  joinTeamByCode,
   pinToLoadout,
   relativeAgo,
   unpinFromLoadout,
@@ -21,7 +21,7 @@ import {
 import { FolderIcon, KindIcon } from './VaultIcons'
 
 export function VaultPage() {
-  const { profile, refreshProfile, user } = useAuth()
+  const { profile, user } = useAuth()
   const qc = useQueryClient()
   const userId = user?.id ?? profile?.id ?? null
   const teamId = profile?.team_id ?? null
@@ -29,8 +29,6 @@ export function VaultPage() {
   const [search, setSearch] = useState('')
   const [openKey, setOpenKey] = useState<string>('general')
   const [showAdd, setShowAdd] = useState(false)
-  const [joinCode, setJoinCode] = useState('')
-  const [joinError, setJoinError] = useState<string | null>(null)
 
   const teamQuery = useQuery({
     queryKey: ['vault-team', teamId, userId],
@@ -54,20 +52,6 @@ export function VaultPage() {
     queryKey: ['vault-loadout', userId],
     queryFn: () => fetchMyLoadoutIds(userId!),
     enabled: isSupabaseConfigured && Boolean(userId && teamId),
-  })
-
-  const joinMutation = useMutation({
-    mutationFn: () => joinTeamByCode(joinCode),
-    onSuccess: async () => {
-      setJoinError(null)
-      setJoinCode('')
-      await refreshProfile()
-      void qc.invalidateQueries({ queryKey: ['vault-team'] })
-      void qc.invalidateQueries({ queryKey: ['vault-resources'] })
-    },
-    onError: (err) => {
-      setJoinError(err instanceof Error ? err.message : 'Join failed')
-    },
   })
 
   const officer = isOfficerPlus(teamQuery.data?.role ?? null)
@@ -122,38 +106,13 @@ export function VaultPage() {
 
   if (!teamId) {
     return (
-      <div className="mx-auto flex h-full max-w-md flex-col justify-center gap-4 p-6">
-        <div className="hud-panel p-6">
-          <p className="label-caps">Freelancer</p>
-          <h1 className="mt-2 text-2xl font-medium text-foreground">Join a unit</h1>
-          <p className="mt-2 text-sm text-muted">
-            Vault is team-scoped. Enter a join code from your captain or coach.
-          </p>
-          <form
-            className="mt-5 space-y-3"
-            onSubmit={(e) => {
-              e.preventDefault()
-              joinMutation.mutate()
-            }}
-          >
-            <input
-              value={joinCode}
-              onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
-              placeholder="JOIN CODE"
-              className="w-full rounded-md border border-subtle bg-void px-3 py-2.5 data-mono text-sm tracking-widest text-foreground outline-none focus:border-accent"
-              autoComplete="off"
-            />
-            {joinError && <p className="text-sm text-alert">{joinError}</p>}
-            <button
-              type="submit"
-              disabled={joinCode.trim().length < 4 || joinMutation.isPending}
-              className="hud-pill hud-pill-active w-full py-3 text-sm disabled:opacity-40"
-            >
-              {joinMutation.isPending ? 'Joining…' : 'JOIN TEAM'}
-            </button>
-          </form>
-        </div>
-      </div>
+      <NoTeamPanel
+        reason="Vault is team-scoped. Join with a code or start your own squad."
+        onReady={async () => {
+          void qc.invalidateQueries({ queryKey: ['vault-team'] })
+          void qc.invalidateQueries({ queryKey: ['vault-resources'] })
+        }}
+      />
     )
   }
 

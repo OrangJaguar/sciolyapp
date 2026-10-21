@@ -261,8 +261,8 @@ export function CasualLobbyPage() {
 
           {!isLoading && selectedEventId && liveForSelection === 0 && (
             <p className="mt-6 text-sm text-alert">
-              No live questions for this selection. Re-run Plan 04 seed or pick
-              another topic.
+              No live questions for this selection. Seed live questions in
+              Supabase or pick another topic.
             </p>
           )}
         </div>

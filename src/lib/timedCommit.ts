@@ -1,26 +1,27 @@
+import {
+  parsePracticeCommitResult,
+  type PracticeSessionCommitResult,
+} from './practiceCommit'
 import { supabase } from './supabase'
+import { clientTimezone } from './timezone'
 
 export type TimedAnswerPayload = {
   question_id: string
   skipped: boolean
   is_correct: boolean | null
+  response_ms: number | null
 }
 
-export type SubmitTimedSessionResult = {
-  already_committed: boolean
-  xp_awarded: number
-  xp_total: number
-  streak: number
-  answered: number
-  correct: number
-  skipped: number
-}
+export type SubmitTimedSessionResult = PracticeSessionCommitResult
 
 export async function submitTimedSession(input: {
   sessionToken: string
   eventId: string
   topicId: string | 'all'
   answers: TimedAnswerPayload[]
+  elapsedMs: number | null
+  timeLimitMs: number | null
+  timezone?: string
 }): Promise<SubmitTimedSessionResult> {
   if (!supabase) throw new Error('Supabase not configured')
 
@@ -28,6 +29,7 @@ export async function submitTimedSession(input: {
     question_id: a.question_id,
     skipped: a.skipped,
     is_correct: a.skipped ? false : Boolean(a.is_correct),
+    response_ms: a.skipped ? null : a.response_ms,
   }))
 
   const { data, error } = await supabase.rpc('submit_timed_session', {
@@ -35,18 +37,11 @@ export async function submitTimedSession(input: {
     p_event_id: input.eventId,
     p_topic_id: input.topicId,
     p_answers: payload,
+    p_timezone: input.timezone ?? clientTimezone(),
+    p_elapsed_ms: input.elapsedMs,
+    p_time_limit_ms: input.timeLimitMs,
   })
 
   if (error) throw error
-
-  const row = data as SubmitTimedSessionResult
-  return {
-    already_committed: Boolean(row.already_committed),
-    xp_awarded: Number(row.xp_awarded ?? 0),
-    xp_total: Number(row.xp_total ?? 0),
-    streak: Number(row.streak ?? 0),
-    answered: Number(row.answered ?? 0),
-    correct: Number(row.correct ?? 0),
-    skipped: Number(row.skipped ?? 0),
-  }
+  return parsePracticeCommitResult(data)
 }

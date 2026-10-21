@@ -45,6 +45,12 @@
   --accent-border: rgba(0, 240, 255, 0.4);
   --card-glow: radial-gradient(ellipse 80% 70% at 50% 28%, rgba(0, 240, 255, 0.18), transparent 70%);
   --card-glow-hover: linear-gradient(135deg, rgba(0, 240, 255, 0.08) 0%, transparent 42%, transparent 58%, rgba(0, 240, 255, 0.06) 100%);
+
+  /* Soft practice feedback glows (Plan 01+) */
+  --glow-correct: rgba(0, 255, 102, 0.28);
+  --glow-wrong: rgba(255, 42, 42, 0.26);
+  --glow-correct-border: rgba(0, 255, 102, 0.55);
+  --glow-wrong-border: rgba(255, 42, 42, 0.5);
 }
 
 /* Sleek — pure black/white wireframe */
@@ -82,6 +88,11 @@
   --accent-border: rgba(255, 255, 255, 0.4);
   --card-glow: none;
   --card-glow-hover: none;
+
+  --glow-correct: rgba(68, 255, 136, 0.22);
+  --glow-wrong: rgba(255, 68, 68, 0.22);
+  --glow-correct-border: rgba(68, 255, 136, 0.55);
+  --glow-wrong-border: rgba(255, 68, 68, 0.5);
 }
 
 /* Paper — white background, black ink */
@@ -119,4 +130,9 @@
   --accent-border: rgba(0, 0, 0, 0.4);
   --card-glow: none;
   --card-glow-hover: none;
+
+  --glow-correct: rgba(0, 136, 51, 0.18);
+  --glow-wrong: rgba(204, 0, 0, 0.16);
+  --glow-correct-border: rgba(0, 136, 51, 0.45);
+  --glow-wrong-border: rgba(204, 0, 0, 0.4);
 }

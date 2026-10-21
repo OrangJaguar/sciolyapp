@@ -44,6 +44,45 @@ export type NimCallResult = {
   finishReason: string | null
 }
 
+/** Resolved chat provider after `auto` is expanded. */
+export type ChatProvider = 'nim' | 'deepseek_flash' | 'deepseek_pro'
+
+export function hasDeepseekApiKey(): boolean {
+  return Boolean(
+    Deno.env.get('DEEPSEEK_API_KEY')?.trim() ||
+      Deno.env.get('DEEPSEEK_KEY')?.trim(),
+  )
+}
+
+/** Map job config.provider (incl. auto/aliases) to a concrete chat backend. */
+export function resolveChatProvider(raw: string): ChatProvider {
+  const p = String(raw ?? 'nim').trim().toLowerCase()
+  if (p === 'auto') {
+    return hasDeepseekApiKey() ? 'deepseek_flash' : 'nim'
+  }
+  if (p === 'deepseek_pro' || p === 'pro') return 'deepseek_pro'
+  if (
+    p === 'deepseek_flash' ||
+    p === 'deepseek' ||
+    p === 'flash' ||
+    p === 'deepseek-chat'
+  ) {
+    return 'deepseek_flash'
+  }
+  return 'nim'
+}
+
+export async function callChatModel(
+  systemPrompt: string,
+  userPrompt: string,
+  provider: ChatProvider,
+): Promise<NimCallResult> {
+  if (provider === 'deepseek_flash' || provider === 'deepseek_pro') {
+    return callDeepseek(systemPrompt, userPrompt, provider === 'deepseek_pro')
+  }
+  return callNim(systemPrompt, userPrompt, false)
+}
+
 const OPTION_KEYS = ['A', 'B', 'C', 'D'] as const
 const MCQ_SCHEMA_KEYS = new Set([
   'stem',
@@ -71,9 +110,55 @@ export function createUserClient(authHeader: string): SupabaseClient {
   })
 }
 
+/**
+ * DeepSeek peak bands [start, end) minutes UTC, Mon–Fri only.
+ * Keep in sync with src/lib/generationWindow.ts
+ */
+const DEEPSEEK_PEAK_UTC_BANDS: ReadonlyArray<readonly [number, number]> = [
+  [1 * 60, 4 * 60],
+  [6 * 60, 10 * 60],
+]
+
+function isDeepseekPeakUtc(now = new Date()): boolean {
+  const weekday = now.getUTCDay() // 0 Sun … 6 Sat
+  if (weekday === 0 || weekday === 6) return false
+  const minutes = now.getUTCHours() * 60 + now.getUTCMinutes()
+  return DEEPSEEK_PEAK_UTC_BANDS.some(
+    ([start, end]) => minutes >= start && minutes < end,
+  )
+}
+
+function providerLooksDeepseek(provider: unknown): boolean {
+  const p = String(provider ?? '').toLowerCase()
+  return (
+    p === 'deepseek_flash' ||
+    p === 'deepseek_pro' ||
+    p === 'deepseek' ||
+    p === 'auto'
+  )
+}
+
+/**
+ * Job run window. DeepSeek off-peak mode uses UTC peak calendar unless allowPeak.
+ * Custom mode uses tz + start/end (overnight wrap supported).
+ */
 export function isInsideRunWindow(config: Record<string, unknown>): boolean {
   const window = (config.window ?? {}) as Record<string, unknown>
   if (window.enabled === false) return true
+
+  const provider = config.provider
+  const modeRaw = String(window.mode ?? '').toLowerCase()
+  const mode =
+    modeRaw === 'deepseek_offpeak' || modeRaw === 'custom'
+      ? modeRaw
+      : providerLooksDeepseek(provider)
+        ? 'deepseek_offpeak'
+        : 'custom'
+
+  if (mode === 'deepseek_offpeak') {
+    if (window.allowPeak === true) return true
+    return !isDeepseekPeakUtc()
+  }
 
   const tz = String(window.tz ?? 'America/Chicago')
   const start = String(window.start ?? '08:00')
@@ -314,34 +399,121 @@ export async function callNim(
   }
 
   const model = usePro ? proModel : flashModel
+  return openAiChatCompletions({
+    label: 'NIM',
+    apiKey,
+    baseUrl,
+    model,
+    systemPrompt,
+    userPrompt,
+    timeoutMs: Number(Deno.env.get('NVIDIA_NIM_TIMEOUT_MS') ?? 120_000),
+    maxTokens: 16384,
+    temperature: 0.45,
+    extraBody: { chat_template_kwargs: { enable_thinking: false } },
+  })
+}
+
+/**
+ * DeepSeek OpenAI-compatible chat.
+ * Secrets: DEEPSEEK_API_KEY (or DEEPSEEK_KEY), optional DEEPSEEK_BASE_URL,
+ * DEEPSEEK_FLASH_MODEL, DEEPSEEK_PRO_MODEL, DEEPSEEK_TIMEOUT_MS.
+ */
+export async function callDeepseek(
+  systemPrompt: string,
+  userPrompt: string,
+  usePro = false,
+): Promise<NimCallResult> {
+  const apiKey =
+    Deno.env.get('DEEPSEEK_API_KEY')?.trim() ||
+    Deno.env.get('DEEPSEEK_KEY')?.trim()
+  const baseUrl =
+    Deno.env.get('DEEPSEEK_BASE_URL')?.trim() || 'https://api.deepseek.com'
+  const flashModel =
+    Deno.env.get('DEEPSEEK_FLASH_MODEL')?.trim() ||
+    Deno.env.get('DEEPSEEK_MODEL')?.trim() ||
+    'deepseek-chat'
+  const proModel =
+    Deno.env.get('DEEPSEEK_PRO_MODEL')?.trim() || 'deepseek-reasoner'
+
+  if (!apiKey) {
+    throw new Error(
+      'DEEPSEEK_API_KEY is not set in Edge Function secrets (also accepts DEEPSEEK_KEY)',
+    )
+  }
+
+  const model = usePro ? proModel : flashModel
+  try {
+    return await openAiChatCompletions({
+      label: 'DeepSeek',
+      apiKey,
+      baseUrl,
+      model,
+      systemPrompt,
+      userPrompt,
+      timeoutMs: Number(Deno.env.get('DEEPSEEK_TIMEOUT_MS') ?? 180_000),
+      maxTokens: 8192,
+      temperature: 0.45,
+    })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err)
+    // Tag 429 for Plan 03 backoff / diagnosis hooks
+    if (/\b429\b/.test(message) || /rate.?limit/i.test(message)) {
+      throw new Error(`deepseek_429: ${message}`)
+    }
+    throw err
+  }
+}
+
+function chatCompletionsUrl(baseUrl: string): string {
+  const trimmed = baseUrl.replace(/\/+$/, '')
+  if (trimmed.endsWith('/chat/completions')) return trimmed
+  if (trimmed.endsWith('/v1')) return `${trimmed}/chat/completions`
+  return `${trimmed}/chat/completions`
+}
+
+async function openAiChatCompletions(args: {
+  label: string
+  apiKey: string
+  baseUrl: string
+  model: string
+  systemPrompt: string
+  userPrompt: string
+  timeoutMs: number
+  maxTokens: number
+  temperature: number
+  extraBody?: Record<string, unknown>
+}): Promise<NimCallResult> {
   const controller = new AbortController()
-  const timeoutMs = Number(Deno.env.get('NVIDIA_NIM_TIMEOUT_MS') ?? 120_000)
-  const timer = setTimeout(() => controller.abort(), timeoutMs)
+  const timer = setTimeout(() => controller.abort(), args.timeoutMs)
 
   let response: Response
   try {
-    response = await fetch(`${baseUrl}/chat/completions`, {
+    response = await fetch(chatCompletionsUrl(args.baseUrl), {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        Authorization: `Bearer ${args.apiKey}`,
         'Content-Type': 'application/json',
       },
       signal: controller.signal,
       body: JSON.stringify({
-        model,
+        model: args.model,
         messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt },
+          { role: 'system', content: args.systemPrompt },
+          { role: 'user', content: args.userPrompt },
         ],
-        max_tokens: 16384,
-        temperature: 0.45,
-        chat_template_kwargs: { enable_thinking: false },
+        max_tokens: args.maxTokens,
+        temperature: args.temperature,
+        ...(args.extraBody ?? {}),
       }),
     })
   } catch (err) {
     clearTimeout(timer)
-    if (err instanceof DOMException && err.name === 'AbortError') {
-      throw new Error(`NIM timeout after ${timeoutMs}ms`)
+    const name =
+      err && typeof err === 'object' && 'name' in err
+        ? String((err as { name: unknown }).name)
+        : ''
+    if (name === 'AbortError' || (err instanceof DOMException && err.name === 'AbortError')) {
+      throw new Error(`${args.label} timeout after ${args.timeoutMs}ms`)
     }
     throw err
   }
@@ -349,7 +521,7 @@ export async function callNim(
 
   const body = await response.text()
   if (!response.ok) {
-    throw new Error(`NIM ${response.status}: ${body.slice(0, 500)}`)
+    throw new Error(`${args.label} ${response.status}: ${body.slice(0, 500)}`)
   }
 
   const json = JSON.parse(body) as {
@@ -361,7 +533,7 @@ export async function callNim(
   }
   const choice = json.choices?.[0]
   const content = choice?.message?.content
-  if (!content) throw new Error('NIM returned empty content')
+  if (!content) throw new Error(`${args.label} returned empty content`)
 
   return {
     content,
@@ -487,11 +659,17 @@ export function extractJsonObject(text: string): unknown {
 export async function repairJson(
   broken: string,
   errorMessage: string,
+  provider: ChatProvider = 'nim',
 ): Promise<string> {
-  const { content } = await callNim(
+  // Prefer flash for DeepSeek repairs (cheaper); NIM stays on its flash path.
+  const repairProvider: ChatProvider =
+    provider === 'deepseek_pro' || provider === 'deepseek_flash'
+      ? 'deepseek_flash'
+      : 'nim'
+  const { content } = await callChatModel(
     'You repair invalid JSON arrays for a quiz generator. Return JSON array only.',
     `Fix this broken output into a valid JSON array of MCQ objects.\nError: ${errorMessage}\n\n${broken.slice(0, 12000)}`,
-    true,
+    repairProvider,
   )
   return content
 }

@@ -33,7 +33,11 @@ export async function fetchTeamContext(userId: string, teamId: string) {
   if (!supabase) throw new Error('Supabase not configured')
 
   const [teamRes, rosterRes] = await Promise.all([
-    supabase.from('teams').select('id, name, school_name, division').eq('id', teamId).maybeSingle(),
+    supabase
+      .from('teams')
+      .select('id, name, school_name, division, verified')
+      .eq('id', teamId)
+      .maybeSingle(),
     supabase
       .from('team_roster')
       .select('role')
@@ -51,6 +55,7 @@ export async function fetchTeamContext(userId: string, teamId: string) {
       name: string
       school_name: string
       division: string
+      verified?: boolean
     } | null,
     role: (rosterRes.data?.role as TeamRole | undefined) ?? null,
   }
@@ -126,14 +131,7 @@ export async function createTeamMission(input: {
   return data as TeamMission
 }
 
-export async function joinTeamByCode(code: string) {
-  if (!supabase) throw new Error('Supabase not configured')
-  const { data, error } = await supabase.rpc('join_team_by_code', {
-    p_code: code.trim().toUpperCase(),
-  })
-  if (error) throw error
-  return data
-}
+export { joinTeamByCode, createTeam } from './teams'
 
 export function isOfficerPlus(role: TeamRole | null): boolean {
   return role === 'officer' || role === 'captain' || role === 'coach'

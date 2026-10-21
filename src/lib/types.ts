@@ -5,6 +5,10 @@ export type PlatformRole = 'user' | 'admin'
 export type Profile = {
   id: string
   handle: string
+  /** Preferred name for roster / HUD (set at onboarding). */
+  display_name?: string | null
+  /** School from onboarding; defaults team create school. */
+  school_name?: string | null
   division: Division
   platform_role: PlatformRole
   avatar_id: string
@@ -13,8 +17,17 @@ export type Profile = {
   /** Legacy cache only — UI derives rank from xp via progression.ts */
   rank_title: string
   current_streak: number
-  /** UTC YYYY-MM-DD of last graded activity; null until first session commit */
+  /**
+   * Local calendar date (YYYY-MM-DD) of last graded activity.
+   * Server writes via scioly_local_date(timezone); not UTC-guaranteed.
+   */
   last_activity_on?: string | null
+  /** IANA TZ last seen on practice commit; used for streak/cap display. */
+  timezone?: string | null
+  /** Local date key for daily practice XP cap. */
+  practice_xp_date?: string | null
+  /** Base practice XP earned on practice_xp_date (pre-multiplier). */
+  practice_xp_base?: number | null
   questions_answered: number
   visibility: 'public' | 'private'
   onboarding_complete: boolean
@@ -28,6 +41,8 @@ export type Team = {
   division: Division
   join_code_student: string
   join_code_admin: string
+  /** Set when a coach verification is approved for this team. */
+  verified?: boolean
   created_at: string
 }
 

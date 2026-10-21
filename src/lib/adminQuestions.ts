@@ -127,7 +127,7 @@ export function adminErrorMessage(err: unknown): string {
   if (!(err instanceof Error)) return 'Request failed'
   const msg = err.message
   if (/permission|policy|row-level/i.test(msg)) {
-    return 'Admin write denied — set platform_role=admin and run SCIOLY-0804-ADMIN SQL'
+    return 'Admin write denied — set profiles.platform_role=admin for your user in Supabase'
   }
   return msg
 }

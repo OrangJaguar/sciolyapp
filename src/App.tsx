@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { RequireAuth, RequireOnboarding, RequireAdmin } from './components/auth/RouteGuards'
+import { HomeEntry } from './components/landing/HomeEntry'
 import { AppShell } from './components/shell/AppShell'
 import { isSupabaseConfigured } from './lib/supabase'
 import { LoginPage } from './pages/auth/LoginPage'
@@ -9,6 +10,7 @@ import { AdminShell } from './pages/admin/AdminShell'
 import { CatalogPage } from './pages/admin/CatalogPage'
 import { GeneratePage } from './pages/admin/GeneratePage'
 import { ImportPage } from './pages/admin/ImportPage'
+import { CoachesPage } from './pages/admin/CoachesPage'
 import { CommsPage } from './pages/cmd/CommsPage'
 import { LeaderboardPage } from './pages/cmd/LeaderboardPage'
 import { MissionsPage } from './pages/cmd/MissionsPage'
@@ -21,11 +23,12 @@ import { TimedExamPage } from './pages/ops/TimedExamPage'
 import { TimedAutopsyPage } from './pages/ops/TimedAutopsyPage'
 import { BinderPage } from './pages/ops/BinderPage'
 import { ProfilePage } from './pages/profile/ProfilePage'
+import { PrivacyPage } from './pages/landing/PrivacyPage'
+import { TermsPage } from './pages/landing/TermsPage'
 
 function shellRoutes() {
   return (
     <>
-      <Route path="/" element={<Navigate to="/cmd/missions" replace />} />
       <Route path="/cmd/missions" element={<MissionsPage />} />
       <Route path="/cmd/vault" element={<VaultPage />} />
       <Route path="/cmd/comms" element={<CommsPage />} />
@@ -45,6 +48,7 @@ function shellRoutes() {
           <Route path="generate" element={<GeneratePage />} />
           <Route path="review" element={<ReviewPage />} />
           <Route path="import" element={<ImportPage />} />
+          <Route path="coaches" element={<CoachesPage />} />
         </Route>
       </Route>
     </>
@@ -54,11 +58,14 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<HomeEntry />} />
         <Route path="/login" element={<LoginPage />} />
         <Route
           path="/signup"
           element={<Navigate to="/login?mode=signup" replace />}
         />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/terms" element={<TermsPage />} />
 
         {isSupabaseConfigured ? (
           <>
