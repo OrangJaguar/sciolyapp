@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react'
+import { badgeAssetUrl } from './badges'
+import { requireSupabase } from './supabase'
 
 /** Keys match /public/avatars/default_{key}.png */
 export type AvatarKey =
@@ -40,9 +42,40 @@ export function resolveAvatarKey(
   return 'atom'
 }
 
+export function defaultAvatarId(key: AvatarKey): string {
+  return `default_${key}`
+}
+
+export function badgeAvatarId(badgeId: string): string {
+  return `badge:${badgeId}`
+}
+
+export function badgeIdFromAvatar(
+  avatarId: string | null | undefined,
+): string | null {
+  const raw = String(avatarId ?? '').trim()
+  if (!raw.startsWith('badge:')) return null
+  const id = raw.slice('badge:'.length)
+  return id || null
+}
+
 export function avatarAssetUrl(avatarId: string | null | undefined): string {
+  const badgeId = badgeIdFromAvatar(avatarId)
+  if (badgeId) return badgeAssetUrl(badgeId, { earned: true })
   const key = resolveAvatarKey(avatarId)
   return BY_KEY.get(key)!.src
+}
+
+/** Persist a standard mark or an earned badge portrait. */
+export async function setMyAvatar(avatarId: string): Promise<void> {
+  const { data, error } = await requireSupabase().rpc('set_my_avatar', {
+    p_avatar_id: avatarId,
+  })
+  if (error) throw error
+  const row = data as { ok?: boolean; error?: string } | null
+  if (row && row.ok === false) {
+    throw new Error(row.error || 'Could not set profile picture')
+  }
 }
 
 /** Theme-aware avatar glyph (white PNG → currentColor). */

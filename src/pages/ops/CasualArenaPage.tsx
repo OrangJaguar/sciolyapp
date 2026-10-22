@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import {
+  CLINIC_ENABLED,
   ClinicOverlay,
   clinicMissThreshold,
   type ClinicPayload,
@@ -48,6 +49,34 @@ type CommitAnswer = {
 
 const OPTION_KEYS = ['A', 'B', 'C', 'D'] as const
 
+function commitErrorText(err: unknown): string {
+  if (err && typeof err === 'object') {
+    const row = err as {
+      message?: unknown
+      details?: unknown
+      hint?: unknown
+      code?: unknown
+    }
+    const bits = [row.message, row.details, row.hint, row.code].filter(
+      (part): part is string => typeof part === 'string' && part.trim().length > 0,
+    )
+    if (bits.length > 0) return bits.join(' — ')
+  }
+  if (typeof err === 'string' && err.trim()) return err
+  return 'Failed to commit session'
+}
+
+function cycleBank(bank: Question[]): Question[] {
+  const copy = [...bank]
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1))
+    const swap = copy[i]!
+    copy[i] = copy[j]!
+    copy[j] = swap
+  }
+  return copy
+}
+
 function gradesToCommitList(
   grades: Record<number, GradedAnswer>,
 ): CommitAnswer[] {
@@ -80,12 +109,15 @@ export function CasualArenaPage() {
       fetchArenaQuestionBank({
         eventId: eventId!,
         topicId: topicId === 'all' ? 'all' : topicId,
+        uncapped: true,
       }),
     staleTime: Infinity,
     refetchOnWindowFocus: false,
   })
 
-  const questions = bankQuery.data ?? []
+  const sourceBank = bankQuery.data ?? []
+  const [queue, setQueue] = useState<Question[] | null>(null)
+  const questions = queue ?? []
   const [index, setIndex] = useState(0)
   const [drafts, setDrafts] = useState<
     Record<number, Question['correct_key'] | null>
@@ -119,9 +151,6 @@ export function CasualArenaPage() {
   const grade = grades[index] ?? null
   const selected = grade?.selected ?? drafts[index] ?? null
   const revealed = grade != null
-  const checkedCount = Object.keys(grades).length
-  const progress = total === 0 ? 0 : checkedCount / total
-  const onLast = index >= total - 1
 
   const sessionElapsedSec = useMemo(() => {
     void elapsedTick
@@ -165,6 +194,11 @@ export function CasualArenaPage() {
       total: list.length,
     }
   }, [grades])
+
+  useEffect(() => {
+    if (sourceBank.length === 0) return
+    setQueue((current) => current ?? sourceBank)
+  }, [sourceBank])
 
   useEffect(() => {
     if (shownAtByIndex.current[index] == null) {
@@ -245,12 +279,10 @@ export function CasualArenaPage() {
           commit: result,
           createdAt: new Date().toISOString(),
         })
-        navigate('/cmd/missions')
+        navigate('/cmd/missions', { replace: true })
       } catch (err) {
         commitLock.current = false
-        const msg =
-          err instanceof Error ? err.message : 'Failed to commit session'
-        setCommitError(msg)
+        setCommitError(commitErrorText(err))
         console.error('submit_casual_session', err)
       } finally {
         setCommitting(false)
@@ -280,9 +312,9 @@ export function CasualArenaPage() {
     (
       entry: GradedAnswer,
       fromQuestion: Question,
-      atIndex: number,
       nextGrades: Record<number, GradedAnswer>,
     ): boolean => {
+      if (!CLINIC_ENABLED) return false
       const conceptId = fromQuestion.concept_id
       if (entry.correct || !conceptId) return false
       if (clinicCleared.includes(conceptId) || clinic) return false
@@ -294,7 +326,7 @@ export function CasualArenaPage() {
       const threshold = clinicMissThreshold(inBank)
       if (nextMiss < threshold) return false
 
-      clinicResume.current = atIndex + 1 >= total ? 'finish' : 'advance'
+      clinicResume.current = 'advance'
       gradesSnapshot.current = nextGrades
       setClinic({
         conceptId,
@@ -309,7 +341,6 @@ export function CasualArenaPage() {
       clinicCleared,
       conceptMisses,
       questions,
-      total,
       sessionToken,
     ],
   )
@@ -332,7 +363,7 @@ export function CasualArenaPage() {
     gradesSnapshot.current = nextGrades
     playPracticeSfx(correct ? 'correct' : 'wrong')
 
-    maybeOpenClinic(entry, current, index, nextGrades)
+    maybeOpenClinic(entry, current, nextGrades)
   }, [
     current,
     revealed,
@@ -358,26 +389,28 @@ export function CasualArenaPage() {
       const resume = clinicResume.current
       clinicResume.current = null
 
-      if (resume === 'finish') {
-        endSession(gradesSnapshot.current)
-        return
-      }
       if (resume === 'advance') {
-        setIndex((i) => Math.min(i + 1, Math.max(0, total - 1)))
+        setIndex((i) => {
+          if (i >= questions.length - 1 && sourceBank.length > 0) {
+            setQueue((q) => [...(q ?? questions), ...cycleBank(sourceBank)])
+          }
+          return i + 1
+        })
       }
     },
-    [clinic, endSession, refreshProfile, total],
+    [clinic, refreshProfile, questions, sourceBank],
   )
 
   const goNext = useCallback(() => {
     if (!current || paused || clinic) return
     if (!revealed) return
-    if (onLast) {
-      endSession()
-      return
-    }
-    setIndex((i) => i + 1)
-  }, [current, paused, clinic, revealed, onLast, endSession])
+    setIndex((i) => {
+      if (i >= questions.length - 1 && sourceBank.length > 0) {
+        setQueue((q) => [...(q ?? questions), ...cycleBank(sourceBank)])
+      }
+      return i + 1
+    })
+  }, [current, paused, clinic, revealed, questions, sourceBank])
 
   const pick = useCallback(
     (key: Question['correct_key']) => {
@@ -423,14 +456,9 @@ export function CasualArenaPage() {
     setClinic(null)
     setConceptMisses({})
     setClinicCleared([])
+    setQueue(sourceBank.length ? [...sourceBank] : null)
     void bankQuery.refetch()
-  }, [bankQuery])
-
-  const exitArena = useCallback(() => {
-    if (window.confirm('Exit arena and return to lobby?')) {
-      navigate('/ops/casual')
-    }
-  }, [navigate])
+  }, [bankQuery, sourceBank])
 
   const jumpTo = useCallback(
     (target: number) => {
@@ -455,7 +483,7 @@ export function CasualArenaPage() {
 
       if (e.key === 'Escape') {
         e.preventDefault()
-        exitArena()
+        requestEnd()
         return
       }
 
@@ -510,7 +538,7 @@ export function CasualArenaPage() {
     checkAnswer,
     goNext,
     pick,
-    exitArena,
+    requestEnd,
     setPausedSafe,
   ])
 
@@ -605,10 +633,10 @@ export function CasualArenaPage() {
           )}
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link
-              to="/ops/casual"
+              to="/cmd/missions"
               className="hud-pill border border-cyan/40 px-5 py-2.5 text-sm text-cyan transition hover:bg-cyan/10"
             >
-              Lobby
+              CMD
             </Link>
             <button
               type="button"
@@ -626,7 +654,8 @@ export function CasualArenaPage() {
   if (!current) return null
 
   const correctIdx = optionIndexFromKey(current.correct_key)
-  const primaryLabel = onLast ? 'End session' : 'Next'
+  const accuracy =
+    summary.answered === 0 ? 0 : summary.correct / summary.answered
 
   return (
     <div className="flex h-full min-h-0 flex-col">
@@ -635,8 +664,15 @@ export function CasualArenaPage() {
       )}
       <PracticeChrome
         current={index + 1}
-        total={total}
-        progressRatio={progress}
+        total={Math.max(total, 1)}
+        counterLabel={
+          summary.answered === 0
+            ? '0/0'
+            : `${summary.correct}/${summary.answered}`
+        }
+        counterTitle="Accuracy so far"
+        progressRatio={accuracy}
+        progressLabel="Accuracy"
         navigatorItems={navigatorItems}
         onJump={jumpTo}
         timerLabel={formatExamClock(sessionElapsedSec)}
@@ -644,23 +680,14 @@ export function CasualArenaPage() {
         onTimerHiddenChange={setTimerHidden}
         paused={paused}
         onPausedChange={setPausedSafe}
-        onExit={exitArena}
+        onExit={requestEnd}
+        exitLabel="End"
         showBack={index > 0}
         onBack={goBack}
-        primaryLabel={primaryLabel}
+        primaryLabel="Next"
         primaryDisabled={!revealed || paused}
         onPrimary={goNext}
         shortcuts={CASUAL_PRACTICE_SHORTCUTS}
-        endSlot={
-          <button
-            type="button"
-            disabled={paused}
-            onClick={requestEnd}
-            className="hud-pill border border-subtle px-4 py-2 text-sm text-muted transition hover:border-alert/40 hover:text-alert disabled:opacity-40"
-          >
-            End
-          </button>
-        }
       >
         <p className="text-xl leading-snug font-medium text-foreground md:text-2xl md:leading-snug">
           {current.stem}

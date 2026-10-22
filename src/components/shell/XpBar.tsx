@@ -3,27 +3,12 @@ import { formatXp } from '../../lib/progression'
 type XpBarProps = {
   progress: number
   xpLabel: string
-  /** XP remaining to next level — tooltip / secondary. */
+  /** XP remaining to next level — tooltip only. */
   xpToNext?: number
-  /** XP into current level band. */
-  xpIntoLevel?: number
-  /** Current level band span. */
-  xpBand?: number
 }
 
-export function XpBar({
-  progress,
-  xpLabel,
-  xpToNext,
-  xpIntoLevel,
-  xpBand,
-}: XpBarProps) {
+export function XpBar({ progress, xpLabel, xpToNext }: XpBarProps) {
   const pct = Math.round(Math.min(1, Math.max(0, progress)) * 100)
-  const hasBand =
-    xpIntoLevel != null && xpBand != null && xpBand > 0
-  const bandLabel = hasBand
-    ? `${formatXp(xpIntoLevel)} / ${formatXp(xpBand)}`
-    : null
   const tip =
     xpToNext != null && xpToNext > 0
       ? `${formatXp(xpToNext)} XP to next level`
@@ -43,16 +28,9 @@ export function XpBar({
           {pct}%
         </span>
       </div>
-      <div className="flex shrink-0 flex-col items-end leading-none">
-        <span className="data-mono text-xl font-semibold text-cyan lg:text-2xl">
-          {xpLabel}
-        </span>
-        {bandLabel ? (
-          <span className="mt-0.5 hidden data-mono text-[10px] text-dim sm:inline">
-            {bandLabel}
-          </span>
-        ) : null}
-      </div>
+      <span className="data-mono shrink-0 text-xl font-semibold text-cyan lg:text-2xl">
+        {xpLabel}
+      </span>
     </div>
   )
 }

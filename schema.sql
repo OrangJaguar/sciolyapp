@@ -3015,7 +3015,7 @@ BEGIN
   SELECT COUNT(*)::integer INTO v_clinic_today
   FROM clinic_do_awards
   WHERE user_id = p_user_id
-    AND scioly_local_date(v_tz, awarded_at) = v_local;
+    AND scioly_local_date(v_tz, created_at) = v_local;
 
   SELECT COUNT(*)::integer INTO v_timed
   FROM practice_session_commits

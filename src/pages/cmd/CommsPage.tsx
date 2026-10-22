@@ -204,9 +204,14 @@ export function CommsPage() {
               </button>
             )}
           </div>
-          <div className="hud-pill mb-3 w-full justify-center px-2 py-1.5 text-[10px] text-[var(--text)]">
+          <div className="hud-pill mb-2 w-full justify-center px-2 py-1.5 text-[10px] text-[var(--text)]">
             {(team?.name ?? 'SQUAD').toUpperCase()}
           </div>
+          {teamQuery.data?.role ? (
+            <p className="mb-3 text-center label-caps text-[9px] text-cyan">
+              You · {formatRole(teamQuery.data.role)}
+            </p>
+          ) : null}
           {rosterQuery.isLoading && (
             <p className="text-xs text-muted">Loading…</p>
           )}
@@ -271,7 +276,7 @@ export function CommsPage() {
                         </p>
                       ) : null}
                       <p
-                        className={`truncate text-[10px] ${
+                        className={`flex min-w-0 items-center gap-1 text-[10px] ${
                           m.display_name
                             ? 'text-dim'
                             : m.user_id === userId
@@ -279,7 +284,8 @@ export function CommsPage() {
                               : 'text-[var(--text)]'
                         }`}
                       >
-                        @{m.handle}
+                        <RoleStar role={m.role} />
+                        <span className="truncate">@{m.handle}</span>
                       </p>
                     </div>
                   </button>
@@ -399,20 +405,11 @@ export function CommsPage() {
           className="pointer-events-none fixed z-[60] w-52 rounded-md border border-cyan/30 bg-surface-elevated p-3 shadow-[0_12px_40px_rgba(0,0,0,0.65)]"
           style={{ left: hoverTip.x, top: hoverTip.y }}
         >
-          {hoverTip.displayName ? (
-            <p className="truncate text-xs font-medium text-[var(--text)]">
-              {hoverTip.displayName}
-            </p>
-          ) : null}
-          <p
-            className={`truncate text-xs ${
-              hoverTip.displayName
-                ? 'text-dim'
-                : 'font-medium text-[var(--text)]'
-            }`}
-          >
-            @{hoverTip.handle}
+          <p className="label-caps !text-[9px] text-dim">Name</p>
+          <p className="truncate text-xs font-medium text-[var(--text)]">
+            {hoverTip.displayName ?? 'Not set'}
           </p>
+          <p className="truncate text-xs text-dim">@{hoverTip.handle}</p>
           <p className="mt-1 data-mono text-[10px] text-cyan">{hoverTip.role}</p>
           <p className="mt-2 label-caps !text-[9px] text-dim">Events</p>
           {hoverTip.events.length === 0 ? (
@@ -711,14 +708,17 @@ function RosterAdminModal({
                       </p>
                     ) : null}
                     <p
-                      className={`text-sm ${
+                      className={`flex items-center gap-1.5 text-sm ${
                         m.display_name
                           ? 'text-dim'
                           : 'font-medium text-[var(--text)]'
                       }`}
                     >
-                      @{m.handle}
-                      {!m.display_name && isSelf ? ' · YOU' : ''}
+                      <RoleStar role={m.role} />
+                      <span>
+                        @{m.handle}
+                        {!m.display_name && isSelf ? ' · YOU' : ''}
+                      </span>
                     </p>
                   </div>
                   {!isSelf ? (
@@ -855,5 +855,18 @@ function RosterAdminModal({
         </div>
       </div>
     </div>
+  )
+}
+
+function RoleStar({ role }: { role: TeamRole }) {
+  if (role === 'member') return null
+  return (
+    <span
+      className="shrink-0 text-[11px] leading-none text-cyan"
+      title={formatRole(role)}
+      aria-label={formatRole(role)}
+    >
+      ★
+    </span>
   )
 }

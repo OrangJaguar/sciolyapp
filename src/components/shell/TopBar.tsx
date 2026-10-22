@@ -41,8 +41,6 @@ export function TopBar() {
             progress={hud.progress}
             xpLabel={hud.xpLabel}
             xpToNext={hud.xpToNext}
-            xpIntoLevel={hud.xpIntoLevel}
-            xpBand={hud.xpBand}
           />
 
           {hud.streak > 0 ? (

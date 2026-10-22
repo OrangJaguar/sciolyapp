@@ -24,7 +24,12 @@ export const landingCopy = {
     title: 'Built after a devastating loss.',
     body: [
       'Sanskar Gupta is a high school Science Olympiad leader. After a season that hurt — and no rigid plan to fall back on — he wanted something that actually kept a squad studying and accountable.',
-      'This is that tool: progress you can see, practice shaped for the competition, and a team layer that doesn’t feel like busywork.',
+      'Practice was scattered. Deadlines lived in chats. Nobody could tell, a week later, who had actually drilled an event. This is the board for that.',
+    ],
+    arc: [
+      { k: '01', title: 'The season', body: 'A loss with nothing rigid to point back to.' },
+      { k: '02', title: 'The gap', body: 'Binders, group chats, and a vague sense of “we studied.”' },
+      { k: '03', title: 'The build', body: 'Missions, drills, and a rank that moves when the work does.' },
     ],
   },
   product: {
@@ -35,16 +40,21 @@ export const landingCopy = {
     beats: [
       {
         title: 'Practice',
-        body: 'Casual drills with real feedback. Timed black-box runs when you need exam pressure.',
+        body: 'Casual drills show the answer when you check. Timed runs stay sealed until you end — exam pressure, not a pop quiz.',
       },
       {
         title: 'Team',
-        body: 'Join or create a unit, missions with deadlines, roster visibility for captains and coaches.',
+        body: 'Join or create a unit. Missions have deadlines. Captains see coverage and who is moving, not a surveillance feed.',
       },
       {
         title: 'Progress',
-        body: 'XP, ranks, and session summaries so improvement isn’t a vague feeling.',
+        body: 'XP, rank, and a session summary land on CMD when you finish. Improvement is a number you can argue with.',
       },
+    ],
+    run: [
+      { k: 'Event', body: 'Pick a studyable event and a topic, or the whole bank.' },
+      { k: 'Mode', body: 'Check as you go, or seal a black box with a count and a clock.' },
+      { k: 'Close', body: 'End the run. The summary opens on CMD, not in a lost tab.' },
     ],
   },
   scioly: {
@@ -55,6 +65,13 @@ export const landingCopy = {
       'Events, seasons, and how teams actually prepare stay in mind as the product grows. The goal is a place that fits Science Olympiad structure — not a generic question bank with a SciOly sticker on it.',
     ],
     disclaimer: LANDING_DISCLAIMER,
+    domains: [
+      { name: 'Life', note: 'Anatomy, disease, ecology' },
+      { name: 'Earth', note: 'Rocks, weather, planets' },
+      { name: 'Physical', note: 'Chem, physics, machines' },
+      { name: 'Build', note: 'Towers, trajectories, code' },
+      { name: 'Inquiry', note: 'Experimental design' },
+    ],
   },
   captains: {
     id: 'captains',
@@ -63,6 +80,8 @@ export const landingCopy = {
     body: [
       'Missions, coverage, and member signals help leaders see who’s moving — without turning the app into a creepy tracker.',
     ],
+    see: ['Mission progress', 'Event coverage', 'Last practice day'],
+    skip: ['Location', 'Keystrokes', 'Anything off the team'],
   },
   close: {
     id: 'start',

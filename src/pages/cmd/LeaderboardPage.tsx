@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '../../features/auth/AuthProvider'
+import { AvatarMark } from '../../lib/avatars'
 import { NoTeamPanel } from '../../components/team/NoTeamPanel'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import {
@@ -207,8 +208,8 @@ export function LeaderboardPage() {
               <span className="data-mono shrink-0 text-sm text-cyan">
                 {row.score.toLocaleString()}
               </span>
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[var(--ghost-border)] data-mono text-[9px] text-dim">
-                {row.handle.slice(0, 2).toUpperCase()}
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center text-cyan">
+                <AvatarMark avatarId={row.avatar_id} className="h-6 w-6" />
               </span>
             </li>
           )

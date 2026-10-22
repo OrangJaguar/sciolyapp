@@ -1,7 +1,11 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { AvatarPickerModal } from '../../components/profile/AvatarPickerModal'
+import { RankLadderTip } from '../../components/profile/RankLadderTip'
+import { ThemePicker } from '../../components/profile/ThemePicker'
 import { useAuth } from '../../features/auth/AuthProvider'
+import { AvatarMark } from '../../lib/avatars'
 import {
   BadgeMark,
   HIDDEN_BADGES,
@@ -13,11 +17,6 @@ import {
   type BadgeStats,
 } from '../../lib/badges'
 import {
-  fetchMyCoachVerifications,
-  requestCoachVerification,
-} from '../../lib/coachVerify'
-import { fetchTeamContext } from '../../lib/missions'
-import {
   DAILY_PRACTICE_XP_CAP,
   formatXp,
   profileToHud,
@@ -25,8 +24,7 @@ import {
   xpProgress,
   xpToNextLevel,
 } from '../../lib/progression'
-import { isSupabaseConfigured, requireSupabase } from '../../lib/supabase'
-import { ThemePicker } from '../../components/profile/ThemePicker'
+import { isSupabaseConfigured } from '../../lib/supabase'
 
 export function ProfilePage() {
   const { profile, signOut, configured, user, refreshProfile } = useAuth()
@@ -35,54 +33,7 @@ export function ProfilePage() {
   const userId = user?.id ?? profile?.id ?? null
   const [syncNote, setSyncNote] = useState<string | null>(null)
   const [badgeStats, setBadgeStats] = useState<BadgeStats | null>(null)
-  const [displayNameDraft, setDisplayNameDraft] = useState('')
-  const [schoolDraft, setSchoolDraft] = useState('')
-  const [identityBusy, setIdentityBusy] = useState(false)
-  const [identityNote, setIdentityNote] = useState<string | null>(null)
-  const [verifySchool, setVerifySchool] = useState('')
-  const [verifyNote, setVerifyNote] = useState('')
-  const [verifyMsg, setVerifyMsg] = useState<string | null>(null)
-
-  useEffect(() => {
-    setDisplayNameDraft(profile?.display_name ?? '')
-    setSchoolDraft(profile?.school_name ?? '')
-    if (profile?.school_name && !verifySchool) {
-      setVerifySchool(profile.school_name)
-    }
-  }, [profile?.display_name, profile?.school_name, verifySchool])
-
-  const teamId = profile?.team_id ?? null
-  const teamCtxQuery = useQuery({
-    queryKey: ['profile-team-role', teamId, userId],
-    queryFn: () => fetchTeamContext(userId!, teamId!),
-    enabled: isSupabaseConfigured && Boolean(userId && teamId),
-  })
-  const isCoach = teamCtxQuery.data?.role === 'coach'
-  const teamVerified = Boolean(teamCtxQuery.data?.team?.verified)
-
-  const verifyQuery = useQuery({
-    queryKey: ['my-coach-verifications', userId],
-    queryFn: fetchMyCoachVerifications,
-    enabled: isSupabaseConfigured && isCoach,
-  })
-  const latestVerify = verifyQuery.data?.[0] ?? null
-  const hasPending = latestVerify?.status === 'pending'
-
-  const verifyMutation = useMutation({
-    mutationFn: () =>
-      requestCoachVerification({
-        schoolName: verifySchool,
-        note: verifyNote,
-      }),
-    onSuccess: () => {
-      setVerifyMsg('Request submitted.')
-      setVerifyNote('')
-      void qc.invalidateQueries({ queryKey: ['my-coach-verifications', userId] })
-    },
-    onError: (err) => {
-      setVerifyMsg(err instanceof Error ? err.message : 'Request failed')
-    },
-  })
+  const [pickerOpen, setPickerOpen] = useState(false)
 
   useEffect(() => {
     if (!isSupabaseConfigured || !userId) return
@@ -140,28 +91,47 @@ export function ProfilePage() {
 
   return (
     <div className="flex h-full min-h-0 w-full flex-col gap-5 overflow-y-auto">
-      <header className="space-y-1">
-        <p className="label-caps text-dim">Operative</p>
-        <h1 className="font-display text-3xl tracking-tight text-foreground sm:text-4xl">
-          {profile.display_name?.trim() || `@${hud.handle}`}
-        </h1>
-        <p className="text-sm text-muted">
-          @{hud.handle} · Div {profile.division}
-          {profile.team_id ? ' · Team linked' : ' · Practice solo'}
-          {profile.school_name?.trim()
-            ? ` · ${profile.school_name.trim()}`
-            : ''}
-        </p>
+      <header className="flex items-start justify-between gap-4">
+        <div className="min-w-0 space-y-1">
+          <p className="label-caps text-dim">Operative</p>
+          <h1 className="font-display text-3xl tracking-tight text-foreground sm:text-4xl">
+            {profile.display_name?.trim() || `@${hud.handle}`}
+          </h1>
+          <p className="text-sm text-muted">
+            @{hud.handle} · Div {profile.division}
+            {profile.team_id ? ' · Team linked' : ' · Practice solo'}
+            {profile.school_name?.trim()
+              ? ` · ${profile.school_name.trim()}`
+              : ''}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setPickerOpen(true)}
+          aria-label="Change profile picture"
+          className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-cyan/40 bg-void text-cyan shadow-[0_0_18px_var(--accent-dim)] transition-colors hover:border-cyan"
+        >
+          <AvatarMark avatarId={profile.avatar_id} className="h-9 w-9" />
+        </button>
       </header>
 
+      <AvatarPickerModal
+        open={pickerOpen}
+        currentAvatarId={profile.avatar_id}
+        earned={new Set(earned.keys())}
+        onClose={() => setPickerOpen(false)}
+        onSaved={refreshProfile}
+      />
+
       <section
-        className={`hud-panel space-y-4 border p-5 ${rankAccentClass(hud.rankName)}`}
+        className={`hud-panel relative z-10 space-y-4 border p-5 ${rankAccentClass(hud.rankName)}`}
       >
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <p className="label-caps text-dim">Rank</p>
             <p className="mt-1 flex flex-wrap items-center gap-2 font-display text-xl text-cyan">
               <span>{hud.rankName}</span>
+              <RankLadderTip currentRank={hud.rankName} />
               <span className="data-mono inline-flex h-7 min-w-7 items-center justify-center rounded-md border border-cyan/45 bg-cyan/10 px-1.5 text-base font-semibold text-cyan">
                 {hud.level}
               </span>
@@ -207,158 +177,6 @@ export function ProfilePage() {
           />
         </div>
       </section>
-
-      <section className="hud-panel space-y-4 p-5">
-        <div>
-          <p className="label-caps text-dim">Identity</p>
-          <p className="mt-1 text-sm text-muted">
-            Preferred name and school from onboarding. Edit anytime.
-          </p>
-        </div>
-        <form
-          className="grid gap-3 sm:grid-cols-2"
-          onSubmit={(e: FormEvent) => {
-            e.preventDefault()
-            const name = displayNameDraft.trim()
-            const school = schoolDraft.trim()
-            if (name.length < 1 || name.length > 48) {
-              setIdentityNote('Preferred name must be 1–48 characters.')
-              return
-            }
-            if (school.length < 1 || school.length > 80) {
-              setIdentityNote('School name must be 1–80 characters.')
-              return
-            }
-            setIdentityBusy(true)
-            setIdentityNote(null)
-            void (async () => {
-              try {
-                const { error } = await requireSupabase()
-                  .from('profiles')
-                  .update({ display_name: name, school_name: school })
-                  .eq('id', profile.id)
-                if (error) throw error
-                await refreshProfile()
-                setIdentityNote('Saved.')
-              } catch (err) {
-                setIdentityNote(
-                  err instanceof Error ? err.message : 'Could not save identity.',
-                )
-              } finally {
-                setIdentityBusy(false)
-              }
-            })()
-          }}
-        >
-          <label className="block sm:col-span-1">
-            <span className="label-caps text-dim">Preferred name</span>
-            <input
-              value={displayNameDraft}
-              onChange={(e) => setDisplayNameDraft(e.target.value)}
-              maxLength={48}
-              className="mt-2 w-full rounded-md border border-subtle bg-void px-3 py-2.5 text-sm text-foreground outline-none focus:border-accent"
-            />
-          </label>
-          <label className="block sm:col-span-1">
-            <span className="label-caps text-dim">School</span>
-            <input
-              value={schoolDraft}
-              onChange={(e) => setSchoolDraft(e.target.value)}
-              maxLength={80}
-              className="mt-2 w-full rounded-md border border-subtle bg-void px-3 py-2.5 text-sm text-foreground outline-none focus:border-accent"
-            />
-          </label>
-          <div className="flex flex-wrap items-center gap-3 sm:col-span-2">
-            <button
-              type="submit"
-              disabled={identityBusy}
-              className="hud-pill hud-pill-active px-5 py-2 text-sm disabled:opacity-40"
-            >
-              {identityBusy ? 'Saving…' : 'Save identity'}
-            </button>
-            {identityNote ? (
-              <p className="text-xs text-muted">{identityNote}</p>
-            ) : null}
-          </div>
-        </form>
-      </section>
-
-      {isCoach ? (
-        <section className="hud-panel space-y-4 p-5">
-          <div>
-            <p className="label-caps text-dim">Coach verification</p>
-            <p className="mt-1 text-sm text-muted">
-              Optional. Creating and running a team works without it. Platform
-              admins can approve a light trust badge for your squad.
-            </p>
-          </div>
-          {teamVerified ? (
-            <p className="text-sm text-success">
-              Your team is marked verified.
-            </p>
-          ) : hasPending ? (
-            <p className="text-sm text-muted">
-              Verification pending since{' '}
-              {latestVerify
-                ? new Date(latestVerify.created_at).toLocaleDateString()
-                : '…'}
-              .
-            </p>
-          ) : (
-            <form
-              className="space-y-3"
-              onSubmit={(e: FormEvent) => {
-                e.preventDefault()
-                setVerifyMsg(null)
-                verifyMutation.mutate()
-              }}
-            >
-              <label className="block">
-                <span className="label-caps text-dim">School</span>
-                <input
-                  value={verifySchool}
-                  onChange={(e) => setVerifySchool(e.target.value)}
-                  maxLength={80}
-                  required
-                  className="mt-2 w-full rounded-md border border-subtle bg-void px-3 py-2.5 text-sm text-foreground outline-none focus:border-accent"
-                />
-              </label>
-              <label className="block">
-                <span className="label-caps text-dim">Short note</span>
-                <textarea
-                  value={verifyNote}
-                  onChange={(e) => setVerifyNote(e.target.value)}
-                  maxLength={500}
-                  rows={3}
-                  placeholder="e.g. I coach North High Div C — school email is …"
-                  className="mt-2 w-full resize-none rounded-md border border-subtle bg-void px-3 py-2.5 text-sm text-foreground outline-none focus:border-accent"
-                />
-              </label>
-              <div className="flex flex-wrap items-center gap-3">
-                <button
-                  type="submit"
-                  disabled={
-                    verifyMutation.isPending || verifySchool.trim().length < 1
-                  }
-                  className="hud-pill hud-pill-active px-5 py-2 text-sm disabled:opacity-40"
-                >
-                  {verifyMutation.isPending
-                    ? 'Submitting…'
-                    : 'Request verification'}
-                </button>
-                {verifyMsg ? (
-                  <p className="text-xs text-muted">{verifyMsg}</p>
-                ) : null}
-              </div>
-            </form>
-          )}
-          {latestVerify && latestVerify.status === 'rejected' && !hasPending ? (
-            <p className="text-xs text-dim">
-              Last request was rejected. You can submit again.
-            </p>
-          ) : null}
-        </section>
-      ) : null}
 
       <section className="hud-panel p-5">
         <p className="label-caps text-dim">Appearance</p>

@@ -68,9 +68,10 @@ export function TimedConfigPage() {
 
   const [eventId, setEventId] = useState<string | null>(null)
   const [topicId, setTopicId] = useState<string | 'all'>('all')
-  const [countPreset, setCountPreset] = useState<number | 'max'>(5)
-  const [timePresetId, setTimePresetId] =
-    useState<(typeof TIME_PRESETS)[number]['id']>('10m')
+  const [countPreset, setCountPreset] = useState<number | 'max' | null>(null)
+  const [timePresetId, setTimePresetId] = useState<
+    (typeof TIME_PRESETS)[number]['id'] | null
+  >(null)
 
   const selectedEventId = eventId ?? studyable[0]?.id ?? null
 
@@ -106,20 +107,23 @@ export function TimedConfigPage() {
   }, [selectedEventId, topicId, liveByEvent, liveByTopic])
 
   const questionCount = useMemo(() => {
-    if (liveForSelection <= 0) return 0
+    if (countPreset == null || liveForSelection <= 0) return 0
     if (countPreset === 'max') return liveForSelection
     return Math.min(countPreset, liveForSelection)
   }, [countPreset, liveForSelection])
 
   const seconds = useMemo(() => {
+    if (timePresetId == null) return 0
     const preset = TIME_PRESETS.find((t) => t.id === timePresetId)
-    if (!preset) return 10 * 60
+    if (!preset) return 0
     if (preset.seconds == null) return Math.max(60, questionCount * 60)
     return preset.seconds
   }, [timePresetId, questionCount])
 
   const selectedEvent = studyable.find((e) => e.id === selectedEventId) ?? null
   const canStart =
+    countPreset != null &&
+    timePresetId != null &&
     Boolean(selectedEventId) &&
     questionCount >= 1 &&
     liveForSelection >= questionCount &&
@@ -285,7 +289,9 @@ export function TimedConfigPage() {
               />
             </div>
             <p className="mt-2 data-mono text-xs text-dim">
-              Will serve {questionCount} of {liveForSelection} available
+              {countPreset == null
+                ? `Select how many questions · ${liveForSelection} available`
+                : `Will serve ${questionCount} of ${liveForSelection} available`}
             </p>
           </div>
 
@@ -306,7 +312,9 @@ export function TimedConfigPage() {
               ))}
             </div>
             <p className="mt-2 data-mono text-xs text-dim">
-              Clock · {formatClock(seconds)} total · no Clinic mid-run
+              {timePresetId == null
+                ? 'Select a time before entering the Black Box'
+                : `Clock · ${formatClock(seconds)} total · no Clinic mid-run`}
             </p>
           </div>
 
@@ -378,10 +386,11 @@ function PresetPill({
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className={`hud-pill px-4 py-2 text-sm transition ${
+      aria-pressed={active}
+      className={`rounded-full border px-4 py-2 text-sm font-semibold tracking-[0.08em] uppercase transition ${
         active
-          ? 'bg-cyan font-bold text-[var(--on-accent)]'
-          : 'border border-subtle text-foreground hover:border-cyan/40'
+          ? 'border-cyan bg-cyan/15 text-cyan shadow-[0_0_18px_var(--accent-dim)]'
+          : 'border-subtle text-foreground hover:border-cyan/40'
       } ${disabled ? 'cursor-not-allowed opacity-40' : ''}`}
     >
       {label}

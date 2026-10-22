@@ -30,7 +30,7 @@ export const CASUAL_PRACTICE_SHORTCUTS: PracticeShortcut[] = [
   { keys: 'Enter', label: 'Check selected / Next' },
   { keys: 'P', label: 'Pause / resume' },
   { keys: 'H', label: 'Hide / show timer' },
-  { keys: 'Esc', label: 'Exit arena' },
+  { keys: 'Esc', label: 'End session' },
 ]
 
 export const TIMED_PRACTICE_SHORTCUTS: PracticeShortcut[] = [
@@ -39,13 +39,17 @@ export const TIMED_PRACTICE_SHORTCUTS: PracticeShortcut[] = [
   { keys: 'Enter', label: 'Next question' },
   { keys: 'P', label: 'Pause / resume' },
   { keys: 'H', label: 'Hide / show timer' },
-  { keys: 'Esc', label: 'Abandon exam' },
+  { keys: 'Esc', label: 'End exam' },
 ]
 
 type PracticeChromeProps = {
   current: number
   total: number
+  /** Overrides the `Q current/total` label (casual accuracy). */
+  counterLabel?: string
+  counterTitle?: string
   progressRatio: number
+  progressLabel?: string
   navigatorItems: PracticeNavigatorItem[]
   onJump: (index: number) => void
   /** Display string; null hides the clock digits but keep controls if showTimerControls */
@@ -75,7 +79,10 @@ type PracticeChromeProps = {
 export function PracticeChrome({
   current,
   total,
+  counterLabel,
+  counterTitle = 'Question navigator',
   progressRatio,
+  progressLabel = 'Session progress',
   navigatorItems,
   onJump,
   timerLabel,
@@ -86,7 +93,7 @@ export function PracticeChrome({
   paused,
   onPausedChange,
   onExit,
-  exitLabel = 'Exit',
+  exitLabel = 'End',
   showBack = false,
   backDisabled = false,
   onBack,
@@ -161,9 +168,9 @@ export function PracticeChrome({
                 setNavOpen((o) => !o)
               }}
               className="data-mono shrink-0 rounded-md px-1.5 py-0.5 text-sm text-foreground transition hover:bg-[var(--surface-hover)] hover:text-cyan"
-              title="Question navigator"
+              title={counterTitle}
             >
-              Q {current}/{total}
+              {counterLabel ?? `Q ${current}/${total}`}
             </button>
             <div
               className="relative h-1.5 min-w-[4rem] max-w-md flex-1 overflow-hidden rounded-pill bg-surface-high"
@@ -171,7 +178,7 @@ export function PracticeChrome({
               aria-valuenow={Math.round(ratio * 100)}
               aria-valuemin={0}
               aria-valuemax={100}
-              aria-label="Session progress"
+              aria-label={progressLabel}
             >
               <div
                 className="absolute inset-y-0 left-0 rounded-pill bg-cyan transition-[width] duration-300"
@@ -277,15 +284,23 @@ export function PracticeChrome({
       {/* Bottom chrome */}
       <div className="relative z-20 flex shrink-0 flex-wrap items-center justify-between gap-3 border-t border-subtle/80 pt-3">
         <div className="flex items-center gap-2" ref={helpRef}>
-          <div className="relative">
+          <div
+            className="relative"
+            onMouseEnter={() => {
+              setNavOpen(false)
+              setHelpOpen(true)
+            }}
+            onMouseLeave={() => setHelpOpen(false)}
+          >
             <button
               type="button"
               aria-expanded={helpOpen}
               aria-controls={helpPanelId}
-              onClick={() => {
+              onFocus={() => {
                 setNavOpen(false)
-                setHelpOpen((o) => !o)
+                setHelpOpen(true)
               }}
+              onBlur={() => setHelpOpen(false)}
               className="flex h-8 w-8 items-center justify-center rounded-full border border-subtle text-sm font-semibold text-muted transition hover:border-cyan/40 hover:text-cyan"
               title="Keyboard shortcuts"
               aria-label="Keyboard shortcuts"

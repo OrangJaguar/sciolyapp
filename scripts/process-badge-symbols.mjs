@@ -1,6 +1,7 @@
 /**
  * Process BadgeSymbols/*.jpg → public/badges|avatars/*.png
- * - Remove dark backgrounds; keep white glyphs
+ * - Sources are white glyphs on a gray checkerboard baked into the JPEG
+ * - Knock the checkerboard out; keep the white glyph
  * - Crop to content, pad, export 256×256 PNG
  */
 import fs from 'node:fs'
@@ -81,11 +82,14 @@ async function processOne(srcPath, outPath) {
     const a = channels === 4 ? data[s + 3] : 255
     const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b
 
+    // Checker squares top out near luminance 150. Glyphs sit near 255.
+    // The short ramp keeps antialiased edges and drops the square plate.
+    const LO = 165
+    const HI = 225
     let alpha
-    if (a < 8) alpha = 0
-    else if (lum < 40) alpha = 0
-    else if (lum > 210) alpha = 255
-    else alpha = Math.round(((lum - 40) / 170) * 255)
+    if (a < 8 || lum <= LO) alpha = 0
+    else if (lum >= HI) alpha = 255
+    else alpha = Math.round(((lum - LO) / (HI - LO)) * 255)
 
     alpha = Math.round((alpha * a) / 255)
     out[d] = 255

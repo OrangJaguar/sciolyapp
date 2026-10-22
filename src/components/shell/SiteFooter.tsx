@@ -7,6 +7,9 @@ export function SiteFooter() {
         Copyright © 2026 Developed by Sanskar Gupta. All Rights Reserved.
       </p>
       <nav className="flex items-center gap-3 text-[10px]">
+        <Link to="/site" className="text-dim transition-colors hover:text-cyan">
+          Website
+        </Link>
         <Link to="/privacy" className="text-dim transition-colors hover:text-cyan">
           Privacy
         </Link>

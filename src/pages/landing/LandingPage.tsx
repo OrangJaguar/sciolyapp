@@ -1,15 +1,16 @@
+import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { CaptainsCue } from '../../components/landing/CaptainsCue'
 import { HeroConstellation } from '../../components/landing/HeroConstellation'
+import { HeroCtas } from '../../components/landing/LandingAccountLink'
 import { MarketingFooter } from '../../components/landing/MarketingFooter'
 import { ProductPreview } from '../../components/landing/ProductPreview'
 import { Reveal } from '../../components/landing/Reveal'
+import { ScrollHelix } from '../../components/landing/ScrollHelix'
 import { landingCopy } from '../../lib/landingCopy'
 
 /**
  * Public marketing landing.
- * Plan 02: brand-first hero + constellation.
- * Plan 03: story · product · polish.
  */
 export function LandingPage() {
   const { hero, why, product, scioly, captains, close } = landingCopy
@@ -19,8 +20,9 @@ export function LandingPage() {
       className="fixed inset-0 z-0 overflow-y-auto bg-void text-foreground"
       data-theme="hud"
     >
+      <ScrollHelix />
       <div className="marketing-root min-h-full">
-        <section className="relative flex min-h-dvh flex-col justify-end overflow-hidden px-5 pb-16 pt-12 sm:px-8 sm:pb-20 lg:px-12 lg:pb-24">
+        <section className="relative flex min-h-dvh flex-col justify-end overflow-hidden px-5 pb-16 pt-16 sm:px-8 sm:pb-20 lg:px-12 lg:pb-24">
           <HeroConstellation />
 
           <div className="relative z-[1] mx-auto w-full max-w-6xl">
@@ -34,36 +36,13 @@ export function LandingPage() {
               <p className="mt-4 max-w-md text-base leading-relaxed text-muted sm:text-lg">
                 {hero.support}
               </p>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Link
-                  to={hero.primaryTo}
-                  className="hud-pill hud-pill-active px-5 py-2.5 text-sm"
-                >
-                  {hero.primaryCta}
-                </Link>
-                <Link
-                  to={hero.secondaryTo}
-                  className="hud-pill px-5 py-2.5 text-sm text-foreground"
-                >
-                  {hero.secondaryCta}
-                </Link>
-              </div>
-              <a
-                href={hero.scrollTo}
-                className="mt-5 inline-block text-sm text-dim transition-colors hover:text-cyan"
-              >
-                {hero.scrollCta}
-              </a>
+              <HeroCtas />
             </div>
           </div>
         </section>
 
-        {/* Why */}
-        <section
-          id={why.id}
-          className="border-t border-subtle/60 px-5 py-16 sm:px-8 sm:py-20 lg:px-12"
-        >
-          <Reveal className="mx-auto max-w-5xl">
+        <LandingBand id={why.id}>
+          <Reveal>
             <p className="label-caps text-[9px] text-dim">{why.eyebrow}</p>
             <h2 className="mt-2 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
               {why.title}
@@ -76,59 +55,82 @@ export function LandingPage() {
                 {p}
               </p>
             ))}
+            <ol className="mt-10 grid gap-4 sm:grid-cols-3">
+              {why.arc.map((step) => (
+                <li key={step.k} className="border-t border-cyan/25 pt-3">
+                  <p className="data-mono text-[11px] text-cyan">{step.k}</p>
+                  <p className="mt-1 font-display text-lg text-foreground">
+                    {step.title}
+                  </p>
+                  <p className="mt-1 text-sm leading-relaxed text-muted">
+                    {step.body}
+                  </p>
+                </li>
+              ))}
+            </ol>
           </Reveal>
-        </section>
+        </LandingBand>
 
-        {/* Product */}
-        <section
-          id={product.id}
-          className="border-t border-subtle/60 px-5 py-16 sm:px-8 sm:py-20 lg:px-12"
-        >
-          <div className="mx-auto max-w-5xl">
-            <Reveal>
-              <p className="label-caps text-[9px] text-dim">{product.eyebrow}</p>
-              <h2 className="mt-2 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-                {product.title}
-              </h2>
-              <p className="mt-3 max-w-xl text-muted">{product.lead}</p>
+        <LandingBand id={product.id}>
+          <Reveal>
+            <p className="label-caps text-[9px] text-dim">{product.eyebrow}</p>
+            <h2 className="mt-2 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+              {product.title}
+            </h2>
+            <p className="mt-3 max-w-xl text-muted">{product.lead}</p>
+          </Reveal>
+
+          <div className="mt-10 grid items-start gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-12">
+            <Reveal delayMs={80}>
+              <p className="mb-3 text-[11px] tracking-wide text-dim">
+                Hover the window. Sample squad, same chrome as CMD.
+              </p>
+              <ProductPreview />
             </Reveal>
 
-            <div className="mt-10 grid items-start gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-12">
-              <Reveal delayMs={80}>
-                <ProductPreview />
-              </Reveal>
-
-              <Reveal delayMs={140}>
-                <ol className="divide-y divide-subtle/60 border-y border-subtle/60">
-                  {product.beats.map((beat, i) => (
-                    <li key={beat.title} className="py-5 first:pt-4 last:pb-4">
-                      <div className="flex gap-4">
-                        <span className="data-mono shrink-0 pt-0.5 text-[11px] text-cyan">
-                          {String(i + 1).padStart(2, '0')}
-                        </span>
-                        <div>
-                          <p className="font-display text-lg text-foreground">
-                            {beat.title}
-                          </p>
-                          <p className="mt-1.5 text-sm leading-relaxed text-muted">
-                            {beat.body}
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ol>
-              </Reveal>
-            </div>
+            <Reveal delayMs={140}>
+              <ol className="space-y-6">
+                {product.beats.map((beat, i) => (
+                  <li key={beat.title} className="flex gap-4">
+                    <span className="data-mono shrink-0 pt-0.5 text-[11px] text-cyan">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <div>
+                      <p className="font-display text-lg text-foreground">
+                        {beat.title}
+                      </p>
+                      <p className="mt-1.5 text-sm leading-relaxed text-muted">
+                        {beat.body}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </Reveal>
           </div>
-        </section>
 
-        {/* SciOly */}
-        <section
-          id={scioly.id}
-          className="border-t border-subtle/60 px-5 py-16 sm:px-8 sm:py-20 lg:px-12"
-        >
-          <Reveal className="mx-auto max-w-5xl">
+          <Reveal delayMs={80} className="mt-12">
+            <p className="label-caps text-[9px] text-dim">One run</p>
+            <ol className="mt-4 grid gap-3 sm:grid-cols-3">
+              {product.run.map((step, i) => (
+                <li
+                  key={step.k}
+                  className="rounded-lg bg-white/[0.03] px-4 py-4"
+                >
+                  <p className="data-mono text-[10px] text-cyan">
+                    {String(i + 1).padStart(2, '0')} {step.k}
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-muted">
+                    {step.body}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </Reveal>
+        </LandingBand>
+
+        <LandingBand id={scioly.id}>
+          <Reveal>
             <p className="label-caps text-[9px] text-dim">{scioly.eyebrow}</p>
             <h2 className="mt-2 max-w-2xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
               {scioly.title}
@@ -141,18 +143,25 @@ export function LandingPage() {
                 {p}
               </p>
             ))}
-            <p className="mt-6 max-w-2xl border-l-2 border-cyan/40 pl-4 text-sm leading-relaxed text-dim">
+            <ul className="mt-8 flex flex-wrap gap-2">
+              {scioly.domains.map((d) => (
+                <li
+                  key={d.name}
+                  className="rounded-full border border-cyan/20 bg-cyan/[0.04] px-3 py-2"
+                >
+                  <span className="text-sm text-foreground">{d.name}</span>
+                  <span className="ml-2 text-[11px] text-dim">{d.note}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-6 max-w-2xl text-sm leading-relaxed text-dim">
               {scioly.disclaimer}
             </p>
           </Reveal>
-        </section>
+        </LandingBand>
 
-        {/* Captains */}
-        <section
-          id={captains.id}
-          className="border-t border-subtle/60 px-5 py-16 sm:px-8 sm:py-20 lg:px-12"
-        >
-          <div className="mx-auto grid max-w-5xl items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.7fr)]">
+        <LandingBand id={captains.id}>
+          <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.72fr)]">
             <Reveal>
               <p className="label-caps text-[9px] text-dim">{captains.eyebrow}</p>
               <h2 className="mt-2 max-w-xl font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
@@ -166,18 +175,18 @@ export function LandingPage() {
                   {p}
                 </p>
               ))}
+              <div className="mt-6 grid max-w-xl gap-4 sm:grid-cols-2">
+                <ListBlock label="Leaders can see" items={captains.see} tone="cyan" />
+                <ListBlock label="Not in the app" items={captains.skip} tone="dim" />
+              </div>
             </Reveal>
             <Reveal delayMs={100}>
               <CaptainsCue className="max-w-sm lg:ml-auto" />
             </Reveal>
           </div>
-        </section>
+        </LandingBand>
 
-        {/* Close */}
-        <section
-          id={close.id}
-          className="border-t border-subtle/60 px-5 py-20 sm:px-8 lg:px-12"
-        >
+        <LandingBand id={close.id}>
           <Reveal className="landing-close mx-auto max-w-3xl text-center">
             <h2 className="font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
               {close.title}
@@ -198,10 +207,48 @@ export function LandingPage() {
               </Link>
             </div>
           </Reveal>
-        </section>
+        </LandingBand>
 
         <MarketingFooter />
       </div>
+    </div>
+  )
+}
+
+function LandingBand({ id, children }: { id: string; children: ReactNode }) {
+  return (
+    <section id={id} className="relative px-5 py-20 sm:px-8 sm:py-24 lg:px-12">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-[18%] top-0 h-px bg-gradient-to-r from-transparent via-cyan/30 to-transparent"
+      />
+      <div className="mx-auto max-w-5xl">{children}</div>
+    </section>
+  )
+}
+
+function ListBlock({
+  label,
+  items,
+  tone,
+}: {
+  label: string
+  items: readonly string[]
+  tone: 'cyan' | 'dim'
+}) {
+  return (
+    <div>
+      <p className="text-[10px] tracking-[0.14em] text-dim uppercase">{label}</p>
+      <ul className="mt-2 space-y-1.5">
+        {items.map((item) => (
+          <li
+            key={item}
+            className={`text-sm ${tone === 'cyan' ? 'text-foreground' : 'text-dim'}`}
+          >
+            {item}
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }

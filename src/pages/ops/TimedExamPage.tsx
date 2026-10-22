@@ -12,7 +12,6 @@ import {
 } from '../../lib/arenaBank'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import {
-  clearTimedExam,
   formatExamClock,
   loadTimedExam,
   remainingSeconds,
@@ -503,16 +502,19 @@ export function TimedExamPage() {
     [total, paused],
   )
 
-  const exitExam = useCallback(() => {
+  const endExam = useCallback(() => {
+    if (paused || submittedRef.current) return
+    const unanswered = total - answeredCount
     if (
       window.confirm(
-        'Abandon Black Box? Progress for this session will be cleared.',
+        unanswered > 0
+          ? `End with ${unanswered} unanswered?`
+          : 'End Black Box and open your summary?',
       )
     ) {
-      if (session) clearTimedExam(session)
-      navigate('/ops/timed')
+      submitExam('manual')
     }
-  }, [session, navigate])
+  }, [paused, total, answeredCount, submitExam])
 
   const onPrimary = useCallback(() => {
     if (paused) return
@@ -539,7 +541,7 @@ export function TimedExamPage() {
 
       if (e.key === 'Escape') {
         e.preventDefault()
-        exitExam()
+        endExam()
         return
       }
 
@@ -594,7 +596,7 @@ export function TimedExamPage() {
     booting,
     go,
     pick,
-    exitExam,
+    endExam,
     paused,
     setPausedSafe,
     timerHidden,
@@ -659,8 +661,8 @@ export function TimedExamPage() {
         onTimerHiddenChange={onTimerHiddenChange}
         paused={paused}
         onPausedChange={setPausedSafe}
-        onExit={exitExam}
-        exitLabel="Exit"
+        onExit={endExam}
+        exitLabel="End"
         showBack={index > 0}
         onBack={() => go(-1)}
         primaryLabel={onLast ? 'Submit' : 'Next'}

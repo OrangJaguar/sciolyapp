@@ -29,6 +29,12 @@ type ConceptRow = {
   description: string
 }
 
+/**
+ * Legacy pause for the demo. See / Do clinic code stays; it never opens.
+ * Set this to true when concept guides are ready to bring Clinic back.
+ */
+export const CLINIC_ENABLED = false
+
 type Step = 'read' | 'see' | 'do'
 
 const DO_OPTIONS = ['A', 'B', 'C'] as const

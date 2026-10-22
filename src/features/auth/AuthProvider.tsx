@@ -59,10 +59,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const profileUidRef = useRef<string | null>(null)
 
   const applyProfileForUser = useCallback(async (userId: string) => {
-    setProfileStatus('loading')
-    // Drop previous user's profile immediately on uid change
-    if (profileUidRef.current !== userId) {
+    const switched = profileUidRef.current !== userId
+    // Only blank the app on a real account change. A refresh of the
+    // current profile must not flip the route guard back to "Loading profile…".
+    if (switched) {
       setProfile(null)
+      setProfileStatus('loading')
       profileUidRef.current = userId
     }
     const next = await fetchProfile(userId)

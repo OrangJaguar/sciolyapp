@@ -46,8 +46,10 @@ function parseQuestions(
 export async function fetchArenaQuestionBank(input: {
   eventId: string
   topicId: string | 'all'
-  /** Default ARENA_SESSION_CAP (10). Timed passes config count. */
+  /** Default ARENA_SESSION_CAP (10). Timed passes config count. Casual passes uncapped. */
   cap?: number
+  /** Serve the full live bank. Casual keeps going until the player ends. */
+  uncapped?: boolean
 }): Promise<Question[]> {
   if (!supabase) throw new Error('Supabase not configured')
 
@@ -127,7 +129,9 @@ export async function fetchArenaQuestionBank(input: {
     )
   }
 
-  const cap = Math.max(1, input.cap ?? ARENA_SESSION_CAP)
+  const cap = input.uncapped
+    ? bank.length
+    : Math.max(1, input.cap ?? ARENA_SESSION_CAP)
   return buildSessionQueue(
     {
       bank,

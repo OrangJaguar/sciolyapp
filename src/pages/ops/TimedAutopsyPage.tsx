@@ -249,10 +249,10 @@ export function TimedAutopsyPage() {
           </button>
           <div className="mt-4">
             <Link
-              to="/ops/timed"
+              to="/cmd/missions"
               className="text-sm text-muted hover:text-cyan"
             >
-              Back to Timed config
+              CMD
             </Link>
           </div>
         </div>

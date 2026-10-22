@@ -23,6 +23,7 @@ import { TimedExamPage } from './pages/ops/TimedExamPage'
 import { TimedAutopsyPage } from './pages/ops/TimedAutopsyPage'
 import { BinderPage } from './pages/ops/BinderPage'
 import { ProfilePage } from './pages/profile/ProfilePage'
+import { LandingPage } from './pages/landing/LandingPage'
 import { PrivacyPage } from './pages/landing/PrivacyPage'
 import { TermsPage } from './pages/landing/TermsPage'
 
@@ -59,6 +60,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomeEntry />} />
+        <Route path="/site" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route
           path="/signup"
