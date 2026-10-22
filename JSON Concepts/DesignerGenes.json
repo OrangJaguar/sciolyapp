@@ -1,0 +1,629 @@
+{
+  "event_id": "designer_genes",
+  "event_name": "Designer Genes",
+  "domain": "Life, Personal & Social Science",
+  "official_scope": "classic, evolutionary, and molecular genetics",
+  "season": 2027,
+  "division": "C",
+  "design_notes": "The six official blocks are split into eight app topics because the event mixes calculation-heavy problem solving, mechanism interpretation, and experimental-technology analysis. Mendelian genetics is divided into single-locus Punnett/probability work versus multi-gene interaction and recombination mapping. Population/evolutionary genetics is split into Hardy-Weinberg calculations versus evolutionary/phylogenetic reasoning. DNA replication/repair, expression/regulation, and molecular technology remain separate skill chapters to keep concept maps clean. Concept counts range from 9 to 14 based on skill density; no thin topics flagged.",
+  "topics": [
+    {
+      "topic_id": "designer_genes_mendelian_inheritance_and_probability",
+      "title": "Mendelian inheritance and probability",
+      "display_order": 1,
+      "why_this_topic": "Students need a focused chapter for mono-, di-, and trihybrid Punnett squares, probability rules, and pedigree interpretation before adding multi-gene complications.",
+      "scope_note": "Includes Mendel's laws, Punnett squares, probability, pedigrees, and basic single-locus inheritance patterns; excludes linkage, epistasis, complementation, and recombination mapping.",
+      "concepts": [
+        {
+          "concept_id": "designer_genes_law_of_segregation",
+          "title": "Law of segregation",
+          "description": "Predict allele segregation into gametes from a heterozygous parent and explain the reappearance of recessive phenotypes in F2 crosses.",
+          "depth_tags": ["allele pair", "gamete formation", "3:1 ratio", "recessive phenotype"]
+        },
+        {
+          "concept_id": "designer_genes_law_of_independent_assortment",
+          "title": "Law of independent assortment",
+          "description": "Apply independent segregation of alleles at different loci to predict gamete combinations from dihybrid or multi-locus parents.",
+          "depth_tags": ["unlinked genes", "dihybrid gametes", "meiotic assortment"]
+        },
+        {
+          "concept_id": "designer_genes_monohybrid_punnett_square",
+          "title": "Monohybrid cross genotype and phenotype ratios",
+          "description": "Use a Punnett square to predict genotype and phenotype ratios for a single gene with complete dominance.",
+          "depth_tags": ["Punnett square", "1:2:1 genotype", "3:1 phenotype", "complete dominance"]
+        },
+        {
+          "concept_id": "designer_genes_dihybrid_cross_ratio",
+          "title": "Dihybrid cross and 9:3:3:1 ratio",
+          "description": "Predict F2 phenotypic ratios for two unlinked genes and compute the combined probability of each phenotype class.",
+          "depth_tags": ["9:3:3:1", "dihybrid Punnett", "independent assortment", "F2 generation"]
+        },
+        {
+          "concept_id": "designer_genes_probability_product_sum_rules",
+          "title": "Probability product and sum rules",
+          "description": "Apply the product rule for independent genetic events and the sum rule for mutually exclusive outcomes in multi-child or multi-trait predictions.",
+          "depth_tags": ["product rule", "sum rule", "binomial probability", "independent events"]
+        },
+        {
+          "concept_id": "designer_genes_testcross_backcross",
+          "title": "Testcross and backcross for genotype determination",
+          "description": "Determine an unknown dominant-phenotype genotype by crossing to a homozygous recessive tester and interpreting the offspring ratio.",
+          "depth_tags": ["testcross", "backcross", "1:1 ratio", "homozygous recessive"]
+        },
+        {
+          "concept_id": "designer_genes_autosomal_dominant_pedigree",
+          "title": "Autosomal dominant pedigree interpretation",
+          "description": "Diagnose autosomal dominant inheritance from affected-parent transmission, male-to-male transmission, and approximately 50% recurrence risk.",
+          "depth_tags": ["vertical transmission", "male-to-male transmission", "50% recurrence", "affected parent"]
+        },
+        {
+          "concept_id": "designer_genes_autosomal_recessive_pedigree",
+          "title": "Autosomal recessive pedigree interpretation",
+          "description": "Diagnose autosomal recessive inheritance from unaffected carrier parents, affected siblings, and consanguinity clues.",
+          "depth_tags": ["carrier parents", "skips generations", "consanguinity", "affected siblings"]
+        },
+        {
+          "concept_id": "designer_genes_x_linked_recessive_pedigree",
+          "title": "X-linked recessive pedigree interpretation",
+          "description": "Diagnose X-linked recessive inheritance from affected males, carrier females, and absence of male-to-male transmission in a pedigree.",
+          "depth_tags": ["X-linked recessive", "carrier female", "no male-to-male transmission", "affected male"]
+        },
+        {
+          "concept_id": "designer_genes_pedigree_carrier_probability",
+          "title": "Pedigree carrier and recurrence probability",
+          "description": "Calculate carrier or recurrence probabilities in pedigrees by multiplying prior genotype risks and conditional probabilities from pedigree structure.",
+          "depth_tags": ["carrier risk", "recurrence risk", "Bayesian", "conditional probability"]
+        },
+        {
+          "concept_id": "designer_genes_chi_square_mendelian_ratio",
+          "title": "Chi-square test for Mendelian ratios",
+          "description": "Perform a chi-square goodness-of-fit test comparing observed offspring counts to expected Mendelian ratios and interpret p-values and degrees of freedom.",
+          "depth_tags": ["chi-square", "degrees of freedom", "p-value", "goodness-of-fit"]
+        }
+      ]
+    },
+    {
+      "topic_id": "designer_genes_gene_interactions_and_linkage_mapping",
+      "title": "Gene interactions and linkage mapping",
+      "display_order": 2,
+      "why_this_topic": "Non-Mendelian inheritance patterns and recombination-based mapping require a separate interpretative and calculation skill set from single-locus Punnett problems.",
+      "scope_note": "Includes linkage, incomplete/codominance, complementation, epistasis, and gene mapping by recombination frequency; excludes population-level Hardy-Weinberg calculations.",
+      "concepts": [
+        {
+          "concept_id": "designer_genes_incomplete_dominance",
+          "title": "Incomplete dominance and intermediate phenotype",
+          "description": "Predict 1:2:1 phenotypic and genotypic ratios when a heterozygote shows an intermediate phenotype rather than full dominance.",
+          "depth_tags": ["1:2:1", "intermediate phenotype", "heterozygote", "incomplete dominance"]
+        },
+        {
+          "concept_id": "designer_genes_codominance_multiple_alleles",
+          "title": "Codominance and multiple alleles",
+          "description": "Use codominant alleles and multiple-allele systems such as ABO blood groups to determine possible parental and offspring genotypes/phenotypes.",
+          "depth_tags": ["ABO", "multiple alleles", "codominance", "IA/IB/i"]
+        },
+        {
+          "concept_id": "designer_genes_lethal_alleles",
+          "title": "Lethal alleles and modified ratios",
+          "description": "Identify lethal allele genotypes that distort Mendelian ratios, such as 2:1 instead of 3:1, and explain the missing phenotypic class.",
+          "depth_tags": ["lethal allele", "2:1 ratio", "survival", "Agouti mouse"]
+        },
+        {
+          "concept_id": "designer_genes_linkage_parental_recombinant",
+          "title": "Linkage and parental vs recombinant gametes",
+          "description": "Distinguish linked from unlinked genes by comparing parental and recombinant gamete or progeny classes in a dihybrid testcross.",
+          "depth_tags": ["parental types", "recombinant types", "linkage", "testcross"]
+        },
+        {
+          "concept_id": "designer_genes_recombination_frequency_map_units",
+          "title": "Recombination frequency and map units",
+          "description": "Calculate recombination frequency from progeny counts and convert it to map distance in centimorgans.",
+          "depth_tags": ["recombination frequency", "centimorgans", "map units", "RF = recombinants/total"]
+        },
+        {
+          "concept_id": "designer_genes_two_point_mapping",
+          "title": "Two-point testcross mapping",
+          "description": "Use a two-point testcross to infer linkage and estimate map distance between two genes, recognizing that it cannot determine gene order relative to other loci.",
+          "depth_tags": ["two-point cross", "map distance", "gene order limitation", "testcross"]
+        },
+        {
+          "concept_id": "designer_genes_three_point_mapping",
+          "title": "Three-point testcross and double crossover",
+          "description": "Analyze a three-point testcross to identify parental, single-crossover, and double-crossover progeny and determine gene order and intergenic distances.",
+          "depth_tags": ["three-point cross", "double crossover", "gene order", "DCO class"]
+        },
+        {
+          "concept_id": "designer_genes_interference_coincidence",
+          "title": "Interference and coefficient of coincidence",
+          "description": "Calculate coefficient of coincidence and interference from observed versus expected double crossovers in three-point crosses.",
+          "depth_tags": ["coefficient of coincidence", "interference = 1 - C", "expected double crossovers"]
+        },
+        {
+          "concept_id": "designer_genes_epistasis_ratios",
+          "title": "Epistasis and modified dihybrid ratios",
+          "description": "Interpret modified dihybrid F2 ratios such as 9:3:4, 12:3:1, and 9:7 as epistatic interactions and identify the masked phenotypic class.",
+          "depth_tags": ["9:3:4", "12:3:1", "9:7", "epistasis"]
+        },
+        {
+          "concept_id": "designer_genes_complementation_test",
+          "title": "Complementation test",
+          "description": "Use complementation crosses to determine whether two recessive mutations with the same phenotype are alleles of the same gene or of different genes.",
+          "depth_tags": ["complementation", "allelism", "recessive mutations", "phenotype"]
+        },
+        {
+          "concept_id": "designer_genes_penetrance_expressivity",
+          "title": "Penetrance and expressivity",
+          "description": "Distinguish incomplete penetrance from variable expressivity and adjust expected phenotype frequencies using percent penetrance.",
+          "depth_tags": ["penetrance", "expressivity", "phenotypic variation", "percent penetrance"]
+        }
+      ]
+    },
+    {
+      "topic_id": "designer_genes_mitosis_meiosis_and_chromosome_dynamics",
+      "title": "Mitosis, meiosis, and chromosome dynamics",
+      "display_order": 3,
+      "why_this_topic": "Cell division stages, chromosome abnormalities, and specialized DNA rearrangements form a coherent chromosome-behavior chapter distinct from molecular replication and expression.",
+      "scope_note": "Includes mitotic/meiotic stages and structures, nondisjunction, karyotypes, and V(D)J/class-switch recombination as specialized chromosome/DNA rearrangement; excludes DNA replication/repair and gene expression regulation.",
+      "concepts": [
+        {
+          "concept_id": "designer_genes_cell_cycle_checkpoints",
+          "title": "Cell cycle phases and checkpoints",
+          "description": "Relate G1/S, G2/M, and spindle checkpoints to control of cell division and prevention of genome instability.",
+          "depth_tags": ["G1/S", "G2/M", "spindle checkpoint", "cyclin/CDK"]
+        },
+        {
+          "concept_id": "designer_genes_mitosis_stages",
+          "title": "Mitosis stages and spindle behavior",
+          "description": "Order prophase, prometaphase, metaphase, anaphase, and telophase by chromosome condensation, spindle attachment, and sister chromatid separation.",
+          "depth_tags": ["mitotic spindle", "sister chromatids", "metaphase plate", "cytokinesis"]
+        },
+        {
+          "concept_id": "designer_genes_meiosis_i_pairing_crossing",
+          "title": "Meiosis I synapsis and crossing over",
+          "description": "Describe homologous chromosome pairing, synaptonemal complex formation, chiasmata, and crossing over during prophase I and reductional division.",
+          "depth_tags": ["synaptonemal complex", "chiasma", "homologous recombination", "reductional division"]
+        },
+        {
+          "concept_id": "designer_genes_meiosis_ii_ploidy",
+          "title": "Meiosis II and gamete ploidy",
+          "description": "Explain how sister chromatid separation in meiosis II produces haploid gametes and contrast the equational division with meiosis I.",
+          "depth_tags": ["equational division", "haploid", "sister chromatids", "gametes"]
+        },
+        {
+          "concept_id": "designer_genes_nondisjunction_meiosis",
+          "title": "Nondisjunction in meiosis I vs meiosis II",
+          "description": "Predict gamete chromosome complements when nondisjunction occurs in meiosis I versus meiosis II and connect these to aneuploid zygote outcomes.",
+          "depth_tags": ["meiosis I nondisjunction", "meiosis II nondisjunction", "disomic gamete", "nullisomic gamete"]
+        },
+        {
+          "concept_id": "designer_genes_aneuploidy_karyotypes",
+          "title": "Aneuploidy syndromes and karyotype interpretation",
+          "description": "Read human karyotypes to diagnose trisomy 21, Turner syndrome, Klinefelter syndrome, and other aneuploidies from chromosome number and sex chromosome composition.",
+          "depth_tags": ["trisomy 21", "45,X", "47,XXY", "karyotype"]
+        },
+        {
+          "concept_id": "designer_genes_chromosome_morphology_banding",
+          "title": "Chromosome morphology and banding",
+          "description": "Identify centromeres, telomeres, p/q arms, and G-bands, and classify chromosomes as metacentric, submetacentric, or acrocentric.",
+          "depth_tags": ["centromere", "p arm", "q arm", "G-banding", "acrocentric"]
+        },
+        {
+          "concept_id": "designer_genes_gametogenesis",
+          "title": "Spermatogenesis and oogenesis",
+          "description": "Compare timing, meiotic arrest points, and cell products of male and female gametogenesis.",
+          "depth_tags": ["spermatogonia", "oocyte arrest", "polar bodies", "gametogenesis"]
+        },
+        {
+          "concept_id": "designer_genes_vdj_recombination",
+          "title": "V(D)J recombination",
+          "description": "Explain somatic recombination of V, D, and J gene segments and junctional diversity in generating antibody and T-cell receptor diversity.",
+          "depth_tags": ["RAG1/RAG2", "V(D)J segments", "junctional diversity", "antibody diversity"]
+        },
+        {
+          "concept_id": "designer_genes_class_switch_recombination",
+          "title": "Class switch recombination",
+          "description": "Distinguish class switch recombination from V(D)J recombination and relate it to switching immunoglobulin heavy-chain constant region genes such as IgM to IgG.",
+          "depth_tags": ["class switch", "IgM to IgG", "AID", "switch regions"]
+        }
+      ]
+    },
+    {
+      "topic_id": "designer_genes_population_genetics_and_hardy_weinberg",
+      "title": "Population genetics and Hardy-Weinberg",
+      "display_order": 4,
+      "why_this_topic": "Hardy-Weinberg equilibrium and evolutionary forces are calculation- and model-heavy, so they need a dedicated quantitative chapter separate from phylogenetic interpretation.",
+      "scope_note": "Includes allele/genotype frequencies, Hardy-Weinberg equilibrium, drift, founder/bottleneck effects, migration, and fitness; excludes phylogenetics and molecular homology concepts.",
+      "concepts": [
+        {
+          "concept_id": "designer_genes_allele_genotype_frequency",
+          "title": "Allele and genotype frequency calculation",
+          "description": "Calculate allele frequencies from genotype counts and convert allele frequencies to expected genotype frequencies under random mating.",
+          "depth_tags": ["p + q = 1", "allele count", "genotype frequency", "random mating"]
+        },
+        {
+          "concept_id": "designer_genes_hw_assumptions",
+          "title": "Hardy-Weinberg equilibrium assumptions",
+          "description": "List and explain the Hardy-Weinberg assumptions: no mutation, random mating, no gene flow, large population, and no selection.",
+          "depth_tags": ["equilibrium", "random mating", "no selection", "large population"]
+        },
+        {
+          "concept_id": "designer_genes_hw_equation",
+          "title": "Hardy-Weinberg equation",
+          "description": "Use p^2 + 2pq + q^2 = 1 to compute expected genotype frequencies from allele frequencies and identify the heterozygote class.",
+          "depth_tags": ["p^2 + 2pq + q^2", "2pq", "expected genotype frequencies", "allele frequency"]
+        },
+        {
+          "concept_id": "designer_genes_carrier_frequency_incidence",
+          "title": "Carrier frequency from autosomal recessive incidence",
+          "description": "Calculate carrier frequency approximately 2q for an autosomal recessive condition from disease incidence q^2 under Hardy-Weinberg equilibrium.",
+          "depth_tags": ["carrier frequency", "2q", "q^2 incidence", "autosomal recessive"]
+        },
+        {
+          "concept_id": "designer_genes_chi_square_hw",
+          "title": "Chi-square test for Hardy-Weinberg equilibrium",
+          "description": "Test whether observed population genotype counts match Hardy-Weinberg expectations using chi-square and interpret disequilibrium.",
+          "depth_tags": ["chi-square", "df=1", "HW disequilibrium", "observed vs expected"]
+        },
+        {
+          "concept_id": "designer_genes_genetic_drift",
+          "title": "Genetic drift and effective population size",
+          "description": "Explain random allele-frequency change in finite populations and use effective population size to predict heterozygosity loss per generation.",
+          "depth_tags": ["random drift", "effective population size", "heterozygosity", "Ne"]
+        },
+        {
+          "concept_id": "designer_genes_founder_effect",
+          "title": "Founder effect",
+          "description": "Describe how a small founding population samples allele frequencies nonrepresentatively and can elevate rare disease allele frequency.",
+          "depth_tags": ["founder", "sampling error", "rare alleles", "small population"]
+        },
+        {
+          "concept_id": "designer_genes_bottleneck_effect",
+          "title": "Population bottleneck effect",
+          "description": "Explain how a population size crash reduces genetic diversity and alters allele frequencies independently of selection.",
+          "depth_tags": ["bottleneck", "diversity loss", "drift", "population crash"]
+        },
+        {
+          "concept_id": "designer_genes_gene_flow",
+          "title": "Gene flow and migration",
+          "description": "Predict how migration between populations homogenizes allele frequencies and can introduce new alleles or change genotype frequencies.",
+          "depth_tags": ["migration", "admixture", "allele frequency change", "gene flow"]
+        },
+        {
+          "concept_id": "designer_genes_fitness_selection",
+          "title": "Relative fitness and natural selection",
+          "description": "Use relative fitness coefficients and selection coefficients to predict allele frequency change under directional, stabilizing, and balancing selection.",
+          "depth_tags": ["fitness w", "selection coefficient s", "heterozygote advantage", "directional selection"]
+        },
+        {
+          "concept_id": "designer_genes_inbreeding_coefficient",
+          "title": "Inbreeding coefficient and nonrandom mating",
+          "description": "Interpret the inbreeding coefficient F as reduction in heterozygosity and calculate genotype frequencies under nonrandom mating.",
+          "depth_tags": ["F", "autozygosity", "heterozygote deficiency", "nonrandom mating"]
+        }
+      ]
+    },
+    {
+      "topic_id": "designer_genes_evolutionary_genetics_and_quantitative_traits",
+      "title": "Evolutionary genetics and quantitative traits",
+      "display_order": 5,
+      "why_this_topic": "Phylogenetic reasoning, gene duplication/homology, and continuous variation form an evolutionary-interpretation chapter that is tested differently from Hardy-Weinberg calculations.",
+      "scope_note": "Includes additive alleles, continuous variation, heritability, gene duplication, homologs/orthologs/paralogs, and phylogenies; excludes population allele-frequency equilibrium calculations.",
+      "concepts": [
+        {
+          "concept_id": "designer_genes_continuous_discontinuous_variation",
+          "title": "Continuous vs discontinuous variation",
+          "description": "Distinguish continuous polygenic traits from discrete Mendelian trait classes and explain environmental contribution to phenotypic variance.",
+          "depth_tags": ["polygenic", "continuous trait", "discrete trait", "environmental variance"]
+        },
+        {
+          "concept_id": "designer_genes_additive_allele_model",
+          "title": "Additive allele model for polygenic traits",
+          "description": "Predict phenotypic classes and frequencies for polygenic traits under an additive allele model using binomial expansion.",
+          "depth_tags": ["additive alleles", "binomial expansion", "dosage", "polygenic"]
+        },
+        {
+          "concept_id": "designer_genes_heritability",
+          "title": "Broad-sense and narrow-sense heritability",
+          "description": "Define broad-sense H2 = Vg/Vp and narrow-sense h2 = Va/Vp and explain what each variance component measures.",
+          "depth_tags": ["H2", "h2", "genetic variance", "phenotypic variance"]
+        },
+        {
+          "concept_id": "designer_genes_breeders_equation",
+          "title": "Breeder's equation and response to selection",
+          "description": "Use R = h2 S to predict response to selection from heritability and selection differential.",
+          "depth_tags": ["R = h²S", "selection differential", "response to selection", "heritability"]
+        },
+        {
+          "concept_id": "designer_genes_gene_duplication_fates",
+          "title": "Gene duplication and evolutionary fates",
+          "description": "Explain neofunctionalization, subfunctionalization, and pseudogenization as possible fates of duplicated genes.",
+          "depth_tags": ["neofunctionalization", "subfunctionalization", "pseudogene", "gene duplication"]
+        },
+        {
+          "concept_id": "designer_genes_homologs_orthologs_paralogs",
+          "title": "Homologs, orthologs, and paralogs",
+          "description": "Distinguish homologous genes from orthologs produced by speciation and paralogs produced by duplication, and use them to infer evolutionary relationships.",
+          "depth_tags": ["ortholog", "paralog", "homology", "gene tree"]
+        },
+        {
+          "concept_id": "designer_genes_phylogenetic_tree_reading",
+          "title": "Phylogenetic tree interpretation",
+          "description": "Interpret rooted trees, identify monophyletic/paraphyletic/polyphyletic groups, and use synapomorphies versus symplesiomorphies.",
+          "depth_tags": ["monophyletic", "clade", "synapomorphy", "outgroup"]
+        },
+        {
+          "concept_id": "designer_genes_molecular_clock",
+          "title": "Molecular clock and divergence time",
+          "description": "Use substitution rates to estimate divergence times and evaluate assumptions of the neutral molecular clock.",
+          "depth_tags": ["substitution rate", "divergence time", "neutral theory", "clock calibration"]
+        },
+        {
+          "concept_id": "designer_genes_qtl_mapping",
+          "title": "Quantitative trait locus mapping",
+          "description": "Interpret QTL mapping as associating marker genotypes with phenotypic variation to locate genomic regions contributing to quantitative traits.",
+          "depth_tags": ["QTL", "marker-trait association", "LOD score", "polygenic trait"]
+        }
+      ]
+    },
+    {
+      "topic_id": "designer_genes_dna_structure_replication_and_repair",
+      "title": "DNA structure, replication, and repair",
+      "display_order": 6,
+      "why_this_topic": "The molecular biology of DNA is a dense, mechanism-focused block that benefits from a standalone chapter covering structure through damage responses.",
+      "scope_note": "Includes DNA structure/base pairing, replication forks in bacteria/archaea/eukarya, fidelity/proofreading, DNA organization, damage and repair, mutation classes, and telomeres; excludes transcription/translation and laboratory techniques.",
+      "concepts": [
+        {
+          "concept_id": "designer_genes_nucleotide_structure",
+          "title": "Nucleotide structure and strand polarity",
+          "description": "Identify nucleotide components (sugar, phosphate, nitrogenous base) and explain 5' to 3' phosphodiester bond polarity.",
+          "depth_tags": ["5' phosphate", "3' hydroxyl", "phosphodiester bond", "deoxyribose"]
+        },
+        {
+          "concept_id": "designer_genes_dna_double_helix_chargaff",
+          "title": "DNA double helix and Chargaff's rules",
+          "description": "Relate A=T and G≡C base pairing, antiparallel strands, and major/minor groove features of B-DNA.",
+          "depth_tags": ["A=T", "G≡C", "antiparallel", "major groove"]
+        },
+        {
+          "concept_id": "designer_genes_semiconservative_replication",
+          "title": "Semiconservative replication and Meselson-Stahl",
+          "description": "Interpret Meselson-Stahl density-gradient bands to demonstrate semiconservative DNA replication.",
+          "depth_tags": ["Meselson-Stahl", "N15/N14", "semiconservative", "density gradient"]
+        },
+        {
+          "concept_id": "designer_genes_origin_replication_bubble",
+          "title": "Replication origins and bidirectional forks",
+          "description": "Describe origin recognition, replication bubble formation, and bidirectional replication forks in bacterial and eukaryotic replicons.",
+          "depth_tags": ["origin of replication", "replication bubble", "bidirectional", "replicon"]
+        },
+        {
+          "concept_id": "designer_genes_replication_fork_enzymes",
+          "title": "Replication fork enzyme roles",
+          "description": "Assign helicase, single-strand binding protein, topoisomerase, primase, DNA polymerase, and ligase to their replication fork functions.",
+          "depth_tags": ["helicase", "topoisomerase", "primase", "DNA ligase", "SSB"]
+        },
+        {
+          "concept_id": "designer_genes_leading_lagging_strand",
+          "title": "Leading and lagging strand synthesis",
+          "description": "Explain continuous leading strand synthesis versus discontinuous lagging strand synthesis with Okazaki fragments and RNA primers.",
+          "depth_tags": ["leading strand", "lagging strand", "Okazaki fragments", "RNA primer"]
+        },
+        {
+          "concept_id": "designer_genes_proofreading_fidelity",
+          "title": "DNA polymerase proofreading and fidelity",
+          "description": "Explain 3' to 5' exonuclease proofreading during DNA synthesis and how it improves replication fidelity.",
+          "depth_tags": ["3'-5' exonuclease", "proofreading", "fidelity", "polymerase"]
+        },
+        {
+          "concept_id": "designer_genes_mismatch_repair",
+          "title": "DNA mismatch repair",
+          "description": "Describe MutS/MutL/MutH mismatch repair in bacteria and how methylation distinguishes the newly synthesized strand for correction.",
+          "depth_tags": ["MutS", "MutL", "MutH", "methylation"]
+        },
+        {
+          "concept_id": "designer_genes_base_excision_repair",
+          "title": "Base excision repair",
+          "description": "Remove single damaged or modified bases using DNA glycosylase, AP endonuclease, and polymerase/ligase fill-in.",
+          "depth_tags": ["glycosylase", "AP site", "BER", "damaged base"]
+        },
+        {
+          "concept_id": "designer_genes_nucleotide_excision_repair",
+          "title": "Nucleotide excision repair",
+          "description": "Repair bulky DNA damage such as thymine dimers through UvrABC excinuclease in bacteria or XP-associated excision machinery in humans.",
+          "depth_tags": ["UvrABC", "thymine dimer", "xeroderma pigmentosum", "NER"]
+        },
+        {
+          "concept_id": "designer_genes_double_strand_break_repair",
+          "title": "Double-strand break repair pathways",
+          "description": "Compare homologous recombination using a sister chromatid template with error-prone nonhomologous end joining.",
+          "depth_tags": ["homologous recombination", "NHEJ", "Rad51", "Ku70/Ku80"]
+        },
+        {
+          "concept_id": "designer_genes_mutation_classes",
+          "title": "Mutation types and protein effects",
+          "description": "Classify point mutations (missense, nonsense, silent), insertions/deletions, and frameshifts and predict their effects on protein sequence.",
+          "depth_tags": ["missense", "nonsense", "frameshift", "indel"]
+        },
+        {
+          "concept_id": "designer_genes_telomeres_telomerase",
+          "title": "Telomeres and telomerase",
+          "description": "Explain telomere shortening with replication, telomerase RNA-template extension, and links to senescence and cancer.",
+          "depth_tags": ["telomere", "TERT", "TERC", "replicative senescence"]
+        },
+        {
+          "concept_id": "designer_genes_dna_packaging_nucleosomes",
+          "title": "Eukaryotic DNA packaging and chromatin structure",
+          "description": "Describe nucleosome assembly, histone octamer, H1 linker, higher-order fiber, and euchromatin versus heterochromatin organization.",
+          "depth_tags": ["nucleosome", "histone H1", "30-nm fiber", "heterochromatin"]
+        }
+      ]
+    },
+    {
+      "topic_id": "designer_genes_eukaryotic_gene_expression_and_regulation",
+      "title": "Eukaryotic gene expression and regulation",
+      "display_order": 7,
+      "why_this_topic": "Central dogma, transcriptional/translational control, and regulatory elements are a distinct conceptual block from DNA replication and technology applications.",
+      "scope_note": "Includes central dogma, transcription, cis/trans regulators, yeast two-hybrid, RNA maturation, translation and regulation, and mobile genetic elements; excludes DNA replication/repair and PCR/sequencing methods.",
+      "concepts": [
+        {
+          "concept_id": "designer_genes_central_dogma",
+          "title": "Central dogma and reverse transcription",
+          "description": "State DNA to RNA to protein information flow and recognize reverse transcription and RNA replication as exceptions.",
+          "depth_tags": ["transcription", "translation", "reverse transcriptase", "RNA virus"]
+        },
+        {
+          "concept_id": "designer_genes_rna_polymerase_promoter",
+          "title": "RNA polymerase and promoter recognition",
+          "description": "Explain RNA polymerase binding to promoter consensus sequences and the steps of transcription initiation.",
+          "depth_tags": ["RNA polymerase II", "TATA box", "promoter", "initiation"]
+        },
+        {
+          "concept_id": "designer_genes_transcription_factors_cis_trans",
+          "title": "Cis-regulatory elements and transcription factors",
+          "description": "Distinguish cis-acting enhancer/silencer/promoter DNA elements from trans-acting transcription factor proteins that regulate gene expression.",
+          "depth_tags": ["enhancer", "silencer", "transcription factor", "cis/trans"]
+        },
+        {
+          "concept_id": "designer_genes_yeast_two_hybrid",
+          "title": "Yeast two-hybrid assay",
+          "description": "Interpret yeast two-hybrid results as evidence for direct protein-protein interactions using Gal4 DNA-binding and activation domains.",
+          "depth_tags": ["Gal4", "bait", "prey", "reporter gene"]
+        },
+        {
+          "concept_id": "designer_genes_rna_processing",
+          "title": "Eukaryotic RNA processing",
+          "description": "Describe 5' capping, 3' polyadenylation, and spliceosome-mediated intron removal in pre-mRNA maturation.",
+          "depth_tags": ["5' cap", "poly-A tail", "spliceosome", "intron/exon"]
+        },
+        {
+          "concept_id": "designer_genes_alternative_splicing",
+          "title": "Alternative splicing",
+          "description": "Explain how alternative splice site choice generates multiple protein isoforms from one gene and the regulatory consequences of exon skipping.",
+          "depth_tags": ["alternative splicing", "isoforms", "splice site", "exon skipping"]
+        },
+        {
+          "concept_id": "designer_genes_genetic_code_trna",
+          "title": "Genetic code and tRNA wobble",
+          "description": "Interpret codon tables, tRNA anticodon pairing, and wobble rules to translate mRNA sequence into amino acid order.",
+          "depth_tags": ["codon", "anticodon", "wobble", "charged tRNA"]
+        },
+        {
+          "concept_id": "designer_genes_translation_steps",
+          "title": "Ribosome translation steps",
+          "description": "Order initiation, elongation, and termination in eukaryotic translation and identify A, P, and E site functions.",
+          "depth_tags": ["A site", "P site", "E site", "release factor", "5' cap scanning"]
+        },
+        {
+          "concept_id": "designer_genes_mirna_translational_regulation",
+          "title": "miRNA and translational regulation",
+          "description": "Explain miRNA/siRNA-mediated translational repression or mRNA decay through RISC and seed-sequence pairing.",
+          "depth_tags": ["miRNA", "RISC", "seed sequence", "mRNA decay"]
+        },
+        {
+          "concept_id": "designer_genes_mobile_genetic_elements",
+          "title": "Mobile genetic elements",
+          "description": "Classify DNA transposons (cut-and-paste) versus retrotransposons (copy-and-paste) and describe their mutagenic potential.",
+          "depth_tags": ["transposon", "retrotransposon", "LINE/SINE", "reverse transcription"]
+        },
+        {
+          "concept_id": "designer_genes_chromatin_transcription_regulation",
+          "title": "Chromatin modifications and transcriptional regulation",
+          "description": "Relate histone acetylation and methylation and DNA methylation to transcriptional activation or silencing.",
+          "depth_tags": ["histone acetylation", "DNA methylation", "H3K4me3", "chromatin accessibility"]
+        }
+      ]
+    },
+    {
+      "topic_id": "designer_genes_molecular_technologies_and_experimental_analysis",
+      "title": "Molecular technologies and experimental analysis",
+      "display_order": 8,
+      "why_this_topic": "The event's process-heavy technology content requires a separate methods chapter focused on interpreting experimental setups, sequencing platforms, and genetic manipulation tools.",
+      "scope_note": "Includes PCR and applications, Illumina vs Nanopore, molecular cloning toolkit, knockout/knockdown including RNAi/Cre-Lox/CRISPR, and ChIP-seq, Hi-C, RNA-seq; excludes pure Mendelian calculations and DNA replication mechanisms.",
+      "concepts": [
+        {
+          "concept_id": "designer_genes_pcr_principle",
+          "title": "PCR principle and thermal cycling",
+          "description": "Describe denaturation, annealing, and extension steps of PCR and explain exponential amplification of target DNA.",
+          "depth_tags": ["denaturation", "annealing", "Taq polymerase", "exponential amplification"]
+        },
+        {
+          "concept_id": "designer_genes_pcr_primer_design",
+          "title": "PCR primer design and specificity",
+          "description": "Design PCR primers considering length, GC content, melting temperature, and self-complementarity to avoid primer dimers and off-target products.",
+          "depth_tags": ["Tm", "GC clamp", "primer dimer", "specificity"]
+        },
+        {
+          "concept_id": "designer_genes_qpcr_ct",
+          "title": "Quantitative PCR and Ct interpretation",
+          "description": "Interpret real-time qPCR amplification curves and Ct/Cq values to compare starting template abundance using fluorescent detection.",
+          "depth_tags": ["Ct value", "SYBR Green", "TaqMan probe", "standard curve"]
+        },
+        {
+          "concept_id": "designer_genes_sanger_sequencing",
+          "title": "Sanger chain-terminator sequencing",
+          "description": "Interpret dideoxy chain-terminator sequencing chromatograms and distinguish Sanger from next-generation methods.",
+          "depth_tags": ["ddNTP", "capillary electrophoresis", "chromatogram", "chain terminator"]
+        },
+        {
+          "concept_id": "designer_genes_illumina_sequencing",
+          "title": "Illumina sequencing by synthesis",
+          "description": "Explain bridge amplification, fluorescent reversible terminator chemistry, and paired-end read generation in Illumina sequencing.",
+          "depth_tags": ["bridge amplification", "reversible terminator", "paired-end", "cluster"]
+        },
+        {
+          "concept_id": "designer_genes_nanopore_sequencing",
+          "title": "Nanopore sequencing",
+          "description": "Explain nanopore current disruption during DNA translocation and identify long-read advantages and error-profile limitations.",
+          "depth_tags": ["nanopore", "long reads", "current trace", "error profile"]
+        },
+        {
+          "concept_id": "designer_genes_restriction_enzymes_ligation",
+          "title": "Restriction enzymes and ligation",
+          "description": "Use Type II restriction recognition sites and DNA ligase to construct recombinant plasmids with compatible sticky or blunt ends.",
+          "depth_tags": ["EcoRI", "sticky ends", "DNA ligase", "multiple cloning site"]
+        },
+        {
+          "concept_id": "designer_genes_cloning_vectors_transformation",
+          "title": "Cloning vectors and transformation",
+          "description": "Choose plasmid features such as origin of replication, selectable marker, promoter, and MCS, and interpret bacterial transformation and selection results.",
+          "depth_tags": ["ampicillin resistance", "ori", "competent cells", "blue-white screening"]
+        },
+        {
+          "concept_id": "designer_genes_rnai_knockdown",
+          "title": "RNA interference knockdown",
+          "description": "Design or interpret siRNA/shRNA experiments that trigger RISC-mediated mRNA degradation to reduce gene expression.",
+          "depth_tags": ["siRNA", "shRNA", "knockdown", "RISC"]
+        },
+        {
+          "concept_id": "designer_genes_cre_lox_conditional_knockout",
+          "title": "Cre-Lox conditional knockout",
+          "description": "Predict tissue-specific or inducible gene deletion using Cre recombinase and loxP sites flanking a target exon.",
+          "depth_tags": ["Cre recombinase", "loxP", "floxed", "conditional knockout"]
+        },
+        {
+          "concept_id": "designer_genes_crispr_cas9",
+          "title": "CRISPR-Cas9 gene editing",
+          "description": "Describe sgRNA targeting, PAM requirement, Cas9 double-strand break formation, and repair by NHEJ or homology-directed repair.",
+          "depth_tags": ["sgRNA", "PAM", "Cas9", "HDR", "NHEJ"]
+        },
+        {
+          "concept_id": "designer_genes_chip_seq",
+          "title": "ChIP-seq for protein-DNA interactions",
+          "description": "Interpret ChIP-seq peaks as genome-wide binding sites for a transcription factor or histone modification after crosslinking, immunoprecipitation, and sequencing.",
+          "depth_tags": ["peak", "input control", "crosslink", "histone mark"]
+        },
+        {
+          "concept_id": "designer_genes_hi_c",
+          "title": "Hi-C and 3D genome organization",
+          "description": "Interpret Hi-C contact matrices as spatial proximity and identify topologically associating domains and chromatin loops.",
+          "depth_tags": ["contact matrix", "TAD", "chromatin loop", "Hi-C"]
+        },
+        {
+          "concept_id": "designer_genes_rna_seq",
+          "title": "RNA-seq and differential expression",
+          "description": "Normalize and compare RNA-seq read counts to identify differentially expressed genes between conditions or cell types.",
+          "depth_tags": ["read count", "FPKM/RPKM", "DESeq2", "transcriptome"]
+        }
+      ]
+    }
+  ]
+}

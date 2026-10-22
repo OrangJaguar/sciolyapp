@@ -1,0 +1,564 @@
+{
+  "event_id": "circuit_lab",
+  "event_name": "Circuit Lab",
+  "domain": "Physical Science & Chemistry",
+  "official_scope": "electricity and electronics",
+  "season": 2027,
+  "division": "C",
+  "design_notes": "Expanded all seven locked topics into atomic concepts. Topic 1 has 14 historical/unit concepts because named contributors and SI quantities are tested separately; topics 2-7 range 9-14 depending on calculation/lab density. Historical contributions are separated from calculation concepts to avoid duplication. No topic left thin; no out-of-scope leakage.",
+  "topics": [
+    {
+      "topic_id": "circuit_lab_electrical_quantities_and_historical_foundations",
+      "title": "Electrical quantities, units, and historical foundations",
+      "display_order": 1,
+      "concepts": [
+        {
+          "concept_id": "circuit_lab_charge_unit_coulomb",
+          "title": "Electric charge and coulomb",
+          "description": "Define electric charge as a fundamental quantity and state its SI unit coulomb; distinguish charge amount from current.",
+          "depth_tags": ["electric charge", "coulomb", "C", "SI unit", "1 C = 1 A·s"]
+        },
+        {
+          "concept_id": "circuit_lab_current_unit_ampere",
+          "title": "Electric current and ampere",
+          "description": "Define current as rate of charge flow, state ampere as coulomb/second, and use prefixes mA, µA, and kA.",
+          "depth_tags": ["electric current", "ampere", "I = Q/t", "A", "coulomb per second"]
+        },
+        {
+          "concept_id": "circuit_lab_voltage_unit_volt",
+          "title": "Electric potential difference and volt",
+          "description": "Define voltage as energy per unit charge, state volt as joule/coulomb, and identify common voltage values.",
+          "depth_tags": ["voltage", "potential difference", "volt", "V", "J/C"]
+        },
+        {
+          "concept_id": "circuit_lab_resistance_unit_ohm",
+          "title": "Electrical resistance and ohm",
+          "description": "Define resistance as opposition to charge flow and state ohm as volt per ampere; associate resistance with material properties.",
+          "depth_tags": ["resistance", "ohm", "Ω", "V/A", "material"]
+        },
+        {
+          "concept_id": "circuit_lab_power_unit_watt",
+          "title": "Electric power and watt",
+          "description": "Define electric power as rate of energy transfer, state the watt as joule/second, and identify common power ratings in watts and milliwatts.",
+          "depth_tags": ["power", "watt", "W", "J/s", "milliwatt"]
+        },
+        {
+          "concept_id": "circuit_lab_energy_unit_joule",
+          "title": "Electrical energy and joule/kilowatt-hour",
+          "description": "Define electrical energy as power times time, state joule and kilowatt-hour, and convert between them.",
+          "depth_tags": ["energy", "E=Pt", "joule", "kilowatt-hour", "kWh"]
+        },
+        {
+          "concept_id": "circuit_lab_si_prefixes",
+          "title": "SI prefixes and unit conversion",
+          "description": "Convert among common prefixes pico, nano, micro, milli, kilo, mega, and giga used with circuit quantities.",
+          "depth_tags": ["pico", "nano", "micro", "milli", "kilo", "mega"]
+        },
+        {
+          "concept_id": "circuit_lab_volta_contrib",
+          "title": "Volta and the voltaic pile",
+          "description": "Identify Volta's invention of the voltaic pile as the first continuous electric source and its role in early circuit experiments.",
+          "depth_tags": ["Volta", "voltaic pile", "battery", "history"]
+        },
+        {
+          "concept_id": "circuit_lab_ohm_contrib",
+          "title": "Ohm and the discovery of resistance proportionality",
+          "description": "Recognize Georg Ohm's contribution linking current, voltage, and resistance; associate his name with the ohm unit without solving circuit values here.",
+          "depth_tags": ["Ohm", "Ohm's law origin", "resistance", "history"]
+        },
+        {
+          "concept_id": "circuit_lab_kirchhoff_contrib",
+          "title": "Kirchhoff and circuit laws",
+          "description": "Identify Kirchhoff's current and voltage laws as conservation principles for circuit junctions and loops; associate them with his name.",
+          "depth_tags": ["Kirchhoff", "KCL", "KVL", "conservation", "history"]
+        },
+        {
+          "concept_id": "circuit_lab_coulomb_contrib",
+          "title": "Coulomb and the torsion balance",
+          "description": "Recognize Coulomb's torsion balance measurement of electrostatic force and the naming of the coulomb.",
+          "depth_tags": ["Coulomb", "torsion balance", "electrostatics", "history"]
+        },
+        {
+          "concept_id": "circuit_lab_ampere_contrib",
+          "title": "Ampère and electromagnetism",
+          "description": "Recognize André-Marie Ampère's work on current-carrying conductors and the naming of the ampere.",
+          "depth_tags": ["Ampère", "electromagnetism", "current", "history"]
+        },
+        {
+          "concept_id": "circuit_lab_hertz_contrib",
+          "title": "Hertz and electromagnetic waves",
+          "description": "Identify Hertz's experimental confirmation of electromagnetic waves; associate hertz with frequency.",
+          "depth_tags": ["Hertz", "electromagnetic waves", "frequency", "Hz", "history"]
+        },
+        {
+          "concept_id": "circuit_lab_boole_contrib",
+          "title": "Boole and Boolean algebra",
+          "description": "Recognize George Boole's creation of Boolean algebra as the logical foundation used in digital circuit design.",
+          "depth_tags": ["Boole", "Boolean algebra", "logic", "history"]
+        }
+      ]
+    },
+    {
+      "topic_id": "circuit_lab_charge_fields_and_static_electricity",
+      "title": "Charge, fields, and static electricity",
+      "display_order": 2,
+      "concepts": [
+        {
+          "concept_id": "circuit_lab_charge_conservation",
+          "title": "Conservation of electric charge",
+          "description": "State that net charge is conserved in charging and discharge processes; identify electron transfer as the mechanism.",
+          "depth_tags": ["charge conservation", "electron transfer", "net charge"]
+        },
+        {
+          "concept_id": "circuit_lab_conductors_insulators",
+          "title": "Conductors vs insulators",
+          "description": "Distinguish conductors and insulators by electron mobility and give examples used in circuit lab.",
+          "depth_tags": ["conductor", "insulator", "electron mobility", "copper", "rubber"]
+        },
+        {
+          "concept_id": "circuit_lab_charging_by_friction",
+          "title": "Charging by friction",
+          "description": "Explain charge transfer by rubbing dissimilar materials and predict resulting signs using the triboelectric series.",
+          "depth_tags": ["friction", "triboelectric series", "electron transfer", "static"]
+        },
+        {
+          "concept_id": "circuit_lab_charging_by_conduction",
+          "title": "Charging by conduction",
+          "description": "Explain charging a neutral conductor by touching it with a charged object; predict final charge sharing.",
+          "depth_tags": ["conduction", "charge transfer", "contact", "conductors"]
+        },
+        {
+          "concept_id": "circuit_lab_charging_by_induction",
+          "title": "Charging by induction",
+          "description": "Explain charging a conductor by induction with grounding and no direct charge transfer; distinguish induction from conduction.",
+          "depth_tags": ["induction", "grounding", "polarization", "no contact"]
+        },
+        {
+          "concept_id": "circuit_lab_coulombs_law",
+          "title": "Coulomb's law",
+          "description": "Calculate electrostatic force using F = k|q1q2|/r² and determine direction between point charges.",
+          "depth_tags": ["Coulomb's law", "F = kq1q2/r²", "inverse square", "point charge"]
+        },
+        {
+          "concept_id": "circuit_lab_electric_field_definition",
+          "title": "Electric field definition and units",
+          "description": "Define electric field as force per unit charge, state units N/C or V/m, and calculate the field of a point charge.",
+          "depth_tags": ["electric field", "E=F/q", "N/C", "V/m", "point charge"]
+        },
+        {
+          "concept_id": "circuit_lab_field_lines",
+          "title": "Electric field lines",
+          "description": "Interpret and draw electric field lines for point charges, dipoles, and parallel plates; use line density and direction.",
+          "depth_tags": ["field lines", "dipole", "parallel plates", "direction", "density"]
+        },
+        {
+          "concept_id": "circuit_lab_static_discharge",
+          "title": "Static discharge and grounding",
+          "description": "Explain electrostatic discharge, sparks, and the role of grounding in preventing static buildup.",
+          "depth_tags": ["static discharge", "spark", "grounding", "ESD"]
+        },
+        {
+          "concept_id": "circuit_lab_polarization_induced_charge",
+          "title": "Polarization and induced charge",
+          "description": "Distinguish polarization of insulators from induction in conductors; explain attraction of neutral objects by charged objects.",
+          "depth_tags": ["polarization", "induced charge", "insulator", "attraction"]
+        }
+      ]
+    },
+    {
+      "topic_id": "circuit_lab_dc_and_ac_characteristics_and_safety",
+      "title": "DC and AC characteristics, sources, and hazards",
+      "display_order": 3,
+      "concepts": [
+        {
+          "concept_id": "circuit_lab_dc_characteristics",
+          "title": "Direct current characteristics",
+          "description": "Identify DC as unidirectional charge flow, typical sources such as batteries and DC power supplies, and polarity markings.",
+          "depth_tags": ["DC", "unidirectional", "battery", "polarity"]
+        },
+        {
+          "concept_id": "circuit_lab_ac_characteristics",
+          "title": "Alternating current characteristics",
+          "description": "Identify AC as periodically reversing charge flow; describe sinusoidal waveform and typical wall outlet values.",
+          "depth_tags": ["AC", "sinusoidal", "reversal", "frequency"]
+        },
+        {
+          "concept_id": "circuit_lab_ac_waveform_parameters",
+          "title": "AC waveform parameters: peak, RMS, frequency, period",
+          "description": "Calculate RMS from peak using V_rms = V_peak/√2, identify frequency and period for sinusoidal AC.",
+          "depth_tags": ["V_rms = V_peak/√2", "frequency", "period", "sine wave", "120 V rms"]
+        },
+        {
+          "concept_id": "circuit_lab_voltage_sources",
+          "title": "DC and AC voltage sources",
+          "description": "Compare battery and wall-outlet/power supply characteristics: voltage, current capacity, polarity, and safety.",
+          "depth_tags": ["battery", "wall outlet", "power supply", "voltage source"]
+        },
+        {
+          "concept_id": "circuit_lab_shock_hazards",
+          "title": "Electric shock hazards",
+          "description": "Explain shock severity in terms of current through body, voltage, skin resistance, and current path; identify lethal thresholds.",
+          "depth_tags": ["shock", "body current", "skin resistance", "mA thresholds", "safety"]
+        },
+        {
+          "concept_id": "circuit_lab_fire_overload",
+          "title": "Overload, short circuit, and fire hazards",
+          "description": "Explain how excessive current causes heating and fire; distinguish overload and short circuit conditions.",
+          "depth_tags": ["overload", "short circuit", "Joule heating", "fire hazard", "current"]
+        },
+        {
+          "concept_id": "circuit_lab_fuses_circuit_breakers",
+          "title": "Fuses and circuit breakers",
+          "description": "Describe operation of fuses and circuit breakers as overcurrent protection devices and interpret their ratings.",
+          "depth_tags": ["fuse", "circuit breaker", "overcurrent", "trip", "rating"]
+        },
+        {
+          "concept_id": "circuit_lab_grounding_safety",
+          "title": "Grounding and equipment safety",
+          "description": "Explain protective earthing/grounding, ground-fault paths, and three-prong plug safety.",
+          "depth_tags": ["grounding", "earth", "ground fault", "three-prong", "safety"]
+        },
+        {
+          "concept_id": "circuit_lab_ac_dc_applications",
+          "title": "Common DC and AC applications",
+          "description": "Match typical devices and lab equipment to DC or AC power and justify the selection.",
+          "depth_tags": ["DC applications", "AC applications", "motor", "LED", "heater"]
+        }
+      ]
+    },
+    {
+      "topic_id": "circuit_lab_dc_circuits_ohms_law_and_kirchhoffs_laws",
+      "title": "DC circuits, Ohm's law, and Kirchhoff's laws",
+      "display_order": 4,
+      "concepts": [
+        {
+          "concept_id": "circuit_lab_schematic_symbols",
+          "title": "Schematic symbols and circuit diagrams",
+          "description": "Interpret and draw standard symbols for resistors, batteries, wires, switches, lamps, and meters; trace loops and nodes.",
+          "depth_tags": ["schematic", "symbols", "resistor", "battery", "switch", "meter"]
+        },
+        {
+          "concept_id": "circuit_lab_ohms_law_calc",
+          "title": "Ohm's law calculations",
+          "description": "Use V=IR to solve for voltage, current, or resistance in a single resistive element or simple circuit.",
+          "depth_tags": ["V=IR", "Ohm's law", "resistor", "voltage drop"]
+        },
+        {
+          "concept_id": "circuit_lab_series_circuits",
+          "title": "Series circuits",
+          "description": "Analyze series resistors: same current, voltage division, total resistance R_total=R1+R2+..., and power additivity.",
+          "depth_tags": ["series", "same current", "R_total = R1 + R2", "voltage divider"]
+        },
+        {
+          "concept_id": "circuit_lab_parallel_circuits",
+          "title": "Parallel circuits",
+          "description": "Analyze parallel resistors: same voltage, current division, reciprocal total resistance 1/R_total=1/R1+1/R2+...",
+          "depth_tags": ["parallel", "same voltage", "1/R_total = 1/R1 + 1/R2", "current divider"]
+        },
+        {
+          "concept_id": "circuit_lab_equivalent_resistance",
+          "title": "Equivalent resistance of resistor networks",
+          "description": "Reduce series and parallel combinations stepwise to find the equivalent resistance seen by a source.",
+          "depth_tags": ["equivalent resistance", "reduction", "network", "series-parallel"]
+        },
+        {
+          "concept_id": "circuit_lab_kcl",
+          "title": "Kirchhoff's current law (KCL)",
+          "description": "Apply KCL at junctions: sum of currents entering equals sum leaving; solve for unknown branch currents.",
+          "depth_tags": ["KCL", "junction", "current conservation", "node"]
+        },
+        {
+          "concept_id": "circuit_lab_kvl",
+          "title": "Kirchhoff's voltage law (KVL)",
+          "description": "Apply KVL around loops: sum of voltage rises equals drops; solve for unknown voltages.",
+          "depth_tags": ["KVL", "loop", "voltage conservation", "mesh"]
+        },
+        {
+          "concept_id": "circuit_lab_multiloop_analysis",
+          "title": "Multiloop DC circuit analysis",
+          "description": "Solve multiloop circuits by writing and solving simultaneous KCL/KVL equations for branch currents.",
+          "depth_tags": ["multiloop", "simultaneous equations", "branch current", "KCL", "KVL"]
+        },
+        {
+          "concept_id": "circuit_lab_open_short",
+          "title": "Open and short circuits",
+          "description": "Diagnose open and short circuits; predict voltage/current in each condition and identify failure symptoms.",
+          "depth_tags": ["open circuit", "short circuit", "zero current", "zero voltage", "failure"]
+        },
+        {
+          "concept_id": "circuit_lab_voltage_divider",
+          "title": "Voltage divider rule",
+          "description": "Calculate output voltage across a resistor in a series chain using V_out = V_in (R_x / R_total).",
+          "depth_tags": ["voltage divider", "V_out = V_in * R_x/R_total", "series"]
+        },
+        {
+          "concept_id": "circuit_lab_current_divider",
+          "title": "Current divider rule",
+          "description": "Calculate branch currents in parallel resistors using I_x = I_total (R_total / R_x) or conductance ratios.",
+          "depth_tags": ["current divider", "parallel", "conductance", "branch current"]
+        },
+        {
+          "concept_id": "circuit_lab_dc_power_calc",
+          "title": "Power dissipation in DC circuits",
+          "description": "Compute power dissipated by resistors using P=IV=I²R=V²/R and total source power.",
+          "depth_tags": ["P=IV", "P=I²R", "P=V²/R", "resistor power", "source power"]
+        },
+        {
+          "concept_id": "circuit_lab_internal_resistance",
+          "title": "Battery internal resistance and terminal voltage",
+          "description": "Model real batteries as ideal EMF plus internal resistance; compute terminal voltage under load using V=ε−Ir.",
+          "depth_tags": ["internal resistance", "terminal voltage", "EMF", "V=ε-Ir", "loading"]
+        }
+      ]
+    },
+    {
+      "topic_id": "circuit_lab_diodes_transistors_and_op_amps",
+      "title": "Diodes, transistors, and op-amps",
+      "display_order": 5,
+      "concepts": [
+        {
+          "concept_id": "circuit_lab_pn_junction",
+          "title": "PN junction and depletion region",
+          "description": "Describe formation of the depletion region at a PN junction and its role in one-way conduction.",
+          "depth_tags": ["PN junction", "depletion region", "diode", "diffusion"]
+        },
+        {
+          "concept_id": "circuit_lab_diode_iv",
+          "title": "Diode I-V characteristic",
+          "description": "Interpret diode I-V curve: forward threshold near 0.7 V for silicon, reverse breakdown, and exponential conduction.",
+          "depth_tags": ["diode I-V", "forward bias", "0.7 V", "reverse breakdown", "silicon"]
+        },
+        {
+          "concept_id": "circuit_lab_diode_rectifier",
+          "title": "Diode as rectifier",
+          "description": "Explain half-wave and bridge rectification converting AC to pulsed DC; identify output waveform.",
+          "depth_tags": ["rectifier", "half-wave", "bridge", "AC to DC", "waveform"]
+        },
+        {
+          "concept_id": "circuit_lab_led_resistor",
+          "title": "LEDs and current-limiting resistors",
+          "description": "Calculate series resistor for an LED given supply voltage, LED forward voltage, and desired current.",
+          "depth_tags": ["LED", "current limiting", "R = (V_s - V_f)/I", "forward voltage", "resistor"]
+        },
+        {
+          "concept_id": "circuit_lab_bjt_structure",
+          "title": "BJT structure and NPN/PNP",
+          "description": "Identify base, emitter, collector and majority carrier roles in NPN and PNP bipolar junction transistors.",
+          "depth_tags": ["BJT", "NPN", "PNP", "base", "emitter", "collector"]
+        },
+        {
+          "concept_id": "circuit_lab_bjt_modes",
+          "title": "BJT operating modes and DC biasing",
+          "description": "Determine cutoff, active, and saturation modes from junction bias conditions and base drive.",
+          "depth_tags": ["cutoff", "active", "saturation", "DC biasing", "junction bias"]
+        },
+        {
+          "concept_id": "circuit_lab_bjt_switch",
+          "title": "BJT as a switch",
+          "description": "Analyze NPN switch operation: base current saturates the transistor to drive loads; calculate required base resistor.",
+          "depth_tags": ["transistor switch", "saturation", "base resistor", "load current", "h_FE"]
+        },
+        {
+          "concept_id": "circuit_lab_bjt_amplifier",
+          "title": "BJT as an amplifier and current gain",
+          "description": "Calculate DC current gain β/h_FE and small-signal voltage gain in a basic common-emitter amplifier.",
+          "depth_tags": ["current gain", "β", "h_FE", "common-emitter", "voltage gain"]
+        },
+        {
+          "concept_id": "circuit_lab_transistor_gates",
+          "title": "Transistor-level logic gates",
+          "description": "Analyze or design ≤2-input NAND/NOR/NOT gates from BJT switching behavior; interpret pull-up/pull-down networks.",
+          "depth_tags": ["transistor gate", "NAND", "NOR", "NOT", "pull-up", "pull-down"]
+        },
+        {
+          "concept_id": "circuit_lab_ideal_opamp",
+          "title": "Ideal op-amp assumptions",
+          "description": "Apply ideal op-amp rules: infinite input impedance, zero output impedance, infinite open-loop gain, virtual short in negative feedback.",
+          "depth_tags": ["ideal op-amp", "virtual short", "infinite input impedance", "negative feedback"]
+        },
+        {
+          "concept_id": "circuit_lab_inverting_amp",
+          "title": "Inverting op-amp amplifier",
+          "description": "Calculate gain and output voltage for an inverting amplifier using V_out = -(R_f/R_in) V_in.",
+          "depth_tags": ["inverting amplifier", "V_out = -(R_f/R_in) V_in", "gain", "op-amp"]
+        },
+        {
+          "concept_id": "circuit_lab_non_inverting_amp",
+          "title": "Non-inverting op-amp amplifier",
+          "description": "Calculate gain and output voltage for a non-inverting amplifier using V_out = (1 + R_f/R_g) V_in.",
+          "depth_tags": ["non-inverting amplifier", "V_out = (1 + R_f/R_g) V_in", "gain", "op-amp"]
+        },
+        {
+          "concept_id": "circuit_lab_opamp_comparator",
+          "title": "Op-amp comparator",
+          "description": "Analyze open-loop op-amp as comparator; determine output saturation high/low based on input voltage comparison.",
+          "depth_tags": ["comparator", "open-loop", "saturation", "threshold", "op-amp"]
+        },
+        {
+          "concept_id": "circuit_lab_opamp_buffer",
+          "title": "Op-amp voltage follower/buffer",
+          "description": "Analyze voltage follower with unity gain for impedance buffering; explain isolation between stages.",
+          "depth_tags": ["voltage follower", "buffer", "unity gain", "impedance", "isolation"]
+        }
+      ]
+    },
+    {
+      "topic_id": "circuit_lab_digital_logic_boolean_and_sequential_timing",
+      "title": "Digital logic, Boolean algebra, and timing",
+      "display_order": 6,
+      "concepts": [
+        {
+          "concept_id": "circuit_lab_logic_gates",
+          "title": "Logic gates and truth tables",
+          "description": "Interpret AND, OR, NOT, NAND, NOR, XOR, XNOR symbols and truth tables; determine output for given inputs.",
+          "depth_tags": ["AND", "OR", "NOT", "NAND", "NOR", "XOR", "XNOR", "truth table"]
+        },
+        {
+          "concept_id": "circuit_lab_boolean_algebra",
+          "title": "Boolean algebra identities and simplification",
+          "description": "Apply Boolean algebra laws including identity, null, idempotent, complement, associative, distributive, and absorption to simplify expressions.",
+          "depth_tags": ["Boolean algebra", "identity", "absorption", "distribution", "simplification"]
+        },
+        {
+          "concept_id": "circuit_lab_de_morgan",
+          "title": "De Morgan's laws",
+          "description": "Convert between AND/NOR and OR/NAND forms using De Morgan's laws; simplify complemented expressions.",
+          "depth_tags": ["De Morgan", "(AB)' = A' + B'", "(A+B)' = A'B'", "complement"]
+        },
+        {
+          "concept_id": "circuit_lab_universal_gates",
+          "title": "Universal NAND/NOR gate implementation",
+          "description": "Implement any basic gate using only NAND or only NOR gates; convert circuit schematics accordingly.",
+          "depth_tags": ["universal gates", "NAND", "NOR", "gate conversion"]
+        },
+        {
+          "concept_id": "circuit_lab_boolean_expression_to_circuit",
+          "title": "Boolean expression to circuit and circuit to expression",
+          "description": "Translate between logic circuit diagrams and Boolean expressions; derive sum-of-products or product-of-sums forms from truth tables.",
+          "depth_tags": ["SOP", "POS", "expression", "schematic", "truth table"]
+        },
+        {
+          "concept_id": "circuit_lab_combinational_synthesis",
+          "title": "Combinational circuit synthesis",
+          "description": "Design a combinational logic circuit from a verbal specification or truth table, then simplify using Boolean algebra or a Karnaugh map.",
+          "depth_tags": ["combinational logic", "spec to circuit", "K-map", "synthesis"]
+        },
+        {
+          "concept_id": "circuit_lab_xor_applications",
+          "title": "XOR and equivalence logic",
+          "description": "Analyze XOR/XNOR use in parity, comparison, and arithmetic half-adder circuits.",
+          "depth_tags": ["XOR", "XNOR", "parity", "comparator", "half-adder"]
+        },
+        {
+          "concept_id": "circuit_lab_sr_latch",
+          "title": "SR latch from NAND/NOR",
+          "description": "Analyze set-reset latch built from cross-coupled NAND/NOR gates; construct state table including invalid or forbidden states.",
+          "depth_tags": ["SR latch", "NAND latch", "NOR latch", "set", "reset", "forbidden"]
+        },
+        {
+          "concept_id": "circuit_lab_clock_timing",
+          "title": "Clock signals and timing parameters",
+          "description": "Define clock period, frequency, duty cycle, rising/falling edges, and setup/hold timing requirements.",
+          "depth_tags": ["clock", "period", "frequency", "duty cycle", "setup", "hold"]
+        },
+        {
+          "concept_id": "circuit_lab_propagation_delay",
+          "title": "Propagation delay and race conditions",
+          "description": "Explain gate propagation delay; identify race conditions in asynchronous sequential circuits and glitches.",
+          "depth_tags": ["propagation delay", "race condition", "glitch", "asynchronous"]
+        },
+        {
+          "concept_id": "circuit_lab_flip_flops",
+          "title": "D and JK flip-flops",
+          "description": "Analyze edge-triggered D and JK flip-flop behavior from clock, inputs, and characteristic equations.",
+          "depth_tags": ["D flip-flop", "JK flip-flop", "edge-triggered", "characteristic equation", "state"]
+        },
+        {
+          "concept_id": "circuit_lab_timing_diagrams",
+          "title": "Digital timing diagrams",
+          "description": "Draw and interpret timing diagrams showing simultaneous gate and sequential outputs over clock cycles.",
+          "depth_tags": ["timing diagram", "waveforms", "clock cycles", "state"]
+        }
+      ]
+    },
+    {
+      "topic_id": "circuit_lab_hands_on_measurement_and_troubleshooting",
+      "title": "Hands-on measurement and troubleshooting",
+      "display_order": 7,
+      "concepts": [
+        {
+          "concept_id": "circuit_lab_breadboard_use",
+          "title": "Breadboard layout and connection",
+          "description": "Identify breadboard power rails and terminal strips; wire circuits without unintended shorts and verify continuity.",
+          "depth_tags": ["breadboard", "power rail", "terminal strip", "wiring", "continuity"]
+        },
+        {
+          "concept_id": "circuit_lab_multimeter_voltage",
+          "title": "Multimeter voltage measurement",
+          "description": "Measure DC voltage across a component by connecting the multimeter in parallel with correct range and polarity.",
+          "depth_tags": ["voltmeter", "parallel", "DC volts", "range", "polarity"]
+        },
+        {
+          "concept_id": "circuit_lab_multimeter_current",
+          "title": "Multimeter current measurement",
+          "description": "Measure current by breaking the circuit and connecting the multimeter in series; select correct range and respect fuse protection.",
+          "depth_tags": ["ammeter", "series", "current", "break circuit", "fuse"]
+        },
+        {
+          "concept_id": "circuit_lab_multimeter_resistance",
+          "title": "Multimeter resistance measurement",
+          "description": "Measure resistance with circuit power off; avoid parallel paths; interpret continuity and OL readings.",
+          "depth_tags": ["ohmmeter", "power off", "resistance", "continuity", "OL"]
+        },
+        {
+          "concept_id": "circuit_lab_voltage_only_resistor",
+          "title": "Mystery resistor via voltage-only method",
+          "description": "Determine unknown resistance using a known series resistor and voltage measurements only; apply voltage divider or swap method.",
+          "depth_tags": ["mystery resistor", "voltage-only", "voltage divider", "known resistor"]
+        },
+        {
+          "concept_id": "circuit_lab_power_supply_use",
+          "title": "Using DC power supplies safely",
+          "description": "Set and limit voltage/current on lab power supplies; interpret displayed output and avoid overloading.",
+          "depth_tags": ["power supply", "current limit", "voltage set", "constant voltage"]
+        },
+        {
+          "concept_id": "circuit_lab_led_hands_on",
+          "title": "LED circuit balancing and resistor selection",
+          "description": "Build and verify LED circuits with current-limiting resistors; measure LED current and adjust for balanced brightness.",
+          "depth_tags": ["LED", "current limiting", "brightness", "resistor", "measure"]
+        },
+        {
+          "concept_id": "circuit_lab_usb_charger_power",
+          "title": "USB charger label and power calculation",
+          "description": "Interpret USB charger and power adapter labels showing volts and amps; calculate power and energy output.",
+          "depth_tags": ["USB charger", "label", "volts", "amps", "power"]
+        },
+        {
+          "concept_id": "circuit_lab_logic_from_truth_table",
+          "title": "Building logic from truth table",
+          "description": "Given a truth table, construct and wire a logic circuit using available gates on a breadboard and verify outputs.",
+          "depth_tags": ["truth table", "logic gate", "wiring", "verify", "breadboard"]
+        },
+        {
+          "concept_id": "circuit_lab_circuit_troubleshooting",
+          "title": "Circuit troubleshooting with multimeter",
+          "description": "Diagnose non-working circuits: check supply voltage, continuity, component orientation, shorts/opens; isolate the faulty section.",
+          "depth_tags": ["troubleshooting", "multimeter", "voltage checks", "continuity", "fault isolation"]
+        },
+        {
+          "concept_id": "circuit_lab_spdt_switch",
+          "title": "3-way SPDT switch wiring",
+          "description": "Wire and analyze two 3-way SPDT switches controlling one load from two locations; verify switch positions.",
+          "depth_tags": ["3-way switch", "SPDT", "two location", "traveler wire", "wiring"]
+        },
+        {
+          "concept_id": "circuit_lab_equiv_resistance_hands_on",
+          "title": "Equivalent resistance networks measurement",
+          "description": "Build or measure series-parallel resistor networks and verify equivalent resistance and voltage/current distribution.",
+          "depth_tags": ["equivalent resistance", "measurement", "series-parallel", "network"]
+        }
+      ]
+    }
+  ]
+}

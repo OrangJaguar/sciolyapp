@@ -1,0 +1,608 @@
+{
+  "event_id": "forensics",
+  "event_name": "Forensics",
+  "domain": "Physical Science & Chemistry",
+  "official_scope": "crime-scene tests and evidence analysis",
+  "season": 2027,
+  "division": "C",
+  "design_notes": "Pass 1 topics locked. Concept expansion covers all official-scope skill families: known-solid qualitative chemistry, polymer/fiber/hair microscopy, separations and spectra, fingerprints, DNA/blood, physical pattern reconstruction, field trace evidence, cross-cutting lab methods, and suspect reasoning. Concept counts vary from 8 to 14 based on real skill density; no topic left thin.",
+  "topics": [
+    {
+      "topic_id": "forensics_qualitative_analysis_solids",
+      "title": "Qualitative analysis of known solids",
+      "display_order": 1,
+      "concepts": [
+        {
+          "concept_id": "forensics_water_solubility_of_listed_solids",
+          "title": "Solubility of the 15 listed solids in water",
+          "description": "Classify each listed solid as soluble, slightly soluble, or insoluble in water at room temperature and use solubility as a first-step identification clue.",
+          "depth_tags": ["NaCl soluble", "CaCO3 insoluble", "CaSO4 slightly soluble", "solubility rules", "aqueous dissolution"]
+        },
+        {
+          "concept_id": "forensics_solution_ph_conductivity",
+          "title": "Solution pH and conductivity of solids",
+          "description": "Dissolve known solids in water and use pH paper or universal indicator and conductivity to classify acidic, basic, or neutral salt solutions.",
+          "depth_tags": ["pH", "conductivity", "Na2CO3 basic", "NaHCO3 slightly basic", "NH4Cl acidic", "electrolyte"]
+        },
+        {
+          "concept_id": "forensics_flame_test_for_cations",
+          "title": "Flame test colors for listed metal salts",
+          "description": "Identify sodium, potassium, lithium, calcium, magnesium, and boron species by the characteristic color each imparts to a clean flame.",
+          "depth_tags": ["Na yellow", "K lilac", "Li crimson", "Ca orange-red", "B green", "Mg no flame"]
+        },
+        {
+          "concept_id": "forensics_chloride_test_silver_nitrate",
+          "title": "Chloride test with silver nitrate",
+          "description": "Add silver nitrate to a chloride-containing solution and interpret white AgCl precipitate that darkens in light as a positive chloride result.",
+          "depth_tags": ["AgNO3", "AgCl white ppt", "photodecomposition", "Cl- detection", "nitric acid solubility"]
+        },
+        {
+          "concept_id": "forensics_sulfate_test_barium_nitrate",
+          "title": "Sulfate test with barium nitrate",
+          "description": "Treat sulfate-containing samples with barium nitrate and interpret white BaSO4 precipitate insoluble in dilute acid as a positive sulfate test.",
+          "depth_tags": ["Ba(NO3)2", "BaSO4 white ppt", "acid-insoluble ppt", "SO4^2- detection"]
+        },
+        {
+          "concept_id": "forensics_carbonate_bicarbonate_acid_test",
+          "title": "Carbonate and bicarbonate acid reaction test",
+          "description": "Add dilute acid to carbonate or bicarbonate solids and recognize immediate effervescence of CO2 to distinguish them from non-carbonate solids.",
+          "depth_tags": ["CO2 bubbles", "NaHCO3", "Na2CO3", "CaCO3", "HCl test", "effervescence"]
+        },
+        {
+          "concept_id": "forensics_iodine_starch_test",
+          "title": "Iodine test for starch",
+          "description": "Use iodine solution to detect cornstarch by the blue-black starch-iodine complex and distinguish starch from glucose and sucrose.",
+          "depth_tags": ["I2-KI", "blue-black complex", "amylose helix", "cornstarch positive"]
+        },
+        {
+          "concept_id": "forensics_benedicts_test_reducing_sugars",
+          "title": "Benedict's test for reducing sugars",
+          "description": "Heat sample with Benedict's reagent and interpret brick-red Cu2O precipitate as positive for reducing sugars such as glucose.",
+          "depth_tags": ["Cu2O", "brick-red ppt", "glucose positive", "sucrose negative", "reducing ends"]
+        },
+        {
+          "concept_id": "forensics_sucrose_glucose_differentiation",
+          "title": "Distinguishing sucrose from glucose",
+          "description": "Perform Benedict's test before and after acid hydrolysis to identify sucrose, negative before and positive after, versus glucose, positive before.",
+          "depth_tags": ["sucrose nonreducing", "acid hydrolysis", "Benedict's before/after", "glucose reducing"]
+        },
+        {
+          "concept_id": "forensics_ammonium_ion_test",
+          "title": "Ammonium ion test with sodium hydroxide",
+          "description": "Warm sample with NaOH and detect ammonia gas by odor or red litmus turning blue as a positive test for NH4Cl.",
+          "depth_tags": ["NH4Cl", "NH3 gas", "red litmus blue", "NaOH"]
+        },
+        {
+          "concept_id": "forensics_acetate_ion_test",
+          "title": "Acetate detection by acid odor",
+          "description": "Add dilute sulfuric acid to sodium acetate and recognize vinegar-like acetic acid odor as a positive acetate test.",
+          "depth_tags": ["CH3COOH odor", "NaC2H3O2", "acidification", "vinegar smell"]
+        },
+        {
+          "concept_id": "forensics_nitrate_test_brown_ring",
+          "title": "Nitrate test by brown ring",
+          "description": "Layer iron(II) sulfate with concentrated sulfuric acid on sample solution and observe a brown ring at the interface as positive nitrate.",
+          "depth_tags": ["FeSO4", "concentrated H2SO4", "Fe(NO)2+ brown ring", "NO3- detection", "interface"]
+        },
+        {
+          "concept_id": "forensics_boric_acid_identification",
+          "title": "Boric acid identification",
+          "description": "Identify boric acid by its green flame color, weak acid behavior, and greater solubility in hot water than in cold water.",
+          "depth_tags": ["H3BO3", "green flame", "weak acid", "hot water soluble", "borate"]
+        },
+        {
+          "concept_id": "forensics_physical_appearance_of_known_solids",
+          "title": "Physical appearance and crystalline form of listed solids",
+          "description": "Use crystal size, powder texture, color, and hygroscopic or deliquescent behavior as preliminary distinguishing observations among the 15 listed solids.",
+          "depth_tags": ["crystalline vs powder", "white solids", "LiCl hygroscopic", "texture", "visual observation"]
+        }
+      ]
+    },
+    {
+      "topic_id": "forensics_polymers_fibers_hair",
+      "title": "Polymers, fibers, and hair identification",
+      "display_order": 2,
+      "concepts": [
+        {
+          "concept_id": "forensics_polymer_density_separation",
+          "title": "Polymer density separation by flotation",
+          "description": "Use water, saturated salt, alcohol, and oil to separate common plastics by density ranges and identify PETE, HDPE, PS, LDPE, PP, PVC, PMMA, and PC.",
+          "depth_tags": ["density g/mL", "sink/float", "water <1 g/mL", "PP floats", "PVC sinks", "PMMA vs PC"]
+        },
+        {
+          "concept_id": "forensics_polymer_flame_test",
+          "title": "Polymer flame test observations",
+          "description": "Ignite small polymer samples and interpret flame color, smoke, dripping, self-extinguishing behavior, and odor to distinguish plastics.",
+          "depth_tags": ["green flame PVC", "black soot PS", "paraffin odor PP/PE", "acrid HCl PVC", "dripping", "self-extinguish"]
+        },
+        {
+          "concept_id": "forensics_polymer_resin_code_physical_properties",
+          "title": "Resin codes and physical properties of plastics",
+          "description": "Correlate SPI resin codes 1-7 with polymer names and use clarity, flexibility, and hardness to distinguish PETE, HDPE, PVC, LDPE, PP, PS, and PC.",
+          "depth_tags": ["SPI codes", "PETE #1", "HDPE #2", "PVC #3", "LDPE #4", "PP #5"]
+        },
+        {
+          "concept_id": "forensics_polymer_chemical_tests",
+          "title": "Chemical spot tests for polymers",
+          "description": "Use specific chemical tests such as copper wire flame, acetone solubility, and alcohol flame to identify PVC, PMMA, PS, and other plastics.",
+          "depth_tags": ["Beilstein copper wire", "acetone dissolves PMMA", "chlorine green flame", "chemical resistance", "spot test"]
+        },
+        {
+          "concept_id": "forensics_natural_fiber_microscopy",
+          "title": "Microscopic identification of natural fibers",
+          "description": "Use microscope morphology including flat twists in cotton, nodes in linen, scales on wool, and smooth transparent tubes in silk to identify natural fibers.",
+          "depth_tags": ["cotton twist", "linen bamboo nodes", "wool scales", "silk smooth", "fiber microscopy"]
+        },
+        {
+          "concept_id": "forensics_synthetic_fiber_burn_test",
+          "title": "Synthetic fiber burn and melt identification",
+          "description": "Ignite fibers and use melting, bead formation, ash, odor, and smoke to distinguish nylon, polyester, and spandex.",
+          "depth_tags": ["nylon blue base", "polyester sweet odor", "spandex black sticky ash", "melt vs burn", "bead"]
+        },
+        {
+          "concept_id": "forensics_human_vs_animal_hair_medulla",
+          "title": "Medulla patterns and human vs animal hair",
+          "description": "Compare medullary index, pattern type, and pigment distribution to distinguish human hair from animal hair.",
+          "depth_tags": ["medullary index >1/2 animal", "continuous medulla", "interrupted", "fragmented", "human <1/3"]
+        },
+        {
+          "concept_id": "forensics_hair_cuticle_scale_patterns",
+          "title": "Cuticle scale patterns in hair",
+          "description": "Recognize coronal, spinous, and imbricate cuticle scale patterns from casts or microscopy for species identification.",
+          "depth_tags": ["coronal", "spinous", "imbricate", "scale cast", "human hair imbricate"]
+        },
+        {
+          "concept_id": "forensics_hair_root_and_growth_phase",
+          "title": "Hair root morphology and growth phase",
+          "description": "Distinguish anagen, catagen, and telogen root appearance and use tissue tags or follicle shape to infer forcible removal or natural shedding.",
+          "depth_tags": ["anagen club", "telogen bulb", "tissue tag", "forcible removal", "growth phase"]
+        },
+        {
+          "concept_id": "forensics_species_identification_from_hair",
+          "title": "Species identification from hair samples",
+          "description": "Combine medulla type, cuticle scale pattern, color banding, and diameter to identify human, bat, cow, squirrel, and horse hair.",
+          "depth_tags": ["bat coronal scales", "cow medulla continuous", "horse diameter", "squirrel banded", "species key"]
+        }
+      ]
+    },
+    {
+      "topic_id": "forensics_chromatography_mass_spectrometry",
+      "title": "Chromatography and mass spectrometry",
+      "display_order": 3,
+      "concepts": [
+        {
+          "concept_id": "forensics_paper_chromatography_principle",
+          "title": "Paper chromatography separation principle",
+          "description": "Explain how analytes partition between a polar stationary phase and a mobile solvent and predict migration based on polarity and intermolecular forces.",
+          "depth_tags": ["stationary phase", "mobile phase", "partition", "polarity", "capillary action"]
+        },
+        {
+          "concept_id": "forensics_tlc_principle",
+          "title": "Thin-layer chromatography principle",
+          "description": "Describe TLC separation on silica or alumina plates, compare with paper, and use UV visualization or staining to locate analyte spots.",
+          "depth_tags": ["silica gel", "alumina", "adsorption", "UV visualization", "spotting"]
+        },
+        {
+          "concept_id": "forensics_rf_calculation",
+          "title": "Rf calculation and interpretation",
+          "description": "Calculate retention factor as distance moved by compound divided by distance moved by solvent front and use Rf to compare unknowns with standards.",
+          "depth_tags": ["Rf = d_compound/d_solvent", "0<Rf<1", "identification", "standard comparison"]
+        },
+        {
+          "concept_id": "forensics_chromatography_development_technique",
+          "title": "Chromatogram development and sample application",
+          "description": "Prepare a chromatogram by spotting small concentrated samples, suspending the plate or paper without submerging the spot, and developing in a sealed chamber.",
+          "depth_tags": ["spotting", "sealed chamber", "solvent level", "tailing", "wicking"]
+        },
+        {
+          "concept_id": "forensics_chromatography_visualization_methods",
+          "title": "Visualization of chromatograms",
+          "description": "Choose appropriate visualization methods such as UV lamp, iodine vapor, ninhydrin, or visible dyes to reveal separated colorless analytes.",
+          "depth_tags": ["UV", "I2 vapor", "ninhydrin", "visible dye", "spot visualization"]
+        },
+        {
+          "concept_id": "forensics_mass_spectrum_molecular_ion",
+          "title": "Molecular ion and molar mass from mass spectra",
+          "description": "Identify the molecular ion peak to determine molar mass and distinguish M+ from fragment peaks and recognize M+1 and M+2 isotopic peaks.",
+          "depth_tags": ["M+ peak", "m/z highest", "isotopic peaks", "molar mass", "M+1 carbon-13"]
+        },
+        {
+          "concept_id": "forensics_mass_spectrum_fragmentation",
+          "title": "Fragmentation patterns in mass spectra",
+          "description": "Interpret major fragment peaks as losses of stable groups and use base peak and relative abundance to recognize structural subunits.",
+          "depth_tags": ["base peak", "relative abundance", "fragment losses", "m/z", "cation radicals"]
+        },
+        {
+          "concept_id": "forensics_isotope_patterns_ms",
+          "title": "Isotope patterns for chlorine and bromine",
+          "description": "Recognize characteristic M:M+2 intensity ratios for compounds containing chlorine about 3:1 or bromine about 1:1 from mass spectra.",
+          "depth_tags": ["Cl 35/37", "Br 79/81", "M+2", "3:1", "1:1"]
+        },
+        {
+          "concept_id": "forensics_chromatography_vs_mass_spectrometry",
+          "title": "Comparing chromatograms and mass spectra",
+          "description": "Distinguish retention-based separation output from mass-to-charge spectral output and use both to identify forensic samples.",
+          "depth_tags": ["retention time", "m/z spectrum", "hyphenated GC-MS", "qualitative identification"]
+        }
+      ]
+    },
+    {
+      "topic_id": "forensics_fingerprints",
+      "title": "Fingerprint patterns, development, and terminology",
+      "display_order": 4,
+      "concepts": [
+        {
+          "concept_id": "forensics_fingerprint_ridge_skin_structure",
+          "title": "Friction ridge skin anatomy",
+          "description": "Explain how friction ridges form from dermal papillae into the epidermis and how sweat and oil secretions create latent prints.",
+          "depth_tags": ["dermal papillae", "epidermis", "sweat pores", "latent residue", "friction ridges"]
+        },
+        {
+          "concept_id": "forensics_fingerprint_pattern_classes_arch",
+          "title": "Arch fingerprint patterns",
+          "description": "Identify and distinguish plain arches and tented arches by ridge flow across the finger and central spike or loop features.",
+          "depth_tags": ["plain arch", "tented arch", "no delta", "central spike"]
+        },
+        {
+          "concept_id": "forensics_fingerprint_pattern_loops",
+          "title": "Loop fingerprint patterns",
+          "description": "Classify ulnar and radial loops by delta, core, and loop opening direction relative to the hand bones.",
+          "depth_tags": ["ulnar loop", "radial loop", "one delta", "core", "loop direction"]
+        },
+        {
+          "concept_id": "forensics_fingerprint_pattern_whorls",
+          "title": "Whorl fingerprint patterns",
+          "description": "Distinguish plain whorl, central pocket loop, double loop, and accidental whorl using number and placement of deltas and ridge structure.",
+          "depth_tags": ["plain whorl", "central pocket loop", "double loop", "accidental", "two deltas"]
+        },
+        {
+          "concept_id": "forensics_fingerprint_minutiae",
+          "title": "Fingerprint minutiae identification",
+          "description": "Recognize ending ridges, bifurcations, dots, lakes, spurs, and crossovers in a print and use their positions for individualization.",
+          "depth_tags": ["ending ridge", "bifurcation", "dot", "lake", "spur", "crossover"]
+        },
+        {
+          "concept_id": "forensics_fingerprint_development_powder",
+          "title": "Powder development of latent prints",
+          "description": "Apply fine fingerprint powder with a brush to nonporous surfaces and lift using tape and backing cards to develop and preserve latent prints.",
+          "depth_tags": ["black/gray powder", "magnetic powder", "nonporous", "lifting tape", "preservation"]
+        },
+        {
+          "concept_id": "forensics_fingerprint_development_chemical",
+          "title": "Chemical development of latent prints",
+          "description": "Choose and explain chemical methods including iodine fuming, ninhydrin, silver nitrate, and cyanoacrylate for porous and nonporous surfaces.",
+          "depth_tags": ["iodine fuming", "ninhydrin", "silver nitrate", "cyanoacrylate", "porous vs nonporous"]
+        },
+        {
+          "concept_id": "forensics_fingerprint_cyanoacrylate_fuming",
+          "title": "Cyanoacrylate fuming for latent prints",
+          "description": "Describe superglue fuming chamber reactions with moisture and amino acids to form white polymerized ridges on nonporous evidence and use fluorescent dye staining for enhancement.",
+          "depth_tags": ["superglue", "white polymer", "humidity", "RUVIS", "dye stain"]
+        },
+        {
+          "concept_id": "forensics_latent_patent_plastic_prints",
+          "title": "Types of fingerprints: latent, patent, plastic",
+          "description": "Classify prints as latent, patent, or plastic and predict the optimal development method for each surface and print type.",
+          "depth_tags": ["latent", "patent", "plastic", "3D impression", "development method"]
+        },
+        {
+          "concept_id": "forensics_fingerprint_comparison_method",
+          "title": "ACE-V fingerprint comparison method",
+          "description": "Apply Analysis, Comparison, Evaluation, and Verification stages to individualize or identify fingerprints and explain the basis for conclusions.",
+          "depth_tags": ["ACE-V", "individualization", "verification", "ridge agreement", "exclusion"]
+        }
+      ]
+    },
+    {
+      "topic_id": "forensics_dna_blood_evidence",
+      "title": "DNA profiling and blood evidence",
+      "display_order": 5,
+      "concepts": [
+        {
+          "concept_id": "forensics_dna_str_analysis",
+          "title": "STR DNA profiling",
+          "description": "Explain how short tandem repeat loci are counted by repeat number and how allele peaks on electropherograms identify a DNA profile.",
+          "depth_tags": ["STR", "CODIS", "allele", "repeat number", "loci"]
+        },
+        {
+          "concept_id": "forensics_dna_electropherogram_interpretation",
+          "title": "DNA electropherogram peak interpretation",
+          "description": "Read dye-labeled allele peaks, distinguish stutter and pull-up artifacts, and match allele sizes using size-standard ladders.",
+          "depth_tags": ["relative fluorescence units", "allelic ladder", "stutter", "pull-up", "size standard"]
+        },
+        {
+          "concept_id": "forensics_pcr_amplification",
+          "title": "PCR amplification of DNA",
+          "description": "Explain denaturation, annealing, and extension temperature cycling and how exponential amplification copies target STR regions from trace DNA.",
+          "depth_tags": ["denaturation 94-98C", "annealing", "Taq polymerase", "extension 72C", "exponential amplification"]
+        },
+        {
+          "concept_id": "forensics_dna_extraction_quantification",
+          "title": "DNA extraction and quantification",
+          "description": "Lyse cells, purify DNA from proteins and inhibitors, and quantify DNA yield or concentration using UV absorbance or fluorometry before amplification.",
+          "depth_tags": ["cell lysis", "silica membrane", "A260/280", "DNA quantification", "inhibitor removal"]
+        },
+        {
+          "concept_id": "forensics_blood_typing_abo",
+          "title": "ABO blood typing with antisera",
+          "description": "Add anti-A, anti-B, and anti-D antisera to blood and interpret agglutination patterns to determine ABO and Rh type.",
+          "depth_tags": ["anti-A", "anti-B", "anti-D", "agglutination", "blood group"]
+        },
+        {
+          "concept_id": "forensics_blood_cell_microscopy",
+          "title": "Blood cell microscopy and species identification",
+          "description": "Use microscope slides to distinguish human blood cells from avian, mammalian, and reptile or amphibian blood by RBC shape, nucleation, and size.",
+          "depth_tags": ["enucleated RBC human", "nucleated avian", "elliptical amphibian", "mammalian", "species blood"]
+        },
+        {
+          "concept_id": "forensics_presumptive_confirmatory_blood",
+          "title": "Presumptive vs confirmatory blood tests",
+          "description": "Choose Kastle-Meyer, luminol, or leucomalachite green as presumptive and Takayama or immunological tests as confirmatory and interpret controls.",
+          "depth_tags": ["Kastle-Meyer", "luminol", "leucomalachite green", "confirmatory", "false positives"]
+        },
+        {
+          "concept_id": "forensics_dna_chromatogram_vs_electropherogram",
+          "title": "DNA sequencing chromatogram reading",
+          "description": "Read Sanger sequence chromatograms by colored dye peaks and quality scores and distinguish heterozygous peaks from background noise.",
+          "depth_tags": ["Sanger", "dye-terminator", "heterozygous double peak", "quality score", "base calling"]
+        },
+        {
+          "concept_id": "forensics_dna_mixture_interpretation",
+          "title": "DNA mixture and contamination interpretation",
+          "description": "Recognize mixed DNA profiles with more than two alleles at loci, interpret major and minor contributors, and identify possible contamination or allelic dropout.",
+          "depth_tags": ["mixed profile", "major/minor", "dropout", "allelic peaks", "contamination"]
+        },
+        {
+          "concept_id": "forensics_blood_type_inheritance",
+          "title": "ABO inheritance and prediction",
+          "description": "Use ABO genotypes IA, IB, and i to predict possible offspring blood types and evaluate whether a suspect could be a source.",
+          "depth_tags": ["IA IB i", "codominant", "O ii", "Punnett", "exclusion"]
+        }
+      ]
+    },
+    {
+      "topic_id": "forensics_glass_spatter_ballistics",
+      "title": "Glass fracture, bloodstain pattern, and bullet striation analysis",
+      "display_order": 6,
+      "concepts": [
+        {
+          "concept_id": "forensics_glass_refractive_index",
+          "title": "Glass refractive index by immersion",
+          "description": "Use the Becke line method with immersion oils of known refractive index to determine glass refractive index and compare questioned and known glass.",
+          "depth_tags": ["Becke line", "immersion oil", "nD", "match point", "glass comparison"]
+        },
+        {
+          "concept_id": "forensics_glass_density_comparison",
+          "title": "Glass density flotation comparison",
+          "description": "Compare glass density by sink or float in liquids of known density to determine if fragments originate from the same source.",
+          "depth_tags": ["density column", "flotation", "glass source", "known vs questioned"]
+        },
+        {
+          "concept_id": "forensics_glass_radial_concentric_fractures",
+          "title": "Radial and concentric glass fractures",
+          "description": "Distinguish radial cracks from concentric circles and use their orientation and morphology to identify impact side and direction.",
+          "depth_tags": ["radial cracks", "concentric cracks", "impact side", "crater", "tension/recompression"]
+        },
+        {
+          "concept_id": "forensics_glass_fracture_sequence",
+          "title": "Determining glass fracture order",
+          "description": "Apply fracture termination rules where cracks stop at existing fractures to sequence multiple bullet or impact hits in glass.",
+          "depth_tags": ["termination", "fracture sequence", "existing crack stop", "bullet holes", "multi-hit"]
+        },
+        {
+          "concept_id": "forensics_bloodstain_angle_of_impact",
+          "title": "Bloodstain angle of impact calculation",
+          "description": "Measure stain width and length and calculate angle of impact using sin θ = width/length to reconstruct drop direction.",
+          "depth_tags": ["sin θ = width/length", "impact angle", "circular 90°", "elliptical", "spatter trigonometry"]
+        },
+        {
+          "concept_id": "forensics_bloodstain_velocity_and_size",
+          "title": "Bloodstain velocity and size classification",
+          "description": "Relate droplet size and misting to low, medium, or high velocity impact mechanisms such as gravity, cast-off, or gunshot.",
+          "depth_tags": ["low velocity", "medium velocity", "high velocity", "mist", "drop size"]
+        },
+        {
+          "concept_id": "forensics_bloodstain_point_of_origin",
+          "title": "Bloodstain point of origin reconstruction",
+          "description": "Use multiple stain angle and direction lines via strings or trigonometric tangent to locate the area of origin in three dimensions.",
+          "depth_tags": ["stringing", "3D origin", "tangent method", "stain trajectories", "area of convergence"]
+        },
+        {
+          "concept_id": "forensics_bullet_lands_grooves",
+          "title": "Bullet lands and grooves striations",
+          "description": "Explain rifling marks on bullets including lands and grooves and compare individual striations on test-fired bullets under a comparison microscope.",
+          "depth_tags": ["rifling", "lands", "grooves", "comparison microscope", "individual striations"]
+        },
+        {
+          "concept_id": "forensics_bullet_caliber_class_characteristics",
+          "title": "Bullet and cartridge class characteristics",
+          "description": "Use caliber, number, width, and direction of lands and grooves, and cartridge case markings to classify ammunition and narrow weapon type.",
+          "depth_tags": ["caliber", "class characteristics", "twist direction", "cartridge markings", "breech face"]
+        }
+      ]
+    },
+    {
+      "topic_id": "forensics_entomology_palynology_soil_tracks",
+      "title": "Entomology, palynology, soil, and track evidence",
+      "display_order": 7,
+      "concepts": [
+        {
+          "concept_id": "forensics_blow_fly_life_cycle_pmi",
+          "title": "Blow fly life cycle and PMI",
+          "description": "Estimate postmortem interval using developmental stages of blow fly eggs, larval instars, prepupae, pupae, and adults at known temperatures.",
+          "depth_tags": ["egg", "1st instar", "2nd instar", "3rd instar", "pupation", "PMI"]
+        },
+        {
+          "concept_id": "forensics_accumulated_degree_hours",
+          "title": "Accumulated degree day/hour calculation for PMI",
+          "description": "Calculate PMI from insect development using species-specific thermal requirements and accumulated degree days or hours.",
+          "depth_tags": ["ADD", "ADH", "base temperature", "development threshold", "thermal accumulation"]
+        },
+        {
+          "concept_id": "forensics_insect_succession_carrion",
+          "title": "Insect succession on carrion",
+          "description": "Use predictable waves of insect colonization and environmental conditions to estimate decomposition stage and PMI range.",
+          "depth_tags": ["necrophagous", "succession waves", "beetles", "decomposition stage", "environmental effect"]
+        },
+        {
+          "concept_id": "forensics_pollen_spore_identification",
+          "title": "Pollen and spore identification",
+          "description": "Use size, shape, aperture type, and surface ornamentation under light or SEM microscopy to identify pollen and spore taxa and infer location or season.",
+          "depth_tags": ["pollen grain", "exine", "aperture", "palynomorph", "SEM"]
+        },
+        {
+          "concept_id": "forensics_soil_color_texture_composition",
+          "title": "Soil color, texture, and particle composition",
+          "description": "Characterize soil by Munsell color, grain size distribution of sand, silt, and clay, and organic or mineral content for source comparison.",
+          "depth_tags": ["Munsell color", "sand/silt/clay", "particle size", "organic matter", "soil horizon"]
+        },
+        {
+          "concept_id": "forensics_soil_chemical_mineral_tests",
+          "title": "Soil chemical and mineral tests",
+          "description": "Test soil pH, effervescence with acid, and presence of minerals such as quartz using simple chemical or optical tests to link soil samples.",
+          "depth_tags": ["pH", "HCl effervescence", "mineral grains", "quartz", "soil comparison"]
+        },
+        {
+          "concept_id": "forensics_track_measurement_gait",
+          "title": "Track measurement and gait analysis",
+          "description": "Measure stride length, track depth, straddle, and foot or paw size to infer height, speed, load, and number of individuals.",
+          "depth_tags": ["stride", "straddle", "track depth", "gait", "animal vs human"]
+        },
+        {
+          "concept_id": "forensics_shoe_tire_impression_comparison",
+          "title": "Shoe and tire impression comparison",
+          "description": "Compare class and wear or defect characteristics in shoe and tire impressions to include or exclude footwear or vehicles as evidence sources.",
+          "depth_tags": ["class characteristics", "wear marks", "tread pattern", "individualizing cuts", "tire track"]
+        },
+        {
+          "concept_id": "forensics_impression_casting_lifting",
+          "title": "Casting and lifting impression evidence",
+          "description": "Choose dental stone or plaster for 3D impressions and electrostatic or gelatin lifters for 2D dust impressions and document and preserve impressions.",
+          "depth_tags": ["dental stone", "plaster cast", "electrostatic lifting", "gelatin lifter", "impression preservation"]
+        }
+      ]
+    },
+    {
+      "topic_id": "forensics_lab_methods_data",
+      "title": "Forensic lab methods and data handling",
+      "display_order": 8,
+      "concepts": [
+        {
+          "concept_id": "forensics_lab_controls_standards",
+          "title": "Use of controls, blanks, and standards",
+          "description": "Include positive and negative controls, reagent blanks, and known standards in every test to validate results and detect contamination.",
+          "depth_tags": ["positive control", "negative control", "reagent blank", "standard", "validation"]
+        },
+        {
+          "concept_id": "forensics_measurement_precision_significant_figures",
+          "title": "Measurement precision and significant figures",
+          "description": "Record measurements with correct precision and significant figures and use balances, graduated cylinders, rulers, and micropipettes to match instrument uncertainty.",
+          "depth_tags": ["significant figures", "uncertainty", "precision", "meniscus", "micropipette"]
+        },
+        {
+          "concept_id": "forensics_microscopy_use",
+          "title": "Microscope setup and use in forensics",
+          "description": "Set up compound and stereomicroscopes, choose magnification, focus, adjust field and condenser, and record measurements from calibrated eyepiece or camera.",
+          "depth_tags": ["compound microscope", "stereomicroscope", "magnification", "calibration", "scale bar"]
+        },
+        {
+          "concept_id": "forensics_sample_preparation",
+          "title": "Sample preparation for forensic tests",
+          "description": "Prepare solid or liquid samples by cutting, scraping, dissolving, filtering, centrifuging, or diluting without altering evidence and preserve representative portions.",
+          "depth_tags": ["scraping", "dissolving", "filtration", "centrifugation", "preservation"]
+        },
+        {
+          "concept_id": "forensics_lab_safety_ppe",
+          "title": "Laboratory safety and personal protection",
+          "description": "Apply PPE, fume hood use, chemical hygiene, eye and skin wash, and safe handling and disposal of biological and chemical evidence in forensic labs.",
+          "depth_tags": ["gloves", "goggles", "fume hood", "biohazard", "disposal"]
+        },
+        {
+          "concept_id": "forensics_documentation_chain_of_custody",
+          "title": "Documentation and chain of custody",
+          "description": "Maintain labeled evidence seals, log transfer dates and signatures, and record observations with initials and dates to preserve admissibility and continuity.",
+          "depth_tags": ["chain of custody", "evidence seal", "labeling", "documentation", "admissibility"]
+        },
+        {
+          "concept_id": "forensics_data_recording_calculation",
+          "title": "Data recording and result calculations",
+          "description": "Organize qualitative observations and quantitative measurements into tables and calculate concentrations, dilutions, densities, and angle measurements with correct units.",
+          "depth_tags": ["data table", "unit conversion", "concentration", "dilution", "calculation"]
+        },
+        {
+          "concept_id": "forensics_instrument_calibration",
+          "title": "Instrument calibration and verification",
+          "description": "Calibrate balances, pH meters, thermocyclers, and micropipettes using known standards and verify calibration before and after evidence measurements.",
+          "depth_tags": ["calibration", "verification", "balance check", "pH meter calibration", "pipette accuracy"]
+        },
+        {
+          "concept_id": "forensics_avoiding_cross_contamination",
+          "title": "Avoiding cross-contamination",
+          "description": "Use sterile or disposable tools, change gloves between items, separate evidence samples, and clean surfaces to prevent evidence contamination and false associations.",
+          "depth_tags": ["cross-contamination", "sterile tools", "glove change", "evidence separation", "clean bench"]
+        },
+        {
+          "concept_id": "forensics_error_and_uncertainty",
+          "title": "Error sources and uncertainty in forensic measurements",
+          "description": "Identify random and systematic errors, estimate uncertainty, and evaluate false positives and negatives in qualitative and quantitative forensic tests.",
+          "depth_tags": ["random error", "systematic error", "uncertainty", "false positive", "false negative"]
+        }
+      ]
+    },
+    {
+      "topic_id": "forensics_crime_scene_reasoning",
+      "title": "Crime scene analysis and suspect reasoning",
+      "display_order": 9,
+      "concepts": [
+        {
+          "concept_id": "forensics_class_vs_individual_evidence",
+          "title": "Class vs individual evidence",
+          "description": "Distinguish class characteristics such as fiber type or blood group from individualizing characteristics such as fingerprint minutiae, DNA profiles, or bullet striations and assess probative value.",
+          "depth_tags": ["class evidence", "individual evidence", "probative value", "identification", "exclusion"]
+        },
+        {
+          "concept_id": "forensics_inculpatory_exculpatory",
+          "title": "Inculpatory vs exculpatory evidence",
+          "description": "Classify evidence as inculpatory, supporting involvement, or exculpatory, tending to exclude a suspect, and use both to test hypotheses.",
+          "depth_tags": ["inculpatory", "exculpatory", "hypothesis", "inclusion", "exclusion"]
+        },
+        {
+          "concept_id": "forensics_suspect_implication_elimination",
+          "title": "Suspect implication and elimination logic",
+          "description": "Write reasoning that compares suspect reference samples to evidence, stating matches, mismatches, and whether evidence implicates or eliminates each suspect.",
+          "depth_tags": ["match", "mismatch", "eliminate", "implicate", "reference sample"]
+        },
+        {
+          "concept_id": "forensics_integrating_multiple_evidence",
+          "title": "Integrating multiple evidence types",
+          "description": "Combine results from different evidence categories such as DNA, fiber, and fingerprints into a coherent scenario and evaluate corroboration and contradictions.",
+          "depth_tags": ["corroboration", "contradiction", "multiple lines", "scenario", "weight of evidence"]
+        },
+        {
+          "concept_id": "forensics_evidence_admissibility_chain_defects",
+          "title": "Evaluating evidence admissibility and chain of custody defects",
+          "description": "Assess whether breaks in chain of custody, mislabeling, or improper storage compromise evidence integrity and affect admissibility in suspect reasoning.",
+          "depth_tags": ["break in custody", "mislabeling", "admissibility", "evidence integrity", "court challenge"]
+        },
+        {
+          "concept_id": "forensics_reliability_limitations",
+          "title": "Reliability and limitations of forensic tests",
+          "description": "Assess sensitivity, specificity, false positive and negative rates, and interpretation limits for each forensic test before drawing suspect conclusions.",
+          "depth_tags": ["sensitivity", "specificity", "false positive", "false negative", "limitations"]
+        },
+        {
+          "concept_id": "forensics_scenario_reconstruction",
+          "title": "Scenario reconstruction and hypothesis testing",
+          "description": "Use evidence patterns such as spatter, glass, and tracks to reconstruct the sequence of events and test alternative hypotheses for consistency.",
+          "depth_tags": ["sequence of events", "alternative hypotheses", "consistency", "reconstruction", "crime scene"]
+        },
+        {
+          "concept_id": "forensics_written_conclusion_structure",
+          "title": "Writing forensic conclusion reasoning",
+          "description": "Construct clear evidence-based conclusions using claim-evidence-reasoning format with specific test results and logical justification for each suspect.",
+          "depth_tags": ["claim", "evidence", "reasoning", "conclusion", "written response"]
+        }
+      ]
+    }
+  ]
+}

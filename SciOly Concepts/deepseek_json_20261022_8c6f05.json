@@ -1,0 +1,593 @@
+{
+  "event_id": "botany",
+  "event_name": "Botany",
+  "domain": "Life, Personal & Social Science",
+  "official_scope": "plant life and general botany principles",
+  "season": 2027,
+  "division": "C",
+  "design_notes": "Expanded all eight locked topics into atomic concepts, varying from 9 to 12 per topic based on testable density. Microscopy and cross-section interpretation are anchored to cell and organ topics; physiology, genetics, ecology, and applied chapters each carry separate lab/calculation or diagnostic concepts where relevant. No topics were renamed or reordered.",
+  "topics": [
+    {
+      "topic_id": "botany_plant_cells_and_microscopy",
+      "title": "Plant cells and microscopy",
+      "display_order": 1,
+      "why_this_topic": "Students need a foundational chapter for cell organelles, unique plant structures, and microscopy skills before moving to tissues and organs.",
+      "scope_note": "Includes cell wall, membrane, plastids, vacuole, plasmodesmata, cytoskeleton, and light microscope interpretation; excludes whole-organ anatomy and metabolic pathways.",
+      "concepts": [
+        {
+          "concept_id": "botany_plant_cell_wall_structure",
+          "title": "Plant cell wall structure",
+          "description": "Identify layers and components of primary and secondary plant cell walls, including cellulose, hemicellulose, pectin, and lignin.",
+          "depth_tags": ["primary cell wall", "secondary cell wall", "middle lamella", "cellulose", "lignin", "pectin"]
+        },
+        {
+          "concept_id": "botany_cellulose_microfibril_orientation",
+          "title": "Cellulose microfibril orientation",
+          "description": "Explain how cortical microtubules direct cellulose synthase movement and microfibril deposition, and how orientation influences cell expansion.",
+          "depth_tags": ["cellulose synthase", "cortical microtubules", "microfibrils", "anisotropic growth", "cell expansion"]
+        },
+        {
+          "concept_id": "botany_plant_cell_membrane_structure",
+          "title": "Plant cell membrane structure",
+          "description": "Identify phospholipid bilayer components, embedded proteins, and selective permeability functions in plant cells.",
+          "depth_tags": ["phospholipid bilayer", "fluid mosaic model", "selective permeability", "membrane proteins", "aquaporins"]
+        },
+        {
+          "concept_id": "botany_plastid_types",
+          "title": "Plastid types and interconversion",
+          "description": "Distinguish chloroplasts, chromoplasts, amyloplasts, and proplastids by structure and function, and explain their developmental relationships.",
+          "depth_tags": ["chloroplast", "chromoplast", "amyloplast", "proplastid", "etioplast", "plastid interconversion"]
+        },
+        {
+          "concept_id": "botany_chloroplast_structure",
+          "title": "Chloroplast structure",
+          "description": "Identify thylakoid, granum, stroma, inner and outer membranes, and explain compartment roles in photosynthesis.",
+          "depth_tags": ["thylakoid", "granum", "stroma", "chloroplast envelope", "chlorophyll location"]
+        },
+        {
+          "concept_id": "botany_central_vacuole_turgor",
+          "title": "Central vacuole and turgor pressure",
+          "description": "Explain how the central vacuole maintains turgor pressure, stores solutes and pigments, and drives cell expansion.",
+          "depth_tags": ["central vacuole", "tonoplast", "turgor pressure", "osmotic potential", "anthocyanins"]
+        },
+        {
+          "concept_id": "botany_plasmodesmata_structure",
+          "title": "Plasmodesmata and symplastic transport",
+          "description": "Describe plasmodesmata structure and how they connect protoplasts to form the symplast, allowing cell-to-cell trafficking.",
+          "depth_tags": ["plasmodesmata", "symplast", "desmotubule", "cell-to-cell transport", "callose"]
+        },
+        {
+          "concept_id": "botany_plant_cytoskeleton",
+          "title": "Plant cytoskeleton",
+          "description": "Identify roles of microtubules and actin filaments in plant cell division, cell wall deposition, cytoplasmic streaming, and organelle movement.",
+          "depth_tags": ["microtubules", "actin filaments", "cytoplasmic streaming", "cell plate", "preprophase band"]
+        },
+        {
+          "concept_id": "botany_light_microscope_interpretation",
+          "title": "Light microscope interpretation",
+          "description": "Interpret plant cell and tissue images obtained by brightfield microscopy, including identifying organelles, cell types, and section planes.",
+          "depth_tags": ["brightfield", "magnification", "resolution", "staining", "cross section", "longitudinal section"]
+        },
+        {
+          "concept_id": "botany_microscope_measurement",
+          "title": "Microscope measurement and scale",
+          "description": "Calculate actual cell or tissue sizes from field-of-view diameter and micrometer scales, and convert between magnification levels.",
+          "depth_tags": ["field of view", "ocular micrometer", "stage micrometer", "calibration", "magnification", "scale bar"]
+        }
+      ]
+    },
+    {
+      "topic_id": "botany_plant_organs_and_development",
+      "title": "Plant organs and development",
+      "display_order": 2,
+      "why_this_topic": "Roots, stems, leaves, flowers, and spore-forming bodies are the structural vocabulary tested together with growth and differentiation, so they form one anatomy chapter.",
+      "scope_note": "Includes primary and secondary meristems, tissue systems, organ cross-sections, spore-forming bodies, growth and differentiation, and woody vs herbaceous habit; excludes cellular organelles and transport physiology.",
+      "concepts": [
+        {
+          "concept_id": "botany_primary_meristems",
+          "title": "Apical meristems and primary growth",
+          "description": "Identify apical meristem zones and explain how primary meristems produce dermal, ground, and vascular tissues.",
+          "depth_tags": ["apical meristem", "protoderm", "ground meristem", "procambium", "primary growth"]
+        },
+        {
+          "concept_id": "botany_secondary_meristems",
+          "title": "Vascular cambium and cork cambium",
+          "description": "Distinguish vascular cambium and cork cambium, and describe their roles in secondary growth in woody plants.",
+          "depth_tags": ["vascular cambium", "cork cambium", "secondary growth", "bark", "wood"]
+        },
+        {
+          "concept_id": "botany_tissue_systems",
+          "title": "Dermal, ground, and vascular tissue systems",
+          "description": "Identify the three tissue systems and their main cell types across plant organs.",
+          "depth_tags": ["epidermis", "ground tissue", "vascular tissue", "parenchyma", "collenchyma", "sclerenchyma"]
+        },
+        {
+          "concept_id": "botany_root_anatomy",
+          "title": "Root anatomy and cross sections",
+          "description": "Identify root regions, tissue layers, and monocot vs dicot root cross-sectional features such as endodermis, pericycle, and vascular arrangement.",
+          "depth_tags": ["root cap", "endodermis", "pericycle", "Casparian strip", "monocot root", "dicot root"]
+        },
+        {
+          "concept_id": "botany_stem_anatomy",
+          "title": "Stem anatomy and cross sections",
+          "description": "Identify stem cross-sectional features including vascular bundle arrangement in monocot and dicot stems, pith, cortex, and secondary xylem.",
+          "depth_tags": ["vascular bundles", "monocot stem", "dicot stem", "pith", "cortex", "secondary xylem"]
+        },
+        {
+          "concept_id": "botany_leaf_anatomy",
+          "title": "Leaf anatomy and cross sections",
+          "description": "Identify leaf layers and structures—epidermis, mesophyll, vascular bundles, stomata—and relate them to photosynthesis and gas exchange.",
+          "depth_tags": ["palisade mesophyll", "spongy mesophyll", "stomata", "bundle sheath", "cuticle"]
+        },
+        {
+          "concept_id": "botany_flower_structure",
+          "title": "Flower organ structure",
+          "description": "Identify sepals, petals, stamens, and carpels, and describe how their arrangement supports pollination and fertilization.",
+          "depth_tags": ["sepal", "petal", "stamen", "carpel", "receptacle", "floral whorls"]
+        },
+        {
+          "concept_id": "botany_spore_forming_bodies",
+          "title": "Spore-forming bodies",
+          "description": "Recognize sori, sporangia, cones, strobili, and capsules as spore-producing structures across plant groups.",
+          "depth_tags": ["sori", "sporangia", "strobilus", "cone", "capsule", "sporophyll"]
+        },
+        {
+          "concept_id": "botany_primary_growth_differentiation",
+          "title": "Primary growth and cell differentiation",
+          "description": "Explain how apical meristem cells differentiate into specialized cell types and elongate during primary growth.",
+          "depth_tags": ["differentiation", "elongation", "meristem", "cell fate", "tissue patterning"]
+        },
+        {
+          "concept_id": "botany_secondary_growth_wood",
+          "title": "Secondary growth and wood anatomy",
+          "description": "Explain how vascular cambium produces secondary xylem and phloem, leading to wood and bark formation.",
+          "depth_tags": ["secondary xylem", "growth rings", "heartwood", "sapwood", "bark", "ray"]
+        },
+        {
+          "concept_id": "botany_woody_vs_herbaceous",
+          "title": "Woody vs herbaceous habit",
+          "description": "Compare woody and herbaceous plant stems in terms of secondary growth, support, and life cycle.",
+          "depth_tags": ["woody", "herbaceous", "secondary growth", "perennial", "annual", "support"]
+        },
+        {
+          "concept_id": "botany_modified_organs",
+          "title": "Modified roots, stems, and leaves",
+          "description": "Identify modified organs such as tubers, rhizomes, tendrils, bulbs, and storage roots and explain their functions.",
+          "depth_tags": ["tuber", "rhizome", "tendril", "bulb", "storage root", "stolon"]
+        }
+      ]
+    },
+    {
+      "topic_id": "botany_transport_nutrition_and_gas_exchange",
+      "title": "Transport, nutrition, and gas exchange",
+      "display_order": 3,
+      "why_this_topic": "Water, gas, and mineral movement is a distinct physiology skill set often tested with diagrams and data.",
+      "scope_note": "Includes xylem and phloem, transpiration, translocation, water potential, stomatal gas exchange, mineral nutrition, and storage of gases and water; excludes photosynthesis biochemistry and pathology.",
+      "concepts": [
+        {
+          "concept_id": "botany_water_potential",
+          "title": "Water potential components",
+          "description": "Calculate water potential from solute and pressure potentials and predict direction of water movement between compartments.",
+          "depth_tags": ["water potential", "solute potential", "pressure potential", "Ψ = Ψs + Ψp", "osmosis"]
+        },
+        {
+          "concept_id": "botany_cohesion_tension_theory",
+          "title": "Cohesion-tension theory of transpiration",
+          "description": "Explain how transpiration generates tension and pulls water upward through xylem via cohesion and adhesion.",
+          "depth_tags": ["transpiration pull", "cohesion", "adhesion", "xylem tension", "water column"]
+        },
+        {
+          "concept_id": "botany_stomatal_regulation",
+          "title": "Stomatal regulation of gas exchange",
+          "description": "Explain how guard cells regulate stomatal aperture via turgor, ion fluxes, and environmental signals to balance CO2 uptake and water loss.",
+          "depth_tags": ["guard cells", "turgor", "ABA", "K+ flux", "stomatal conductance"]
+        },
+        {
+          "concept_id": "botany_xylem_structure_function",
+          "title": "Xylem structure and water transport",
+          "description": "Relate xylem vessel and tracheid structure to water movement, cavitation, and embolism repair.",
+          "depth_tags": ["vessel elements", "tracheids", "pits", "cavitation", "embolism", "xylem sap"]
+        },
+        {
+          "concept_id": "botany_phloem_translocation",
+          "title": "Phloem translocation and pressure-flow",
+          "description": "Apply the pressure-flow hypothesis to explain source-to-sink movement of sugars through sieve tubes and companion cells.",
+          "depth_tags": ["pressure-flow hypothesis", "source", "sink", "sieve tube", "companion cells", "phloem loading"]
+        },
+        {
+          "concept_id": "botany_mineral_nutrition",
+          "title": "Essential mineral nutrients and deficiency symptoms",
+          "description": "Identify essential macro- and micronutrients and diagnose common deficiency symptoms based on mobility and plant growth responses.",
+          "depth_tags": ["macronutrients", "micronutrients", "N deficiency", "chlorosis", "nutrient mobility", "fertilizer"]
+        },
+        {
+          "concept_id": "botany_nitrogen_uptake",
+          "title": "Nitrogen uptake and assimilation",
+          "description": "Describe how plants take up nitrate and ammonium and assimilate them into amino acids, and contrast with biological nitrogen fixation.",
+          "depth_tags": ["nitrate", "ammonium", "nitrogen assimilation", "nitrate reductase", "symbiotic fixation"]
+        },
+        {
+          "concept_id": "botany_storage_water_gas",
+          "title": "Storage of water and gases in plants",
+          "description": "Identify adaptations for water storage (succulence, tubers) and gas storage/transport (aerenchyma, pneumatophores) in plants.",
+          "depth_tags": ["succulence", "aerenchyma", "pneumatophore", "water storage", "gas exchange", "lenticel"]
+        },
+        {
+          "concept_id": "botany_root_pressure_guttation",
+          "title": "Root pressure and guttation",
+          "description": "Explain root pressure generation and conditions that produce guttation, and contrast with transpiration-driven water movement.",
+          "depth_tags": ["root pressure", "guttation", "exudation", "hydathodes", "osmotic root pressure"]
+        }
+      ]
+    },
+    {
+      "topic_id": "botany_photosynthesis_and_plant_biochemistry",
+      "title": "Photosynthesis and plant biochemistry",
+      "display_order": 4,
+      "why_this_topic": "Photosynthesis and general plant biochemistry are core chemical processes assessed separately from structural anatomy.",
+      "scope_note": "Includes light reactions, Calvin cycle, C3/C4/CAM pathways, pigments, respiration, primary metabolites, and secondary metabolites; excludes cell anatomy and transport.",
+      "concepts": [
+        {
+          "concept_id": "botany_photosynthetic_pigments",
+          "title": "Photosynthetic pigments and absorption spectra",
+          "description": "Identify chlorophyll a, chlorophyll b, carotenoids, and phycobilins and interpret absorption and action spectra.",
+          "depth_tags": ["chlorophyll a", "chlorophyll b", "carotenoids", "absorption spectrum", "action spectrum", "accessory pigments"]
+        },
+        {
+          "concept_id": "botany_light_reactions",
+          "title": "Light reactions and electron transport",
+          "description": "Describe how photosystem II and I drive electron transport, split water, and produce NADPH and ATP during linear electron flow.",
+          "depth_tags": ["photosystem II", "photosystem I", "electron transport chain", "water splitting", "Z scheme", "NADPH"]
+        },
+        {
+          "concept_id": "botany_photophosphorylation",
+          "title": "Photophosphorylation",
+          "description": "Explain how the thylakoid proton gradient powers ATP synthase to produce ATP in chloroplasts.",
+          "depth_tags": ["chemiosmosis", "ATP synthase", "thylakoid lumen", "proton gradient", "cyclic electron flow"]
+        },
+        {
+          "concept_id": "botany_calvin_cycle",
+          "title": "Calvin cycle carbon fixation",
+          "description": "Outline the three phases of the Calvin cycle—carboxylation, reduction, regeneration—and identify inputs, outputs, and key enzymes.",
+          "depth_tags": ["Rubisco", "3-PGA", "G3P", "RuBP regeneration", "carbon fixation", "Calvin cycle"]
+        },
+        {
+          "concept_id": "botany_rubisco_photorespiration",
+          "title": "Rubisco and photorespiration",
+          "description": "Explain Rubisco oxygenase activity, photorespiration, and its costs in C3 plants under high temperature and low CO2.",
+          "depth_tags": ["Rubisco oxygenase", "photorespiration", "glycolate pathway", "C3 limitation", "CO2/O2 ratio"]
+        },
+        {
+          "concept_id": "botany_c4_pathway",
+          "title": "C4 carbon fixation pathway",
+          "description": "Compare C4 pathway spatial separation of carbon fixation in mesophyll and bundle sheath cells and its advantage under heat and drought.",
+          "depth_tags": ["PEP carboxylase", "oxaloacetate", "malate", "bundle sheath", "Kranz anatomy", "C4 advantage"]
+        },
+        {
+          "concept_id": "botany_cam_photosynthesis",
+          "title": "CAM photosynthesis",
+          "description": "Explain how CAM plants temporally separate CO2 fixation and Calvin cycle using nocturnal acid accumulation and daytime decarboxylation.",
+          "depth_tags": ["CAM", "nocturnal stomatal opening", "malic acid", "temporal separation", "succulent photosynthesis"]
+        },
+        {
+          "concept_id": "botany_plant_respiration",
+          "title": "Plant cellular respiration",
+          "description": "Describe glycolysis, citric acid cycle, and oxidative phosphorylation in plant mitochondria and how respiration supplies ATP and carbon skeletons.",
+          "depth_tags": ["glycolysis", "citric acid cycle", "oxidative phosphorylation", "mitochondria", "ATP yield", "respiration"]
+        },
+        {
+          "concept_id": "botany_primary_metabolites",
+          "title": "Primary plant metabolites",
+          "description": "Identify major primary metabolites—carbohydrates, proteins, lipids, nucleic acids—and their roles in plant structure and metabolism.",
+          "depth_tags": ["starch", "cellulose", "proteins", "triacylglycerols", "nucleic acids", "metabolites"]
+        },
+        {
+          "concept_id": "botany_secondary_metabolites",
+          "title": "Secondary plant metabolites",
+          "description": "Classify major secondary metabolites (alkaloids, terpenoids, phenolics) and describe their ecological and pharmacological functions.",
+          "depth_tags": ["alkaloids", "terpenoids", "phenolics", "flavonoids", "defense", "pharmaceuticals"]
+        },
+        {
+          "concept_id": "botany_pigment_chromatography",
+          "title": "Plant pigment chromatography",
+          "description": "Separate and identify plant pigments by paper or thin-layer chromatography and calculate Rf values.",
+          "depth_tags": ["paper chromatography", "TLC", "Rf value", "chlorophyll separation", "carotene", "xanthophyll"]
+        }
+      ]
+    },
+    {
+      "topic_id": "botany_reproduction_and_plant_genetics",
+      "title": "Reproduction and plant genetics",
+      "display_order": 5,
+      "why_this_topic": "Reproduction and genetics require a dedicated chapter because they combine life cycles, Mendelian principles, and modern biotechnology.",
+      "scope_note": "Includes alternation of generations, flower, fruit, seed, and spore reproduction, basic plant genetics, polyploidy, and GMOs; excludes taxonomic classification and ecology.",
+      "concepts": [
+        {
+          "concept_id": "botany_alternation_of_generations",
+          "title": "Alternation of generations",
+          "description": "Describe the alternation between multicellular gametophyte and sporophyte generations and identify ploidy transitions.",
+          "depth_tags": ["gametophyte", "sporophyte", "haploid", "diploid", "mitosis", "fertilization"]
+        },
+        {
+          "concept_id": "botany_gametophyte_sporophyte_dominance",
+          "title": "Gametophyte vs sporophyte dominance",
+          "description": "Compare life cycles of bryophytes, ferns, gymnosperms, and angiosperms in terms of dominant generation and gametophyte independence.",
+          "depth_tags": ["dominant generation", "bryophyte gametophyte", "fern prothallus", "pollen grain", "embryo sac"]
+        },
+        {
+          "concept_id": "botany_angiosperm_sexual_reproduction",
+          "title": "Angiosperm sexual reproduction",
+          "description": "Trace male and female gametophyte development in flowers, from microsporogenesis and megasporogenesis to mature pollen and embryo sac.",
+          "depth_tags": ["microsporogenesis", "megasporogenesis", "pollen", "embryo sac", "anther", "ovule"]
+        },
+        {
+          "concept_id": "botany_pollination_fertilization",
+          "title": "Pollination and double fertilization",
+          "description": "Distinguish pollination mechanisms and explain double fertilization leading to zygote and endosperm formation in angiosperms.",
+          "depth_tags": ["pollination", "double fertilization", "endosperm", "zygote", "pollen tube", "synergid"]
+        },
+        {
+          "concept_id": "botany_seed_structure_germination",
+          "title": "Seed structure and germination",
+          "description": "Identify seed coat, embryo, cotyledons, and endosperm, and explain germination requirements including water, oxygen, and temperature.",
+          "depth_tags": ["seed coat", "embryo", "cotyledons", "endosperm", "germination", "dormancy"]
+        },
+        {
+          "concept_id": "botany_fruit_types_dispersal",
+          "title": "Fruit types and seed dispersal",
+          "description": "Classify simple, aggregate, and multiple fruits and relate fruit structure to seed dispersal mechanisms.",
+          "depth_tags": ["simple fruit", "aggregate fruit", "multiple fruit", "dehiscent", "indehiscent", "dispersal"]
+        },
+        {
+          "concept_id": "botany_asexual_reproduction",
+          "title": "Asexual reproduction and vegetative propagation",
+          "description": "Describe natural and artificial vegetative propagation methods including runners, cuttings, grafting, and tissue culture.",
+          "depth_tags": ["vegetative propagation", "runners", "cuttings", "grafting", "tissue culture", "apomixis"]
+        },
+        {
+          "concept_id": "botany_spore_reproduction_non_seed",
+          "title": "Spore reproduction in non-seed plants",
+          "description": "Outline spore production and dispersal in mosses and ferns, including gametophyte development from spores.",
+          "depth_tags": ["spores", "sporangium", "archegonium", "antheridium", "protonema", "fern sorus"]
+        },
+        {
+          "concept_id": "botany_mendelian_genetics_plants",
+          "title": "Mendelian genetics in plants",
+          "description": "Apply Punnett squares, dominance, segregation, and independent assortment to plant crosses and predict phenotypic ratios.",
+          "depth_tags": ["Mendel", "Punnett square", "monohybrid", "dihybrid", "dominance", "segregation"]
+        },
+        {
+          "concept_id": "botany_polyploidy",
+          "title": "Polyploidy in plants",
+          "description": "Explain how polyploidy arises and how it influences plant fertility, gene expression, and crop improvement.",
+          "depth_tags": ["polyploidy", "autopolyploid", "allopolyploid", "genome duplication", "sterility", "crop improvement"]
+        },
+        {
+          "concept_id": "botany_plant_biotechnology_gmo",
+          "title": "Plant biotechnology and GMOs",
+          "description": "Describe genetic modification techniques used in plants, including Agrobacterium-mediated transformation and CRISPR, and evaluate GMO applications.",
+          "depth_tags": ["Agrobacterium", "transgenic", "CRISPR", "Bt crops", "herbicide resistance", "GMO"]
+        }
+      ]
+    },
+    {
+      "topic_id": "botany_plant_diversity_evolution_and_history",
+      "title": "Plant diversity, evolution, and history",
+      "display_order": 6,
+      "why_this_topic": "The rules require major taxonomic groups, evolutionary history, and distinguishing group comparisons, which form a cohesive biodiversity chapter.",
+      "scope_note": "Includes algae vs multicellular plants, embryophytes vs cryptogams, monocot vs dicot, major taxonomic groups, paleobotany, plant evolution, history of botany, and importance of plant diversity; excludes ecological interactions and human uses.",
+      "concepts": [
+        {
+          "concept_id": "botany_algae_vs_multicellular_plants",
+          "title": "Algae vs multicellular plants",
+          "description": "Distinguish algae from multicellular embryophytes based on structure, reproduction, alternation of generations, and adaptations to land.",
+          "depth_tags": ["algae", "embryophytes", "multicellular", "alternation of generations", "land adaptations"]
+        },
+        {
+          "concept_id": "botany_embryophytes_vs_cryptogams",
+          "title": "Embryophytes vs cryptogams",
+          "description": "Contrast embryophytes (land plants with embryos) with cryptogams (seedless plants) and identify which groups belong to each.",
+          "depth_tags": ["embryophyte", "cryptogam", "bryophyte", "fern", "seedless", "embryo protection"]
+        },
+        {
+          "concept_id": "botany_bryophytes",
+          "title": "Bryophyte characteristics and life cycle",
+          "description": "Identify mosses, liverworts, and hornworts by structure and describe their dominant gametophyte life cycle.",
+          "depth_tags": ["Bryophyta", "liverwort", "hornwort", "rhizoids", "gametophyte dominant", "sporophyte dependent"]
+        },
+        {
+          "concept_id": "botany_seedless_vascular_plants",
+          "title": "Seedless vascular plants",
+          "description": "Identify ferns, club mosses, horsetails, and whisk ferns and describe vascular tissue and spore-based reproduction.",
+          "depth_tags": ["Pteridophytes", "Lycophytes", "ferns", "horsetails", "xylem", "phloem", "spores"]
+        },
+        {
+          "concept_id": "botany_gymnosperms",
+          "title": "Gymnosperms and seed evolution",
+          "description": "Identify conifers, cycads, ginkgo, and gnetophytes and explain pollen and naked-seed adaptations.",
+          "depth_tags": ["conifers", "cycads", "Ginkgo", "Gnetales", "pollen", "naked seeds", "ovule"]
+        },
+        {
+          "concept_id": "botany_angiosperms_flower_fruit_evolution",
+          "title": "Angiosperm evolution and flower/fruit innovation",
+          "description": "Explain how flowers and fruits distinguish angiosperms and contributed to their diversification and coevolution with pollinators and dispersers.",
+          "depth_tags": ["flowers", "fruits", "double fertilization", "pollinator coevolution", "angiosperm diversification"]
+        },
+        {
+          "concept_id": "botany_monocot_vs_dicot",
+          "title": "Monocot vs dicot comparison",
+          "description": "Compare monocot and dicot (eudicot) embryos, leaf venation, vascular bundle arrangement, root structure, floral parts, and pollen apertures.",
+          "depth_tags": ["cotyledons", "parallel venation", "netted venation", "vascular bundles", "flower parts", "pollen apertures"]
+        },
+        {
+          "concept_id": "botany_plant_evolutionary_history",
+          "title": "Plant evolutionary history and paleobotany",
+          "description": "Outline major events in plant evolution from green algae to land plants to angiosperms using fossil evidence and phylogeny.",
+          "depth_tags": ["green algae", "land colonization", "tracheophytes", "seed plants", "angiosperms", "fossils"]
+        },
+        {
+          "concept_id": "botany_paleobotany_methods",
+          "title": "Paleobotany and fossil interpretation",
+          "description": "Identify plant fossil types (compressions, impressions, permineralizations, casts) and infer ancient environments from fossil assemblages.",
+          "depth_tags": ["compression fossils", "permineralization", "cast", "impression", "coal deposits", "paleoclimate"]
+        },
+        {
+          "concept_id": "botany_history_of_botany",
+          "title": "History of botany and key figures",
+          "description": "Identify contributions of major botanists such as Theophrastus, Linnaeus, Mendel, Hooke, Darwin, and modern plant scientists.",
+          "depth_tags": ["Theophrastus", "Linnaeus", "Mendel", "Hooke", "Darwin", "botanical nomenclature"]
+        },
+        {
+          "concept_id": "botany_plant_taxonomy_groups",
+          "title": "Major plant taxonomic groups and classification",
+          "description": "Place major plant groups within a modern phylogenetic classification and use botanical names to identify family, genus, and species relationships.",
+          "depth_tags": ["taxonomy", "phylogeny", "family", "genus", "species", "binomial nomenclature"]
+        }
+      ]
+    },
+    {
+      "topic_id": "botany_plant_ecology_and_global_cycles",
+      "title": "Plant ecology and global cycles",
+      "display_order": 7,
+      "why_this_topic": "Plants in cycles and communities is an ecology chapter that links plant physiology to ecosystem function.",
+      "scope_note": "Includes plants in global energy and nutrient cycles, carbon, nitrogen, and water cycling, competition in plant communities, succession, and symbiosis; excludes agriculture, economic uses, and disease.",
+      "concepts": [
+        {
+          "concept_id": "botany_global_carbon_cycle_plants",
+          "title": "Plants in the global carbon cycle",
+          "description": "Explain how photosynthesis fixes carbon and respiration/decomposition release it, and how plant biomass acts as a carbon sink.",
+          "depth_tags": ["photosynthesis", "carbon fixation", "respiration", "decomposition", "carbon sink", "biomass"]
+        },
+        {
+          "concept_id": "botany_global_nitrogen_cycle_plants",
+          "title": "Plants in the nitrogen cycle",
+          "description": "Trace nitrogen transformations (fixation, nitrification, uptake, decomposition) and identify plant roles and nitrogen limitations.",
+          "depth_tags": ["nitrogen fixation", "nitrification", "denitrification", "ammonification", "plant uptake", "limiting nutrient"]
+        },
+        {
+          "concept_id": "botany_global_water_cycle_plants",
+          "title": "Plants in the water cycle",
+          "description": "Explain how transpiration and canopy interception influence precipitation, runoff, and soil moisture in the hydrologic cycle.",
+          "depth_tags": ["transpiration", "evapotranspiration", "interception", "runoff", "soil moisture", "hydrologic cycle"]
+        },
+        {
+          "concept_id": "botany_primary_productivity_energy_flow",
+          "title": "Primary productivity and energy flow",
+          "description": "Measure gross and net primary productivity and explain plant role as primary producers in ecosystem energy flow.",
+          "depth_tags": ["GPP", "NPP", "primary producers", "biomass production", "trophic level", "energy flow"]
+        },
+        {
+          "concept_id": "botany_plant_competition",
+          "title": "Plant competition and community structure",
+          "description": "Explain competition for light, water, nutrients, and space and how it shapes plant community composition and zonation.",
+          "depth_tags": ["interspecific competition", "intraspecific competition", "resource partitioning", "niche", "canopy", "succession"]
+        },
+        {
+          "concept_id": "botany_ecological_succession",
+          "title": "Ecological succession and plant roles",
+          "description": "Distinguish primary and secondary succession and identify pioneer and climax plant communities through seral stages.",
+          "depth_tags": ["primary succession", "secondary succession", "pioneer species", "climax community", "seral stage", "facilitation"]
+        },
+        {
+          "concept_id": "botany_mycorrhizae_symbiosis",
+          "title": "Mycorrhizal symbiosis",
+          "description": "Distinguish arbuscular and ectomycorrhizae and explain how mycorrhizal fungi enhance plant water and nutrient uptake.",
+          "depth_tags": ["arbuscular mycorrhizae", "ectomycorrhizae", "symbiosis", "hyphae", "phosphorus uptake", "fungal network"]
+        },
+        {
+          "concept_id": "botany_nitrogen_fixing_symbiosis",
+          "title": "Nitrogen-fixing plant symbiosis",
+          "description": "Explain how legumes and actinorhizal plants form nodules with nitrogen-fixing bacteria and how symbiosis supplies nitrogen to ecosystems.",
+          "depth_tags": ["Rhizobium", "legume", "nodule", "actinorhizal", "nitrogenase", "symbiotic nitrogen fixation"]
+        },
+        {
+          "concept_id": "botany_biomes_plant_adaptations",
+          "title": "Biomes and plant adaptations",
+          "description": "Relate major terrestrial biomes to characteristic plant growth forms and adaptations to climate, fire, and soils.",
+          "depth_tags": ["biome", "tundra", "taiga", "temperate forest", "grassland", "desert", "tropical rainforest"]
+        },
+        {
+          "concept_id": "botany_plants_ecosystem_engineers",
+          "title": "Plants as ecosystem engineers",
+          "description": "Explain how plants modify their environment through shade, litter, soil stabilization, and hydrology, influencing other organisms.",
+          "depth_tags": ["ecosystem engineer", "shade", "litter", "soil stabilization", "microclimate", "habitat creation"]
+        }
+      ]
+    },
+    {
+      "topic_id": "botany_applied_plant_science_and_human_use",
+      "title": "Applied plant science and human use",
+      "display_order": 8,
+      "why_this_topic": "The rules' applied plant science bullet points—food, medicine, agriculture, disease, and environmental management—are best merged into one human-use chapter to avoid many one-bullet topics.",
+      "scope_note": "Includes plant products, foodstuffs, horticulture, aquaculture, plants in medicine and environmental management, use of plant materials by animals and humans, and plant diseases including nutrient deficiencies and infections; excludes wild ecology, taxonomy, and basic genetics.",
+      "concepts": [
+        {
+          "concept_id": "botany_food_crops",
+          "title": "Major food crops and plant foodstuffs",
+          "description": "Identify major cereal, legume, root, fruit, and oil crops and the plant parts used for human food.",
+          "depth_tags": ["cereals", "legumes", "root crops", "fruits", "vegetable oils", "staple crops"]
+        },
+        {
+          "concept_id": "botany_plant_medicines",
+          "title": "Plants in medicine",
+          "description": "Identify medicinal plants and their active secondary metabolites, and distinguish traditional, herbal, and pharmaceutical uses.",
+          "depth_tags": ["medicinal plants", "alkaloids", "pharmaceuticals", "herbal medicine", "drug discovery", "taxol"]
+        },
+        {
+          "concept_id": "botany_horticulture_crop_management",
+          "title": "Horticultural practices and crop management",
+          "description": "Apply horticultural practices including pruning, training, irrigation, fertilization, and greenhouse management to optimize crop growth.",
+          "depth_tags": ["horticulture", "pruning", "training", "greenhouse", "irrigation", "fertilization"]
+        },
+        {
+          "concept_id": "botany_aquaculture_aquatic_plants",
+          "title": "Aquaculture and aquatic plants",
+          "description": "Identify cultivated aquatic plants and explain their roles in aquaculture systems for food, water quality, and habitat.",
+          "depth_tags": ["aquaculture", "rice", "water spinach", "aquatic plants", "nutrient uptake", "water quality"]
+        },
+        {
+          "concept_id": "botany_phytoremediation",
+          "title": "Plants in environmental management",
+          "description": "Explain how plants are used for phytoremediation, erosion control, carbon sequestration, and restoration of degraded ecosystems.",
+          "depth_tags": ["phytoremediation", "hyperaccumulators", "erosion control", "restoration", "biochar", "carbon sequestration"]
+        },
+        {
+          "concept_id": "botany_plant_diseases_pathogens",
+          "title": "Plant diseases and pathogens",
+          "description": "Diagnose fungal, bacterial, viral, and oomycete plant diseases by symptoms, signs, and causal agents.",
+          "depth_tags": ["fungal pathogen", "bacterial pathogen", "viral pathogen", "oomycete", "symptom", "sign"]
+        },
+        {
+          "concept_id": "botany_nutrient_deficiency_diagnosis",
+          "title": "Plant nutrient deficiency diagnosis",
+          "description": "Diagnose nutrient deficiencies from leaf chlorosis, necrosis, and growth patterns, and recommend corrective fertilization.",
+          "depth_tags": ["nitrogen deficiency", "iron chlorosis", "potassium deficiency", "magnesium", "calcium", "mobile vs immobile nutrients"]
+        },
+        {
+          "concept_id": "botany_economic_plant_products",
+          "title": "Economic plant products and materials",
+          "description": "Identify plant sources of fibers, wood, oils, resins, rubber, dyes, and beverages and their processing.",
+          "depth_tags": ["cotton", "wood products", "linseed oil", "rubber", "resin", "dyes", "beverages"]
+        },
+        {
+          "concept_id": "botany_plants_in_animal_use",
+          "title": "Use of plant materials by animals and humans",
+          "description": "Describe how animals and humans use plants for shelter, tools, forage, bedding, and cultural purposes beyond food and medicine.",
+          "depth_tags": ["forage", "bedding", "shelter", "tools", "cultural uses", "animal fodder"]
+        },
+        {
+          "concept_id": "botany_plant_disease_management",
+          "title": "Plant disease management and control",
+          "description": "Apply integrated pest management and cultural, biological, chemical, and resistant-variety strategies to manage plant diseases.",
+          "depth_tags": ["integrated pest management", "fungicide", "biological control", "crop rotation", "resistant cultivars", "sanitation"]
+        },
+        {
+          "concept_id": "botany_invasive_plants_agriculture",
+          "title": "Invasive plants and agricultural weeds",
+          "description": "Identify invasive plant and weed species and explain their impacts on agriculture, native ecosystems, and management strategies.",
+          "depth_tags": ["invasive species", "weeds", "herbicide resistance", "crop competition", "biological control", "noxious weed"]
+        }
+      ]
+    }
+  ]
+}

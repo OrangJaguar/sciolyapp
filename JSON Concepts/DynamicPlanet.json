@@ -1,0 +1,607 @@
+{
+  "event_id": "dynamic_planet",
+  "event_name": "Dynamic Planet",
+  "domain": "Earth and Space Science",
+  "official_scope": "properties and processes of Earth's fresh waters",
+  "season": 2027,
+  "division": "C",
+  "design_notes": "Concept densities range from 9 to 13 per topic, reflecting real differences in the breadth of tested skills. Topics 4, 5, and 8 are denser because they carry quantitative streamflow, groundwater, and applied monitoring demands. Topic 7 is intentionally narrower at 9 concepts because paleohydrologic evidence types are more consolidated. No topic is a stub; no concepts are duplicated across topics.",
+  "topics": [
+    {
+      "topic_id": "dynamic_planet_hydrologic_cycle_and_climate_controls",
+      "title": "Hydrologic cycle, water budgets, and climatic controls",
+      "display_order": 1,
+      "concepts": [
+        {
+          "concept_id": "dynamic_planet_reservoirs_and_distribution",
+          "title": "Freshwater reservoirs and global distribution",
+          "description": "Distinguish the major freshwater reservoirs by volume and percent of total freshwater, including glaciers, groundwater, lakes, soil moisture, atmosphere, and rivers.",
+          "depth_tags": ["glaciers", "groundwater", "surface water", "reservoir volume", "percent freshwater"]
+        },
+        {
+          "concept_id": "dynamic_planet_hydrologic_flux_definitions",
+          "title": "Hydrologic flux definitions",
+          "description": "Define precipitation, evaporation, transpiration, evapotranspiration, infiltration, percolation, runoff, and baseflow as distinct water-cycle fluxes.",
+          "depth_tags": ["precipitation", "evapotranspiration", "infiltration", "percolation", "runoff", "baseflow"]
+        },
+        {
+          "concept_id": "dynamic_planet_residence_time_calculation",
+          "title": "Residence time calculation",
+          "description": "Calculate mean residence time by dividing reservoir volume by the average flux rate and interpret turnover times for different freshwater stores.",
+          "depth_tags": ["residence time = V/F", "turnover time", "reservoir volume", "flux rate"]
+        },
+        {
+          "concept_id": "dynamic_planet_water_budget_equation",
+          "title": "Basin water budget equation",
+          "description": "Apply the water balance equation P = R + ET + ΔS to a drainage basin and solve for an unknown term using given data.",
+          "depth_tags": ["P = R + ET + ΔS", "water balance", "storage change", "precipitation", "runoff"]
+        },
+        {
+          "concept_id": "dynamic_planet_precipitation_mechanisms",
+          "title": "Precipitation mechanisms",
+          "description": "Distinguish orographic, frontal, cyclonic, and convectional precipitation and predict where each occurs relative to topography and air masses.",
+          "depth_tags": ["orographic lift", "rain shadow", "convectional precipitation", "frontal lifting"]
+        },
+        {
+          "concept_id": "dynamic_planet_potential_vs_actual_et",
+          "title": "Potential vs actual evapotranspiration",
+          "description": "Distinguish potential evapotranspiration from actual evapotranspiration and identify water-limited versus energy-limited conditions from climate data.",
+          "depth_tags": ["PET", "AET", "water-limited", "energy-limited", "soil moisture availability"]
+        },
+        {
+          "concept_id": "dynamic_planet_infiltration_controls",
+          "title": "Infiltration controls and capacity",
+          "description": "Explain how soil texture, antecedent moisture, slope, and vegetation control infiltration capacity and generate Hortonian overland flow.",
+          "depth_tags": ["infiltration capacity", "Hortonian overland flow", "soil texture", "antecedent moisture"]
+        },
+        {
+          "concept_id": "dynamic_planet_soil_water_availability",
+          "title": "Soil water storage and plant availability",
+          "description": "Relate field capacity, wilting point, and available water capacity to soil texture and interpret water availability for plants.",
+          "depth_tags": ["field capacity", "wilting point", "available water", "matric potential", "soil texture"]
+        },
+        {
+          "concept_id": "dynamic_planet_runoff_generation_pathways",
+          "title": "Runoff generation pathways",
+          "description": "Distinguish overland flow, throughflow, and groundwater flow as runoff generation pathways and identify conditions favoring each.",
+          "depth_tags": ["Hortonian overland flow", "saturation overland flow", "interflow", "baseflow", "throughflow"]
+        },
+        {
+          "concept_id": "dynamic_planet_snowpack_storage_ablation",
+          "title": "Snowpack accumulation, storage, and ablation",
+          "description": "Describe seasonal snowpack accumulation, ablation, and snow water equivalent as freshwater storage that controls spring melt runoff.",
+          "depth_tags": ["snow water equivalent", "ablation", "accumulation", "spring melt", "snowmelt runoff"]
+        },
+        {
+          "concept_id": "dynamic_planet_climate_controls_freshwater_distribution",
+          "title": "Climatic controls on freshwater distribution",
+          "description": "Relate Hadley circulation, ITCZ position, monsoons, and rain shadows to global patterns of precipitation, aridity, and freshwater availability.",
+          "depth_tags": ["Hadley cell", "ITCZ", "monsoon", "rain shadow", "aridity"]
+        }
+      ]
+    },
+    {
+      "topic_id": "dynamic_planet_drainage_basins_and_stream_networks",
+      "title": "Drainage basins and stream networks",
+      "display_order": 2,
+      "concepts": [
+        {
+          "concept_id": "dynamic_planet_watershed_divides",
+          "title": "Watershed and drainage divide identification",
+          "description": "Identify watershed, drainage basin, and catchment boundaries from topographic maps using drainage divides and contour lines.",
+          "depth_tags": ["watershed", "catchment", "drainage divide", "topographic map", "contour line"]
+        },
+        {
+          "concept_id": "dynamic_planet_drainage_patterns",
+          "title": "Drainage patterns and geologic controls",
+          "description": "Identify dendritic, trellis, rectangular, radial, parallel, annular, and deranged drainage patterns from maps and infer underlying geology or structure.",
+          "depth_tags": ["dendritic", "trellis", "radial", "rectangular", "annular", "deranged"]
+        },
+        {
+          "concept_id": "dynamic_planet_strahler_order",
+          "title": "Strahler stream ordering",
+          "description": "Assign Strahler stream order at confluences using the same-order joining rule and interpret basin magnitude.",
+          "depth_tags": ["Strahler order", "confluence", "same-order joining", "basin magnitude"]
+        },
+        {
+          "concept_id": "dynamic_planet_shreve_order",
+          "title": "Shreve stream ordering",
+          "description": "Assign Shreve magnitude as the sum of upstream links at each confluence and contrast Shreve magnitude with Strahler order.",
+          "depth_tags": ["Shreve magnitude", "link magnitude", "Strahler comparison", "network magnitude"]
+        },
+        {
+          "concept_id": "dynamic_planet_drainage_density",
+          "title": "Drainage density calculation",
+          "description": "Calculate drainage density as total stream length divided by basin area and interpret climatic, lithologic, and vegetation controls.",
+          "depth_tags": ["Dd = L/A", "drainage density", "badlands", "humid vs arid", "stream length"]
+        },
+        {
+          "concept_id": "dynamic_planet_bifurcation_ratio",
+          "title": "Bifurcation ratio",
+          "description": "Calculate bifurcation ratio from stream order counts and interpret typical values and network branching characteristics.",
+          "depth_tags": ["Rb = Nu/N(u+1)", "stream order count", "branching", "Horton analysis"]
+        },
+        {
+          "concept_id": "dynamic_planet_basin_morphometry",
+          "title": "Basin relief, elongation, and ruggedness",
+          "description": "Compute basin relief, relief ratio, elongation ratio, and ruggedness number and relate them to flood response and basin shape.",
+          "depth_tags": ["basin relief", "relief ratio", "elongation ratio", "ruggedness number", "flood response"]
+        },
+        {
+          "concept_id": "dynamic_planet_headward_erosion_stream_capture",
+          "title": "Headward erosion and stream capture",
+          "description": "Recognize stream piracy, wind gaps, and elbows of capture and explain how headward erosion reorganizes drainage networks.",
+          "depth_tags": ["stream piracy", "wind gap", "elbow of capture", "headward erosion", "drainage reorganization"]
+        },
+        {
+          "concept_id": "dynamic_planet_base_level_knickpoints",
+          "title": "Base level and knickpoints",
+          "description": "Define ultimate and local base level and predict channel profile adjustments to base-level fall or rise, including knickpoint migration.",
+          "depth_tags": ["ultimate base level", "local base level", "knickpoint", "profile adjustment"]
+        },
+        {
+          "concept_id": "dynamic_planet_flow_permanence",
+          "title": "Perennial, intermittent, and ephemeral streams",
+          "description": "Classify streams by flow permanence and link perennial, intermittent, and ephemeral reaches to water-table position and climate.",
+          "depth_tags": ["perennial", "intermittent", "ephemeral", "water table", "flow permanence"]
+        },
+        {
+          "concept_id": "dynamic_planet_longitudinal_profile_graded_stream",
+          "title": "Longitudinal profile and graded stream concept",
+          "description": "Describe the concave-up longitudinal profile of a graded stream and identify disruptions such as knickpoints or base-level changes.",
+          "depth_tags": ["longitudinal profile", "graded stream", "concave-up", "knickpoint", "base level"]
+        }
+      ]
+    },
+    {
+      "topic_id": "dynamic_planet_fluvial_processes_and_landforms",
+      "title": "Fluvial sediment processes, channel form, and landforms",
+      "display_order": 3,
+      "concepts": [
+        {
+          "concept_id": "dynamic_planet_hjulstrom_curve",
+          "title": "Hjulström curve interpretation",
+          "description": "Interpret the Hjulström curve to predict erosion, transport, and deposition for given particle sizes and stream velocities.",
+          "depth_tags": ["Hjulström curve", "critical shear stress", "erosion", "deposition", "clay cohesion"]
+        },
+        {
+          "concept_id": "dynamic_planet_sediment_load_types",
+          "title": "Dissolved, suspended, and bed load",
+          "description": "Distinguish dissolved, suspended, and bed load by transport mechanism and identify the dominant load type from stream appearance and sediment supply.",
+          "depth_tags": ["dissolved load", "suspended load", "bed load", "saltation", "sediment transport"]
+        },
+        {
+          "concept_id": "dynamic_planet_stokes_settling",
+          "title": "Settling velocity and suspension",
+          "description": "Apply Stokes settling velocity to explain why clay and silt remain suspended while sand settles rapidly in flowing water.",
+          "depth_tags": ["Stokes law", "settling velocity", "suspension", "particle size", "turbulence"]
+        },
+        {
+          "concept_id": "dynamic_planet_competence_capacity",
+          "title": "Stream competence and capacity",
+          "description": "Distinguish competence, the largest particle a stream can move, from capacity, the total sediment load a stream can carry.",
+          "depth_tags": ["competence", "capacity", "maximum particle size", "total sediment load"]
+        },
+        {
+          "concept_id": "dynamic_planet_bedforms_flow_regime",
+          "title": "Bedforms and flow regime",
+          "description": "Identify ripples, dunes, plane bed, antidunes, and pool-riffle sequences and relate them to lower versus upper flow regime.",
+          "depth_tags": ["ripples", "dunes", "antidunes", "Froude number", "upper flow regime", "pool-riffle"]
+        },
+        {
+          "concept_id": "dynamic_planet_hydraulic_geometry",
+          "title": "At-a-station and downstream hydraulic geometry",
+          "description": "Describe how width, depth, and velocity change with discharge at a station and downstream using hydraulic geometry relationships.",
+          "depth_tags": ["at-a-station", "downstream hydraulic geometry", "Q = wdv", "width-depth-velocity adjustments"]
+        },
+        {
+          "concept_id": "dynamic_planet_channel_pattern_controls",
+          "title": "Straight, meandering, braided, and anastomosing channels",
+          "description": "Explain why channels adopt straight, meandering, braided, or anastomosing patterns based on slope, sediment supply, and bank erodibility.",
+          "depth_tags": ["sinuosity", "braiding index", "anastomosing", "sediment supply", "bank erodibility"]
+        },
+        {
+          "concept_id": "dynamic_planet_meander_geometry_migration",
+          "title": "Meander geometry, migration, and cutoffs",
+          "description": "Identify point bars, cut banks, pools, and riffles in meandering channels; calculate sinuosity and explain oxbow lake formation by cutoff.",
+          "depth_tags": ["point bar", "cut bank", "sinuosity", "oxbow lake", "meander cutoff"]
+        },
+        {
+          "concept_id": "dynamic_planet_floodplain_features",
+          "title": "Floodplain depositional features",
+          "description": "Recognize natural levees, crevasse splays, backswamps, and yazoo tributaries from topographic maps, air photos, or descriptions.",
+          "depth_tags": ["natural levee", "crevasse splay", "backswamp", "yazoo tributary", "floodplain"]
+        },
+        {
+          "concept_id": "dynamic_planet_fluvial_terraces",
+          "title": "Fluvial terrace classification",
+          "description": "Distinguish strath and fill terraces and paired versus unpaired terraces from cross sections and map patterns.",
+          "depth_tags": ["strath terrace", "fill terrace", "paired terrace", "unpaired terrace", "terrace tread"]
+        },
+        {
+          "concept_id": "dynamic_planet_alluvial_fans",
+          "title": "Alluvial fan formation and deposits",
+          "description": "Explain alluvial fan formation at mountain-front slope breaks and identify debris-flow, sheetflood, and sieve deposits.",
+          "depth_tags": ["alluvial fan", "debris flow", "sheetflood", "sieve deposit", "slope break"]
+        },
+        {
+          "concept_id": "dynamic_planet_freshwater_deltas",
+          "title": "Freshwater delta formation and types",
+          "description": "Describe delta formation where streams enter lakes or reservoirs and distinguish river-dominated, wave-dominated, and Gilbert-type deltas.",
+          "depth_tags": ["topset", "foreset", "bottomset", "Gilbert delta", "river-dominated delta"]
+        },
+        {
+          "concept_id": "dynamic_planet_avulsion",
+          "title": "Channel avulsion",
+          "description": "Define avulsion and recognize how crevasse splays, floodplain slope, and aggradation can cause sudden channel relocation.",
+          "depth_tags": ["avulsion", "crevasse splay", "channel relocation", "floodplain aggradation"]
+        }
+      ]
+    },
+    {
+      "topic_id": "dynamic_planet_streamflow_and_floods",
+      "title": "Streamflow and floods",
+      "display_order": 4,
+      "concepts": [
+        {
+          "concept_id": "dynamic_planet_discharge_equation",
+          "title": "Discharge equation",
+          "description": "Calculate stream discharge as the product of mean velocity and cross-sectional area using the continuity equation Q = A v.",
+          "depth_tags": ["Q = A v", "discharge", "mean velocity", "cross-sectional area"]
+        },
+        {
+          "concept_id": "dynamic_planet_velocity_measurement",
+          "title": "Velocity measurement and vertical profile",
+          "description": "Describe vertical velocity profiles and select one-point or two-point current-meter methods for measuring mean velocity.",
+          "depth_tags": ["current meter", "velocity profile", "one-point method", "two-point method", "0.6 depth"]
+        },
+        {
+          "concept_id": "dynamic_planet_manning_equation",
+          "title": "Manning equation for mean velocity",
+          "description": "Apply the Manning equation to estimate mean velocity from hydraulic radius, water-surface slope, and channel roughness.",
+          "depth_tags": ["v = (1/n) R^(2/3) S^(1/2)", "Manning's n", "hydraulic radius", "roughness coefficient"]
+        },
+        {
+          "concept_id": "dynamic_planet_stage_rating_curve",
+          "title": "Stage and rating curve interpretation",
+          "description": "Interpret a stage-discharge rating curve to estimate discharge from stage and recognize limitations such as loop rating shifts.",
+          "depth_tags": ["stage", "rating curve", "discharge estimation", "hysteresis"]
+        },
+        {
+          "concept_id": "dynamic_planet_hydrograph_components",
+          "title": "Storm hydrograph components",
+          "description": "Identify baseflow, rising limb, crest, recession limb, and lag time on a storm hydrograph and describe what each part represents.",
+          "depth_tags": ["rising limb", "recession limb", "crest", "lag time", "baseflow"]
+        },
+        {
+          "concept_id": "dynamic_planet_flood_recurrence_interval",
+          "title": "Flood recurrence interval",
+          "description": "Calculate flood recurrence interval from rank and record length using R = (n+1)/m and interpret the meaning of a 100-year flood.",
+          "depth_tags": ["R = (n+1)/m", "rank", "record length", "100-year flood"]
+        },
+        {
+          "concept_id": "dynamic_planet_annual_exceedance_probability",
+          "title": "Annual exceedance probability",
+          "description": "Convert recurrence interval to annual exceedance probability and calculate the probability of at least one flood over a design period.",
+          "depth_tags": ["P = 1/R", "exceedance probability", "design period", "risk = 1 - (1 - P)^N"]
+        },
+        {
+          "concept_id": "dynamic_planet_unit_hydrograph",
+          "title": "Unit hydrograph interpretation",
+          "description": "Interpret unit hydrograph assumptions and use a unit hydrograph to predict runoff timing and peak for a given storm depth and duration.",
+          "depth_tags": ["unit hydrograph", "storm duration", "peak discharge", "runoff timing"]
+        },
+        {
+          "concept_id": "dynamic_planet_flood_types",
+          "title": "Flash floods, river floods, and ice-jam floods",
+          "description": "Distinguish flash floods, regional river floods, ice-jam floods, and dam-failure floods by cause, timing, basin size, and hazard.",
+          "depth_tags": ["flash flood", "regional flood", "ice jam", "dam failure", "flood hazard"]
+        },
+        {
+          "concept_id": "dynamic_planet_baseflow_separation",
+          "title": "Baseflow separation",
+          "description": "Separate baseflow from direct runoff on a storm hydrograph using graphical methods and interpret the resulting baseflow contribution.",
+          "depth_tags": ["baseflow recession", "direct runoff", "graphical separation", "straight-line method"]
+        },
+        {
+          "concept_id": "dynamic_planet_stream_gauging_methods",
+          "title": "Stream gauging methods",
+          "description": "Describe current-meter, acoustic Doppler, dilution, and slope-area methods for measuring discharge and select an appropriate method for field conditions.",
+          "depth_tags": ["ADCP", "dilution gauging", "slope-area method", "current meter", "discharge measurement"]
+        },
+        {
+          "concept_id": "dynamic_planet_flow_duration_curve",
+          "title": "Flow duration curve",
+          "description": "Construct and interpret flow duration curves to characterize low-flow and high-flow frequency and exceedance percentiles.",
+          "depth_tags": ["flow duration curve", "exceedance percent", "Q90", "low flow", "high flow"]
+        }
+      ]
+    },
+    {
+      "topic_id": "dynamic_planet_groundwater_and_karst",
+      "title": "Groundwater and karst systems",
+      "display_order": 5,
+      "concepts": [
+        {
+          "concept_id": "dynamic_planet_porosity_permeability",
+          "title": "Porosity and permeability",
+          "description": "Distinguish porosity from permeability and identify primary and secondary porosity and effective porosity in aquifer materials.",
+          "depth_tags": ["porosity", "permeability", "effective porosity", "primary porosity", "secondary porosity"]
+        },
+        {
+          "concept_id": "dynamic_planet_darcys_law",
+          "title": "Darcy's law",
+          "description": "Calculate groundwater discharge using Darcy's law Q = K A (dh/dl) and determine hydraulic gradient from water-level data.",
+          "depth_tags": ["Q = K A (dh/dl)", "hydraulic gradient", "darcy flux", "discharge"]
+        },
+        {
+          "concept_id": "dynamic_planet_hydraulic_conductivity_transmissivity",
+          "title": "Hydraulic conductivity and transmissivity",
+          "description": "Distinguish hydraulic conductivity from transmissivity and compute transmissivity as T = K b using aquifer thickness.",
+          "depth_tags": ["hydraulic conductivity", "transmissivity", "T = Kb", "aquifer thickness"]
+        },
+        {
+          "concept_id": "dynamic_planet_vadose_phreatic_zones",
+          "title": "Vadose, phreatic, and capillary fringe",
+          "description": "Distinguish the vadose zone, phreatic zone, water table, and capillary fringe and predict water-table position from saturation diagrams.",
+          "depth_tags": ["vadose zone", "phreatic zone", "capillary fringe", "water table", "saturation"]
+        },
+        {
+          "concept_id": "dynamic_planet_aquifer_types",
+          "title": "Aquifer types and confining units",
+          "description": "Classify unconfined, confined, perched, and artesian aquifers and identify aquitards and aquicludes from cross sections.",
+          "depth_tags": ["unconfined aquifer", "confined aquifer", "perched aquifer", "artesian", "aquitard"]
+        },
+        {
+          "concept_id": "dynamic_planet_water_table_flow_direction",
+          "title": "Groundwater flow direction from water-table maps",
+          "description": "Infer groundwater flow direction from water-table contours and draw flow lines perpendicular to equipotential lines.",
+          "depth_tags": ["water-table contours", "equipotential lines", "flow lines", "hydraulic gradient direction"]
+        },
+        {
+          "concept_id": "dynamic_planet_recharge_discharge_areas",
+          "title": "Recharge and discharge areas",
+          "description": "Identify recharge and discharge zones from water-table configuration and distinguish gaining from losing stream reaches.",
+          "depth_tags": ["gaining stream", "losing stream", "recharge area", "discharge area", "water-table configuration"]
+        },
+        {
+          "concept_id": "dynamic_planet_well_drawdown",
+          "title": "Well drawdown and cone of depression",
+          "description": "Describe drawdown, cone of depression, and well interference and explain specific capacity as a measure of well performance.",
+          "depth_tags": ["drawdown", "cone of depression", "well interference", "specific capacity"]
+        },
+        {
+          "concept_id": "dynamic_planet_springs_types",
+          "title": "Spring classification",
+          "description": "Classify springs by origin as gravity, contact, fault, artesian, karst, or depression springs and identify conditions that form each type.",
+          "depth_tags": ["gravity spring", "contact spring", "fault spring", "artesian spring", "karst spring"]
+        },
+        {
+          "concept_id": "dynamic_planet_karst_dissolution",
+          "title": "Carbonate dissolution reactions",
+          "description": "Write carbonate dissolution reactions and explain the role of carbon dioxide, pH, and limestone solubility in karst formation.",
+          "depth_tags": ["CaCO3 + H2CO3", "carbonate equilibrium", "aggressive water", "limestone dissolution"]
+        },
+        {
+          "concept_id": "dynamic_planet_karst_landforms",
+          "title": "Karst landforms",
+          "description": "Identify sinkholes, uvalas, poljes, tower karst, disappearing streams, and karst springs on maps, photos, and block diagrams.",
+          "depth_tags": ["sinkhole", "uvala", "polje", "tower karst", "disappearing stream"]
+        },
+        {
+          "concept_id": "dynamic_planet_caves_speleothems",
+          "title": "Caves and speleothem formation",
+          "description": "Describe cave formation in the phreatic and vadose zones and distinguish stalactites, stalagmites, columns, and flowstone by growth environment.",
+          "depth_tags": ["vadose speleothem", "phreatic cave", "stalactite", "stalagmite", "flowstone"]
+        }
+      ]
+    },
+    {
+      "topic_id": "dynamic_planet_lakes_and_wetlands",
+      "title": "Lakes and wetlands",
+      "display_order": 6,
+      "concepts": [
+        {
+          "concept_id": "dynamic_planet_lake_stratification",
+          "title": "Lake thermal stratification",
+          "description": "Identify epilimnion, metalimnion, thermocline, and hypolimnion from temperature profiles and describe seasonal stratification patterns.",
+          "depth_tags": ["epilimnion", "thermocline", "hypolimnion", "metalimnion", "temperature profile"]
+        },
+        {
+          "concept_id": "dynamic_planet_lake_mixing_regimes",
+          "title": "Lake mixing regimes",
+          "description": "Classify lakes as amictic, monomictic, dimictic, polymictic, or meromictic based on annual mixing and stratification patterns.",
+          "depth_tags": ["dimictic", "monomictic", "polymictic", "meromictic", "turnover"]
+        },
+        {
+          "concept_id": "dynamic_planet_lake_origin_types",
+          "title": "Lake basin origin types",
+          "description": "Identify lake basins by origin, including glacial, tectonic, volcanic, landslide, oxbow, solution, and artificial lakes.",
+          "depth_tags": ["kettle lake", "graben lake", "caldera lake", "oxbow lake", "solution lake"]
+        },
+        {
+          "concept_id": "dynamic_planet_lake_trophic_state",
+          "title": "Lake trophic state classification",
+          "description": "Classify lakes as oligotrophic, mesotrophic, eutrophic, or hypereutrophic using nutrient concentrations, Secchi depth, chlorophyll, and dissolved oxygen.",
+          "depth_tags": ["oligotrophic", "mesotrophic", "eutrophic", "Secchi depth", "chlorophyll"]
+        },
+        {
+          "concept_id": "dynamic_planet_dissolved_oxygen_profiles",
+          "title": "Dissolved oxygen and temperature profiles",
+          "description": "Interpret dissolved oxygen and temperature profiles and explain orthograde versus clinograde oxygen curves and hypolimnetic oxygen depletion.",
+          "depth_tags": ["clinograde", "orthograde", "hypolimnetic anoxia", "DO profile", "temperature profile"]
+        },
+        {
+          "concept_id": "dynamic_planet_seiches_lake_currents",
+          "title": "Seiches and lake currents",
+          "description": "Explain seiches, wind-driven circulation, and Langmuir circulation and identify their effects on lake mixing and shorelines.",
+          "depth_tags": ["seiche", "wind-driven current", "Langmuir circulation", "surface circulation"]
+        },
+        {
+          "concept_id": "dynamic_planet_wetland_hydroperiod",
+          "title": "Wetland hydroperiod",
+          "description": "Define hydroperiod and explain how water depth, duration, frequency, and seasonal inundation control wetland presence and vegetation.",
+          "depth_tags": ["hydroperiod", "inundation", "water depth", "duration", "seasonal flooding"]
+        },
+        {
+          "concept_id": "dynamic_planet_wetland_classification",
+          "title": "Wetland classification",
+          "description": "Distinguish marsh, swamp, bog, fen, and wet meadow by vegetation, hydrology, and minerotrophic versus ombrotrophic water source.",
+          "depth_tags": ["marsh", "swamp", "bog", "fen", "minerotrophic", "ombrotrophic"]
+        },
+        {
+          "concept_id": "dynamic_planet_hydric_soils",
+          "title": "Hydric soils and redoximorphic features",
+          "description": "Identify hydric soils and redoximorphic features such as gleying and mottling and explain their formation under anaerobic conditions.",
+          "depth_tags": ["hydric soil", "redoximorphic features", "gleying", "mottling", "anaerobic"]
+        },
+        {
+          "concept_id": "dynamic_planet_wetland_functions",
+          "title": "Wetland ecosystem functions",
+          "description": "Describe wetland ecosystem services, including flood attenuation, water-quality improvement, habitat provision, and carbon storage.",
+          "depth_tags": ["flood attenuation", "denitrification", "carbon sequestration", "habitat", "water quality"]
+        }
+      ]
+    },
+    {
+      "topic_id": "dynamic_planet_geologic_and_paleohydrologic_record",
+      "title": "Geologic and paleohydrologic record",
+      "display_order": 7,
+      "concepts": [
+        {
+          "concept_id": "dynamic_planet_paleochannel_recognition",
+          "title": "Paleochannel recognition",
+          "description": "Recognize abandoned channels on floodplains from meander scars, oxbow fills, and subsurface sediment bodies.",
+          "depth_tags": ["meander scar", "oxbow fill", "abandoned channel", "paleochannel"]
+        },
+        {
+          "concept_id": "dynamic_planet_fluvial_terrace_paleorecord",
+          "title": "Fluvial terraces as paleohydrologic record",
+          "description": "Use terrace levels, sediment character, and stratigraphic position to infer past base-level change, climate shifts, and tectonic events.",
+          "depth_tags": ["terrace stratigraphy", "incision", "aggradation", "paleohydrology"]
+        },
+        {
+          "concept_id": "dynamic_planet_lake_varves",
+          "title": "Lake varves",
+          "description": "Interpret varves as annual laminations in lake sediments and use varve counts to date lake sequences and past environmental changes.",
+          "depth_tags": ["varve", "annual couplet", "rhythmite", "lake sediment chronology"]
+        },
+        {
+          "concept_id": "dynamic_planet_playa_paleolake_evidence",
+          "title": "Playa and paleolake deposits",
+          "description": "Identify playa muds, evaporites, and paleoshorelines as evidence of former lake levels and changing aridity.",
+          "depth_tags": ["playa", "evaporite", "paleoshoreline", "aridity cycle", "paleolake"]
+        },
+        {
+          "concept_id": "dynamic_planet_speleothem_paleoclimate",
+          "title": "Speleothems as paleoclimate archives",
+          "description": "Use speleothem growth layers and stable-isotope records to reconstruct past precipitation, temperature, and vegetation conditions.",
+          "depth_tags": ["stalagmite", "oxygen isotopes", "growth laminae", "paleoprecipitation"]
+        },
+        {
+          "concept_id": "dynamic_planet_paleoflood_slackwater",
+          "title": "Paleoflood slackwater deposits",
+          "description": "Identify slackwater deposits and use them as paleostage indicators to estimate past flood stage and recurrence intervals.",
+          "depth_tags": ["slackwater deposit", "paleostage indicator", "paleoflood", "flood sediment"]
+        },
+        {
+          "concept_id": "dynamic_planet_alluvial_cut_fill",
+          "title": "Alluvial cut-and-fill sequences",
+          "description": "Interpret cut-and-fill alluvial stratigraphy as evidence of alternating erosion and deposition driven by climate or tectonics.",
+          "depth_tags": ["cut-and-fill", "alluvial stratigraphy", "unconformity", "aggradation-degradation cycle"]
+        },
+        {
+          "concept_id": "dynamic_planet_lake_core_proxies",
+          "title": "Lake core paleoenvironmental proxies",
+          "description": "Identify pollen, diatoms, charcoal, and grain-size changes in lake sediment cores as proxies for past vegetation, fire, and runoff.",
+          "depth_tags": ["pollen", "diatom", "charcoal", "grain size", "lake core"]
+        },
+        {
+          "concept_id": "dynamic_planet_dating_freshwater_sediments",
+          "title": "Dating methods for freshwater sediments",
+          "description": "Choose radiocarbon, optically stimulated luminescence, and tephrochronology to date freshwater deposits and interpret resulting age constraints.",
+          "depth_tags": ["radiocarbon", "OSL", "tephra", "varve counting", "age control"]
+        }
+      ]
+    },
+    {
+      "topic_id": "dynamic_planet_human_impacts_water_quality_monitoring",
+      "title": "Human impacts, water quality, and freshwater monitoring",
+      "display_order": 8,
+      "concepts": [
+        {
+          "concept_id": "dynamic_planet_dam_reservoir_effects",
+          "title": "Dam and reservoir effects",
+          "description": "Predict downstream changes in flow, sediment, temperature, and channel form caused by dams and reservoirs.",
+          "depth_tags": ["reservoir trap efficiency", "sediment starvation", "thermal stratification", "downstream erosion"]
+        },
+        {
+          "concept_id": "dynamic_planet_urbanization_hydrograph",
+          "title": "Urbanization and hydrograph change",
+          "description": "Explain how impervious surfaces reduce infiltration and lag time and increase peak discharge, producing flashier urban hydrographs.",
+          "depth_tags": ["impervious surface", "lag time reduction", "peak discharge increase", "urban hydrograph"]
+        },
+        {
+          "concept_id": "dynamic_planet_agriculture_water_quality",
+          "title": "Agricultural impacts on water",
+          "description": "Relate irrigation, tile drainage, fertilizer application, and livestock to water quantity changes and nutrient or sediment pollution.",
+          "depth_tags": ["nutrient runoff", "irrigation return flow", "tile drainage", "agricultural sediment"]
+        },
+        {
+          "concept_id": "dynamic_planet_water_quality_parameters",
+          "title": "Field water-quality parameters",
+          "description": "Interpret temperature, pH, dissolved oxygen, turbidity, conductivity, and salinity measurements in freshwater monitoring.",
+          "depth_tags": ["temperature", "pH", "dissolved oxygen", "turbidity", "conductivity", "salinity"]
+        },
+        {
+          "concept_id": "dynamic_planet_dissolved_oxygen_bod",
+          "title": "Biochemical oxygen demand and oxygen sag",
+          "description": "Apply biochemical oxygen demand and the oxygen sag curve to assess organic pollution and predict stream recovery downstream of a discharge.",
+          "depth_tags": ["BOD", "oxygen sag curve", "organic pollution", "deoxygenation", "recovery"]
+        },
+        {
+          "concept_id": "dynamic_planet_eutrophication_nutrient_loading",
+          "title": "Eutrophication and nutrient loading",
+          "description": "Diagnose eutrophication from nitrogen and phosphorus loading, algal blooms, and hypoxic conditions and identify the limiting nutrient.",
+          "depth_tags": ["phosphorus", "nitrogen", "algal bloom", "hypoxia", "limiting nutrient"]
+        },
+        {
+          "concept_id": "dynamic_planet_point_nonpoint_pollution",
+          "title": "Point and nonpoint source pollution",
+          "description": "Distinguish point-source from nonpoint-source pollution and identify common freshwater contaminants and their source pathways.",
+          "depth_tags": ["point source", "nonpoint source", "stormwater", "contaminant pathways"]
+        },
+        {
+          "concept_id": "dynamic_planet_water_table_mapping",
+          "title": "Water-table map construction",
+          "description": "Construct water-table contour maps from well water-level measurements and determine gradient direction for monitoring or contamination assessment.",
+          "depth_tags": ["water-level data", "contour map", "water-table gradient", "well measurements"]
+        },
+        {
+          "concept_id": "dynamic_planet_stream_monitoring_records",
+          "title": "Stream monitoring station records",
+          "description": "Interpret real-time and historical stage, discharge, and precipitation records from stream gaging stations to assess flow conditions and trends.",
+          "depth_tags": ["USGS gage", "stage record", "discharge record", "monitoring station", "trend analysis"]
+        },
+        {
+          "concept_id": "dynamic_planet_bioassessment_macroinvertebrates",
+          "title": "Macroinvertebrate bioassessment",
+          "description": "Use benthic macroinvertebrate tolerance values and diversity indices to assess stream health and detect water-quality impairment.",
+          "depth_tags": ["EPT taxa", "pollution tolerance", "benthic macroinvertebrate", "biotic index", "stream health"]
+        },
+        {
+          "concept_id": "dynamic_planet_stormwater_lid",
+          "title": "Stormwater management and low-impact development",
+          "description": "Describe low-impact development practices such as rain gardens, permeable pavement, and detention basins and their hydrologic goals.",
+          "depth_tags": ["green infrastructure", "infiltration", "detention", "permeable pavement", "rain garden"]
+        },
+        {
+          "concept_id": "dynamic_planet_groundwater_contaminant_plumes",
+          "title": "Groundwater contaminant plumes",
+          "description": "Identify contaminant plume behavior, distinguish point-source groundwater contamination, and interpret monitoring well data for plume tracking.",
+          "depth_tags": ["contaminant plume", "monitoring wells", "advection", "dispersion", "groundwater contamination"]
+        }
+      ]
+    }
+  ]
+}

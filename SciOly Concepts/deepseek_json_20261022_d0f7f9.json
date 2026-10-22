@@ -1,0 +1,572 @@
+{
+  "event_id": "remote_sensing",
+  "event_name": "Remote Sensing",
+  "domain": "Earth and Space Science",
+  "official_scope": "climate change processes in the Earth system",
+  "season": 2027,
+  "division": "C",
+  "design_notes": "Expanded the 7 locked topics into 83 atomic concepts. The mission list topic includes 16 one-instrument concepts to ensure every listed platform/instrument has a home. Counts vary by topic density; no topics were merged or left as thin stubs.",
+  "topics": [
+    {
+      "topic_id": "remote_sensing_electromagnetic_radiation_and_physics",
+      "title": "Electromagnetic radiation and remote sensing physics",
+      "display_order": 1,
+      "why_this_topic": "Remote sensing interpretation depends on a clean foundation in the electromagnetic spectrum, blackbody emission, and how light interacts with the atmosphere and surfaces before any sensor or orbit is introduced.",
+      "scope_note": "Includes EMS regions, wave-particle properties, absorption/emission/scattering, blackbody laws (Wien, Stefan-Boltzmann), and spectroscopy; excludes instrument design, orbital mechanics, and full equilibrium temperature modeling.",
+      "concepts": [
+        {
+          "concept_id": "remote_sensing_ems_regions",
+          "title": "Electromagnetic spectrum regions",
+          "description": "Identify and order electromagnetic radiation regions by wavelength and frequency, and state which regions are used in common remote sensing instruments.",
+          "depth_tags": ["radio", "microwave", "infrared", "visible", "ultraviolet", "wavelength vs frequency"]
+        },
+        {
+          "concept_id": "remote_sensing_wavelength_frequency_conversion",
+          "title": "Wavelength-frequency conversion",
+          "description": "Convert between wavelength and frequency using c = λν and compare photon energy across spectral bands.",
+          "depth_tags": ["c = λν", "λ", "ν", "EMS units", "conversion"]
+        },
+        {
+          "concept_id": "remote_sensing_photon_energy",
+          "title": "Photon energy and Planck relation",
+          "description": "Calculate photon energy with E = hν or E = hc/λ and relate photon energy to spectral region and detector requirements.",
+          "depth_tags": ["E = hν", "E = hc/λ", "Planck constant", "photon energy", "spectral region"]
+        },
+        {
+          "concept_id": "remote_sensing_blackbody_emission",
+          "title": "Blackbody emission curves",
+          "description": "Interpret blackbody radiation curves for objects at different temperatures, including peak position and total emitted energy.",
+          "depth_tags": ["blackbody", "emission spectrum", "temperature", "thermal radiation"]
+        },
+        {
+          "concept_id": "remote_sensing_wien_displacement",
+          "title": "Wien's displacement law",
+          "description": "Use Wien's displacement law to calculate peak emission wavelength from temperature or infer temperature from peak wavelength.",
+          "depth_tags": ["λ_max = b/T", "b = 2.897e-3 m·K", "peak wavelength", "temperature"]
+        },
+        {
+          "concept_id": "remote_sensing_stefan_boltzmann",
+          "title": "Stefan-Boltzmann law",
+          "description": "Calculate total emitted power per unit area from an object's temperature using the Stefan-Boltzmann law, accounting for emissivity.",
+          "depth_tags": ["E = σT⁴", "σ = 5.67e-8 W/m²·K⁴", "emissivity", "radiative flux"]
+        },
+        {
+          "concept_id": "remote_sensing_atmospheric_windows",
+          "title": "Atmospheric absorption and transmission windows",
+          "description": "Identify atmospheric windows and absorption bands caused by water vapor, carbon dioxide, ozone, and other gases, and explain how they constrain sensor bands.",
+          "depth_tags": ["atmospheric windows", "absorption bands", "water vapor", "CO2", "ozone", "transmission"]
+        },
+        {
+          "concept_id": "remote_sensing_rayleigh_scattering",
+          "title": "Rayleigh scattering and sky color",
+          "description": "Explain Rayleigh scattering dominance at short wavelengths, its 1/λ⁴ dependence, and consequences for clear-sky remote sensing.",
+          "depth_tags": ["Rayleigh scattering", "1/λ⁴", "blue sky", "aerosol-free scattering"]
+        },
+        {
+          "concept_id": "remote_sensing_mie_scattering",
+          "title": "Mie scattering by aerosols and clouds",
+          "description": "Distinguish Mie scattering from Rayleigh scattering by particle size and wavelength dependence, and predict its effect on cloud and aerosol imagery.",
+          "depth_tags": ["Mie scattering", "aerosols", "cloud droplets", "forward scattering", "white appearance"]
+        },
+        {
+          "concept_id": "remote_sensing_nonselective_scattering",
+          "title": "Non-selective scattering by cloud droplets",
+          "description": "Describe non-selective scattering by water droplets and ice crystals when particle size greatly exceeds wavelength, and explain why clouds appear white.",
+          "depth_tags": ["non-selective scattering", "large particles", "clouds", "white appearance"]
+        },
+        {
+          "concept_id": "remote_sensing_spectral_signatures",
+          "title": "Spectral reflectance signatures of surfaces",
+          "description": "Interpret spectral reflectance curves for vegetation, soil, water, snow, and clouds to identify surface or atmospheric features in remotely sensed data.",
+          "depth_tags": ["reflectance curves", "vegetation", "water", "snow", "NDVI basis", "spectral signature"]
+        }
+      ]
+    },
+    {
+      "topic_id": "remote_sensing_sensor_types_and_imaging_fundamentals",
+      "title": "Sensor types and imaging fundamentals",
+      "display_order": 2,
+      "why_this_topic": "The event explicitly tests active versus passive sensor distinctions and the physical basis of each instrument class, so a dedicated chapter prevents these from being buried under mission lists.",
+      "scope_note": "Includes active/passive sensing, optical/IR imagers, radiometers, LIDAR, space gravimetry, radar altimetry/precipitation radar/Doppler, and imaging fidelity/resolution metrics; excludes orbital parameters and mission-specific variable matchups.",
+      "concepts": [
+        {
+          "concept_id": "remote_sensing_active_vs_passive",
+          "title": "Active vs passive sensors",
+          "description": "Distinguish active sensors that emit their own energy from passive sensors that detect natural radiation, and classify common instruments accordingly.",
+          "depth_tags": ["active sensing", "passive sensing", "LIDAR", "radar", "radiometer"]
+        },
+        {
+          "concept_id": "remote_sensing_optical_ir_imagers",
+          "title": "Optical and infrared imaging radiometers",
+          "description": "Describe how optical and infrared imagers measure reflected solar or emitted thermal radiation in discrete spectral bands and produce image pixels.",
+          "depth_tags": ["optical imager", "infrared imager", "bands", "push broom", "whisk broom"]
+        },
+        {
+          "concept_id": "remote_sensing_microwave_radiometry",
+          "title": "Passive microwave radiometry",
+          "description": "Explain how passive microwave radiometers measure emitted microwave radiation to retrieve precipitation, soil moisture, and sea ice.",
+          "depth_tags": ["microwave radiometer", "brightness temperature", "passive", "precipitation", "sea ice"]
+        },
+        {
+          "concept_id": "remote_sensing_lidar_backscatter",
+          "title": "LIDAR backscatter profiling",
+          "description": "Explain how LIDAR sends laser pulses and measures time-resolved backscatter to produce vertical profiles of aerosols and clouds.",
+          "depth_tags": ["LIDAR", "backscatter", "time-of-flight", "vertical profile", "depolarization"]
+        },
+        {
+          "concept_id": "remote_sensing_radar_altimetry",
+          "title": "Radar altimetry for sea surface height",
+          "description": "Describe how radar altimeters transmit microwave pulses and measure round-trip time to retrieve sea surface height and wave height.",
+          "depth_tags": ["radar altimeter", "round-trip time", "sea surface height", "JASON", "range measurement"]
+        },
+        {
+          "concept_id": "remote_sensing_precipitation_radar_doppler",
+          "title": "Precipitation radar and Doppler velocity retrieval",
+          "description": "Explain how spaceborne precipitation radar measures radar reflectivity and Doppler shift to estimate precipitation rate and vertical motion.",
+          "depth_tags": ["precipitation radar", "reflectivity", "Doppler shift", "fall velocity", "Z-R relationship"]
+        },
+        {
+          "concept_id": "remote_sensing_space_gravimetry",
+          "title": "Spaceborne gravimetry and mass change detection",
+          "description": "Describe how precise tracking of satellite-to-satellite range detects gravity anomalies linked to terrestrial water storage and ice mass changes.",
+          "depth_tags": ["GRACE", "gravity anomaly", "range measurement", "mass change", "water storage"]
+        },
+        {
+          "concept_id": "remote_sensing_spatial_resolution",
+          "title": "Spatial resolution and pixel footprint",
+          "description": "Define spatial resolution and pixel footprint, and compare how pixel size affects detection of small features in remote sensing images.",
+          "depth_tags": ["spatial resolution", "pixel", "IFOV", "ground sample distance", "MODIS bands"]
+        },
+        {
+          "concept_id": "remote_sensing_spectral_resolution",
+          "title": "Spectral resolution and bandwidth",
+          "description": "Distinguish spectral resolution from spatial resolution, and explain how narrower bandwidths and hyperspectral sensors improve material discrimination.",
+          "depth_tags": ["spectral resolution", "bandwidth", "multispectral", "hyperspectral", "band selection"]
+        },
+        {
+          "concept_id": "remote_sensing_radiometric_resolution",
+          "title": "Radiometric resolution and bit depth",
+          "description": "Define radiometric resolution as sensitivity to signal differences and relate bit depth to the number of digital levels in an image.",
+          "depth_tags": ["radiometric resolution", "bit depth", "DN values", "dynamic range", "quantization"]
+        },
+        {
+          "concept_id": "remote_sensing_temporal_resolution",
+          "title": "Temporal resolution and revisit interval",
+          "description": "Define temporal resolution as the repeat observation interval and explain tradeoffs between spatial resolution, swath width, and revisit frequency.",
+          "depth_tags": ["temporal resolution", "revisit time", "swath width", "geostationary", "polar"]
+        }
+      ]
+    },
+    {
+      "topic_id": "remote_sensing_orbits_and_satellite_platforms",
+      "title": "Orbits and satellite platforms",
+      "display_order": 3,
+      "why_this_topic": "Orbital geometry and platform choices determine temporal and spatial sampling, so students need a focused chapter on Kepler's laws and operational orbit types before applying specific missions.",
+      "scope_note": "Includes Kepler's laws, LEO/MEO/HEO/GEO/polar/sun-synchronous orbits, ground tracks, revisit time, and platform tradeoffs; excludes sensor electronics and retrieval algorithms.",
+      "concepts": [
+        {
+          "concept_id": "remote_sensing_kepler_first_law",
+          "title": "Kepler's first law for satellite orbits",
+          "description": "State that satellite orbits are ellipses with Earth at one focus, and identify perigee and apogee distances in an elliptical orbit.",
+          "depth_tags": ["ellipse", "focus", "perigee", "apogee", "eccentricity"]
+        },
+        {
+          "concept_id": "remote_sensing_kepler_second_law",
+          "title": "Kepler's second law and orbital velocity",
+          "description": "Use Kepler's second law to explain why a satellite moves faster near perigee and slower near apogee, sweeping equal areas in equal times.",
+          "depth_tags": ["equal areas", "orbital velocity", "perigee", "apogee"]
+        },
+        {
+          "concept_id": "remote_sensing_kepler_third_law",
+          "title": "Kepler's third law and orbital period",
+          "description": "Calculate orbital period or semi-major axis using Kepler's third law and relate higher orbits to longer periods.",
+          "depth_tags": ["T² = (4π²/GM) a³", "orbital period", "semi-major axis", "geocentric gravitational constant"]
+        },
+        {
+          "concept_id": "remote_sensing_orbital_period_altitude",
+          "title": "Orbital altitude and circular orbit speed",
+          "description": "Calculate circular orbital speed and period for a given altitude above Earth, and infer altitude from period.",
+          "depth_tags": ["v = √(GM/r)", "circular orbit", "altitude", "period", "LEO"]
+        },
+        {
+          "concept_id": "remote_sensing_geostationary_orbit",
+          "title": "Geostationary orbit characteristics",
+          "description": "Identify the altitude and period of a geostationary orbit, and explain why it provides continuous coverage of one hemisphere.",
+          "depth_tags": ["GEO", "35,786 km", "24-hour period", "zero inclination", "continuous coverage"]
+        },
+        {
+          "concept_id": "remote_sensing_low_earth_orbit",
+          "title": "Low Earth orbit characteristics and tradeoffs",
+          "description": "Describe typical LEO altitude, period, and spatial resolution advantages, and explain the limited revisit and coverage per orbit.",
+          "depth_tags": ["LEO", "200–2000 km", "90-minute period", "high spatial resolution", "narrow swath"]
+        },
+        {
+          "concept_id": "remote_sensing_polar_orbit",
+          "title": "Polar and near-polar orbits",
+          "description": "Explain how high-inclination polar orbits provide global coverage as Earth rotates beneath the satellite track.",
+          "depth_tags": ["polar orbit", "inclination", "global coverage", "ascending node", "descending node"]
+        },
+        {
+          "concept_id": "remote_sensing_sun_synchronous_orbit",
+          "title": "Sun-synchronous orbit and consistent lighting",
+          "description": "Describe how a sun-synchronous orbit precesses to maintain a nearly constant local solar time at each pass, improving data comparability.",
+          "depth_tags": ["sun-synchronous", "precession", "local solar time", "LTAN", "consistent illumination"]
+        },
+        {
+          "concept_id": "remote_sensing_ground_tracks",
+          "title": "Satellite ground tracks and swath coverage",
+          "description": "Interpret ground track maps and explain how orbital motion and Earth rotation create successive tracks and gaps between swaths.",
+          "depth_tags": ["ground track", "swath", "node", "Earth rotation", "gap"]
+        },
+        {
+          "concept_id": "remote_sensing_revisit_time_coverage",
+          "title": "Revisit time and coverage tradeoffs",
+          "description": "Evaluate satellite platform choices by trading off spatial resolution, swath width, and revisit time for monitoring climate variables.",
+          "depth_tags": ["revisit time", "coverage", "spatial resolution", "swath width", "temporal sampling"]
+        }
+      ]
+    },
+    {
+      "topic_id": "remote_sensing_major_satellite_missions",
+      "title": "Major climate and Earth-observing satellite missions",
+      "display_order": 4,
+      "why_this_topic": "The rules restrict satellite identification and context to a fixed list, so a dedicated mission chapter keeps instruments matched to the climate variables they measure without turning physics or energy balance into a dump category.",
+      "scope_note": "Covers only the listed satellites/instruments (MODIS Aqua, CALIPSO, CloudSat, GOES, Suomi NPP, GPM, PACE, JASON, GRACE, OCO-2, Aura, Tropomi/Sentinel-5P, ASTER/Terra, ECOSTRESS, CrIS, CERES) by cloud/precip, sea level/waves, GHG/trace gas/aerosol, temperature, and radiative flux context; excludes non-listed platforms and planetary/military systems.",
+      "concepts": [
+        {
+          "concept_id": "remote_sensing_modis_aqua",
+          "title": "MODIS on Aqua",
+          "description": "Identify Aqua's Moderate Resolution Imaging Spectroradiometer as a passive multispectral imager used for clouds, aerosols, sea surface temperature, and ocean color.",
+          "depth_tags": ["MODIS", "Aqua", "36 bands", "ocean color", "SST", "aerosol"]
+        },
+        {
+          "concept_id": "remote_sensing_calipso",
+          "title": "CALIPSO aerosol and cloud lidar",
+          "description": "Identify CALIPSO as a polar-orbiting LIDAR mission that retrieves vertical profiles of aerosols and thin clouds using laser backscatter and depolarization.",
+          "depth_tags": ["CALIPSO", "lidar", "aerosol vertical profile", "thin clouds", "depolarization"]
+        },
+        {
+          "concept_id": "remote_sensing_cloudsat",
+          "title": "CloudSat cloud profiling radar",
+          "description": "Identify CloudSat as a millimeter-wave radar mission that measures cloud vertical structure, ice/liquid water content, and precipitation inside clouds.",
+          "depth_tags": ["CloudSat", "W-band radar", "cloud profiling", "vertical structure", "cloud water content"]
+        },
+        {
+          "concept_id": "remote_sensing_goes",
+          "title": "GOES geostationary weather imaging",
+          "description": "Identify GOES satellites as geostationary imagers providing continuous visible and infrared views for cloud tracking, convection, and water vapor.",
+          "depth_tags": ["GOES", "geostationary", "ABI", "water vapor channels", "convection"]
+        },
+        {
+          "concept_id": "remote_sensing_suomi_npp",
+          "title": "Suomi NPP polar weather and climate observations",
+          "description": "Identify Suomi NPP as a polar-orbiting platform carrying CrIS, ATMS, VIIRS, and CERES to support weather and climate data continuity.",
+          "depth_tags": ["Suomi NPP", "JPSS", "VIIRS", "CrIS", "CERES", "polar orbit"]
+        },
+        {
+          "concept_id": "remote_sensing_gpm",
+          "title": "GPM global precipitation measurement",
+          "description": "Identify GPM as a precipitation-focused mission using a dual-frequency radar and radiometer to measure rain and snow globally.",
+          "depth_tags": ["GPM", "DPR", "GMI", "precipitation", "rain", "snow"]
+        },
+        {
+          "concept_id": "remote_sensing_pace",
+          "title": "PACE ocean color and aerosol mission",
+          "description": "Identify PACE as a mission measuring hyperspectral ocean color, phytoplankton, and aerosol properties to study marine ecosystems and climate.",
+          "depth_tags": ["PACE", "OCI", "hyperspectral ocean color", "phytoplankton", "aerosol"]
+        },
+        {
+          "concept_id": "remote_sensing_jason",
+          "title": "JASON radar altimetry for sea level",
+          "description": "Identify JASON satellites as radar altimeters that measure global sea surface height, wave height, and ocean dynamic topography.",
+          "depth_tags": ["JASON", "radar altimeter", "sea surface height", "sea level", "wave height"]
+        },
+        {
+          "concept_id": "remote_sensing_grace",
+          "title": "GRACE terrestrial water storage mission",
+          "description": "Identify GRACE and GRACE-FO as twin-satellite gravimetry missions that track water storage anomalies, ice mass loss, and groundwater changes.",
+          "depth_tags": ["GRACE", "GRACE-FO", "terrestrial water storage", "gravity anomaly", "ice mass"]
+        },
+        {
+          "concept_id": "remote_sensing_oco2",
+          "title": "OCO-2 column carbon dioxide measurements",
+          "description": "Identify OCO-2 as a polar-orbiting grating spectrometer that measures total column carbon dioxide for carbon cycle studies.",
+          "depth_tags": ["OCO-2", "column CO2", "XCO2", "spectrometer", "carbon cycle"]
+        },
+        {
+          "concept_id": "remote_sensing_aura",
+          "title": "Aura atmospheric chemistry mission",
+          "description": "Identify Aura as a polar mission measuring ozone, nitrogen dioxide, and other trace gases to monitor stratospheric and tropospheric chemistry.",
+          "depth_tags": ["Aura", "OMI", "TES", "ozone", "NO2", "trace gases"]
+        },
+        {
+          "concept_id": "remote_sensing_tropomi_sentinel5p",
+          "title": "Tropomi on Sentinel-5P trace gas columns",
+          "description": "Identify TROPOMI as a hyperspectral imager on Sentinel-5P that provides high-resolution daily column measurements of NO2, SO2, ozone, and methane.",
+          "depth_tags": ["TROPOMI", "Sentinel-5P", "NO2", "SO2", "methane", "column"]
+        },
+        {
+          "concept_id": "remote_sensing_aster_terra",
+          "title": "ASTER on Terra land surface and temperature",
+          "description": "Identify ASTER as a high-spatial-resolution multispectral imager on Terra used for land surface temperature, emissivity, geology, and topography.",
+          "depth_tags": ["ASTER", "Terra", "land surface temperature", "emissivity", "DEM", "geology"]
+        },
+        {
+          "concept_id": "remote_sensing_ecostress",
+          "title": "ECOSTRESS evapotranspiration from ISS",
+          "description": "Identify ECOSTRESS as a thermal infrared radiometer on the ISS that retrieves evapotranspiration and plant water stress at high temporal cadence.",
+          "depth_tags": ["ECOSTRESS", "ISS", "evapotranspiration", "thermal infrared", "water stress"]
+        },
+        {
+          "concept_id": "remote_sensing_cris",
+          "title": "CrIS infrared sounding for temperature and moisture",
+          "description": "Identify CrIS as a hyperspectral infrared sounder that retrieves vertical profiles of atmospheric temperature and water vapor.",
+          "depth_tags": ["CrIS", "hyperspectral IR", "temperature profile", "moisture profile", "sounder"]
+        },
+        {
+          "concept_id": "remote_sensing_ceres",
+          "title": "CERES Earth radiation budget measurements",
+          "description": "Identify CERES instruments as broadband radiometers that measure reflected solar and emitted thermal radiation to quantify Earth's energy balance.",
+          "depth_tags": ["CERES", "top-of-atmosphere flux", "shortwave", "longwave", "radiation budget"]
+        }
+      ]
+    },
+    {
+      "topic_id": "remote_sensing_satellite_data_interpretation",
+      "title": "Satellite data interpretation and retrieval products",
+      "display_order": 5,
+      "why_this_topic": "The written station format heavily tests reading imagery, vertical profiles, anomaly maps, and retrieval graphs, which is a separate skill from knowing mission hardware.",
+      "scope_note": "Includes interpreting cloud/precipitation/aerosol imagery, vertical profiles from CALIPSO/CloudSat, sea surface height and gravity maps, trace gas columns, temperature and radiative flux products; excludes mission background and pure orbital math.",
+      "concepts": [
+        {
+          "concept_id": "remote_sensing_cloud_imagery_interpretation",
+          "title": "Visible and infrared cloud imagery interpretation",
+          "description": "Interpret cloud brightness, texture, and temperature from visible and infrared satellite imagery to identify cloud type, height, and potential convection.",
+          "depth_tags": ["visible imagery", "infrared imagery", "brightness temperature", "cloud height", "convection"]
+        },
+        {
+          "concept_id": "remote_sensing_water_vapor_imagery",
+          "title": "Water vapor imagery and upper-level flow",
+          "description": "Interpret water vapor channel imagery to identify dry air intrusions, jet streaks, and upper-level moisture transport.",
+          "depth_tags": ["water vapor imagery", "dry slot", "jet stream", "moisture plume"]
+        },
+        {
+          "concept_id": "remote_sensing_calipso_aerosol_cloud_profile",
+          "title": "CALIPSO vertical feature mask interpretation",
+          "description": "Read CALIPSO attenuated backscatter and vertical feature mask plots to distinguish aerosol, cloud, and clear-air layers by altitude.",
+          "depth_tags": ["CALIPSO", "attenuated backscatter", "vertical feature mask", "aerosol layer", "cloud layer"]
+        },
+        {
+          "concept_id": "remote_sensing_cloudsat_reflectivity_profile",
+          "title": "CloudSat radar reflectivity profile interpretation",
+          "description": "Interpret CloudSat radar reflectivity vertical cross-sections to identify cloud top, base, precipitation, and mixed-phase regions.",
+          "depth_tags": ["CloudSat", "radar reflectivity", "vertical cross-section", "cloud base", "bright band"]
+        },
+        {
+          "concept_id": "remote_sensing_precipitation_radar_interpretation",
+          "title": "GPM precipitation radar interpretation",
+          "description": "Read GPM dual-frequency radar and radiometer products to infer precipitation intensity, phase, and vertical structure in storms.",
+          "depth_tags": ["GPM", "DPR", "reflectivity", "precipitation rate", "phase"]
+        },
+        {
+          "concept_id": "remote_sensing_sea_surface_height_anomaly",
+          "title": "Sea surface height anomaly maps",
+          "description": "Interpret sea surface height anomaly fields from altimetry to identify warm and cold eddies, currents, and sea level rise patterns.",
+          "depth_tags": ["SSHA", "altimetry", "eddies", "dynamic topography", "sea level anomaly"]
+        },
+        {
+          "concept_id": "remote_sensing_gravity_anomaly_water_storage",
+          "title": "GRACE water storage anomaly maps",
+          "description": "Interpret GRACE terrestrial water storage anomaly maps to identify regional drought, groundwater depletion, and ice mass loss signals.",
+          "depth_tags": ["GRACE anomaly", "TWS", "drought", "groundwater", "ice loss"]
+        },
+        {
+          "concept_id": "remote_sensing_trace_gas_column_maps",
+          "title": "Trace gas column and concentration maps",
+          "description": "Interpret satellite column maps of NO2, SO2, CO2, and methane to identify pollution sources, transport, and seasonal variations.",
+          "depth_tags": ["NO2 column", "SO2", "CO2", "methane", "pollution source"]
+        },
+        {
+          "concept_id": "remote_sensing_temperature_profile_retrieval",
+          "title": "Hyperspectral infrared temperature and moisture retrievals",
+          "description": "Read temperature and dewpoint profiles from infrared and microwave sounder retrievals to diagnose atmospheric stability and moisture structure.",
+          "depth_tags": ["CrIS", "retrieval profile", "temperature", "dewpoint", "stability"]
+        },
+        {
+          "concept_id": "remote_sensing_aerosol_optical_depth",
+          "title": "Aerosol optical depth retrieval and maps",
+          "description": "Interpret aerosol optical depth maps to identify dust, smoke, and pollution events and estimate aerosol loading.",
+          "depth_tags": ["AOD", "aerosol optical depth", "MODIS", "dust", "smoke"]
+        },
+        {
+          "concept_id": "remote_sensing_ocean_color_chlorophyll",
+          "title": "Ocean color and chlorophyll-a interpretation",
+          "description": "Interpret ocean color products to estimate chlorophyll-a concentration, identify blooms, and relate phytoplankton to nutrient supply.",
+          "depth_tags": ["chlorophyll-a", "ocean color", "PACE", "MODIS", "phytoplankton bloom"]
+        },
+        {
+          "concept_id": "remote_sensing_vegetation_index_ndvi",
+          "title": "Vegetation indices and phenology from imagery",
+          "description": "Calculate and interpret NDVI from red and near-infrared reflectance to assess vegetation health, greenness, and seasonal phenology.",
+          "depth_tags": ["NDVI", "NIR - red / NIR + red", "vegetation health", "phenology", "ASTER"]
+        }
+      ]
+    },
+    {
+      "topic_id": "remote_sensing_climate_processes_and_earth_system_cycles",
+      "title": "Climate processes, greenhouse gases, and Earth system cycles",
+      "display_order": 6,
+      "why_this_topic": "The official climate processes section spans atmospheric chemistry, coupled ocean-atmosphere cycles, and ecosystem response, so it needs its own chapter rather than being mixed with energy balance calculations.",
+      "scope_note": "Includes GHG/aerosol distributions and drivers, ENSO, carbon and nitrogen cycles, climate effects on weather extremes, and ecological/vegetation impacts; excludes radiative transfer math and satellite hardware.",
+      "concepts": [
+        {
+          "concept_id": "remote_sensing_greenhouse_effect_mechanism",
+          "title": "Greenhouse effect mechanism",
+          "description": "Explain how greenhouse gases absorb and re-emit infrared radiation, trapping heat in the lower atmosphere and warming the surface.",
+          "depth_tags": ["greenhouse effect", "infrared absorption", "re-emission", "longwave radiation", "warming"]
+        },
+        {
+          "concept_id": "remote_sensing_co2_sources_sinks",
+          "title": "Carbon dioxide sources and sinks",
+          "description": "Distinguish anthropogenic and natural CO2 sources, and identify land and ocean sinks that modulate atmospheric CO2 growth.",
+          "depth_tags": ["fossil fuel", "land use", "photosynthesis", "ocean sink", "Mauna Loa"]
+        },
+        {
+          "concept_id": "remote_sensing_methane_sources_sinks",
+          "title": "Methane sources and sinks",
+          "description": "Identify major methane sources such as wetlands, agriculture, fossil fuels, and landfills, and explain its removal by atmospheric oxidation.",
+          "depth_tags": ["CH4", "wetlands", "agriculture", "fossil fuel", "hydroxyl radical"]
+        },
+        {
+          "concept_id": "remote_sensing_aerosol_climate_effects",
+          "title": "Aerosol direct and indirect climate effects",
+          "description": "Distinguish aerosol direct radiative scattering/absorption from indirect effects on cloud albedo and lifetime, and state their net cooling influence.",
+          "depth_tags": ["direct aerosol effect", "indirect aerosol effect", "cloud albedo", "cooling", "black carbon"]
+        },
+        {
+          "concept_id": "remote_sensing_carbon_cycle_reservoirs",
+          "title": "Carbon cycle reservoirs and fluxes",
+          "description": "Quantify major carbon reservoirs and fluxes among atmosphere, oceans, land biosphere, and geologic deposits, and identify human perturbation.",
+          "depth_tags": ["reservoir", "flux", "atmosphere", "ocean", "biosphere", "fossil carbon"]
+        },
+        {
+          "concept_id": "remote_sensing_nitrogen_cycle_anthropogenic",
+          "title": "Anthropogenic nitrogen cycle changes",
+          "description": "Describe how fertilizer production and fossil fuel combustion alter the nitrogen cycle, causing reactive nitrogen deposition and water quality impacts.",
+          "depth_tags": ["Haber process", "reactive nitrogen", "N deposition", "eutrophication", "N2O"]
+        },
+        {
+          "concept_id": "remote_sensing_enso_cycle",
+          "title": "El Niño-Southern Oscillation cycle",
+          "description": "Describe the coupled ocean-atmosphere ENSO cycle, including warm El Niño and cool La Niña phases and their global climate teleconnections.",
+          "depth_tags": ["ENSO", "El Niño", "La Niña", "trade winds", "thermocline", "teleconnection"]
+        },
+        {
+          "concept_id": "remote_sensing_weather_extremes_climate_link",
+          "title": "Climate change and weather extremes",
+          "description": "Assess how warming alters the frequency and intensity of heatwaves, heavy precipitation, drought, and storm-related flooding.",
+          "depth_tags": ["extreme events", "heatwave", "heavy precipitation", "drought", "attribution"]
+        },
+        {
+          "concept_id": "remote_sensing_vegetation_phenology",
+          "title": "Vegetation phenology and climate response",
+          "description": "Explain how satellite greenness indices reveal shifts in leaf-out, growing season length, and ecosystem productivity under climate change.",
+          "depth_tags": ["phenology", "growing season", "NDVI", "ecosystem response", "spring onset"]
+        },
+        {
+          "concept_id": "remote_sensing_ocean_acidification",
+          "title": "Ocean acidification from rising CO2",
+          "description": "Explain how dissolved CO2 lowers ocean pH, affects carbonate chemistry, and stresses calcifying organisms.",
+          "depth_tags": ["ocean acidification", "pH", "carbonate ion", "aragonite saturation", "calcification"]
+        },
+        {
+          "concept_id": "remote_sensing_sea_level_rise_components",
+          "title": "Sea level rise contributors",
+          "description": "Distinguish thermal expansion, glacier and ice sheet loss, and groundwater extraction as contributors to observed and projected sea level rise.",
+          "depth_tags": ["thermal expansion", "ice sheet", "glacier", "eustatic", "sea level budget"]
+        },
+        {
+          "concept_id": "remote_sensing_permafrost_carbon_feedback",
+          "title": "Permafrost thaw and carbon release",
+          "description": "Explain how warming thaws permafrost, releases CO2 and methane, and creates a positive climate feedback.",
+          "depth_tags": ["permafrost", "methane", "CO2", "positive feedback", "carbon release"]
+        }
+      ]
+    },
+    {
+      "topic_id": "remote_sensing_earth_energy_balance_and_forcing",
+      "title": "Earth's energy balance and radiative forcing",
+      "display_order": 7,
+      "why_this_topic": "Quantitative equilibrium temperature modeling and radiative forcing/feedback questions form their own skill family, distinct from descriptive climate processes and sensor physics.",
+      "scope_note": "Includes albedo, cloud/aerosol effects, radiative forcing, feedbacks, applied blackbody Earth/Sun calculations, equilibrium temperature modeling, and heating/cooling rate trends; excludes spectral absorption line details and mission identification.",
+      "concepts": [
+        {
+          "concept_id": "remote_sensing_planetary_energy_balance",
+          "title": "Planetary energy balance equation",
+          "description": "Apply the principle that absorbed solar energy equals emitted terrestrial energy at equilibrium to compute global mean energy balance.",
+          "depth_tags": ["energy balance", "absorbed solar", "emitted terrestrial", "equilibrium", "S(1-A)πR²"]
+        },
+        {
+          "concept_id": "remote_sensing_solar_constant_and_insolation",
+          "title": "Solar constant and insolation geometry",
+          "description": "Define the solar constant and calculate local insolation accounting for latitude, season, and time of day.",
+          "depth_tags": ["solar constant", "1361 W/m²", "insolation", "zenith angle", "latitudinal gradient"]
+        },
+        {
+          "concept_id": "remote_sensing_planetary_albedo",
+          "title": "Planetary albedo and shortwave reflection",
+          "description": "Define albedo as the fraction of incoming solar radiation reflected by Earth, and identify surface and cloud contributions to planetary albedo.",
+          "depth_tags": ["albedo", "shortwave reflection", "cloud albedo", "surface albedo", "Earth average ~0.3"]
+        },
+        {
+          "concept_id": "remote_sensing_effective_temperature",
+          "title": "Effective radiating temperature",
+          "description": "Calculate Earth's effective radiating temperature from absorbed solar flux and Stefan-Boltzmann law, and compare it to observed surface temperature.",
+          "depth_tags": ["T_eff = (S(1-A)/(4σ))^(1/4)", "effective temperature", "Stefan-Boltzmann", "emission temperature"]
+        },
+        {
+          "concept_id": "remote_sensing_greenhouse_surface_temperature_model",
+          "title": "Single-layer greenhouse surface temperature model",
+          "description": "Use a single-layer atmosphere model to estimate surface temperature from incoming solar radiation and atmospheric longwave absorption/emission.",
+          "depth_tags": ["greenhouse model", "atmospheric layer", "longwave emission", "surface warming", "one-layer"]
+        },
+        {
+          "concept_id": "remote_sensing_radiative_forcing_definition",
+          "title": "Radiative forcing definition and baseline",
+          "description": "Define radiative forcing as the net change in downward energy flux at the tropopause due to a perturbation, and state its units and sign convention.",
+          "depth_tags": ["radiative forcing", "W/m²", "tropopause", "positive forcing", "negative forcing"]
+        },
+        {
+          "concept_id": "remote_sensing_co2_forcing",
+          "title": "Radiative forcing of carbon dioxide",
+          "description": "Calculate or estimate CO2 radiative forcing using logarithmic concentration dependence and explain why CO2 is the largest positive forcing.",
+          "depth_tags": ["ΔF = 5.35 ln(C/C₀)", "CO2 concentration", "logarithmic", "positive forcing"]
+        },
+        {
+          "concept_id": "remote_sensing_aerosol_forcing",
+          "title": "Aerosol radiative forcing",
+          "description": "Compare negative aerosol direct forcing from scattering sulfate aerosols with positive forcing from absorbing black carbon, and state net global aerosol forcing.",
+          "depth_tags": ["sulfate", "black carbon", "direct aerosol forcing", "negative forcing", "cloud interactions"]
+        },
+        {
+          "concept_id": "remote_sensing_cloud_radiative_effect",
+          "title": "Cloud radiative effects on energy balance",
+          "description": "Distinguish shortwave cooling from longwave warming by clouds, and predict net cloud forcing based on cloud altitude and optical thickness.",
+          "depth_tags": ["cloud albedo effect", "longwave trapping", "low cloud cooling", "high cloud warming", "net cloud forcing"]
+        },
+        {
+          "concept_id": "remote_sensing_climate_feedbacks",
+          "title": "Climate feedbacks and gain",
+          "description": "Identify water vapor, lapse rate, ice-albedo, and cloud feedbacks, and explain how positive feedbacks amplify initial temperature changes.",
+          "depth_tags": ["water vapor feedback", "ice-albedo feedback", "cloud feedback", "positive feedback", "amplification"]
+        },
+        {
+          "concept_id": "remote_sensing_climate_sensitivity",
+          "title": "Equilibrium climate sensitivity",
+          "description": "Define equilibrium climate sensitivity as the equilibrium global mean temperature change for a doubling of CO2, and compare canonical range estimates.",
+          "depth_tags": ["ECS", "2×CO2", "1.5–4.5°C", "feedback parameter", "climate model"]
+        }
+      ]
+    }
+  ]
+}

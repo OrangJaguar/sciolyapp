@@ -1,0 +1,534 @@
+{
+  "event_id": "disease_detectives",
+  "event_name": "Disease Detectives",
+  "domain": "Life, Personal & Social Science",
+  "official_scope": "disease, injury, health, and disability in populations",
+  "season": 2027,
+  "division": "C",
+  "design_notes": "Expanded seven locked topics into atomic concepts for clinic, learning guide, MCQ, and binder audit use. Concept counts vary by topic (10–14) based on tested skill density. No thin stubs; no duplicate concepts across topics. Surveillance attributes, outbreak data displays, association measures, causal criteria, frequency calculations, and prevention planning remain separate as intended by the original topic split.",
+  "topics": [
+    {
+      "topic_id": "disease_detectives_epidemiologic_foundations",
+      "title": "Epidemiologic foundations and population health approach",
+      "display_order": 1,
+      "concepts": [
+        {
+          "concept_id": "disease_detectives_epi_definition",
+          "title": "Epidemiology definition and population health purpose",
+          "description": "Define epidemiology as the study of distribution and determinants of health-related states in populations and explain its application to disease, injury, and disability control.",
+          "depth_tags": ["distribution", "determinants", "population", "control"]
+        },
+        {
+          "concept_id": "disease_detectives_clinical_vs_public_health",
+          "title": "Distinguish clinical medicine from public health approach",
+          "description": "Contrast individual patient diagnosis and treatment with population-level prevention, data collection, and community intervention.",
+          "depth_tags": ["clinical medicine", "population health", "prevention", "community intervention"]
+        },
+        {
+          "concept_id": "disease_detectives_natural_history_of_disease",
+          "title": "Describe the natural history and stages of disease",
+          "description": "Identify the stages from susceptibility through subclinical, clinical, and recovery, disability, or death, and explain where prevention opportunities occur.",
+          "depth_tags": ["susceptibility", "subclinical stage", "clinical stage", "prevention windows"]
+        },
+        {
+          "concept_id": "disease_detectives_spectrum_of_disease",
+          "title": "Interpret the spectrum of disease severity",
+          "description": "Distinguish inapparent, mild, severe, and fatal cases and explain how case detection bias affects reported disease rates.",
+          "depth_tags": ["severity spectrum", "subclinical infection", "case detection", "reported rates"]
+        },
+        {
+          "concept_id": "disease_detectives_infectious_vs_noninfectious_causes",
+          "title": "Differentiate infectious and noninfectious causes of disease",
+          "description": "Classify health conditions by infectious agents, environmental/chemical causes, injuries, genetic conditions, and multifactorial causes.",
+          "depth_tags": ["infectious agents", "noninfectious causes", "injury", "multifactorial"]
+        },
+        {
+          "concept_id": "disease_detectives_occurrence_levels",
+          "title": "Define endemic, epidemic, pandemic, outbreak, and cluster",
+          "description": "Apply CDC terms for disease occurrence levels and distinguish outbreak from cluster and epidemic from pandemic using time, place, and expected baseline.",
+          "depth_tags": ["endemic", "epidemic", "pandemic", "outbreak", "cluster"]
+        },
+        {
+          "concept_id": "disease_detectives_john_snow",
+          "title": "Explain John Snow's cholera outbreak investigation",
+          "description": "Describe how John Snow used descriptive mapping, water supply comparison, and removal of the Broad Street pump to identify cholera transmission and found modern field epidemiology.",
+          "depth_tags": ["John Snow", "cholera", "spot map", "waterborne transmission"]
+        },
+        {
+          "concept_id": "disease_detectives_epi_problem_solving_steps",
+          "title": "Apply the epidemiologic approach to solving health problems",
+          "description": "List and apply the core steps: confirm problem, describe by person place time, analyze risk factors, implement control, and evaluate.",
+          "depth_tags": ["problem-solving steps", "descriptive epidemiology", "control evaluation"]
+        },
+        {
+          "concept_id": "disease_detectives_population_health_status",
+          "title": "Describe population health including injury and disability",
+          "description": "Explain how population health measures include disease, injury, disability, and quality of life outcomes, not only infections.",
+          "depth_tags": ["population health", "injury", "disability", "quality of life"]
+        },
+        {
+          "concept_id": "disease_detectives_core_vocabulary",
+          "title": "Define core epidemiologic vocabulary from CDC Principles",
+          "description": "Distinguish determinants, risk factors, protective factors, exposure, outcome, and control measures using CDC glossary definitions.",
+          "depth_tags": ["determinants", "risk factors", "exposure", "outcome", "CDC glossary"]
+        }
+      ]
+    },
+    {
+      "topic_id": "disease_detectives_surveillance_systems",
+      "title": "Surveillance system design and attributes",
+      "display_order": 2,
+      "concepts": [
+        {
+          "concept_id": "disease_detectives_surv_purpose",
+          "title": "Define public health surveillance and its purposes",
+          "description": "Explain surveillance as ongoing systematic collection, analysis, interpretation, and dissemination of health data for action.",
+          "depth_tags": ["surveillance", "ongoing", "public health action"]
+        },
+        {
+          "concept_id": "disease_detectives_surv_five_step_process",
+          "title": "Apply the five-step surveillance process",
+          "description": "List and order the five steps: data collection, analysis, interpretation, dissemination, and linkage to action.",
+          "depth_tags": ["five-step process", "data collection", "dissemination", "action"]
+        },
+        {
+          "concept_id": "disease_detectives_surv_passive",
+          "title": "Evaluate passive surveillance systems",
+          "description": "Describe passive surveillance where providers report on their own initiative and assess strengths, weaknesses, and common uses.",
+          "depth_tags": ["passive surveillance", "provider reporting", "underreporting"]
+        },
+        {
+          "concept_id": "disease_detectives_surv_active",
+          "title": "Evaluate active surveillance systems",
+          "description": "Describe active surveillance where health agencies solicit reports and assess increased completeness, cost, and timeliness tradeoffs.",
+          "depth_tags": ["active surveillance", "solicited reports", "completeness", "cost"]
+        },
+        {
+          "concept_id": "disease_detectives_surv_sentinel",
+          "title": "Evaluate sentinel surveillance systems",
+          "description": "Describe sentinel surveillance using selected reporting sites or providers to monitor trends and detect changes in high-risk or representative populations.",
+          "depth_tags": ["sentinel surveillance", "selected sites", "trend monitoring"]
+        },
+        {
+          "concept_id": "disease_detectives_surv_syndromic",
+          "title": "Evaluate syndromic surveillance systems",
+          "description": "Describe syndromic surveillance using prediagnostic clinical data or symptoms to detect outbreaks earlier than confirmed diagnosis.",
+          "depth_tags": ["syndromic", "prediagnostic", "early warning"]
+        },
+        {
+          "concept_id": "disease_detectives_surv_other_types",
+          "title": "Distinguish registry, survey, and vital statistics surveillance",
+          "description": "Compare registry-based surveillance, population surveys, and vital statistics as different surveillance data sources and their typical uses.",
+          "depth_tags": ["registry", "survey", "vital statistics", "data sources"]
+        },
+        {
+          "concept_id": "disease_detectives_surv_sensitivity",
+          "title": "Interpret sensitivity of a surveillance system",
+          "description": "Explain sensitivity as the proportion of true health events detected and apply it to judge a system's ability to find cases.",
+          "depth_tags": ["sensitivity", "true cases detected", "case finding"]
+        },
+        {
+          "concept_id": "disease_detectives_surv_ppv",
+          "title": "Interpret positive predictive value of surveillance signals",
+          "description": "Explain positive predictive value as the likelihood that reported or detected events are true cases, and evaluate false-positive burden.",
+          "depth_tags": ["positive predictive value", "false positives", "surveillance signal"]
+        },
+        {
+          "concept_id": "disease_detectives_surv_timeliness_quality",
+          "title": "Evaluate timeliness and data quality in surveillance",
+          "description": "Assess timeliness from event onset to reporting and action, and describe completeness, accuracy, and representativeness as data quality attributes.",
+          "depth_tags": ["timeliness", "data quality", "completeness", "accuracy"]
+        }
+      ]
+    },
+    {
+      "topic_id": "disease_detectives_outbreak_investigation_and_data_displays",
+      "title": "Outbreak investigation and data displays",
+      "display_order": 3,
+      "concepts": [
+        {
+          "concept_id": "disease_detectives_outbreak_detection",
+          "title": "Detect and confirm an outbreak",
+          "description": "Identify an outbreak as cases in excess of expected baseline and confirm through case verification, lab confirmation, and time-place clustering.",
+          "depth_tags": ["outbreak detection", "baseline", "verification"]
+        },
+        {
+          "concept_id": "disease_detectives_outbreak_steps",
+          "title": "Order the steps of an outbreak investigation",
+          "description": "List and apply the classic outbreak investigation steps: prepare, verify, define cases, describe, develop hypotheses, evaluate, implement control, communicate.",
+          "depth_tags": ["outbreak steps", "investigation order", "control measures"]
+        },
+        {
+          "concept_id": "disease_detectives_outbreak_case_definition",
+          "title": "Construct an outbreak case definition",
+          "description": "Create operational case definitions with person, place, time criteria and classify cases as confirmed, probable, or possible.",
+          "depth_tags": ["case definition", "confirmed", "probable", "possible", "person place time"]
+        },
+        {
+          "concept_id": "disease_detectives_outbreak_person_place_time",
+          "title": "Describe cases by person, place, and time",
+          "description": "Apply descriptive epidemiology to characterize outbreak cases by demographic features, geographic location, and time of onset.",
+          "depth_tags": ["descriptive epidemiology", "person", "place", "time"]
+        },
+        {
+          "concept_id": "disease_detectives_outbreak_line_list",
+          "title": "Build and use a line list in outbreak investigations",
+          "description": "Construct a line list with identifying, clinical, demographic, and exposure data for each case, and use it to generate descriptive findings.",
+          "depth_tags": ["line list", "case data", "exposure", "clinical data"]
+        },
+        {
+          "concept_id": "disease_detectives_outbreak_epi_curve",
+          "title": "Construct an epidemic curve",
+          "description": "Create an epidemic curve by plotting case counts by date of onset and use it to estimate exposure period and outbreak timing.",
+          "depth_tags": ["epidemic curve", "onset date", "exposure period"]
+        },
+        {
+          "concept_id": "disease_detectives_outbreak_epi_curve_patterns",
+          "title": "Interpret epidemic curve patterns",
+          "description": "Distinguish point source, continuous common source, and propagated outbreaks by epidemic curve shape and peak timing.",
+          "depth_tags": ["point source", "continuous source", "propagated", "curve shape"]
+        },
+        {
+          "concept_id": "disease_detectives_outbreak_spot_map",
+          "title": "Interpret spot maps for spatial clustering",
+          "description": "Use spot maps to identify geographic clustering of cases and generate hypotheses about sources or common exposures.",
+          "depth_tags": ["spot map", "spatial clustering", "source hypothesis"]
+        },
+        {
+          "concept_id": "disease_detectives_outbreak_pfge",
+          "title": "Interpret PFGE patterns in outbreak investigations",
+          "description": "Compare pulsed-field gel electrophoresis banding patterns to identify genetically related isolates and link cases to a common source.",
+          "depth_tags": ["PFGE", "banding pattern", "genetic relatedness", "source link"]
+        },
+        {
+          "concept_id": "disease_detectives_outbreak_wgs_snp",
+          "title": "Interpret WGS/SNP clustering and PulseNet data",
+          "description": "Use whole genome sequencing and SNP differences to determine transmission clusters and integrate PulseNet surveillance for outbreak detection.",
+          "depth_tags": ["WGS", "SNP", "PulseNet", "transmission cluster"]
+        }
+      ]
+    },
+    {
+      "topic_id": "disease_detectives_study_designs_and_association_measures",
+      "title": "Epidemiologic study designs and association measures",
+      "display_order": 4,
+      "concepts": [
+        {
+          "concept_id": "disease_detectives_study_obs_vs_exp",
+          "title": "Distinguish observational and experimental study designs",
+          "description": "Classify epidemiologic studies as observational when exposure is not assigned or experimental when the investigator allocates interventions.",
+          "depth_tags": ["observational", "experimental", "exposure assignment"]
+        },
+        {
+          "concept_id": "disease_detectives_study_cross_sectional",
+          "title": "Design and interpret cross-sectional studies",
+          "description": "Describe simultaneous measurement of exposure and outcome to estimate prevalence, and recognize inability to establish temporal sequence.",
+          "depth_tags": ["cross-sectional", "prevalence", "exposure and outcome", "temporality"]
+        },
+        {
+          "concept_id": "disease_detectives_study_case_control",
+          "title": "Design and interpret case-control studies",
+          "description": "Compare exposure frequencies between cases and controls; explain retrospective direction, selection of controls, and odds ratio as the measure of association.",
+          "depth_tags": ["case-control", "retrospective", "control selection", "odds ratio"]
+        },
+        {
+          "concept_id": "disease_detectives_study_cohort",
+          "title": "Design and interpret cohort studies",
+          "description": "Follow exposure-defined groups over time to compare incident outcomes; explain prospective vs retrospective cohorts and risk ratio interpretation.",
+          "depth_tags": ["cohort", "incidence", "risk ratio", "prospective"]
+        },
+        {
+          "concept_id": "disease_detectives_study_ecological",
+          "title": "Design and interpret ecological studies",
+          "description": "Analyze group-level exposure and outcome data to generate hypotheses, and recognize ecological fallacy limitations.",
+          "depth_tags": ["ecological", "group-level data", "ecological fallacy"]
+        },
+        {
+          "concept_id": "disease_detectives_study_rct",
+          "title": "Design and interpret randomized controlled trials",
+          "description": "Describe random allocation of intervention, blinding, placebo control, and use of risk measures to assess efficacy in trials.",
+          "depth_tags": ["RCT", "randomization", "blinding", "efficacy"]
+        },
+        {
+          "concept_id": "disease_detectives_measure_attack_rate",
+          "title": "Calculate attack rates in outbreaks",
+          "description": "Compute attack rate as cases divided by exposed population and interpret risk of illness among exposed groups.",
+          "depth_tags": ["attack rate", "cases", "exposed population"]
+        },
+        {
+          "concept_id": "disease_detectives_measure_risk_ratio",
+          "title": "Calculate and interpret risk ratios",
+          "description": "Compute risk ratio comparing incidence in exposed and unexposed groups and interpret strength and direction of association.",
+          "depth_tags": ["risk ratio", "cumulative incidence", "exposed vs unexposed"]
+        },
+        {
+          "concept_id": "disease_detectives_measure_odds_ratio",
+          "title": "Calculate and interpret odds ratios",
+          "description": "Compute odds ratio from 2x2 tables for case-control studies and interpret it as an estimate of exposure-disease association.",
+          "depth_tags": ["odds ratio", "2x2 table", "case-control", "association"]
+        },
+        {
+          "concept_id": "disease_detectives_measure_vaccine_effectiveness",
+          "title": "Calculate vaccine effectiveness and efficacy",
+          "description": "Apply formulas using attack rates in vaccinated and unvaccinated or relative risk reduction to compute vaccine effectiveness/efficacy.",
+          "depth_tags": ["vaccine effectiveness", "vaccine efficacy", "attack rate", "relative risk reduction"]
+        },
+        {
+          "concept_id": "disease_detectives_measure_ci_interpret",
+          "title": "Interpret confidence intervals for association measures",
+          "description": "Explain 95% confidence interval as range of plausible values, use null value inclusion to judge statistical significance, and assess precision.",
+          "depth_tags": ["confidence interval", "95% CI", "null value", "precision"]
+        },
+        {
+          "concept_id": "disease_detectives_bias_selection",
+          "title": "Identify selection bias in epidemiologic studies",
+          "description": "Recognize selection bias from differential participation, case/control selection, or loss to follow-up that distorts exposure-disease association.",
+          "depth_tags": ["selection bias", "participation", "loss to follow-up", "distortion"]
+        },
+        {
+          "concept_id": "disease_detectives_bias_information",
+          "title": "Identify information bias in epidemiologic studies",
+          "description": "Recognize misclassification, recall bias, and measurement error that distort exposure or outcome classification.",
+          "depth_tags": ["information bias", "misclassification", "recall bias", "measurement error"]
+        },
+        {
+          "concept_id": "disease_detectives_confounding",
+          "title": "Identify confounding and control for it",
+          "description": "Define confounding as mixing of effects by a third variable associated with exposure and outcome, and describe control methods such as randomization, restriction, matching, stratification, and adjustment.",
+          "depth_tags": ["confounding", "third variable", "stratification", "adjustment"]
+        }
+      ]
+    },
+    {
+      "topic_id": "disease_detectives_causal_inference_and_transmission_dynamics",
+      "title": "Causal inference and transmission dynamics",
+      "display_order": 5,
+      "concepts": [
+        {
+          "concept_id": "disease_detectives_bradford_hill",
+          "title": "Apply Bradford Hill criteria for causal inference",
+          "description": "Evaluate causality using strength, consistency, specificity, temporality, biological gradient, plausibility, coherence, experiment, and analogy.",
+          "depth_tags": ["Bradford Hill", "temporality", "biological gradient", "causality"]
+        },
+        {
+          "concept_id": "disease_detectives_koch_postulates",
+          "title": "Apply Koch's postulates for infectious disease causation",
+          "description": "List and apply Koch's postulates linking a specific microorganism to disease using isolation, culture, and transmission evidence.",
+          "depth_tags": ["Koch", "microorganism", "isolation", "causation"]
+        },
+        {
+          "concept_id": "disease_detectives_evans_postulates",
+          "title": "Apply Evans' postulates for chronic disease causation",
+          "description": "Use Evans' epidemiological postulates including exposure prevalence and prevalence/incidence relationships to support causation in noninfectious diseases.",
+          "depth_tags": ["Evans", "epidemiologic postulates", "chronic disease", "causation"]
+        },
+        {
+          "concept_id": "disease_detectives_dag",
+          "title": "Interpret directed acyclic graphs for causal relationships",
+          "description": "Draw and interpret DAGs to show variables, causal arrows, confounding, mediators, and colliders without cycles.",
+          "depth_tags": ["DAG", "causal diagram", "confounder", "mediator", "collider"]
+        },
+        {
+          "concept_id": "disease_detectives_sufficient_component_cause",
+          "title": "Apply sufficient-component cause models",
+          "description": "Explain sufficient causes, component causes, and necessary causes using pie diagrams for multifactorial disease causation.",
+          "depth_tags": ["sufficient cause", "component cause", "necessary cause", "causal pie"]
+        },
+        {
+          "concept_id": "disease_detectives_grade",
+          "title": "Use GRADE framework for evidence certainty",
+          "description": "Evaluate certainty of evidence across studies considering risk of bias, imprecision, inconsistency, indirectness, publication bias, and upgrade factors.",
+          "depth_tags": ["GRADE", "certainty of evidence", "risk of bias", "imprecision"]
+        },
+        {
+          "concept_id": "disease_detectives_agent_host_environment",
+          "title": "Apply the agent-host-environment triad",
+          "description": "Analyze disease as interaction of agent characteristics, host susceptibility, and environmental conditions that bring them together.",
+          "depth_tags": ["agent", "host", "environment", "triad"]
+        },
+        {
+          "concept_id": "disease_detectives_chain_of_infection",
+          "title": "Describe the chain of infection components",
+          "description": "Identify pathogen, reservoir, portal of exit, mode of transmission, portal of entry, and susceptible host as links to interrupt.",
+          "depth_tags": ["chain of infection", "reservoir", "portal of exit", "portal of entry"]
+        },
+        {
+          "concept_id": "disease_detectives_transmission_modes",
+          "title": "Distinguish direct and indirect transmission modes",
+          "description": "Classify transmission as direct contact, droplet, airborne, vehicle, vectorborne, and fomite, with examples and control implications.",
+          "depth_tags": ["direct contact", "droplet", "airborne", "vectorborne", "fomite"]
+        },
+        {
+          "concept_id": "disease_detectives_herd_immunity",
+          "title": "Explain herd immunity and threshold calculation",
+          "description": "Define herd immunity as population resistance, calculate threshold H = 1 - 1/R0, and explain implications for outbreak control.",
+          "depth_tags": ["herd immunity", "threshold", "H = 1 - 1/R0", "population immunity"]
+        },
+        {
+          "concept_id": "disease_detectives_R0",
+          "title": "Interpret R0 as basic reproduction number",
+          "description": "Define R0 as average secondary cases from one infective in a fully susceptible population and use it to assess epidemic potential.",
+          "depth_tags": ["R0", "basic reproduction number", "fully susceptible", "epidemic potential"]
+        },
+        {
+          "concept_id": "disease_detectives_Re",
+          "title": "Interpret Re as effective reproduction number",
+          "description": "Define Re as actual average secondary cases under current conditions with immunity and control measures; use Re > 1 or < 1 to assess epidemic trajectory.",
+          "depth_tags": ["Re", "effective reproduction number", "current conditions", "trajectory"]
+        }
+      ]
+    },
+    {
+      "topic_id": "disease_detectives_frequency_measures_and_data_interpretation",
+      "title": "Frequency measures and data interpretation",
+      "display_order": 6,
+      "concepts": [
+        {
+          "concept_id": "disease_detectives_ratio_proportion_rate",
+          "title": "Distinguish ratio, proportion, and rate",
+          "description": "Calculate and distinguish ratios as division of unrelated or same quantities, proportions as part over whole, and rates as events over person-time.",
+          "depth_tags": ["ratio", "proportion", "rate", "person-time"]
+        },
+        {
+          "concept_id": "disease_detectives_point_prevalence",
+          "title": "Calculate point prevalence",
+          "description": "Compute point prevalence as cases present at a specific time divided by total population at that time; interpret as disease burden.",
+          "depth_tags": ["point prevalence", "cases at time", "disease burden"]
+        },
+        {
+          "concept_id": "disease_detectives_period_prevalence",
+          "title": "Calculate period prevalence",
+          "description": "Compute period prevalence as cases present anytime during a defined period divided by mid-period population.",
+          "depth_tags": ["period prevalence", "time period", "mid-period population"]
+        },
+        {
+          "concept_id": "disease_detectives_cumulative_incidence",
+          "title": "Calculate cumulative incidence",
+          "description": "Compute cumulative incidence as new cases over a defined period divided by disease-free population at start; interpret as average risk.",
+          "depth_tags": ["cumulative incidence", "new cases", "risk", "disease-free"]
+        },
+        {
+          "concept_id": "disease_detectives_incidence_rate",
+          "title": "Calculate incidence rate with person-time",
+          "description": "Compute incidence rate as new cases divided by total person-time at risk, and interpret units as cases per person-time.",
+          "depth_tags": ["incidence rate", "person-time", "new cases", "rate"]
+        },
+        {
+          "concept_id": "disease_detectives_prevalence_incidence_relationship",
+          "title": "Explain the relationship between prevalence and incidence",
+          "description": "Apply the formula prevalence ≈ incidence × average duration to predict changes in prevalence with disease recovery or death.",
+          "depth_tags": ["prevalence", "incidence", "duration", "P = I × D"]
+        },
+        {
+          "concept_id": "disease_detectives_crude_mortality",
+          "title": "Calculate and interpret crude mortality rate",
+          "description": "Compute crude death rate as total deaths divided by total population per time period and explain its limitations for comparing populations.",
+          "depth_tags": ["crude death rate", "total deaths", "population", "comparison limitations"]
+        },
+        {
+          "concept_id": "disease_detectives_case_fatality",
+          "title": "Calculate and interpret case fatality rate",
+          "description": "Compute case fatality rate as deaths from a disease divided by total cases, expressed as percent, and interpret severity.",
+          "depth_tags": ["case fatality rate", "deaths", "cases", "severity"]
+        },
+        {
+          "concept_id": "disease_detectives_cause_specific_mortality",
+          "title": "Calculate cause-specific and proportionate mortality",
+          "description": "Compute cause-specific mortality rates as deaths from a specific cause divided by population and proportionate mortality as cause deaths divided by total deaths; interpret each.",
+          "depth_tags": ["cause-specific mortality", "proportionate mortality", "specific cause", "total deaths"]
+        },
+        {
+          "concept_id": "disease_detectives_age_adjusted_mortality",
+          "title": "Calculate and interpret age-adjusted mortality rates",
+          "description": "Apply direct or indirect standardization to remove age structure differences and compare mortality across populations with different age distributions.",
+          "depth_tags": ["age adjustment", "standardization", "direct standardization", "indirect standardization"]
+        },
+        {
+          "concept_id": "disease_detectives_graph_types",
+          "title": "Interpret line, bar, and scatter graphs in epidemiology",
+          "description": "Choose and interpret line graphs for trends, bar charts for counts, and scatter plots for relationships between variables.",
+          "depth_tags": ["line graph", "bar chart", "scatter plot", "trend"]
+        },
+        {
+          "concept_id": "disease_detectives_table_interpretation",
+          "title": "Read and critique epidemiologic data tables",
+          "description": "Extract rates, counts, and percentages from tables; identify missing denominators, inconsistent units, and misleading comparisons.",
+          "depth_tags": ["data tables", "denominator", "percentages", "critical reading"]
+        }
+      ]
+    },
+    {
+      "topic_id": "disease_detectives_prevention_and_control_strategies",
+      "title": "Prevention and control strategies",
+      "display_order": 7,
+      "concepts": [
+        {
+          "concept_id": "disease_detectives_primary_prevention",
+          "title": "Apply primary prevention strategies",
+          "description": "Describe interventions to prevent disease before onset, including vaccination, sanitation, behavior change, and injury prevention.",
+          "depth_tags": ["primary prevention", "vaccination", "sanitation", "injury prevention"]
+        },
+        {
+          "concept_id": "disease_detectives_secondary_prevention",
+          "title": "Apply secondary prevention through screening",
+          "description": "Identify screening and early detection to reduce disease progression, and evaluate screening criteria such as sensitivity and lead time.",
+          "depth_tags": ["secondary prevention", "screening", "early detection", "lead time"]
+        },
+        {
+          "concept_id": "disease_detectives_tertiary_prevention",
+          "title": "Apply tertiary prevention and rehabilitation",
+          "description": "Describe treatment, rehabilitation, and disability limitation after disease onset to reduce complications and improve function.",
+          "depth_tags": ["tertiary prevention", "rehabilitation", "disability limitation", "treatment"]
+        },
+        {
+          "concept_id": "disease_detectives_control_elimination_eradication",
+          "title": "Distinguish disease control, elimination, and eradication",
+          "description": "Differentiate control as reducing incidence to accepted level, elimination as zero cases in a geographic area, and eradication as permanent global zero cases.",
+          "depth_tags": ["control", "elimination", "eradication", "geographic area"]
+        },
+        {
+          "concept_id": "disease_detectives_isolation_quarantine",
+          "title": "Use isolation and quarantine in disease control",
+          "description": "Distinguish isolation of sick individuals from quarantine of exposed well persons and apply based on transmission mode and incubation period.",
+          "depth_tags": ["isolation", "quarantine", "sick vs exposed", "incubation period"]
+        },
+        {
+          "concept_id": "disease_detectives_contact_tracing",
+          "title": "Apply contact tracing in outbreak control",
+          "description": "Identify and monitor contacts of cases, calculate monitoring periods, and explain interruption of transmission chains.",
+          "depth_tags": ["contact tracing", "monitoring", "transmission chain", "incubation"]
+        },
+        {
+          "concept_id": "disease_detectives_environmental_vector_control",
+          "title": "Evaluate environmental and vector control measures",
+          "description": "Select sanitation, water treatment, vector reduction, and environmental modification strategies to interrupt transmission for specific diseases.",
+          "depth_tags": ["environmental control", "vector control", "sanitation", "water treatment"]
+        },
+        {
+          "concept_id": "disease_detectives_vaccination_programs",
+          "title": "Evaluate vaccination programs as control strategies",
+          "description": "Assess routine immunization, catch-up campaigns, and ring vaccination for outbreak containment; interpret coverage thresholds for prevention.",
+          "depth_tags": ["vaccination", "immunization", "ring vaccination", "coverage"]
+        },
+        {
+          "concept_id": "disease_detectives_health_communication",
+          "title": "Use health promotion and risk communication in control",
+          "description": "Design behavior change and risk communication messages to improve adoption of control measures during outbreaks and chronic disease prevention.",
+          "depth_tags": ["health promotion", "risk communication", "behavior change"]
+        },
+        {
+          "concept_id": "disease_detectives_pre_post_evaluation",
+          "title": "Critique pre/post intervention data and control measures",
+          "description": "Compare disease frequency before and after interventions, account for secular trends and biases, and evaluate whether control strategies worked.",
+          "depth_tags": ["pre/post data", "secular trends", "evaluation", "intervention effectiveness"]
+        },
+        {
+          "concept_id": "disease_detectives_tailored_prevention_set",
+          "title": "Propose a tailored prevention and control strategy set",
+          "description": "Select primary, secondary, and tertiary interventions appropriate to a given scenario, target population, agent, and setting.",
+          "depth_tags": ["strategy selection", "scenario", "primary", "secondary", "tertiary"]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,637 @@
+{
+  "event_id": "rocks_minerals",
+  "event_name": "Rocks and Minerals",
+  "domain": "Earth and Space Science",
+  "official_scope": "identification and classification of rocks and minerals",
+  "season": 2027,
+  "division": "C",
+  "design_notes": "Concept density varies by topic: 10–14 concepts per topic. Mineral ID is deliberately split into separate diagnostic property concepts to allow fine-grained clinic remediation. Rock ID keeps hand-sample and thin-section identification separate from genetic process topics to avoid duplicate concept ownership. Topics 5–7 were kept dense with process-specific atomic concepts; topic 8 remains leaner but covers cycle, economic, and environmental applications. No topic left as a stub.",
+  "topics": [
+    {
+      "topic_id": "rocks_minerals_mineral_identification_and_diagnostic_properties",
+      "title": "Mineral identification and diagnostic properties",
+      "display_order": 1,
+      "concepts": [
+        {
+          "concept_id": "rocks_minerals_definition_of_mineral",
+          "title": "Definition of a mineral",
+          "description": "Identify the five criteria (naturally occurring, inorganic, solid, ordered internal structure, definite chemical composition) and apply them to classify substances as minerals or not.",
+          "depth_tags": ["naturally occurring", "inorganic", "crystalline", "definite chemical composition", "mineraloid"]
+        },
+        {
+          "concept_id": "rocks_minerals_luster_types",
+          "title": "Luster types and metallic/nonmetallic division",
+          "description": "Distinguish metallic, submetallic, vitreous, resinous, pearly, greasy, silky, adamantine, and dull lusters in hand specimens.",
+          "depth_tags": ["luster", "metallic", "nonmetallic", "vitreous", "pearly", "adamantine"]
+        },
+        {
+          "concept_id": "rocks_minerals_mohs_hardness_scale",
+          "title": "Mohs hardness scale and field hardness tests",
+          "description": "Apply the Mohs scale (1–10) and common hardness indicators to determine relative hardness and discriminate minerals.",
+          "depth_tags": ["Mohs scale", "hardness", "talc", "diamond", "fingernail", "glass plate"]
+        },
+        {
+          "concept_id": "rocks_minerals_cleavage_vs_fracture",
+          "title": "Cleavage vs fracture and cleavage quality",
+          "description": "Distinguish cleavage planes from fracture surfaces and describe cleavage by number of directions, quality, and angles.",
+          "depth_tags": ["cleavage", "fracture", "basal cleavage", "rhombohedral cleavage", "conchoidal fracture"]
+        },
+        {
+          "concept_id": "rocks_minerals_streak_testing",
+          "title": "Streak testing and its diagnostic limits",
+          "description": "Perform streak tests on unglazed porcelain and interpret color versus hardness limitations for minerals harder than the streak plate.",
+          "depth_tags": ["streak", "porcelain plate", "hardness > 6.5", "powder color"]
+        },
+        {
+          "concept_id": "rocks_minerals_specific_gravity",
+          "title": "Specific gravity measurement and heft",
+          "description": "Estimate or calculate specific gravity by density relative to water and use heft to distinguish similar-looking minerals.",
+          "depth_tags": ["specific gravity", "density", "heft", "water displacement"]
+        },
+        {
+          "concept_id": "rocks_minerals_mineral_color_variability",
+          "title": "Mineral color and causes of variability",
+          "description": "Distinguish color as a diagnostic property from color variations caused by impurities, structural defects, and trace elements.",
+          "depth_tags": ["color", "idiochromatic", "allochromatic", "trace elements", "pleochroism"]
+        },
+        {
+          "concept_id": "rocks_minerals_tenacity_behaviors",
+          "title": "Tenacity behaviors and mechanical response",
+          "description": "Classify mineral tenacity as brittle, malleable, ductile, sectile, elastic, or flexible and predict response to stress.",
+          "depth_tags": ["tenacity", "brittle", "malleable", "sectile", "elastic"]
+        },
+        {
+          "concept_id": "rocks_minerals_crystal_habit",
+          "title": "Crystal habit and aggregate form terminology",
+          "description": "Recognize common crystal habits and aggregate forms including prismatic, acicular, botryoidal, massive, bladed, and granular.",
+          "depth_tags": ["crystal habit", "acicular", "botryoidal", "massive", "prismatic"]
+        },
+        {
+          "concept_id": "rocks_minerals_acid_reaction",
+          "title": "Acid reaction with dilute hydrochloric acid",
+          "description": "Test carbonates by observing effervescence with dilute HCl and distinguish calcite, dolomite, and other carbonate minerals.",
+          "depth_tags": ["HCl", "effervescence", "calcite", "dolomite", "carbonate"]
+        },
+        {
+          "concept_id": "rocks_minerals_magnetism_diagnostic",
+          "title": "Magnetism as a diagnostic property",
+          "description": "Test minerals for magnetic attraction using a hand magnet and identify magnetite, pyrrhotite, and ilmenite by magnetic response.",
+          "depth_tags": ["magnetism", "magnetite", "pyrrhotite", "hand magnet"]
+        },
+        {
+          "concept_id": "rocks_minerals_fluorescence_phosphorescence",
+          "title": "Fluorescence and phosphorescence under UV light",
+          "description": "Observe mineral luminescence under short-wave and long-wave ultraviolet light and distinguish fluorescence from phosphorescence.",
+          "depth_tags": ["fluorescence", "phosphorescence", "short-wave UV", "long-wave UV", "activator ions"]
+        },
+        {
+          "concept_id": "rocks_minerals_mineral_identification_workflow",
+          "title": "Mineral identification workflow using multiple properties",
+          "description": "Apply a systematic sequence of luster, hardness, cleavage, streak, specific gravity, and special properties to identify unknown minerals.",
+          "depth_tags": ["identification key", "diagnostic properties", "unknown mineral", "workflow", "hand sample"]
+        }
+      ]
+    },
+    {
+      "topic_id": "rocks_minerals_mineral_chemistry_classification_and_crystal_systems",
+      "title": "Mineral chemistry, classification, and crystal systems",
+      "display_order": 2,
+      "concepts": [
+        {
+          "concept_id": "rocks_minerals_mineral_chemical_formulas",
+          "title": "Mineral chemical formulas and stoichiometry",
+          "description": "Interpret mineral formulas, calculate oxide/element weight percent, and relate formula units to mineral identity.",
+          "depth_tags": ["chemical formula", "weight percent", "stoichiometry", "molecular formula"]
+        },
+        {
+          "concept_id": "rocks_minerals_solid_solution_series",
+          "title": "Solid solution series and end members",
+          "description": "Describe continuous compositional variation between end members using olivine and plagioclase series and predict mineral names from composition.",
+          "depth_tags": ["solid solution", "end members", "olivine series", "plagioclase series", "Fo-Fa"]
+        },
+        {
+          "concept_id": "rocks_minerals_polymorphism",
+          "title": "Polymorphism and polymorph stability",
+          "description": "Distinguish minerals with identical composition but different crystal structures and identify stability fields of polymorphs such as graphite/diamond and calcite/aragonite.",
+          "depth_tags": ["polymorphs", "graphite-diamond", "calcite-aragonite", "phase stability"]
+        },
+        {
+          "concept_id": "rocks_minerals_isomorphism",
+          "title": "Isomorphism and ionic substitution",
+          "description": "Predict ionic substitution in mineral lattices based on ionic radius and charge similarity.",
+          "depth_tags": ["isomorphism", "ionic substitution", "ionic radius", "charge balance"]
+        },
+        {
+          "concept_id": "rocks_minerals_mineral_classes_anionic_group",
+          "title": "Mineral classes by anionic group",
+          "description": "Classify minerals into native elements, sulfides, oxides, halides, carbonates, sulfates, phosphates, and silicates based on dominant anion or chemistry.",
+          "depth_tags": ["mineral classes", "native elements", "sulfides", "carbonates", "silicates"]
+        },
+        {
+          "concept_id": "rocks_minerals_silica_tetrahedron",
+          "title": "Silica tetrahedron and silicate polymerization",
+          "description": "Describe the SiO4 tetrahedron and how corner-sharing oxygen atoms polymerize tetrahedra into chains, sheets, and frameworks.",
+          "depth_tags": ["SiO4", "silica tetrahedron", "polymerization", "corner sharing"]
+        },
+        {
+          "concept_id": "rocks_minerals_nesosilicate_structure",
+          "title": "Nesosilicate (isolated tetrahedra) structure",
+          "description": "Recognize olivine and garnet as silicates with independent SiO4 tetrahedra and explain high density and equant habit.",
+          "depth_tags": ["nesosilicate", "isolated tetrahedra", "olivine", "garnet"]
+        },
+        {
+          "concept_id": "rocks_minerals_chain_silicate_structures",
+          "title": "Single-chain and double-chain silicate structures",
+          "description": "Distinguish pyroxene (single chain) from amphibole (double chain) silicate structures and relate cleavage angles to chain geometry.",
+          "depth_tags": ["single chain", "double chain", "pyroxene", "amphibole", "cleavage angle"]
+        },
+        {
+          "concept_id": "rocks_minerals_sheet_silicate_structure",
+          "title": "Sheet silicate structure and basal cleavage",
+          "description": "Explain the structure of micas and clays as sheets of linked tetrahedra and predict perfect basal cleavage.",
+          "depth_tags": ["sheet silicate", "mica", "clay", "basal cleavage"]
+        },
+        {
+          "concept_id": "rocks_minerals_framework_silicate_structure",
+          "title": "Framework silicate structure in quartz and feldspar",
+          "description": "Describe three-dimensional tetrahedral frameworks in quartz and feldspar and relate hardness and lack of cleavage to framework bonding.",
+          "depth_tags": ["framework silicate", "quartz", "feldspar", "three-dimensional framework"]
+        },
+        {
+          "concept_id": "rocks_minerals_seven_crystal_systems",
+          "title": "Seven crystal systems and unit cell parameters",
+          "description": "Classify crystals into cubic, tetragonal, orthorhombic, hexagonal, trigonal, monoclinic, and triclinic systems using axial lengths and angles.",
+          "depth_tags": ["crystal systems", "unit cell", "axial ratios", "symmetry"]
+        },
+        {
+          "concept_id": "rocks_minerals_binary_phase_diagrams",
+          "title": "Binary phase diagrams and solid solution behavior",
+          "description": "Interpret binary phase diagrams showing solid solution and melting intervals for plagioclase or olivine and predict liquid vs solid compositions during cooling.",
+          "depth_tags": ["binary phase diagram", "liquidus", "solidus", "plagioclase", "fractional crystallization"]
+        }
+      ]
+    },
+    {
+      "topic_id": "rocks_minerals_mineral_formation_environments_and_rock_forming_associations",
+      "title": "Mineral formation environments and rock-forming associations",
+      "display_order": 3,
+      "concepts": [
+        {
+          "concept_id": "rocks_minerals_bowens_reaction_series",
+          "title": "Bowen's reaction series",
+          "description": "Apply Bowen's Reaction Series to predict the crystallization order of minerals from cooling magma and explain continuous and discontinuous branches.",
+          "depth_tags": ["Bowen's Reaction Series", "crystallization order", "continuous branch", "discontinuous branch"]
+        },
+        {
+          "concept_id": "rocks_minerals_fractional_crystallization",
+          "title": "Fractional crystallization and magma evolution",
+          "description": "Explain how removal of early-formed crystals changes residual magma composition and produces differentiated rock suites.",
+          "depth_tags": ["fractional crystallization", "magma evolution", "crystal settling", "differentiation"]
+        },
+        {
+          "concept_id": "rocks_minerals_pegmatite_environments",
+          "title": "Pegmatite formation environments",
+          "description": "Identify pegmatite bodies as late-stage, water-rich magmatic environments and associate them with large crystals and rare minerals.",
+          "depth_tags": ["pegmatite", "late-stage magma", "giant crystals", "rare minerals"]
+        },
+        {
+          "concept_id": "rocks_minerals_hydrothermal_mineral_deposits",
+          "title": "Hydrothermal veins and mineral precipitation",
+          "description": "Explain how hot aqueous fluids deposit quartz, sulfides, and native metals in fractures and faults.",
+          "depth_tags": ["hydrothermal vein", "aqueous fluid", "sulfide minerals", "quartz vein"]
+        },
+        {
+          "concept_id": "rocks_minerals_metamorphic_mineral_growth",
+          "title": "Metamorphic mineral growth and recrystallization",
+          "description": "Explain how pressure, temperature, and fluids cause new minerals to grow in solid state during metamorphism.",
+          "depth_tags": ["solid-state recrystallization", "metamorphic minerals", "P-T conditions", "porphyroblast"]
+        },
+        {
+          "concept_id": "rocks_minerals_sedimentary_mineral_precipitation",
+          "title": "Sedimentary mineral formation and evaporite precipitation",
+          "description": "Explain how halite, gypsum, calcite, and dolomite precipitate from evaporating water or form by chemical/biochemical deposition.",
+          "depth_tags": ["evaporite", "precipitation", "halite", "gypsum", "calcite"]
+        },
+        {
+          "concept_id": "rocks_minerals_weathering_clay_formation",
+          "title": "Weathering and clay mineral formation",
+          "description": "Describe how feldspars and ferromagnesian minerals weather to form clays, oxides, and dissolved ions in surface environments.",
+          "depth_tags": ["weathering", "clay minerals", "kaolinite", "oxidation", "hydrolysis"]
+        },
+        {
+          "concept_id": "rocks_minerals_rock_forming_igneous_minerals",
+          "title": "Common rock-forming minerals in igneous rocks",
+          "description": "Identify quartz, feldspar, mica, amphibole, pyroxene, and olivine as primary igneous rock-forming minerals and associate them with felsic or mafic compositions.",
+          "depth_tags": ["rock-forming minerals", "igneous", "felsic", "mafic", "olivine"]
+        },
+        {
+          "concept_id": "rocks_minerals_rock_forming_sedimentary_minerals",
+          "title": "Common minerals in sedimentary rocks",
+          "description": "Identify quartz, calcite, dolomite, clays, halite, and gypsum as typical sedimentary minerals and link them to clastic or chemical origins.",
+          "depth_tags": ["sedimentary minerals", "quartz", "calcite", "dolomite", "clay minerals"]
+        },
+        {
+          "concept_id": "rocks_minerals_rock_forming_metamorphic_minerals",
+          "title": "Common metamorphic rock-forming minerals",
+          "description": "Recognize garnet, staurolite, kyanite, sillimanite, andalusite, talc, and chlorite as metamorphic minerals and relate them to protolith composition.",
+          "depth_tags": ["metamorphic minerals", "garnet", "staurolite", "kyanite", "sillimanite"]
+        },
+        {
+          "concept_id": "rocks_minerals_mineral_associations_diagnostic",
+          "title": "Mineral associations as geologic indicators",
+          "description": "Use coexisting mineral assemblages to infer formation environment, protolith, or ore deposit type.",
+          "depth_tags": ["mineral assemblage", "geologic indicator", "ore deposit", "protolith"]
+        }
+      ]
+    },
+    {
+      "topic_id": "rocks_minerals_rock_identification_and_classification",
+      "title": "Rock identification and classification",
+      "display_order": 4,
+      "concepts": [
+        {
+          "concept_id": "rocks_minerals_definition_of_rock",
+          "title": "Definition of a rock",
+          "description": "Distinguish rocks from minerals and identify rocks as naturally occurring aggregates or masses of minerals, mineraloids, or organic material.",
+          "depth_tags": ["rock definition", "aggregate", "mineraloid", "organic material"]
+        },
+        {
+          "concept_id": "rocks_minerals_rock_family_classification",
+          "title": "Three genetic rock families",
+          "description": "Classify unknown rocks as igneous, sedimentary, or metamorphic based on texture, composition, and observed structures.",
+          "depth_tags": ["igneous", "sedimentary", "metamorphic", "genetic classification"]
+        },
+        {
+          "concept_id": "rocks_minerals_igneous_hand_sample_id",
+          "title": "Igneous hand-sample identification by grain size and color",
+          "description": "Identify common igneous rocks (granite, diorite, gabbro, rhyolite, andesite, basalt, pumice, obsidian, peridotite) using crystal size and color index.",
+          "depth_tags": ["granite", "basalt", "gabbro", "rhyolite", "obsidian", "color index"]
+        },
+        {
+          "concept_id": "rocks_minerals_sedimentary_hand_sample_id",
+          "title": "Sedimentary hand-sample identification by grain size and composition",
+          "description": "Identify common sedimentary rocks (conglomerate, breccia, sandstone, siltstone, shale, limestone, dolostone, chert, coal) using clast texture and composition.",
+          "depth_tags": ["conglomerate", "sandstone", "shale", "limestone", "chert", "coal"]
+        },
+        {
+          "concept_id": "rocks_minerals_metamorphic_hand_sample_id",
+          "title": "Metamorphic hand-sample identification by foliation and mineralogy",
+          "description": "Identify common metamorphic rocks (slate, phyllite, schist, gneiss, marble, quartzite, hornfels) using foliation type and mineral assemblage.",
+          "depth_tags": ["slate", "schist", "gneiss", "marble", "quartzite", "foliation"]
+        },
+        {
+          "concept_id": "rocks_minerals_polarizing_microscope_basics",
+          "title": "Polarizing microscope setup and use",
+          "description": "Operate a petrographic microscope with plane-polarized and crossed-polarized light and explain how polarizers interact with crystals.",
+          "depth_tags": ["polarizing microscope", "plane-polarized light", "crossed polars", "petrographic microscope"]
+        },
+        {
+          "concept_id": "rocks_minerals_optical_properties_thin_section",
+          "title": "Optical properties in thin section",
+          "description": "Recognize relief, birefringence, extinction, interference colors, and pleochroism to identify minerals in thin section.",
+          "depth_tags": ["relief", "birefringence", "extinction", "interference colors", "pleochroism"]
+        },
+        {
+          "concept_id": "rocks_minerals_thin_section_igneous",
+          "title": "Thin-section identification of igneous rocks",
+          "description": "Interpret photomicrographs of igneous rocks by identifying interlocking minerals and textures such as intergranular, ophitic, and porphyritic.",
+          "depth_tags": ["thin section", "igneous photomicrograph", "intergranular texture", "ophitic texture", "porphyritic"]
+        },
+        {
+          "concept_id": "rocks_minerals_thin_section_sedimentary",
+          "title": "Thin-section identification of sedimentary rocks",
+          "description": "Interpret photomicrographs of sedimentary rocks by identifying detrital grains, cement, matrix, and authigenic minerals.",
+          "depth_tags": ["thin section", "sedimentary photomicrograph", "detrital grains", "cement", "matrix"]
+        },
+        {
+          "concept_id": "rocks_minerals_thin_section_metamorphic",
+          "title": "Thin-section identification of metamorphic rocks",
+          "description": "Interpret photomicrographs of metamorphic rocks by identifying foliation, porphyroblasts, and metamorphic mineral assemblages.",
+          "depth_tags": ["thin section", "metamorphic photomicrograph", "foliation", "porphyroblast", "metamorphic texture"]
+        }
+      ]
+    },
+    {
+      "topic_id": "rocks_minerals_igneous_rock_textures_composition_and_settings",
+      "title": "Igneous rock textures, composition, and settings",
+      "display_order": 5,
+      "concepts": [
+        {
+          "concept_id": "rocks_minerals_intrusive_extrusive_settings",
+          "title": "Intrusive and extrusive igneous settings",
+          "description": "Distinguish plutonic from volcanic settings based on depth of crystallization and infer cooling rates from environment.",
+          "depth_tags": ["intrusive", "extrusive", "plutonic", "volcanic", "cooling rate"]
+        },
+        {
+          "concept_id": "rocks_minerals_phaneritic_texture",
+          "title": "Phaneritic texture and slow cooling",
+          "description": "Recognize coarse-grained phaneritic texture and explain its formation by slow cooling in plutonic environments.",
+          "depth_tags": ["phaneritic", "coarse-grained", "plutonic", "slow cooling"]
+        },
+        {
+          "concept_id": "rocks_minerals_aphanitic_texture",
+          "title": "Aphanitic texture and rapid cooling",
+          "description": "Recognize fine-grained aphanitic texture and explain its formation by rapid cooling at or near Earth's surface.",
+          "depth_tags": ["aphanitic", "fine-grained", "volcanic", "rapid cooling"]
+        },
+        {
+          "concept_id": "rocks_minerals_pegmatitic_texture",
+          "title": "Pegmatitic texture and water-rich residual melt",
+          "description": "Identify exceptionally coarse pegmatitic texture and explain growth from water-rich, low-viscosity late-stage melt.",
+          "depth_tags": ["pegmatitic", "giant crystals", "water-rich melt", "late-stage"]
+        },
+        {
+          "concept_id": "rocks_minerals_porphyritic_texture",
+          "title": "Porphyritic texture and two-stage cooling",
+          "description": "Interpret phenocrysts set in a finer groundmass as evidence for two-stage cooling in magma chambers and eruption.",
+          "depth_tags": ["porphyritic", "phenocrysts", "groundmass", "two-stage cooling"]
+        },
+        {
+          "concept_id": "rocks_minerals_glassy_texture",
+          "title": "Glassy texture and rapid quenching",
+          "description": "Recognize obsidian and pumice as glassy igneous rocks formed by quenching without crystal growth.",
+          "depth_tags": ["glassy", "obsidian", "quenching", "volcanic glass"]
+        },
+        {
+          "concept_id": "rocks_minerals_vesicular_texture",
+          "title": "Vesicular and scoriaceous textures",
+          "description": "Explain vesicle formation by gas exsolution during lava eruption and distinguish pumice, scoria, and vesicular basalt by density and color.",
+          "depth_tags": ["vesicular", "gas exsolution", "pumice", "scoria", "vesicles"]
+        },
+        {
+          "concept_id": "rocks_minerals_pyroclastic_textures",
+          "title": "Pyroclastic and fragmental textures",
+          "description": "Identify tuff, volcanic breccia, and agglomerate as products of explosive eruptions and fragmented material.",
+          "depth_tags": ["pyroclastic", "tuff", "volcanic breccia", "agglomerate", "explosive eruption"]
+        },
+        {
+          "concept_id": "rocks_minerals_felsic_mafic_composition",
+          "title": "Felsic–mafic–ultramafic composition continuum",
+          "description": "Classify igneous rocks by silica content and color index along the felsic, intermediate, mafic, and ultramafic spectrum.",
+          "depth_tags": ["felsic", "mafic", "ultramafic", "silica content", "color index"]
+        },
+        {
+          "concept_id": "rocks_minerals_igneous_classification_diagram",
+          "title": "Igneous rock classification diagrams",
+          "description": "Use QAPF and color index diagrams to name phaneritic and aphanitic igneous rocks from mineral proportions.",
+          "depth_tags": ["QAPF diagram", "classification", "mineral proportions", "feldspar", "quartz"]
+        },
+        {
+          "concept_id": "rocks_minerals_magma_evolution_processes",
+          "title": "Magma evolution by partial melting, assimilation, and magma mixing",
+          "description": "Distinguish how partial melting of source rocks, assimilation of country rock, and mixing of magma bodies alter magma composition.",
+          "depth_tags": ["partial melting", "assimilation", "magma mixing", "magmatic differentiation"]
+        },
+        {
+          "concept_id": "rocks_minerals_volcanic_settings_landforms",
+          "title": "Volcanic settings and eruption styles",
+          "description": "Associate lava flows, shield volcanoes, stratovolcanoes, and calderas with magma viscosity, composition, and tectonic setting.",
+          "depth_tags": ["shield volcano", "stratovolcano", "caldera", "viscosity", "eruption style"]
+        }
+      ]
+    },
+    {
+      "topic_id": "rocks_minerals_sedimentary_rock_textures_composition_and_environments",
+      "title": "Sedimentary rock textures, composition, and depositional environments",
+      "display_order": 6,
+      "concepts": [
+        {
+          "concept_id": "rocks_minerals_weathering_sediment_generation",
+          "title": "Weathering and sediment generation",
+          "description": "Distinguish physical and chemical weathering processes that produce detrital and dissolved sediment.",
+          "depth_tags": ["physical weathering", "chemical weathering", "detrital sediment", "dissolved load"]
+        },
+        {
+          "concept_id": "rocks_minerals_clastic_chemical_biochemical",
+          "title": "Clastic, chemical, and biochemical sedimentary rocks",
+          "description": "Classify sedimentary rocks as clastic, chemical, or biochemical/organic based on sediment origin and composition.",
+          "depth_tags": ["clastic", "chemical sedimentary", "biochemical", "organic sediment"]
+        },
+        {
+          "concept_id": "rocks_minerals_grain_size_scale",
+          "title": "Grain size scale and clast nomenclature",
+          "description": "Apply the Wentworth grain-size scale to classify clasts as gravel, sand, silt, or clay and name resulting rocks (conglomerate, sandstone, siltstone, shale).",
+          "depth_tags": ["Wentworth scale", "grain size", "sand", "silt", "clay"]
+        },
+        {
+          "concept_id": "rocks_minerals_sorting",
+          "title": "Sorting and environmental energy interpretation",
+          "description": "Interpret sorting of sedimentary grains as an indicator of transport energy and distance from source.",
+          "depth_tags": ["sorting", "transport energy", "well-sorted", "poorly-sorted", "depositional energy"]
+        },
+        {
+          "concept_id": "rocks_minerals_rounding_sphericity",
+          "title": "Rounding and sphericity of clasts",
+          "description": "Distinguish angular vs rounded grains and relate rounding to transport distance and abrasion history.",
+          "depth_tags": ["rounding", "sphericity", "abrasion", "transport distance", "angular"]
+        },
+        {
+          "concept_id": "rocks_minerals_bedding_stratification",
+          "title": "Bedding and stratification",
+          "description": "Recognize beds, laminations, and graded bedding as primary sedimentary structures recording depositional events.",
+          "depth_tags": ["bedding", "stratification", "lamination", "graded bedding"]
+        },
+        {
+          "concept_id": "rocks_minerals_cross_bedding",
+          "title": "Cross-bedding and paleocurrent direction",
+          "description": "Interpret cross-bedding geometry to determine ancient current direction and depositional environment.",
+          "depth_tags": ["cross-bedding", "paleocurrent", "trough cross-bedding", "dune migration"]
+        },
+        {
+          "concept_id": "rocks_minerals_ripple_marks",
+          "title": "Ripple marks and their origins",
+          "description": "Distinguish symmetrical wave-formed ripples from asymmetrical current-formed ripples and infer environment.",
+          "depth_tags": ["ripple marks", "wave ripples", "current ripples", "paleoenvironment"]
+        },
+        {
+          "concept_id": "rocks_minerals_mud_cracks",
+          "title": "Mud cracks and subaerial exposure",
+          "description": "Recognize mud cracks as evidence of wetting and drying cycles in subaerial environments.",
+          "depth_tags": ["mud cracks", "desiccation", "subaerial exposure", "wet-dry cycles"]
+        },
+        {
+          "concept_id": "rocks_minerals_depositional_environments",
+          "title": "Depositional environment identification",
+          "description": "Use rock texture, structures, and fossils to identify fluvial, deltaic, eolian, shallow marine, deep marine, lacustrine, or evaporite settings.",
+          "depth_tags": ["depositional environment", "fluvial", "deltaic", "eolian", "shallow marine"]
+        },
+        {
+          "concept_id": "rocks_minerals_carbonate_rocks",
+          "title": "Carbonate sedimentary rocks and precipitation",
+          "description": "Identify limestone and dolostone and explain formation by carbonate precipitation, shell accumulation, or dolomitization.",
+          "depth_tags": ["carbonate", "limestone", "dolostone", "calcite", "aragonite"]
+        },
+        {
+          "concept_id": "rocks_minerals_evaporites",
+          "title": "Evaporite rocks and mineral sequence",
+          "description": "Explain precipitation of halite, gypsum, anhydrite, and sylvite from evaporating brines and identify evaporite rocks.",
+          "depth_tags": ["evaporite", "halite", "gypsum", "anhydrite", "brine"]
+        },
+        {
+          "concept_id": "rocks_minerals_lithification_diagenesis",
+          "title": "Lithification and diagenesis",
+          "description": "Describe compaction, cementation, recrystallization, and diagenetic changes that transform sediment into sedimentary rock.",
+          "depth_tags": ["lithification", "compaction", "cementation", "diagenesis", "recrystallization"]
+        },
+        {
+          "concept_id": "rocks_minerals_fossils_sedimentary_indicators",
+          "title": "Fossils as sedimentary environment indicators",
+          "description": "Use fossil type, preservation, and abundance to infer depositional environment and stratigraphic context.",
+          "depth_tags": ["fossils", "paleoenvironment", "biogenic sediment", "index fossils"]
+        }
+      ]
+    },
+    {
+      "topic_id": "rocks_minerals_metamorphic_rock_textures_grade_facies_and_settings",
+      "title": "Metamorphic rock textures, grade, facies, and tectonic settings",
+      "display_order": 7,
+      "concepts": [
+        {
+          "concept_id": "rocks_minerals_directed_pressure_foliation",
+          "title": "Directed pressure and foliation development",
+          "description": "Explain how differential stress aligns platy minerals to produce foliation, slaty cleavage, schistosity, and gneissic banding.",
+          "depth_tags": ["directed pressure", "differential stress", "foliation", "platy minerals"]
+        },
+        {
+          "concept_id": "rocks_minerals_foliated_rock_sequence",
+          "title": "Foliated metamorphic rock sequence",
+          "description": "Distinguish slate, phyllite, schist, and gneiss by grain size, foliation type, and mineralogy along increasing grade.",
+          "depth_tags": ["slate", "phyllite", "schist", "gneiss", "metamorphic grade"]
+        },
+        {
+          "concept_id": "rocks_minerals_nonfoliated_metamorphic_rocks",
+          "title": "Nonfoliated metamorphic rocks",
+          "description": "Identify marble, quartzite, hornfels, and serpentinite and explain why they lack foliation due to composition or pressure conditions.",
+          "depth_tags": ["nonfoliated", "marble", "quartzite", "hornfels", "serpentinite"]
+        },
+        {
+          "concept_id": "rocks_minerals_index_minerals_grade",
+          "title": "Index minerals and metamorphic grade",
+          "description": "Use index minerals (chlorite, biotite, garnet, staurolite, kyanite, sillimanite) to determine metamorphic grade and isograd boundaries.",
+          "depth_tags": ["index minerals", "metamorphic grade", "chlorite", "garnet", "kyanite", "sillimanite"]
+        },
+        {
+          "concept_id": "rocks_minerals_protolith_identification",
+          "title": "Protolith identification and metamorphic changes",
+          "description": "Infer protolith from metamorphic mineralogy and texture (e.g., shale to schist, sandstone to quartzite, limestone to marble).",
+          "depth_tags": ["protolith", "shale", "quartzite", "marble", "mineralogy"]
+        },
+        {
+          "concept_id": "rocks_minerals_regional_metamorphism",
+          "title": "Regional metamorphism and mountain building",
+          "description": "Explain regional metamorphism associated with continental collision, subduction, and deep burial over large areas.",
+          "depth_tags": ["regional metamorphism", "mountain building", "continental collision", "burial"]
+        },
+        {
+          "concept_id": "rocks_minerals_contact_metamorphism",
+          "title": "Contact metamorphism and thermal aureoles",
+          "description": "Describe metamorphism adjacent to igneous intrusions and the formation of hornfels in thermal aureoles.",
+          "depth_tags": ["contact metamorphism", "thermal aureole", "hornfels", "intrusion"]
+        },
+        {
+          "concept_id": "rocks_minerals_dynamic_metamorphism",
+          "title": "Dynamic metamorphism in fault zones",
+          "description": "Explain cataclastic and mylonitic textures formed by mechanical deformation along faults and shear zones.",
+          "depth_tags": ["dynamic metamorphism", "mylonite", "cataclasite", "fault zone"]
+        },
+        {
+          "concept_id": "rocks_minerals_hydrothermal_metasomatism",
+          "title": "Hydrothermal metamorphism and metasomatism",
+          "description": "Describe chemical alteration by hot fluids and metasomatic changes that form skarns, serpentinite, and ore deposits.",
+          "depth_tags": ["hydrothermal metamorphism", "metasomatism", "skarn", "serpentinite"]
+        },
+        {
+          "concept_id": "rocks_minerals_metamorphic_facies_concept",
+          "title": "Metamorphic facies concept",
+          "description": "Interpret metamorphic facies as assemblages of minerals stable over specific pressure-temperature ranges (e.g., zeolite, greenschist, amphibolite, granulite, eclogite).",
+          "depth_tags": ["metamorphic facies", "greenschist", "amphibolite", "eclogite", "P-T conditions"]
+        },
+        {
+          "concept_id": "rocks_minerals_facies_series_tectonic_settings",
+          "title": "Metamorphic facies series and tectonic settings",
+          "description": "Correlate Barrovian, Buchan, and high-pressure facies series with convergent margins, magmatic arcs, and subduction zones.",
+          "depth_tags": ["facies series", "Barrovian", "Buchan", "subduction zone", "tectonic setting"]
+        },
+        {
+          "concept_id": "rocks_minerals_porphyroblasts_textures",
+          "title": "Porphyroblasts and metamorphic textures",
+          "description": "Recognize porphyroblasts, poikiloblasts, and inclusion trails as evidence of mineral growth relative to deformation.",
+          "depth_tags": ["porphyroblast", "poikiloblast", "inclusion trails", "deformation"]
+        },
+        {
+          "concept_id": "rocks_minerals_shock_metamorphism",
+          "title": "Shock metamorphism and impact features",
+          "description": "Identify shocked quartz, coesite, and shatter cones as diagnostic of meteorite impacts.",
+          "depth_tags": ["shock metamorphism", "shocked quartz", "coesite", "shatter cones", "impact"]
+        }
+      ]
+    },
+    {
+      "topic_id": "rocks_minerals_rock_cycle_and_economic_uses",
+      "title": "Rock cycle and economic uses",
+      "display_order": 8,
+      "concepts": [
+        {
+          "concept_id": "rocks_minerals_rock_cycle_processes",
+          "title": "Rock cycle processes and reservoirs",
+          "description": "Identify weathering, erosion, deposition, burial, lithification, metamorphism, melting, crystallization, and uplift as processes that cycle rock material among igneous, sedimentary, and metamorphic reservoirs.",
+          "depth_tags": ["rock cycle", "weathering", "melting", "crystallization", "uplift"]
+        },
+        {
+          "concept_id": "rocks_minerals_rock_cycle_diagram",
+          "title": "Rock cycle diagram interpretation",
+          "description": "Interpret rock cycle diagrams to predict possible pathways and products for any starting rock under given geologic conditions.",
+          "depth_tags": ["rock cycle diagram", "pathways", "geologic conditions", "reservoirs"]
+        },
+        {
+          "concept_id": "rocks_minerals_igneous_rock_economic_uses",
+          "title": "Economic uses of igneous rocks",
+          "description": "Relate granite, basalt, pumice, and obsidian to construction, abrasives, and landscaping uses.",
+          "depth_tags": ["granite", "basalt", "pumice", "construction", "abrasives"]
+        },
+        {
+          "concept_id": "rocks_minerals_sedimentary_rock_economic_uses",
+          "title": "Economic uses of sedimentary rocks",
+          "description": "Relate limestone, sandstone, shale, coal, gypsum, and chert to cement, building stone, energy, and industrial materials.",
+          "depth_tags": ["limestone", "cement", "sandstone", "coal", "gypsum", "chert"]
+        },
+        {
+          "concept_id": "rocks_minerals_metamorphic_rock_economic_uses",
+          "title": "Economic uses of metamorphic rocks",
+          "description": "Relate marble, slate, schist, gneiss, and quartzite to building stone, roofing, flooring, and decorative uses.",
+          "depth_tags": ["marble", "slate", "schist", "gneiss", "building stone"]
+        },
+        {
+          "concept_id": "rocks_minerals_mineral_resources_ore_deposits",
+          "title": "Mineral resources and ore deposit types",
+          "description": "Identify ore minerals for metals and explain concentration processes forming magmatic, hydrothermal, sedimentary, and residual ore deposits.",
+          "depth_tags": ["ore minerals", "ore deposit", "hydrothermal", "magmatic", "residual"]
+        },
+        {
+          "concept_id": "rocks_minerals_gem_varieties",
+          "title": "Gem varieties and gemstone properties",
+          "description": "Distinguish gem varieties of common minerals (corundum ruby/sapphire, beryl emerald/aquamarine, quartz amethyst/citrine) by color, hardness, and clarity.",
+          "depth_tags": ["gem varieties", "corundum", "beryl", "quartz", "gemstone properties"]
+        },
+        {
+          "concept_id": "rocks_minerals_industrial_minerals",
+          "title": "Industrial minerals and nonmetallic resources",
+          "description": "Identify nonmetallic mineral commodities such as gypsum, halite, talc, and kaolinite and their uses in manufacturing.",
+          "depth_tags": ["industrial minerals", "nonmetallic", "gypsum", "halite", "talc", "kaolinite"]
+        },
+        {
+          "concept_id": "rocks_minerals_fossil_fuels",
+          "title": "Fossil fuels as sedimentary resources",
+          "description": "Explain coal and petroleum as organic-rich sedimentary resources and relate coal rank to burial and thermal maturity.",
+          "depth_tags": ["coal", "petroleum", "organic-rich sediment", "coal rank", "thermal maturity"]
+        },
+        {
+          "concept_id": "rocks_minerals_mining_environmental_impacts",
+          "title": "Environmental impacts of mining and quarrying",
+          "description": "Identify environmental consequences of mineral and rock extraction including acid mine drainage, tailings, and habitat disruption.",
+          "depth_tags": ["mining", "acid mine drainage", "tailings", "quarrying", "environmental impact"]
+        }
+      ]
+    }
+  ]
+}

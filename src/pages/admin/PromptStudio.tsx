@@ -11,6 +11,24 @@ import {
 } from '../../lib/adminCatalog'
 import { adminErrorMessage } from '../../lib/adminQuestions'
 
+/** Events with a real written bank. Build events stay off this menu. */
+const PLATFORM_EVENT_IDS = new Set([
+  'anatomy',
+  'astronomy',
+  'botany',
+  'chem_lab',
+  'circuit_lab',
+  'designer_genes',
+  'disease_detectives',
+  'dynamic_planet',
+  'forensics',
+  'protein_modeling',
+  'remote_sensing',
+  'rocks_minerals',
+  'thermodynamics',
+  'water_quality',
+])
+
 const FEW_SHOT_TEMPLATE = JSON.stringify(
   [
     {
@@ -144,8 +162,8 @@ export function PromptStudio({ snapshot }: { snapshot: CatalogSnapshot }) {
         <div className="shrink-0 space-y-1.5 border-t border-subtle p-2">
           <p className="label-caps text-[9px] text-dim">Add event pack</p>
           <p className="text-[9px] leading-snug text-dim">
-            You need one event pack per studyable event. Topic overlays are
-            optional and rare — skip them for season 1.
+            The 14 study events belong here. Topic overlays are optional and
+            rare.
           </p>
           <select
             value={newScopeId}
@@ -156,11 +174,13 @@ export function PromptStudio({ snapshot }: { snapshot: CatalogSnapshot }) {
             className="field-input min-w-0 text-[10px]"
           >
             <option value="">Choose event…</option>
-            {snapshot.events.map((event) => (
-              <option key={event.id} value={event.id}>
-                {event.name}
-              </option>
-            ))}
+            {snapshot.events
+              .filter((event) => PLATFORM_EVENT_IDS.has(event.id))
+              .map((event) => (
+                <option key={event.id} value={event.id}>
+                  {event.name}
+                </option>
+              ))}
           </select>
           <button
             type="button"

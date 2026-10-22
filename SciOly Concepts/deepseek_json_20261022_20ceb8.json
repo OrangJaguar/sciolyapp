@@ -1,0 +1,493 @@
+{
+  "event_id": "thermodynamics",
+  "event_name": "Thermodynamics",
+  "domain": "Physical Science & Chemistry",
+  "official_scope": "thermodynamic concepts (plus heat-collection device testing)",
+  "season": 2027,
+  "division": "C",
+  "design_notes": "Expanded all eight topics into atomic concepts. Topic 1 contains foundational classification and measurement nodes; topic 4 is the densest because heat transfer modes, thermal properties, and blackbody radiation are all tested there. Historical contributors remain one concept per named scientist. No topic was left as a thin stub.",
+  "topics": [
+    {
+      "topic_id": "thermodynamics_systems_properties_temperature",
+      "title": "Systems, properties, and temperature",
+      "display_order": 1,
+      "concepts": [
+        {
+          "concept_id": "thermodynamics_system_classification",
+          "title": "Classify thermodynamic systems",
+          "description": "Identify whether a system is open, closed, or isolated by whether mass and energy cross its boundary.",
+          "depth_tags": ["open system", "closed system", "isolated system", "boundary", "surroundings"]
+        },
+        {
+          "concept_id": "thermodynamics_state_vs_path_functions",
+          "title": "Distinguish state and path functions",
+          "description": "Classify properties such as internal energy, enthalpy, temperature, work, and heat as state functions or path functions based on path dependence.",
+          "depth_tags": ["state function", "path function", "internal energy", "work", "heat"]
+        },
+        {
+          "concept_id": "thermodynamics_intensive_vs_extensive_properties",
+          "title": "Intensive vs. extensive properties",
+          "description": "Determine whether a thermodynamic property is intensive or extensive and use scaling behavior to classify examples.",
+          "depth_tags": ["intensive property", "extensive property", "density", "volume", "specific heat"]
+        },
+        {
+          "concept_id": "thermodynamics_temperature_scales_conversions",
+          "title": "Convert temperature scales",
+          "description": "Convert temperatures among Celsius, Kelvin, and Fahrenheit, and identify absolute zero on each scale.",
+          "depth_tags": ["Kelvin", "Celsius", "Fahrenheit", "absolute zero", "K = °C + 273.15"]
+        },
+        {
+          "concept_id": "thermodynamics_thermal_equilibrium_zeroth_law",
+          "title": "Thermal equilibrium and the zeroth law",
+          "description": "Apply the zeroth law to predict thermal equilibrium when systems are in contact through a diathermal boundary.",
+          "depth_tags": ["zeroth law", "thermal equilibrium", "diathermal", "temperature"]
+        },
+        {
+          "concept_id": "thermodynamics_temperature_measurement_devices",
+          "title": "Temperature measurement devices",
+          "description": "Compare how liquid-in-glass thermometers, thermocouples, resistance temperature detectors, and thermistors measure temperature.",
+          "depth_tags": ["thermocouple", "RTD", "thermistor", "liquid-in-glass", "sensor"]
+        },
+        {
+          "concept_id": "thermodynamics_pressure_measurement_manometers",
+          "title": "Pressure units and manometer reading",
+          "description": "Convert among pressure units and calculate gas pressure from open-tube or closed-tube manometer readings.",
+          "depth_tags": ["manometer", "barometer", "pressure units", "torr", "Pa"]
+        },
+        {
+          "concept_id": "thermodynamics_mechanical_chemical_equilibrium",
+          "title": "Mechanical and chemical equilibrium",
+          "description": "Identify mechanical equilibrium as uniform pressure and chemical equilibrium as no net reaction or phase transfer.",
+          "depth_tags": ["mechanical equilibrium", "chemical equilibrium", "uniform pressure", "phase transfer"]
+        }
+      ]
+    },
+    {
+      "topic_id": "thermodynamics_phases_phase_diagrams_heat_effects",
+      "title": "Phases, phase transitions, and heat effects",
+      "display_order": 2,
+      "concepts": [
+        {
+          "concept_id": "thermodynamics_phase_transition_types",
+          "title": "Phase transition names and energy direction",
+          "description": "Identify melting, freezing, vaporization, condensation, sublimation, and deposition and state whether each absorbs or releases heat.",
+          "depth_tags": ["melting", "vaporization", "sublimation", "deposition", "endothermic"]
+        },
+        {
+          "concept_id": "thermodynamics_phase_diagram_reading",
+          "title": "Read phase diagram regions and boundaries",
+          "description": "Locate solid, liquid, and gas regions on a P-T phase diagram and identify melting, vaporization, and sublimation curves.",
+          "depth_tags": ["phase diagram", "P-T diagram", "vaporization curve", "melting curve"]
+        },
+        {
+          "concept_id": "thermodynamics_triple_point_critical_point",
+          "title": "Triple point and critical point features",
+          "description": "Interpret the triple point as the unique P-T condition for three-phase coexistence and the critical point as the end of the vapor-liquid boundary.",
+          "depth_tags": ["triple point", "critical point", "phase coexistence", "supercritical fluid"]
+        },
+        {
+          "concept_id": "thermodynamics_heating_curve_interpretation",
+          "title": "Interpret heating and cooling curves",
+          "description": "Relate horizontal plateaus to phase changes and sloped segments to temperature change within a single phase on a heating or cooling curve.",
+          "depth_tags": ["heating curve", "cooling curve", "plateau", "phase change", "sensible heat"]
+        },
+        {
+          "concept_id": "thermodynamics_latent_heat_calculation",
+          "title": "Calculate latent heat for phase changes",
+          "description": "Use q = mL to calculate the heat absorbed or released during melting, freezing, vaporization, or condensation.",
+          "depth_tags": ["latent heat", "q = mL", "heat of fusion", "heat of vaporization"]
+        },
+        {
+          "concept_id": "thermodynamics_total_heat_multistep",
+          "title": "Calculate total heat for multistep heating",
+          "description": "Combine sensible heat terms q = mcΔT with latent heat terms q = mL to find the total energy for a heating or cooling problem crossing phase boundaries.",
+          "depth_tags": ["multistep heating", "q = mcΔT", "q = mL", "heating curve calculation"]
+        },
+        {
+          "concept_id": "thermodynamics_vapor_pressure_boiling",
+          "title": "Vapor pressure and boiling point",
+          "description": "Relate vapor pressure to boiling and explain how external pressure shifts the boiling point of a liquid.",
+          "depth_tags": ["vapor pressure", "boiling point", "external pressure", "normal boiling point"]
+        },
+        {
+          "concept_id": "thermodynamics_clausius_clapeyron_equation",
+          "title": "Clausius–Clapeyron equation",
+          "description": "Apply the Clausius–Clapeyron equation to calculate vapor pressure changes with temperature or enthalpy of vaporization.",
+          "depth_tags": ["Clausius-Clapeyron", "ln P", "ΔHvap", "vapor pressure curve"]
+        }
+      ]
+    },
+    {
+      "topic_id": "thermodynamics_ideal_gas_law",
+      "title": "Ideal gas law and gas calculations",
+      "display_order": 3,
+      "concepts": [
+        {
+          "concept_id": "thermodynamics_ideal_gas_assumptions",
+          "title": "Ideal gas model assumptions",
+          "description": "State the assumptions of the ideal gas model and judge when a real gas is most likely to behave ideally.",
+          "depth_tags": ["point particles", "no intermolecular forces", "low pressure", "high temperature"]
+        },
+        {
+          "concept_id": "thermodynamics_ideal_gas_law_pv_nrt",
+          "title": "Ideal gas law calculation",
+          "description": "Use PV = nRT to solve for pressure, volume, moles, or temperature of an ideal gas.",
+          "depth_tags": ["PV = nRT", "ideal gas", "moles", "R"]
+        },
+        {
+          "concept_id": "thermodynamics_molar_mass_ideal_gas",
+          "title": "Molar mass from ideal gas data",
+          "description": "Calculate molar mass of a gas from measured mass, volume, pressure, and temperature using the ideal gas law.",
+          "depth_tags": ["molar mass", "M = mRT/PV", "gas density sample"]
+        },
+        {
+          "concept_id": "thermodynamics_density_ideal_gas",
+          "title": "Gas density from the ideal gas law",
+          "description": "Derive and apply d = PM/RT to calculate the density of an ideal gas or identify a gas from density.",
+          "depth_tags": ["d = PM/RT", "gas density", "molar mass"]
+        },
+        {
+          "concept_id": "thermodynamics_gas_constant_units",
+          "title": "Gas constant units and conversions",
+          "description": "Select the appropriate value of the universal gas constant R for given pressure, volume, and energy units.",
+          "depth_tags": ["R = 8.314 J/mol·K", "R = 0.08206 L·atm/mol·K", "unit conversion"]
+        },
+        {
+          "concept_id": "thermodynamics_stp_molar_volume",
+          "title": "Standard conditions and molar volume",
+          "description": "Use standard temperature and pressure (STP) to determine the molar volume of an ideal gas, commonly 22.4 L/mol.",
+          "depth_tags": ["STP", "22.4 L/mol", "standard molar volume", "273.15 K", "1 atm"]
+        },
+        {
+          "concept_id": "thermodynamics_ideal_gas_changing_state",
+          "title": "Ideal gas changing-state problems",
+          "description": "Apply P1V1/T1 = P2V2/T2 for a fixed amount of ideal gas to find a new state after pressure, volume, or temperature changes.",
+          "depth_tags": ["P1V1/T1 = P2V2/T2", "fixed n", "initial and final states"]
+        },
+        {
+          "concept_id": "thermodynamics_gas_stoichiometry",
+          "title": "Gas stoichiometry with the ideal gas law",
+          "description": "Convert between gas volume and moles in chemical reactions using the ideal gas law and stoichiometric coefficients.",
+          "depth_tags": ["gas stoichiometry", "moles", "limiting reagent", "volume"]
+        }
+      ]
+    },
+    {
+      "topic_id": "thermodynamics_heat_transfer_thermal_properties",
+      "title": "Heat transfer and thermal properties",
+      "display_order": 4,
+      "concepts": [
+        {
+          "concept_id": "thermodynamics_conduction_mechanism",
+          "title": "Conduction mechanism",
+          "description": "Explain conduction as energy transfer through molecular collisions or electron flow without bulk motion and identify good conductors and insulators.",
+          "depth_tags": ["conduction", "thermal conductivity", "phonons", "free electrons", "insulator"]
+        },
+        {
+          "concept_id": "thermodynamics_fouriers_law_conductive_heat_flow",
+          "title": "Fourier's law and conduction calculations",
+          "description": "Calculate conductive heat transfer rate through a slab using Fourier's law Q/t = kAΔT/L.",
+          "depth_tags": ["Fourier's law", "Q/t = kAΔT/L", "thermal conductivity", "slab"]
+        },
+        {
+          "concept_id": "thermodynamics_convection_mechanism",
+          "title": "Convection mechanism and types",
+          "description": "Distinguish natural and forced convection and describe heat transfer by bulk fluid motion.",
+          "depth_tags": ["convection", "natural convection", "forced convection", "fluid motion"]
+        },
+        {
+          "concept_id": "thermodynamics_radiation_mechanism",
+          "title": "Thermal radiation mechanism",
+          "description": "Describe radiation as electromagnetic energy transfer that does not require a medium and explain how emissivity affects emission and absorption.",
+          "depth_tags": ["radiation", "electromagnetic waves", "emissivity", "absorptivity", "vacuum"]
+        },
+        {
+          "concept_id": "thermodynamics_stefan_boltzmann_law",
+          "title": "Stefan–Boltzmann law",
+          "description": "Calculate radiated power from a surface using P = εσAT^4 and compare radiation from surfaces at different temperatures.",
+          "depth_tags": ["P = εσAT^4", "Stefan-Boltzmann constant", "blackbody", "radiant exitance"]
+        },
+        {
+          "concept_id": "thermodynamics_wien_displacement_law",
+          "title": "Wien's displacement law",
+          "description": "Use λmax = b/T to find the peak wavelength of blackbody radiation and relate color to temperature.",
+          "depth_tags": ["λmax = b/T", "Wien's law", "blackbody peak", "temperature"]
+        },
+        {
+          "concept_id": "thermodynamics_blackbody_spectrum",
+          "title": "Blackbody radiation spectrum",
+          "description": "Interpret blackbody spectral curves and predict how total emitted power and peak wavelength change with temperature.",
+          "depth_tags": ["blackbody", "continuous spectrum", "spectral radiance", "temperature"]
+        },
+        {
+          "concept_id": "thermodynamics_heat_capacity_specific_heat",
+          "title": "Heat capacity vs. specific heat",
+          "description": "Distinguish heat capacity C from specific heat capacity c and convert between them using mass or moles.",
+          "depth_tags": ["heat capacity", "specific heat", "molar heat capacity", "C = mc"]
+        },
+        {
+          "concept_id": "thermodynamics_specific_heat_calculation",
+          "title": "Specific heat calculation",
+          "description": "Calculate heat exchanged during a temperature change using q = mcΔT and solve for any variable.",
+          "depth_tags": ["q = mcΔT", "specific heat", "temperature change", "thermal energy"]
+        },
+        {
+          "concept_id": "thermodynamics_calorimetry",
+          "title": "Calorimetry and energy conservation",
+          "description": "Use calorimetry data and conservation of energy to find specific heat, final temperature, or enthalpy change in insulated systems.",
+          "depth_tags": ["calorimetry", "coffee-cup calorimeter", "energy conservation", "final temperature"]
+        }
+      ]
+    },
+    {
+      "topic_id": "thermodynamics_processes_cycles_engines",
+      "title": "Thermodynamic processes, cycles, and engines",
+      "display_order": 5,
+      "concepts": [
+        {
+          "concept_id": "thermodynamics_isobaric_process",
+          "title": "Isobaric process",
+          "description": "Analyze processes at constant pressure and calculate work as W = PΔV.",
+          "depth_tags": ["isobaric", "constant pressure", "W = PΔV"]
+        },
+        {
+          "concept_id": "thermodynamics_isochoric_process",
+          "title": "Isochoric/isovolumetric process",
+          "description": "Analyze processes at constant volume and explain why no pressure-volume work is done.",
+          "depth_tags": ["isochoric", "constant volume", "W = 0", "isovolumetric"]
+        },
+        {
+          "concept_id": "thermodynamics_isothermal_process",
+          "title": "Isothermal process",
+          "description": "Analyze constant-temperature processes for an ideal gas, including work calculation W = nRT ln(V2/V1).",
+          "depth_tags": ["isothermal", "constant temperature", "W = nRT ln(V2/V1)", "ideal gas"]
+        },
+        {
+          "concept_id": "thermodynamics_adiabatic_process",
+          "title": "Adiabatic process",
+          "description": "Analyze processes with no heat transfer and use PV^γ = constant for an ideal gas.",
+          "depth_tags": ["adiabatic", "Q = 0", "PV^γ = constant", "γ = Cp/Cv"]
+        },
+        {
+          "concept_id": "thermodynamics_pv_diagram_work",
+          "title": "P-V diagrams and work from area",
+          "description": "Interpret P-V diagrams and calculate work as the area under the process curve, with sign depending on expansion or compression.",
+          "depth_tags": ["P-V diagram", "work", "area under curve", "expansion", "compression"]
+        },
+        {
+          "concept_id": "thermodynamics_first_law_sign_convention",
+          "title": "First law sign conventions",
+          "description": "Apply ΔU = Q - W or ΔU = Q + W consistently, using the stated sign convention for heat added and work done.",
+          "depth_tags": ["first law", "ΔU = Q - W", "ΔU = Q + W", "sign convention"]
+        },
+        {
+          "concept_id": "thermodynamics_internal_energy_ideal_gas",
+          "title": "Internal energy of an ideal gas",
+          "description": "Relate internal energy change of a monatomic ideal gas to temperature change using ΔU = (3/2)nRΔT.",
+          "depth_tags": ["internal energy", "U = (3/2)nRT", "monatomic ideal gas", "temperature"]
+        },
+        {
+          "concept_id": "thermodynamics_heat_engine_efficiency",
+          "title": "Heat engine efficiency",
+          "description": "Calculate thermal efficiency from work output and heat input using η = W/Q_H and relate rejected heat to energy conservation.",
+          "depth_tags": ["efficiency", "η = W/Q_H", "heat engine", "heat rejected"]
+        },
+        {
+          "concept_id": "thermodynamics_carnot_cycle_efficiency",
+          "title": "Carnot cycle and ideal efficiency",
+          "description": "Describe the Carnot cycle's four reversible steps and calculate its efficiency using η_C = 1 - T_C/T_H.",
+          "depth_tags": ["Carnot cycle", "η = 1 - T_C/T_H", "reversible cycle", "temperature ratio"]
+        },
+        {
+          "concept_id": "thermodynamics_refrigerator_heat_pump_cop",
+          "title": "Refrigerator and heat pump COP",
+          "description": "Calculate coefficient of performance for refrigerators and heat pumps from heat moved and work input.",
+          "depth_tags": ["COP", "refrigerator", "heat pump", "COP = Q_C/W", "COP = Q_H/W"]
+        },
+        {
+          "concept_id": "thermodynamics_compare_engine_cycles",
+          "title": "Compare engine cycles on P-V diagrams",
+          "description": "Identify and compare Otto, Diesel, and Carnot cycles by their P-V diagram shapes and idealized processes.",
+          "depth_tags": ["Otto cycle", "Diesel cycle", "P-V diagram", "heat engine cycle"]
+        }
+      ]
+    },
+    {
+      "topic_id": "thermodynamics_entropy_enthalpy_third_law",
+      "title": "Entropy, enthalpy, and the third law",
+      "display_order": 6,
+      "concepts": [
+        {
+          "concept_id": "thermodynamics_enthalpy_definition",
+          "title": "Enthalpy definition and sign convention",
+          "description": "Define enthalpy H = U + PV and interpret positive and negative enthalpy changes for processes at constant pressure.",
+          "depth_tags": ["H = U + PV", "ΔH", "constant pressure", "sign convention"]
+        },
+        {
+          "concept_id": "thermodynamics_endothermic_exothermic",
+          "title": "Endothermic and exothermic processes",
+          "description": "Classify reactions or phase changes as endothermic or exothermic from temperature change, enthalpy sign, or energy diagram.",
+          "depth_tags": ["endothermic", "exothermic", "ΔH > 0", "ΔH < 0"]
+        },
+        {
+          "concept_id": "thermodynamics_standard_enthalpy_formation",
+          "title": "Standard enthalpy of formation",
+          "description": "Use standard enthalpies of formation to calculate reaction enthalpy with ΔH°rxn = ΣΔH°f(products) - ΣΔH°f(reactants).",
+          "depth_tags": ["ΔH°f", "formation", "reaction enthalpy", "products minus reactants"]
+        },
+        {
+          "concept_id": "thermodynamics_hess_law",
+          "title": "Hess's law",
+          "description": "Apply Hess's law to combine known thermochemical equations and determine the enthalpy change of an overall reaction.",
+          "depth_tags": ["Hess's law", "enthalpy change", "reaction combination", "state function"]
+        },
+        {
+          "concept_id": "thermodynamics_bond_enthalpy",
+          "title": "Bond enthalpy calculations",
+          "description": "Estimate reaction enthalpy from average bond enthalpies as energy absorbed to break bonds minus energy released forming bonds.",
+          "depth_tags": ["bond enthalpy", "broken minus formed", "average bond energy", "gas-phase"]
+        },
+        {
+          "concept_id": "thermodynamics_entropy_definition",
+          "title": "Entropy definition and microstates",
+          "description": "Define entropy as a measure of energy dispersal or number of accessible microstates and predict entropy sign for simple changes.",
+          "depth_tags": ["entropy", "microstates", "disorder", "S = k ln Ω"]
+        },
+        {
+          "concept_id": "thermodynamics_entropy_change_reversible",
+          "title": "Entropy change for reversible heat transfer",
+          "description": "Calculate entropy change for a reversible isothermal process using ΔS = q_rev/T.",
+          "depth_tags": ["ΔS = q_rev/T", "reversible", "isothermal", "entropy transfer"]
+        },
+        {
+          "concept_id": "thermodynamics_second_law_entropy_universe",
+          "title": "Second law and entropy of the universe",
+          "description": "State the second law and evaluate process spontaneity using ΔS_universe = ΔS_system + ΔS_surroundings > 0.",
+          "depth_tags": ["second law", "entropy of universe", "spontaneity", "ΔS_universe"]
+        },
+        {
+          "concept_id": "thermodynamics_third_law",
+          "title": "Third law of thermodynamics",
+          "description": "State the third law: the entropy of a perfect crystalline substance approaches zero as temperature approaches absolute zero.",
+          "depth_tags": ["third law", "absolute zero", "perfect crystal", "S = 0"]
+        },
+        {
+          "concept_id": "thermodynamics_phase_change_entropy",
+          "title": "Entropy change for phase transitions",
+          "description": "Calculate entropy change during melting or vaporization using ΔS = ΔH/T at the equilibrium transition temperature.",
+          "depth_tags": ["ΔS = ΔH/T", "melting entropy", "vaporization entropy", "phase equilibrium"]
+        }
+      ]
+    },
+    {
+      "topic_id": "thermodynamics_historical_contributions",
+      "title": "Historical experiments and contributors",
+      "display_order": 7,
+      "concepts": [
+        {
+          "concept_id": "thermodynamics_lord_kelvin_absolute_temperature",
+          "title": "Lord Kelvin and absolute temperature",
+          "description": "Identify Kelvin's role in defining the absolute temperature scale and the significance of absolute zero.",
+          "depth_tags": ["Kelvin scale", "absolute zero", "thermodynamic temperature", "Lord Kelvin"]
+        },
+        {
+          "concept_id": "thermodynamics_joseph_black_latent_heat",
+          "title": "Joseph Black and latent heat",
+          "description": "Describe Black's discovery of latent heat and its role in explaining heat absorbed without temperature change during phase transitions.",
+          "depth_tags": ["latent heat", "Joseph Black", "phase change", "caloric theory"]
+        },
+        {
+          "concept_id": "thermodynamics_james_joule_mechanical_equivalent",
+          "title": "Joule's mechanical equivalent of heat",
+          "description": "Explain Joule's paddle-wheel experiment and how it established the mechanical equivalent of heat.",
+          "depth_tags": ["Joule", "paddle-wheel experiment", "mechanical equivalent", "4.184 J/cal"]
+        },
+        {
+          "concept_id": "thermodynamics_sadi_carnot_engine",
+          "title": "Sadi Carnot and ideal heat engine",
+          "description": "Describe Carnot's idealized reversible heat engine and its implication that efficiency depends on reservoir temperatures.",
+          "depth_tags": ["Carnot cycle", "reversible engine", "efficiency limit", "Sadi Carnot"]
+        },
+        {
+          "concept_id": "thermodynamics_rudolf_clausius_entropy",
+          "title": "Clausius and the second law",
+          "description": "Attribute the formal statement of the second law and the introduction of entropy to Clausius.",
+          "depth_tags": ["Clausius", "second law", "entropy", "heat flow"]
+        },
+        {
+          "concept_id": "thermodynamics_max_planck_blackbody",
+          "title": "Planck and blackbody radiation",
+          "description": "Explain how Planck resolved the ultraviolet catastrophe by quantizing energy and introduced h in blackbody radiation theory.",
+          "depth_tags": ["Planck", "blackbody", "quantum", "ultraviolet catastrophe", "h"]
+        },
+        {
+          "concept_id": "thermodynamics_ludwig_boltzmann_entropy",
+          "title": "Boltzmann's statistical entropy",
+          "description": "Relate Boltzmann's equation S = k ln Ω to microstates and the statistical interpretation of entropy.",
+          "depth_tags": ["Boltzmann", "S = k ln Ω", "microstates", "statistical mechanics", "Boltzmann constant"]
+        },
+        {
+          "concept_id": "thermodynamics_maxwell_kinetic_theory",
+          "title": "Maxwell's kinetic theory contributions",
+          "description": "Identify Maxwell's work on molecular velocity distributions and the Maxwell relations connecting thermodynamic properties.",
+          "depth_tags": ["Maxwell", "velocity distribution", "Maxwell relations", "kinetic theory"]
+        }
+      ]
+    },
+    {
+      "topic_id": "thermodynamics_heat_collection_device_predictions",
+      "title": "Heat collection device and thermal predictions",
+      "display_order": 8,
+      "concepts": [
+        {
+          "concept_id": "thermodynamics_radiant_power_incident",
+          "title": "Incident radiative power on collector",
+          "description": "Calculate the radiative power reaching a collector area from irradiance using P_incident = I A, adjusting for orientation.",
+          "depth_tags": ["irradiance", "P = I A", "collector area", "lamp power"]
+        },
+        {
+          "concept_id": "thermodynamics_device_energy_balance",
+          "title": "Energy balance for warming water",
+          "description": "Equate net energy collected to water heating using Q = mcΔT and solve for energy input, mass, or temperature rise.",
+          "depth_tags": ["Q = mcΔT", "energy balance", "water heating", "net energy"]
+        },
+        {
+          "concept_id": "thermodynamics_collection_efficiency_losses",
+          "title": "Heat collection efficiency and losses",
+          "description": "Define collection efficiency as useful thermal energy delivered to water divided by incident radiative energy, and account for convective and radiative losses.",
+          "depth_tags": ["efficiency", "thermal losses", "incident energy", "useful heat"]
+        },
+        {
+          "concept_id": "thermodynamics_final_temperature_prediction",
+          "title": "Predict final water temperature",
+          "description": "Predict final water temperature from incident power, time, water mass, and device efficiency using an energy balance.",
+          "depth_tags": ["final temperature", "prediction", "time", "device efficiency"]
+        },
+        {
+          "concept_id": "thermodynamics_insulation_material_constraints",
+          "title": "Insulation and construction constraints",
+          "description": "Evaluate insulating materials, glazing, and seals for reducing conduction and convection losses within device construction rules.",
+          "depth_tags": ["insulation", "glazing", "seals", "construction rules"]
+        },
+        {
+          "concept_id": "thermodynamics_surface_absorption_emissivity",
+          "title": "Absorptivity and emissivity of surfaces",
+          "description": "Choose collector surface properties that maximize absorption of visible/IR radiation while minimizing re-emission losses.",
+          "depth_tags": ["absorptivity", "emissivity", "surface coating", "black surface"]
+        },
+        {
+          "concept_id": "thermodynamics_lamp_distance_intensity",
+          "title": "Lamp distance and intensity variation",
+          "description": "Predict how irradiance on the collector changes with lamp distance, using inverse-square behavior for a point source or measured spread patterns.",
+          "depth_tags": ["inverse-square law", "irradiance", "distance", "point source"]
+        },
+        {
+          "concept_id": "thermodynamics_device_data_analysis",
+          "title": "Device testing and data analysis",
+          "description": "Analyze temperature-time data from a heat collection device, identify heating rate, and compare measured final temperature to predicted value.",
+          "depth_tags": ["temperature-time curve", "heating rate", "experimental data", "prediction vs measurement"]
+        }
+      ]
+    }
+  ]
+}

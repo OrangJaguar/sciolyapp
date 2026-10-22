@@ -1,0 +1,455 @@
+{
+  "event_id": "protein_modeling",
+  "event_name": "Protein Modeling",
+  "domain": "Physical Science & Chemistry",
+  "official_scope": "2009 H1N1 influenza hemagglutinin sialic acid binding site (plus protein structure/function exam)",
+  "season": 2027,
+  "division": "C",
+  "design_notes": "Expanded each locked topic into atomic concepts aligned to the three tested modes: foundational protein chemistry, hemagglutinin-specific binding, and applied modeling/visualization. Concept counts vary by topic density; foundational and binding chapters carry more nodes because they support more discrete calculations, recognition tasks, and interaction analyses. Physical model and visualization chapters are slightly leaner but still cover rubric, software, and construction skills without padding.",
+  "topics": [
+    {
+      "topic_id": "protein_modeling_amino_acid_structure_and_side_chain_chemistry",
+      "title": "Amino acid structure and side-chain chemistry",
+      "display_order": 1,
+      "concepts": [
+        {
+          "concept_id": "protein_modeling_amino_acid_backbone",
+          "title": "Amino acid backbone and functional groups",
+          "description": "Identify the α-carbon, amino group, carboxyl group, and variable R-group that define each amino acid.",
+          "depth_tags": ["α-carbon", "amino group", "carboxyl group", "R-group", "zwitterion"]
+        },
+        {
+          "concept_id": "protein_modeling_amino_acid_codes",
+          "title": "Three-letter and one-letter amino acid codes",
+          "description": "Convert among amino acid names, three-letter codes, and one-letter codes for the 20 standard amino acids.",
+          "depth_tags": ["Ala/A", "Arg/R", "Asn/N", "Asp/D", "Cys/C", "Glu/E"]
+        },
+        {
+          "concept_id": "protein_modeling_amino_acid_chirality",
+          "title": "L-amino acid stereochemistry",
+          "description": "Recognize the L configuration of α-amino acids and explain why glycine is achiral.",
+          "depth_tags": ["L configuration", "chiral α-carbon", "glycine achiral", "stereoisomers"]
+        },
+        {
+          "concept_id": "protein_modeling_hydrophobic_side_chains",
+          "title": "Hydrophobic side-chain recognition",
+          "description": "Identify aliphatic and aromatic side chains that favor burial in protein cores and recognize their structural roles.",
+          "depth_tags": ["Ala", "Val", "Leu", "Ile", "Phe", "Trp"]
+        },
+        {
+          "concept_id": "protein_modeling_polar_uncharged_side_chains",
+          "title": "Polar uncharged side-chain recognition",
+          "description": "Identify polar side chains that can donate or accept hydrogen bonds without gaining a full charge at pH 7.",
+          "depth_tags": ["Ser", "Thr", "Asn", "Gln", "Tyr", "hydrogen bonding"]
+        },
+        {
+          "concept_id": "protein_modeling_acidic_side_chains",
+          "title": "Acidic side-chain ionization",
+          "description": "Predict the deprotonated, negatively charged state of aspartate and glutamate side chains at physiological pH using pKa values.",
+          "depth_tags": ["Asp", "Glu", "pKa ~4", "deprotonated", "pH 7"]
+        },
+        {
+          "concept_id": "protein_modeling_basic_side_chains",
+          "title": "Basic side-chain ionization",
+          "description": "Predict the protonated, positively charged state of lysine and arginine side chains at physiological pH using pKa values.",
+          "depth_tags": ["Lys", "Arg", "pKa >10", "protonated", "pH 7"]
+        },
+        {
+          "concept_id": "protein_modeling_histidine_protonation",
+          "title": "Histidine protonation and pH sensitivity",
+          "description": "Analyze the imidazole side chain of histidine and predict its partially protonated state near physiological pH.",
+          "depth_tags": ["His", "imidazole", "pKa ~6", "protonation state", "pH 7"]
+        },
+        {
+          "concept_id": "protein_modeling_cysteine_thiol_group",
+          "title": "Cysteine thiol group",
+          "description": "Recognize the thiol side chain of cysteine and identify its redox sensitivity and role as a metal-binding or nucleophilic site.",
+          "depth_tags": ["Cys", "thiol", "-SH", "nucleophile", "metal binding"]
+        },
+        {
+          "concept_id": "protein_modeling_glycine_proline_backbone_effects",
+          "title": "Glycine and proline backbone effects",
+          "description": "Explain how glycine increases backbone flexibility and proline restricts conformation through its cyclic side chain.",
+          "depth_tags": ["Gly", "Pro", "flexibility", "cyclic", "secondary structure"]
+        },
+        {
+          "concept_id": "protein_modeling_aromatic_side_chains",
+          "title": "Aromatic side-chain properties",
+          "description": "Identify aromatic side chains and interpret properties such as UV absorbance and stacking interactions.",
+          "depth_tags": ["Phe", "Tyr", "Trp", "UV absorbance", "π stacking"]
+        },
+        {
+          "concept_id": "protein_modeling_isoelectric_point",
+          "title": "Isoelectric point calculation for amino acids",
+          "description": "Calculate the isoelectric point of an amino acid from its pKa values and identify the zwitterionic species.",
+          "depth_tags": ["pI", "pKa", "zwitterion", "Henderson-Hasselbalch"]
+        }
+      ]
+    },
+    {
+      "topic_id": "protein_modeling_protein_folding_and_stabilizing_interactions",
+      "title": "Protein folding and stabilizing interactions",
+      "display_order": 2,
+      "concepts": [
+        {
+          "concept_id": "protein_modeling_primary_structure",
+          "title": "Primary structure and amino acid sequence",
+          "description": "Define primary structure as the linear sequence of amino acids joined by peptide bonds.",
+          "depth_tags": ["N-terminus", "C-terminus", "peptide bond", "sequence"]
+        },
+        {
+          "concept_id": "protein_modeling_peptide_bond_planarity",
+          "title": "Peptide bond planarity and cis/trans",
+          "description": "Explain the partial double-bond character of the peptide bond and the preference for trans configuration.",
+          "depth_tags": ["amide plane", "resonance", "trans", "cis", "ω angle"]
+        },
+        {
+          "concept_id": "protein_modeling_alpha_helix",
+          "title": "Alpha-helix structure and hydrogen bonding",
+          "description": "Describe the α-helix geometry, 3.6 residues per turn, and i to i+4 backbone hydrogen bonding.",
+          "depth_tags": ["α-helix", "3.6 residues/turn", "i to i+4", "hydrogen bonding"]
+        },
+        {
+          "concept_id": "protein_modeling_beta_sheet",
+          "title": "Beta-sheet structure and strand arrangement",
+          "description": "Distinguish parallel and antiparallel β-sheets and describe hydrogen bonding between adjacent β-strands.",
+          "depth_tags": ["β-sheet", "parallel", "antiparallel", "β-strand", "hydrogen bonding"]
+        },
+        {
+          "concept_id": "protein_modeling_loops_turns",
+          "title": "Loops, turns, and irregular secondary structure",
+          "description": "Identify loop and turn regions that connect regular secondary structures and provide surface functionality.",
+          "depth_tags": ["β-turn", "loop", "glycine", "proline", "surface"]
+        },
+        {
+          "concept_id": "protein_modeling_backbone_dihedrals",
+          "title": "Backbone dihedral angles and Ramachandran plot",
+          "description": "Interpret φ and ψ backbone angles and use a Ramachandran plot to assess allowed secondary-structure conformations.",
+          "depth_tags": ["φ (phi)", "ψ (psi)", "Ramachandran plot", "allowed regions"]
+        },
+        {
+          "concept_id": "protein_modeling_tertiary_structure",
+          "title": "Tertiary structure and domain packing",
+          "description": "Describe how secondary structure elements pack into a compact three-dimensional fold with a buried hydrophobic core.",
+          "depth_tags": ["tertiary structure", "domain", "hydrophobic core", "packing"]
+        },
+        {
+          "concept_id": "protein_modeling_quaternary_structure",
+          "title": "Quaternary structure and subunit assembly",
+          "description": "Describe how multiple polypeptide chains assemble into oligomeric structures and recognize homomeric vs heteromeric assemblies.",
+          "depth_tags": ["subunit", "oligomer", "homomer", "heteromer", "interfaces"]
+        },
+        {
+          "concept_id": "protein_modeling_hydrophobic_effect",
+          "title": "Hydrophobic effect in protein folding",
+          "description": "Explain how exclusion of nonpolar side chains from water drives the burial of hydrophobic residues and stabilizes the folded state.",
+          "depth_tags": ["hydrophobic effect", "entropy", "buried residues", "water exclusion"]
+        },
+        {
+          "concept_id": "protein_modeling_hydrogen_bonding_folded",
+          "title": "Hydrogen bonding in folded proteins",
+          "description": "Identify hydrogen bonds involving backbone amides, carbonyls, and polar side chains that stabilize secondary and tertiary structure.",
+          "depth_tags": ["hydrogen bond", "donor", "acceptor", "backbone", "side chain"]
+        },
+        {
+          "concept_id": "protein_modeling_electrostatic_salt_bridges",
+          "title": "Electrostatic interactions and salt bridges",
+          "description": "Describe how oppositely charged side chains form salt bridges and how pH changes affect electrostatic stabilization.",
+          "depth_tags": ["salt bridge", "acidic", "basic", "electrostatics", "pH"]
+        },
+        {
+          "concept_id": "protein_modeling_disulfide_bonds",
+          "title": "Disulfide bonds as covalent stabilizers",
+          "description": "Explain how cysteine oxidation forms disulfide bonds that covalently stabilize tertiary and quaternary structure, especially in secreted proteins.",
+          "depth_tags": ["disulfide", "cysteine", "oxidation", "covalent", "extracellular"]
+        },
+        {
+          "concept_id": "protein_modeling_denaturation",
+          "title": "Denaturation and loss of native structure",
+          "description": "Predict how heat, pH extremes, reducing agents, or denaturants disrupt noncovalent interactions and unfold proteins.",
+          "depth_tags": ["denaturation", "heat", "urea", "β-mercaptoethanol", "reversibility"]
+        }
+      ]
+    },
+    {
+      "topic_id": "protein_modeling_hemagglutinin_structure_and_sialic_acid_receptor_binding",
+      "title": "Hemagglutinin structure and sialic acid receptor binding",
+      "display_order": 3,
+      "concepts": [
+        {
+          "concept_id": "protein_modeling_ha_trimer",
+          "title": "Hemagglutinin trimer architecture",
+          "description": "Describe the homotrimeric hemagglutinin spike and distinguish the globular head from the fibrous stalk.",
+          "depth_tags": ["trimer", "HA1", "HA2", "globular head", "stalk"]
+        },
+        {
+          "concept_id": "protein_modeling_ha1_ha2",
+          "title": "HA1 and HA2 subunit roles",
+          "description": "Identify HA1 as the receptor-binding subunit and HA2 as the fusion subunit of the hemagglutinin glycoprotein.",
+          "depth_tags": ["HA1", "HA2", "receptor binding", "membrane fusion", "fusion peptide"]
+        },
+        {
+          "concept_id": "protein_modeling_sialic_acid_structure",
+          "title": "Sialic acid structure and linkage types",
+          "description": "Recognize N-acetylneuraminic acid and distinguish α2-3 and α2-6 glycosidic linkages to galactose.",
+          "depth_tags": ["Neu5Ac", "sialic acid", "α2-3", "α2-6", "glycan"]
+        },
+        {
+          "concept_id": "protein_modeling_ha_receptor_binding_pocket",
+          "title": "Hemagglutinin receptor binding pocket",
+          "description": "Locate the receptor binding pocket in the HA1 globular head and identify its conserved structural elements.",
+          "depth_tags": ["receptor binding pocket", "HA1 head", "130-loop", "190-helix", "220-loop"]
+        },
+        {
+          "concept_id": "protein_modeling_3ube_residue_range",
+          "title": "3UBE chain A residue 153–252 target region",
+          "description": "Map the 2009 H1N1 hemagglutinin PDB entry 3UBE chain A residues 153–252 and identify their position in the receptor binding domain.",
+          "depth_tags": ["3UBE", "chain A", "residues 153–252", "H1", "receptor binding domain"]
+        },
+        {
+          "concept_id": "protein_modeling_ha_binding_residues",
+          "title": "Key residues in the H1 sialic acid binding pocket",
+          "description": "Identify conserved residues in the 3UBE binding site that form direct contacts with sialic acid.",
+          "depth_tags": ["Tyr98", "Trp153", "His183", "Gln226", "sialic acid"]
+        },
+        {
+          "concept_id": "protein_modeling_sialic_acid_interactions",
+          "title": "Protein–sialic acid interaction types",
+          "description": "Analyze hydrogen bonds, van der Waals contacts, and hydrophobic packing that stabilize sialic acid in the HA binding pocket.",
+          "depth_tags": ["hydrogen bonds", "van der Waals", "hydrophobic", "Neu5Ac", "binding pocket"]
+        },
+        {
+          "concept_id": "protein_modeling_ha_receptor_specificity",
+          "title": "H1 hemagglutinin receptor specificity",
+          "description": "Explain how H1 hemagglutinin from 2009 H1N1 preferentially binds human α2-6-linked sialic acid receptors over avian α2-3-linked receptors.",
+          "depth_tags": ["α2-6", "α2-3", "human receptor", "avian receptor", "specificity"]
+        },
+        {
+          "concept_id": "protein_modeling_ha_loops_binding",
+          "title": "130-loop, 190-helix, and 220-loop roles",
+          "description": "Describe how the 130-loop, 190-helix, and 220-loop shape the receptor binding site and influence receptor specificity.",
+          "depth_tags": ["130-loop", "190-helix", "220-loop", "specificity", "binding site"]
+        },
+        {
+          "concept_id": "protein_modeling_ha_glycosylation",
+          "title": "Hemagglutinin glycosylation and receptor access",
+          "description": "Explain how N-linked glycans on HA can mask antigenic sites and modulate receptor binding affinity.",
+          "depth_tags": ["glycosylation", "N-linked", "masking", "receptor access", "affinity"]
+        },
+        {
+          "concept_id": "protein_modeling_ha_avidity",
+          "title": "Hemagglutinin multivalent binding and avidity",
+          "description": "Explain how the trimeric HA can engage multiple sialic acid receptors and how multivalent binding contributes to overall avidity.",
+          "depth_tags": ["trimer", "multivalent", "avidity", "sialic acid", "receptor density"]
+        }
+      ]
+    },
+    {
+      "topic_id": "protein_modeling_influenza_infection_and_immune_response",
+      "title": "Influenza infection and immune response",
+      "display_order": 4,
+      "concepts": [
+        {
+          "concept_id": "protein_modeling_influenza_virus_structure",
+          "title": "Influenza virus particle structure and genome",
+          "description": "Describe the influenza virion envelope, HA and NA spikes, matrix layer, and segmented negative-sense RNA genome.",
+          "depth_tags": ["envelope", "HA spike", "NA spike", "segmented genome", "RNP"]
+        },
+        {
+          "concept_id": "protein_modeling_ha_mediated_entry",
+          "title": "Hemagglutinin-mediated viral entry",
+          "description": "Explain how HA binds sialic acid on host cells to initiate endocytosis and viral entry.",
+          "depth_tags": ["sialic acid", "endocytosis", "attachment", "receptor binding"]
+        },
+        {
+          "concept_id": "protein_modeling_ph_triggered_fusion",
+          "title": "Endosomal pH-triggered membrane fusion",
+          "description": "Describe how low endosomal pH triggers HA conformational change, exposing the fusion peptide and mediating viral-host membrane fusion.",
+          "depth_tags": ["low pH", "HA2", "fusion peptide", "membrane fusion"]
+        },
+        {
+          "concept_id": "protein_modeling_influenza_replication",
+          "title": "Influenza replication and assembly",
+          "description": "Summarize viral RNA replication, protein synthesis, and assembly at the host cell membrane.",
+          "depth_tags": ["RNA-dependent RNA polymerase", "replication", "budding", "assembly"]
+        },
+        {
+          "concept_id": "protein_modeling_neuraminidase_function",
+          "title": "Neuraminidase cleavage and viral release",
+          "description": "Explain how neuraminidase cleaves sialic acid to release newly budded virions from infected cells.",
+          "depth_tags": ["neuraminidase", "sialic acid cleavage", "release", "budding"]
+        },
+        {
+          "concept_id": "protein_modeling_antigenic_drift",
+          "title": "Antigenic drift in hemagglutinin",
+          "description": "Describe how point mutations in HA accumulate and alter antigenic sites to evade antibody recognition.",
+          "depth_tags": ["antigenic drift", "point mutations", "HA antigenic sites", "immune evasion"]
+        },
+        {
+          "concept_id": "protein_modeling_antigenic_shift",
+          "title": "Antigenic shift and pandemic emergence",
+          "description": "Explain how reassortment of RNA segments between influenza strains produces novel HA/NA combinations that can cause pandemics.",
+          "depth_tags": ["antigenic shift", "reassortment", "pandemic", "swine", "avian"]
+        },
+        {
+          "concept_id": "protein_modeling_host_immune_response",
+          "title": "Host immune recognition of hemagglutinin",
+          "description": "Describe how B cells produce antibodies against HA epitopes and how neutralizing antibodies block receptor binding.",
+          "depth_tags": ["antibody", "B cell", "epitope", "neutralization", "HA head"]
+        },
+        {
+          "concept_id": "protein_modeling_vaccine_targeting_ha",
+          "title": "Vaccine targeting of hemagglutinin",
+          "description": "Explain how influenza vaccines elicit antibodies against HA and why antigenic drift requires seasonal reformulation.",
+          "depth_tags": ["vaccine", "HA antibody", "seasonal reformulation", "antigenic drift"]
+        },
+        {
+          "concept_id": "protein_modeling_2009_h1n1_pandemic",
+          "title": "2009 H1N1 pandemic origin and adaptation",
+          "description": "Trace the origin of the 2009 H1N1 pandemic strain and identify adaptive mutations in HA that enabled human transmission.",
+          "depth_tags": ["2009 H1N1", "swine-origin", "pandemic", "human transmission"]
+        }
+      ]
+    },
+    {
+      "topic_id": "protein_modeling_molecular_visualization_and_chemical_environment_analysis",
+      "title": "Molecular visualization and chemical environment analysis",
+      "display_order": 5,
+      "concepts": [
+        {
+          "concept_id": "protein_modeling_jmol_interface",
+          "title": "Jmol/JUDE interface navigation",
+          "description": "Use Jmol/JUDE menus and command line to open files, rotate, zoom, and select parts of a protein structure.",
+          "depth_tags": ["Jmol", "JUDE", "command line", "select", "rotate"]
+        },
+        {
+          "concept_id": "protein_modeling_selecting_residues",
+          "title": "Selecting and displaying residues",
+          "description": "Select specific residues, chains, ligands, or side chains in Jmol and display them as sticks, wireframe, or spacefill.",
+          "depth_tags": ["select", "display", "sticks", "spacefill", "chain A"]
+        },
+        {
+          "concept_id": "protein_modeling_secondary_structure_visualization",
+          "title": "Visualizing secondary structure in Jmol",
+          "description": "Identify α-helices and β-strands using cartoon or ribbon representations and interpret their spatial arrangement.",
+          "depth_tags": ["cartoon", "ribbon", "alpha helix", "beta strand", "color structure"]
+        },
+        {
+          "concept_id": "protein_modeling_color_by_property",
+          "title": "Color-by-property representations",
+          "description": "Apply color schemes based on residue type, charge, hydrophobicity, or secondary structure to visualize chemical environments.",
+          "depth_tags": ["color by", "hydrophobicity", "charge", "CPK", "amino acid property"]
+        },
+        {
+          "concept_id": "protein_modeling_hydrogen_bond_display",
+          "title": "Identifying hydrogen bonds in visualization",
+          "description": "Display hydrogen bonds between protein side chains, backbone, and ligands to diagnose interaction networks.",
+          "depth_tags": ["hydrogen bonds", "donor", "acceptor", "distance", "angle"]
+        },
+        {
+          "concept_id": "protein_modeling_hydrophobic_contacts_viz",
+          "title": "Identifying hydrophobic contacts in protein core",
+          "description": "Interpret clustering of nonpolar side chains in the protein core and around ligand surfaces using hydrophobic surface views.",
+          "depth_tags": ["hydrophobic", "nonpolar", "surface", "core", "contacts"]
+        },
+        {
+          "concept_id": "protein_modeling_electrostatics_display",
+          "title": "Electrostatic potential surface visualization",
+          "description": "Display electrostatic potential surfaces to identify acidic, basic, and neutral regions involved in binding or stability.",
+          "depth_tags": ["electrostatic surface", "red/blue", "charge distribution", "binding pocket"]
+        },
+        {
+          "concept_id": "protein_modeling_ligand_interactions",
+          "title": "Protein–ligand interaction display",
+          "description": "Display a sialic acid ligand in the hemagglutinin binding pocket and identify contacting residues within 4 Å.",
+          "depth_tags": ["ligand", "Neu5Ac", "contact", "4 Å", "binding pocket"]
+        },
+        {
+          "concept_id": "protein_modeling_side_chain_environment",
+          "title": "Analyzing side-chain chemical environment",
+          "description": "Assess whether a side chain is buried or solvent-exposed and infer its likely role from surrounding residues.",
+          "depth_tags": ["solvent exposure", "buried", "polar", "nonpolar", "microenvironment"]
+        },
+        {
+          "concept_id": "protein_modeling_measuring_distances",
+          "title": "Measuring distances and angles in Jmol",
+          "description": "Measure interatomic distances, hydrogen bond lengths, and ligand contact geometry to support structural interpretations.",
+          "depth_tags": ["distance", "angle", "measurement", "Å", "contact"]
+        },
+        {
+          "concept_id": "protein_modeling_conservation_mapping",
+          "title": "Conservation and mutation mapping",
+          "description": "Map conserved residues and known mutations onto the HA structure to interpret antigenic or binding changes.",
+          "depth_tags": ["conservation", "mutation", "antigenic sites", "residue mapping"]
+        }
+      ]
+    },
+    {
+      "topic_id": "protein_modeling_physical_model_construction_and_model_description_legend",
+      "title": "Physical model construction and Model Description Legend",
+      "display_order": 6,
+      "concepts": [
+        {
+          "concept_id": "protein_modeling_calpha_backbone_scaling",
+          "title": "α-Carbon backbone model scaling",
+          "description": "Construct a physical model with an α-carbon backbone spaced at 2 cm per amino acid to represent the target chain.",
+          "depth_tags": ["2 cm/aa", "α-carbon", "backbone", "scale", "pre-build"]
+        },
+        {
+          "concept_id": "protein_modeling_target_region_mapping",
+          "title": "Mapping target residues 153–252 of 3UBE chain A",
+          "description": "Translate the protein sequence of 3UBE chain A residues 153–252 into a physical model with correct order and spacing.",
+          "depth_tags": ["3UBE", "chain A", "153–252", "sequence", "spacing"]
+        },
+        {
+          "concept_id": "protein_modeling_secondary_structure_physical",
+          "title": "Representing secondary structure in physical model",
+          "description": "Use α-helix and β-sheet geometry to shape the physical backbone model according to the target structure.",
+          "depth_tags": ["alpha helix", "beta sheet", "coil", "backbone", "shape"]
+        },
+        {
+          "concept_id": "protein_modeling_sidechain_display_physical",
+          "title": "Displaying functional side chains in physical model",
+          "description": "Attach and display side chains or functional groups at specified residues to highlight binding-site chemistry or stabilizing interactions.",
+          "depth_tags": ["sidechain", "functional group", "binding site", "display", "creativity"]
+        },
+        {
+          "concept_id": "protein_modeling_model_description_legend",
+          "title": "Model Description Legend requirements",
+          "description": "Create a legend that explains colors, materials, and structural features shown in the physical model.",
+          "depth_tags": ["legend", "color key", "materials", "labels", "explanations"]
+        },
+        {
+          "concept_id": "protein_modeling_prebuild_scoring",
+          "title": "Pre-build scoring criteria",
+          "description": "Interpret pre-build rubric categories such as backbone accuracy, secondary structure, side chain display, and legend quality.",
+          "depth_tags": ["rubric", "accuracy", "legend", "features", "scoring"]
+        },
+        {
+          "concept_id": "protein_modeling_backbone_accuracy",
+          "title": "Backbone accuracy and residue connectivity",
+          "description": "Maintain correct residue order, connectivity, and spacing along the α-carbon backbone to maximize structural accuracy.",
+          "depth_tags": ["connectivity", "residue order", "2 cm", "backbone", "accuracy"]
+        },
+        {
+          "concept_id": "protein_modeling_materials_construction",
+          "title": "Materials and construction techniques",
+          "description": "Select appropriate materials and techniques to build a stable, adjustable physical model within competition constraints.",
+          "depth_tags": ["materials", "construction", "stability", "constraints", "adjustable"]
+        },
+        {
+          "concept_id": "protein_modeling_color_conventions_physical",
+          "title": "Color conventions and labeling in physical model",
+          "description": "Apply clear color and labeling conventions to distinguish chain, secondary structure, and key residues in the physical model.",
+          "depth_tags": ["color", "labeling", "chain A", "key residues", "secondary structure"]
+        },
+        {
+          "concept_id": "protein_modeling_legend_annotations",
+          "title": "Legend annotations for binding site features",
+          "description": "Annotate sialic acid binding site residues, loops, and stabilizing interactions in the Model Description Legend to communicate functional features.",
+          "depth_tags": ["binding site", "annotations", "legend", "sialic acid", "functional features"]
+        }
+      ]
+    }
+  ]
+}

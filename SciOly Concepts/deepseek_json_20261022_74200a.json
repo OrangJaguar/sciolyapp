@@ -1,0 +1,559 @@
+{
+  "event_id": "astronomy",
+  "event_name": "Astronomy",
+  "domain": "Earth and Space Science",
+  "official_scope": "stellar evolution in normal & starburst galaxies",
+  "season": 2027,
+  "division": "C",
+  "design_notes": "Concept density varies by topic: stellar evolution/compact remnants and object identification are the densest because they carry the most official-scope case-study content. Stellar classification and spectral concepts are kept atomic so spectral typing, luminosity class, and H-R placement can each trigger their own clinics. Distance-ladder, orbital/rotation, and radiation calculations are split into separate method concepts to avoid oversized math guides. Object-list concepts cover every official object without over-splitting subfeatures beyond M82 X-1/X-2/SN 2014J and GW170817.",
+  "topics": [
+    {
+      "topic_id": "astronomy_stellar_classification_and_spectra",
+      "title": "Stellar classification and spectra",
+      "display_order": 1,
+      "concepts": [
+        {
+          "concept_id": "astronomy_spectral_type_sequence",
+          "title": "OBAFGKM spectral type sequence",
+          "description": "Sequence stars by spectral type from hottest to coolest and predict dominant absorption features for each temperature class.",
+          "depth_tags": ["OBAFGKM", "temperature sequence", "absorption features", "spectral type", "stellar spectra"]
+        },
+        {
+          "concept_id": "astronomy_spectral_line_formation",
+          "title": "Spectral absorption line formation",
+          "description": "Relate stellar absorption lines to elements and ionization states in the photosphere and identify temperature-sensitive lines such as Balmer hydrogen and Ca II.",
+          "depth_tags": ["absorption lines", "Balmer series", "Ca II", "photosphere", "ionization"]
+        },
+        {
+          "concept_id": "astronomy_luminosity_class",
+          "title": "Luminosity class and pressure broadening",
+          "description": "Distinguish dwarfs, giants, and supergiants from line widths caused by pressure broadening and assign MK luminosity classes.",
+          "depth_tags": ["luminosity class", "pressure broadening", "giant vs dwarf", "MK system", "line width"]
+        },
+        {
+          "concept_id": "astronomy_blackbody_continuum_stellar",
+          "title": "Blackbody continuum in stellar spectra",
+          "description": "Interpret the shape and peak of a stellar continuum to estimate effective temperature without performing Wien law calculations.",
+          "depth_tags": ["blackbody continuum", "Planck curve", "effective temperature", "spectral energy distribution", "continuum"]
+        },
+        {
+          "concept_id": "astronomy_hr_diagram_regions",
+          "title": "H-R diagram axes and stellar regions",
+          "description": "Read an H-R diagram to locate the main sequence, giant/supergiant branches, and white dwarf region from luminosity and temperature.",
+          "depth_tags": ["H-R diagram", "main sequence", "giant branch", "white dwarf", "luminosity vs temperature"]
+        },
+        {
+          "concept_id": "astronomy_metallicity_spectral_lines",
+          "title": "Metallicity from spectral lines",
+          "description": "Determine stellar metallicity by comparing metal absorption line strengths and explain how metal content affects line ratios.",
+          "depth_tags": ["metallicity", "metal lines", "equivalent width", "population indicators", "spectral abundance"]
+        },
+        {
+          "concept_id": "astronomy_spectral_peculiarities",
+          "title": "Peculiar stellar spectra",
+          "description": "Recognize emission-line stars, Be stars, and Wolf-Rayet features in spectra and infer circumstellar or wind activity from spectral anomalies.",
+          "depth_tags": ["emission lines", "Be stars", "Wolf-Rayet", "P Cygni profile", "stellar wind"]
+        },
+        {
+          "concept_id": "astronomy_color_index_temperature",
+          "title": "Color index and photometric temperature",
+          "description": "Use broadband color indices such as B-V to estimate stellar temperature and identify reddening from color excess.",
+          "depth_tags": ["B-V color", "color index", "reddening", "photometry", "temperature scale"]
+        },
+        {
+          "concept_id": "astronomy_mk_classification_procedure",
+          "title": "MK spectral classification procedure",
+          "description": "Apply the Morgan-Keenan classification procedure by assigning a spectral class, luminosity class, and peculiarity tag from an observed spectrum.",
+          "depth_tags": ["MK classification", "spectral class", "luminosity class", "peculiarity", "classification scheme"]
+        }
+      ]
+    },
+    {
+      "topic_id": "astronomy_stellar_evolution_variables_and_compact_remnants",
+      "title": "Stellar evolution, variables, and compact remnants",
+      "display_order": 2,
+      "concepts": [
+        {
+          "concept_id": "astronomy_main_sequence_lifetimes",
+          "title": "Main sequence hydrogen burning and lifetimes",
+          "description": "Explain why stars spend most of their lives on the main sequence and estimate relative lifetimes from mass-luminosity scaling.",
+          "depth_tags": ["main sequence", "hydrogen core fusion", "mass-luminosity relation", "lifetime", "energy generation"]
+        },
+        {
+          "concept_id": "astronomy_low_intermediate_evolution",
+          "title": "Low/intermediate-mass post-main-sequence evolution",
+          "description": "Trace red giant, helium flash, horizontal branch, AGB, planetary nebula, and white dwarf stages for stars below roughly eight solar masses.",
+          "depth_tags": ["red giant", "helium flash", "AGB", "planetary nebula", "white dwarf"]
+        },
+        {
+          "concept_id": "astronomy_high_mass_evolution",
+          "title": "High-mass star evolution and core collapse",
+          "description": "Describe shell burning toward an iron core and the core-collapse endpoint for massive stars.",
+          "depth_tags": ["shell burning", "iron core", "core collapse", "massive star", "onion structure"]
+        },
+        {
+          "concept_id": "astronomy_cepheid_pulsators",
+          "title": "Cepheid variable pulsation",
+          "description": "Explain Cepheid variability through the instability strip and relate pulsation period to luminosity class without deriving distance calibration.",
+          "depth_tags": ["Cepheids", "instability strip", "period", "pulsation", "luminosity class"]
+        },
+        {
+          "concept_id": "astronomy_rr_lyrae_pulsators",
+          "title": "RR Lyrae variables",
+          "description": "Identify RR Lyrae as low-metallicity horizontal-branch pulsators with nearly constant luminosity and periods under one day.",
+          "depth_tags": ["RR Lyrae", "horizontal branch", "pulsation", "old population", "period"]
+        },
+        {
+          "concept_id": "astronomy_type_ia_sn_mechanism",
+          "title": "Type Ia supernova mechanism",
+          "description": "Explain white dwarf accretion or merger-induced thermonuclear detonation producing a Type Ia supernova light curve and spectra.",
+          "depth_tags": ["Type Ia", "white dwarf", "thermonuclear", "standardizable candle", "light curve"]
+        },
+        {
+          "concept_id": "astronomy_core_collapse_sn",
+          "title": "Core-collapse supernova types",
+          "description": "Distinguish Type II, Ib, and Ic supernovae by hydrogen and helium line signatures and their core-collapse progenitor stars.",
+          "depth_tags": ["core collapse", "Type II", "Type Ib/c", "hydrogen lines", "progenitor"]
+        },
+        {
+          "concept_id": "astronomy_neutron_stars_pulsars",
+          "title": "Neutron stars and pulsars",
+          "description": "Describe neutron star formation, spin-down pulsar emission, and observable pulse periods from rotating magnetic fields.",
+          "depth_tags": ["neutron star", "pulsar", "spin-down", "magnetic field", "radiation beam"]
+        },
+        {
+          "concept_id": "astronomy_stellar_black_holes_xray",
+          "title": "Stellar-mass black holes and X-ray binaries",
+          "description": "Explain accretion-powered X-ray binary signatures and infer black hole candidates from companion star orbital motion.",
+          "depth_tags": ["black hole", "X-ray binary", "accretion disk", "mass transfer", "companion motion"]
+        },
+        {
+          "concept_id": "astronomy_ulx_sources",
+          "title": "Ultraluminous X-ray sources",
+          "description": "Explain ULXs as accreting compact objects exceeding the Eddington limit for stellar-mass black holes and distinguish neutron star from intermediate-mass black hole candidates.",
+          "depth_tags": ["ULX", "Eddington limit", "accretion", "neutron star", "intermediate-mass black hole"]
+        },
+        {
+          "concept_id": "astronomy_gravitational_wave_events",
+          "title": "Compact object mergers and gravitational waves",
+          "description": "Relate gravitational-wave chirp signals to neutron star and black hole mergers and identify possible electromagnetic counterpart channels.",
+          "depth_tags": ["gravitational waves", "chirp", "merger", "LIGO/Virgo", "kilonova"]
+        },
+        {
+          "concept_id": "astronomy_supernova_remnants",
+          "title": "Supernova remnants and nucleosynthesis",
+          "description": "Recognize supernova remnant expansion shells and connect heavy-element production to supernova ejecta.",
+          "depth_tags": ["supernova remnant", "ejecta", "nucleosynthesis", "shock front", "heavy elements"]
+        }
+      ]
+    },
+    {
+      "topic_id": "astronomy_normal_galaxy_morphology_and_stellar_populations",
+      "title": "Normal galaxy morphology and stellar populations",
+      "display_order": 3,
+      "concepts": [
+        {
+          "concept_id": "astronomy_hubble_tuning_fork",
+          "title": "Hubble tuning fork classification",
+          "description": "Classify galaxies as elliptical, lenticular, spiral, barred spiral, or irregular using the Hubble sequence and note correlations with gas content.",
+          "depth_tags": ["Hubble sequence", "elliptical", "spiral", "lenticular", "irregular"]
+        },
+        {
+          "concept_id": "astronomy_galaxy_structural_components",
+          "title": "Galaxy disk, bulge, halo, bar, and ring components",
+          "description": "Identify disk, bulge, halo, bar, and ring structures in galaxy images and describe their stellar and gas content differences.",
+          "depth_tags": ["disk", "bulge", "halo", "bar", "ring"]
+        },
+        {
+          "concept_id": "astronomy_stellar_populations_i_ii",
+          "title": "Stellar populations I and II",
+          "description": "Compare Population I and Population II stars by age, metallicity, location, and orbit to interpret galaxy color and structure.",
+          "depth_tags": ["Population I", "Population II", "metallicity", "age", "galaxy location"]
+        },
+        {
+          "concept_id": "astronomy_spiral_arm_density_waves",
+          "title": "Spiral arms and density wave theory",
+          "description": "Explain spiral arm formation by density waves and relate arm regions to star formation and blue OB associations.",
+          "depth_tags": ["density wave", "spiral arms", "OB associations", "star formation", "pattern speed"]
+        },
+        {
+          "concept_id": "astronomy_elliptical_galaxy_properties",
+          "title": "Elliptical galaxy properties",
+          "description": "Describe elliptical galaxies as red, gas-poor, pressure-supported systems with old stars and little ongoing star formation.",
+          "depth_tags": ["elliptical", "pressure-supported", "old stellar population", "gas-poor", "red sequence"]
+        },
+        {
+          "concept_id": "astronomy_irregular_galaxy_properties",
+          "title": "Irregular galaxy properties",
+          "description": "Identify irregular galaxies by asymmetric structure and active or recent star formation, often triggered by interactions.",
+          "depth_tags": ["irregular", "asymmetric", "star formation", "interaction", "gas rich"]
+        },
+        {
+          "concept_id": "astronomy_globular_cluster_systems",
+          "title": "Globular clusters and galaxy halos",
+          "description": "Use globular cluster ages, metallicities, and spatial distribution to probe galaxy halos and early formation history.",
+          "depth_tags": ["globular clusters", "halo", "old population", "metallicity", "formation history"]
+        },
+        {
+          "concept_id": "astronomy_galaxy_surface_brightness_profiles",
+          "title": "Galaxy surface brightness profiles",
+          "description": "Distinguish de Vaucouleurs and exponential surface brightness profiles for ellipticals and disk galaxies from brightness versus radius plots.",
+          "depth_tags": ["surface brightness", "de Vaucouleurs profile", "exponential profile", "radius", "photometry"]
+        },
+        {
+          "concept_id": "astronomy_galaxy_color_morphology_relation",
+          "title": "Galaxy color-morphology relation",
+          "description": "Interpret the bimodal red sequence and blue cloud in color-magnitude diagrams and relate color to galaxy morphology and quenching.",
+          "depth_tags": ["red sequence", "blue cloud", "color-magnitude diagram", "quenching", "morphology"]
+        },
+        {
+          "concept_id": "astronomy_galaxy_luminosity_mass_light",
+          "title": "Galaxy luminosity and mass-to-light ratio",
+          "description": "Estimate stellar mass from luminosity and mass-to-light ratio and compare stellar versus dynamical mass contributions.",
+          "depth_tags": ["mass-to-light ratio", "stellar mass", "luminosity", "dynamical mass", "population"]
+        }
+      ]
+    },
+    {
+      "topic_id": "astronomy_starbursts_and_galaxy_interactions",
+      "title": "Starbursts and galaxy interactions",
+      "display_order": 4,
+      "concepts": [
+        {
+          "concept_id": "astronomy_starburst_definition",
+          "title": "Starburst definition and rate thresholds",
+          "description": "Define a starburst by star formation rate per unit gas mass or short gas depletion time and distinguish starbursts from normal star-forming galaxies.",
+          "depth_tags": ["starburst definition", "gas depletion time", "SFR", "star formation efficiency", "threshold"]
+        },
+        {
+          "concept_id": "astronomy_sfr_indicators",
+          "title": "Star formation rate indicators",
+          "description": "Compare H-alpha, ultraviolet, infrared, and radio continuum tracers of star formation and correct for dust attenuation.",
+          "depth_tags": ["H-alpha", "UV luminosity", "infrared luminosity", "radio continuum", "dust correction"]
+        },
+        {
+          "concept_id": "astronomy_starburst_triggers",
+          "title": "Starburst triggers from interactions",
+          "description": "Explain how tidal encounters, gas inflows, and bar instabilities compress gas and trigger concentrated star formation.",
+          "depth_tags": ["tidal interaction", "gas inflow", "bar instability", "compression", "trigger"]
+        },
+        {
+          "concept_id": "astronomy_super_star_clusters",
+          "title": "Super star clusters in starbursts",
+          "description": "Identify super star clusters as compact massive young clusters and infer young ages and high star formation rate densities from their luminosities.",
+          "depth_tags": ["super star cluster", "young massive cluster", "SFR density", "UV luminosity", "compact"]
+        },
+        {
+          "concept_id": "astronomy_galactic_winds_starburst",
+          "title": "Starburst galactic winds and outflows",
+          "description": "Describe starburst-driven winds from supernovae and massive stars and recognize outflow signatures in absorption and emission lines.",
+          "depth_tags": ["galactic wind", "outflow", "supernova feedback", "P-Cygni", "metal enrichment"]
+        },
+        {
+          "concept_id": "astronomy_merger_stages_tidal_features",
+          "title": "Galaxy merger stages and tidal features",
+          "description": "Identify tidal tails, bridges, and shells as merger signatures and infer interaction stage from galaxy morphology.",
+          "depth_tags": ["tidal tails", "bridges", "shells", "merger stage", "interacting galaxies"]
+        },
+        {
+          "concept_id": "astronomy_tidal_disruption_rings_bars",
+          "title": "Tidal disruption rings and induced bars",
+          "description": "Explain how close encounters form rings, bars, or nuclear gas flows through tidal torques and resonances.",
+          "depth_tags": ["tidal torque", "ring galaxy", "bar formation", "resonance", "encounter"]
+        },
+        {
+          "concept_id": "astronomy_dusty_luminous_infrared_galaxies",
+          "title": "Dusty luminous and ultraluminous infrared galaxies",
+          "description": "Relate LIRG and ULIRG infrared luminosity to dust-obscured starbursts and frequent ongoing mergers.",
+          "depth_tags": ["LIRG", "ULIRG", "dust obscuration", "infrared luminosity", "merger"]
+        },
+        {
+          "concept_id": "astronomy_starburst_spectral_signatures",
+          "title": "Starburst spectral signatures",
+          "description": "Recognize strong narrow emission lines, young stellar continuum, and Wolf-Rayet features in starburst galaxy spectra.",
+          "depth_tags": ["emission lines", "H II regions", "Wolf-Rayet features", "young stellar population", "starburst spectrum"]
+        },
+        {
+          "concept_id": "astronomy_star_formation_efficiency_law",
+          "title": "Star formation efficiency and Kennicutt-Schmidt law",
+          "description": "Apply the Kennicutt-Schmidt relation between gas surface density and star formation rate surface density to starburst and normal galaxies.",
+          "depth_tags": ["Kennicutt-Schmidt law", "gas surface density", "SFR surface density", "efficiency", "depletion time"]
+        }
+      ]
+    },
+    {
+      "topic_id": "astronomy_distance_ladder_and_extragalactic_distance_indicators",
+      "title": "Distance ladder and extragalactic distance indicators",
+      "display_order": 5,
+      "concepts": [
+        {
+          "concept_id": "astronomy_parallax_distance",
+          "title": "Parallax distance measurement",
+          "description": "Calculate distance from trigonometric parallax angles and explain baseline limitations for galactic and extragalactic scales.",
+          "depth_tags": ["parallax", "arcsecond", "baseline", "distance", "astrometry"]
+        },
+        {
+          "concept_id": "astronomy_distance_modulus",
+          "title": "Distance modulus equation",
+          "description": "Apply m - M = 5 log d - 5 to relate apparent magnitude, absolute magnitude, and distance in parsecs.",
+          "depth_tags": ["distance modulus", "apparent magnitude", "absolute magnitude", "parsecs", "m-M"]
+        },
+        {
+          "concept_id": "astronomy_spectroscopic_parallax",
+          "title": "Spectroscopic parallax",
+          "description": "Determine stellar distance by matching a star's spectrum and luminosity class to an H-R diagram absolute magnitude.",
+          "depth_tags": ["spectroscopic parallax", "H-R diagram", "luminosity class", "absolute magnitude", "distance"]
+        },
+        {
+          "concept_id": "astronomy_cepheid_pl_relation",
+          "title": "Cepheid period-luminosity relation",
+          "description": "Use the Cepheid period-luminosity relation to calculate absolute magnitude and distance from an observed pulsation period.",
+          "depth_tags": ["period-luminosity", "Cepheid", "Leavitt law", "distance indicator", "absolute magnitude"]
+        },
+        {
+          "concept_id": "astronomy_rr_lyrae_distance",
+          "title": "RR Lyrae standard candle",
+          "description": "Use RR Lyrae variables as standard candles with known absolute magnitude to find distances to old stellar populations.",
+          "depth_tags": ["RR Lyrae", "standard candle", "horizontal branch", "absolute magnitude", "old population"]
+        },
+        {
+          "concept_id": "astronomy_trgb_distance",
+          "title": "Tip of the red giant branch distance",
+          "description": "Measure the I-band luminosity of the red giant branch tip as a standard candle for nearby resolved galaxies.",
+          "depth_tags": ["TRGB", "red giant branch", "I-band", "standard candle", "resolved stellar populations"]
+        },
+        {
+          "concept_id": "astronomy_tully_fisher_relation",
+          "title": "Tully-Fisher relation",
+          "description": "Apply the Tully-Fisher relation between spiral galaxy rotation velocity and luminosity to estimate extragalactic distances.",
+          "depth_tags": ["Tully-Fisher", "rotation velocity", "luminosity", "spiral galaxy", "distance"]
+        },
+        {
+          "concept_id": "astronomy_type_ia_sn_distance",
+          "title": "Type Ia supernovae as standardizable candles",
+          "description": "Use Type Ia light-curve shape and color corrections to standardize peak luminosity for distance measurement.",
+          "depth_tags": ["Type Ia", "standardizable candle", "light-curve shape", "color correction", "peak luminosity"]
+        },
+        {
+          "concept_id": "astronomy_hubble_flow_distance",
+          "title": "Hubble law and redshift distances",
+          "description": "Calculate distance from redshift using Hubble's law and identify peculiar velocity limitations at low redshift.",
+          "depth_tags": ["Hubble law", "redshift", "H0", "recession velocity", "peculiar velocity"]
+        },
+        {
+          "concept_id": "astronomy_distance_ladder_calibration",
+          "title": "Distance ladder calibration and systematics",
+          "description": "Explain how parallax calibrates Cepheids, Cepheids calibrate Type Ia supernovae, and systematic errors propagate through the ladder.",
+          "depth_tags": ["calibration", "distance ladder", "systematics", "parallax", "Type Ia SNe"]
+        }
+      ]
+    },
+    {
+      "topic_id": "astronomy_orbital_mechanics_and_galactic_rotation",
+      "title": "Orbital mechanics and galactic rotation",
+      "display_order": 6,
+      "concepts": [
+        {
+          "concept_id": "astronomy_kepler_third_law",
+          "title": "Kepler's third law for binaries",
+          "description": "Apply Kepler's third law to determine total mass from orbital period and semimajor axis of a binary system.",
+          "depth_tags": ["Kepler's third law", "period", "semimajor axis", "binary mass", "total mass"]
+        },
+        {
+          "concept_id": "astronomy_newtonian_circular_velocity",
+          "title": "Newtonian circular orbit velocity",
+          "description": "Calculate circular orbital speed from enclosed mass and radius using v = sqrt(GM/r) and interpret its radial dependence.",
+          "depth_tags": ["circular velocity", "enclosed mass", "radius", "v = sqrt(GM/r)", "orbital speed"]
+        },
+        {
+          "concept_id": "astronomy_binary_radial_velocity",
+          "title": "Binary radial velocity and mass function",
+          "description": "Use radial velocity curves and the mass function to set lower limits on companion masses in spectroscopic binaries.",
+          "depth_tags": ["radial velocity", "mass function", "spectroscopic binary", "companion mass", "velocity amplitude"]
+        },
+        {
+          "concept_id": "astronomy_galactic_rotation_curve_measurement",
+          "title": "Galactic rotation curve measurement",
+          "description": "Measure galaxy rotation speeds from Doppler shifts of HI or CO emission and map velocity as a function of radius.",
+          "depth_tags": ["rotation curve", "HI 21 cm", "CO", "Doppler shift", "radial velocity"]
+        },
+        {
+          "concept_id": "astronomy_rotation_curve_dark_matter",
+          "title": "Rotation curve shape and dark matter inference",
+          "description": "Interpret flat rotation curves beyond the visible disk as evidence for extended dark matter halos and estimate enclosed mass.",
+          "depth_tags": ["flat rotation curve", "dark matter halo", "enclosed mass", "visible disk", "mass discrepancy"]
+        },
+        {
+          "concept_id": "astronomy_oort_constants",
+          "title": "Oort constants and differential rotation",
+          "description": "Use Oort constants A and B to describe local differential rotation and shear in the Galactic disk.",
+          "depth_tags": ["Oort constants", "differential rotation", "shear", "Galactic disk", "A and B"]
+        },
+        {
+          "concept_id": "astronomy_virial_theorem_mass",
+          "title": "Virial theorem mass estimates",
+          "description": "Estimate cluster or galaxy mass from velocity dispersion and size using the virial theorem relationship.",
+          "depth_tags": ["virial theorem", "velocity dispersion", "cluster mass", "galaxy mass", "size"]
+        },
+        {
+          "concept_id": "astronomy_escape_velocity",
+          "title": "Escape velocity and binding",
+          "description": "Calculate escape velocity from a mass distribution and distinguish bound orbits, unbound encounters, and merger outcomes.",
+          "depth_tags": ["escape velocity", "bound orbit", "unbound", "gravitational binding", "v_esc = sqrt(2GM/r)"]
+        },
+        {
+          "concept_id": "astronomy_smbh_mass_stellar_orbits",
+          "title": "Supermassive black hole mass from stellar orbits",
+          "description": "Use orbital periods and semimajor axes of stars near a galaxy center to infer a central supermassive black hole mass.",
+          "depth_tags": ["SMBH", "stellar orbits", "central mass", "orbital period", "galactic nucleus"]
+        }
+      ]
+    },
+    {
+      "topic_id": "astronomy_radiation_laws_and_flux_calculations",
+      "title": "Radiation laws and flux calculations",
+      "display_order": 7,
+      "concepts": [
+        {
+          "concept_id": "astronomy_stefan_boltzmann_luminosity",
+          "title": "Stefan-Boltzmann luminosity law",
+          "description": "Calculate stellar luminosity from radius and effective temperature using L = 4πR²σT⁴.",
+          "depth_tags": ["Stefan-Boltzmann", "L = 4πR^2σT^4", "luminosity", "effective temperature", "radius"]
+        },
+        {
+          "concept_id": "astronomy_wien_law",
+          "title": "Wien displacement law",
+          "description": "Calculate peak wavelength from stellar effective temperature using λmax = b/T and interpret color-temperature relationships.",
+          "depth_tags": ["Wien law", "peak wavelength", "effective temperature", "λmax = b/T", "blackbody"]
+        },
+        {
+          "concept_id": "astronomy_inverse_square_flux",
+          "title": "Inverse-square law for flux",
+          "description": "Apply flux = L / (4πd²) to calculate apparent brightness from luminosity and distance.",
+          "depth_tags": ["inverse-square law", "flux", "luminosity", "distance", "F = L/(4πd^2)"]
+        },
+        {
+          "concept_id": "astronomy_magnitude_scale",
+          "title": "Apparent magnitude scale",
+          "description": "Convert flux ratios to magnitude differences using m1 - m2 = -2.5 log(F1/F2) and explain the logarithmic brightness response.",
+          "depth_tags": ["apparent magnitude", "flux ratio", "logarithmic scale", "-2.5 log", "brightness"]
+        },
+        {
+          "concept_id": "astronomy_absolute_magnitude_definition",
+          "title": "Absolute magnitude definition",
+          "description": "Define absolute magnitude as apparent magnitude at 10 pc and use the inverse-square law to compare stellar luminosities.",
+          "depth_tags": ["absolute magnitude", "10 pc", "luminosity comparison", "distance normalization", "M"]
+        },
+        {
+          "concept_id": "astronomy_luminosity_radius_temperature",
+          "title": "Luminosity-radius-temperature relation",
+          "description": "Compare stars on the H-R diagram using L ∝ R²T⁴ and explain giant and dwarf differences in radius and temperature.",
+          "depth_tags": ["L ∝ R^2T^4", "radius", "temperature", "giant vs dwarf", "H-R diagram"]
+        },
+        {
+          "concept_id": "astronomy_bolometric_correction",
+          "title": "Bolometric correction and band magnitudes",
+          "description": "Apply bolometric corrections to convert visual or band magnitudes to bolometric luminosity and estimate total energy output.",
+          "depth_tags": ["bolometric correction", "band magnitude", "bolometric luminosity", "visual magnitude", "BC"]
+        },
+        {
+          "concept_id": "astronomy_flux_ratio_magnitude",
+          "title": "Flux ratio from magnitude difference",
+          "description": "Calculate flux ratios from given magnitude differences and combine magnitudes for unresolved multiple sources.",
+          "depth_tags": ["flux ratio", "magnitude difference", "logarithmic conversion", "unresolved sources", "combined magnitude"]
+        }
+      ]
+    },
+    {
+      "topic_id": "astronomy_object_identification_and_case_study_application",
+      "title": "Object identification and case-study application",
+      "display_order": 8,
+      "concepts": [
+        {
+          "concept_id": "astronomy_object_m31",
+          "title": "Andromeda (M31) identification and properties",
+          "description": "Identify M31 as the nearest large spiral and interpret its disk, bulge, and satellite system in images and data.",
+          "depth_tags": ["M31", "Andromeda", "spiral galaxy", "Local Group", "satellites"]
+        },
+        {
+          "concept_id": "astronomy_object_m104",
+          "title": "Sombrero Galaxy (M104) identification",
+          "description": "Identify the Sombrero Galaxy by its bright bulge and prominent dust lane, and classify its bulge, disk, and halo content.",
+          "depth_tags": ["M104", "Sombrero", "dust lane", "bulge", "lenticular/spiral"]
+        },
+        {
+          "concept_id": "astronomy_object_m51",
+          "title": "Whirlpool Galaxy (M51) and companion interaction",
+          "description": "Identify M51 and its companion, and explain spiral arm triggering by tidal interaction.",
+          "depth_tags": ["M51", "Whirlpool", "interacting pair", "tidal triggering", "spiral arms"]
+        },
+        {
+          "concept_id": "astronomy_object_ngc4536",
+          "title": "NGC 4536 starburst spiral case",
+          "description": "Identify NGC 4536 as a starbursting spiral and connect its high star formation rate to H-alpha and infrared signatures.",
+          "depth_tags": ["NGC 4536", "starburst spiral", "H-alpha", "infrared", "SFR"]
+        },
+        {
+          "concept_id": "astronomy_object_mcg0733027",
+          "title": "MCG+07-33-027 compact starburst case",
+          "description": "Identify MCG+07-33-027 as a compact starburst galaxy and interpret its emission-line and stellar population data.",
+          "depth_tags": ["MCG+07-33-027", "compact starburst", "emission lines", "young population", "starburst galaxy"]
+        },
+        {
+          "concept_id": "astronomy_object_ngc1569",
+          "title": "NGC 1569 dwarf starburst with super star clusters",
+          "description": "Identify NGC 1569 as a dwarf starburst hosting prominent super star clusters and outflow features.",
+          "depth_tags": ["NGC 1569", "dwarf starburst", "super star clusters", "outflow", "irregular"]
+        },
+        {
+          "concept_id": "astronomy_object_antennae",
+          "title": "Antennae Galaxies interaction",
+          "description": "Identify the Antennae as a major merger and relate tidal tails, star clusters, and triggered star formation to merger stage.",
+          "depth_tags": ["Antennae", "major merger", "tidal tails", "star formation", "interacting pair"]
+        },
+        {
+          "concept_id": "astronomy_object_arp143",
+          "title": "Arp 143 collisional ring pair",
+          "description": "Identify Arp 143 as an interacting pair with a ring component and explain ring formation through off-center collision.",
+          "depth_tags": ["Arp 143", "ring galaxy", "off-center collision", "interacting pair", "tidal"]
+        },
+        {
+          "concept_id": "astronomy_object_arp147",
+          "title": "Arp 147 ring galaxy pair",
+          "description": "Identify Arp 147 as a collisional ring pair and use its expanding ring and blue knots to infer recent starburst activity.",
+          "depth_tags": ["Arp 147", "collisional ring", "expanding ring", "starburst knots", "interacting pair"]
+        },
+        {
+          "concept_id": "astronomy_object_cartwheel",
+          "title": "Cartwheel Galaxy ring structure",
+          "description": "Identify the Cartwheel by its outer star-forming ring, inner ring, and spokes, and explain ring expansion from a head-on collision.",
+          "depth_tags": ["Cartwheel", "ring galaxy", "head-on collision", "spokes", "outer ring"]
+        },
+        {
+          "concept_id": "astronomy_object_m82",
+          "title": "M82 starburst and SN 2014J",
+          "description": "Identify M82 as a starburst galaxy with strong winds and recognize SN 2014J as a Type Ia supernova in its disk.",
+          "depth_tags": ["M82", "starburst", "galactic wind", "SN 2014J", "Type Ia"]
+        },
+        {
+          "concept_id": "astronomy_object_m82_ulx",
+          "title": "M82 X-1 and X-2 ultraluminous X-ray sources",
+          "description": "Identify M82 X-1 and X-2 as ultraluminous X-ray sources and compare black hole versus neutron star interpretations from X-ray timing.",
+          "depth_tags": ["M82 X-1", "M82 X-2", "ULX", "black hole", "neutron star"]
+        },
+        {
+          "concept_id": "astronomy_object_gw170817",
+          "title": "GW170817 neutron star merger counterpart",
+          "description": "Identify GW170817 as a binary neutron star merger with gravitational-wave and kilonova/afterglow counterparts, and connect it to r-process nucleosynthesis.",
+          "depth_tags": ["GW170817", "neutron star merger", "kilonova", "gravitational waves", "r-process"]
+        },
+        {
+          "concept_id": "astronomy_object_terzan5",
+          "title": "Terzan 5 globular cluster system",
+          "description": "Identify Terzan 5 as a globular cluster with complex stellar populations and millisecond pulsars, and interpret its high stellar density data.",
+          "depth_tags": ["Terzan 5", "globular cluster", "millisecond pulsars", "stellar populations", "high density"]
+        }
+      ]
+    }
+  ]
+}

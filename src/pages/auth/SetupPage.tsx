@@ -268,20 +268,26 @@ export function SetupPage() {
             </label>
             <div>
               <p className="label-caps text-dim">Division</p>
-              <div className="mt-2 grid grid-cols-2 gap-3">
+              <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label="Division">
                 {(['B', 'C'] as const).map((d) => (
                   <button
                     key={d}
                     type="button"
+                    aria-pressed={division === d}
                     onClick={() => setDivision(d)}
-                    className={`hud-pill py-3.5 text-sm font-bold ${
-                      division === d ? 'hud-pill-active' : 'text-foreground'
+                    className={`rounded-full border px-3 py-1 text-xs ${
+                      division === d
+                        ? 'border-cyan bg-cyan/15 text-cyan shadow-[0_0_14px_var(--accent-dim)]'
+                        : 'border-subtle text-muted hover:border-cyan/40 hover:text-foreground'
                     }`}
                   >
                     Division {d}
                   </button>
                 ))}
               </div>
+              <p className="mt-2 text-xs text-dim">
+                Pick one, then continue. High school is Division C.
+              </p>
             </div>
             <div className="flex gap-3">
               <button
