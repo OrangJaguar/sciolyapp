@@ -772,6 +772,10 @@ DECLARE
   v_scanned INT := 0;
   v_inflight_total INT := 0;
   v_event_id TEXT;
+  v_per_event INT := NULLIF((p_config->>'questionsPerEvent')::INT, 0);
+  v_event_budget JSONB := '{}'::jsonb;
+  v_left INT;
+  v_have INT;
 BEGIN
   IF NOT public.is_platform_admin() THEN
     RAISE EXCEPTION 'admin only';
@@ -824,6 +828,31 @@ BEGIN
     END LOOP;
   END IF;
 
+  -- questionsPerEvent: fill each selected event up to N live questions,
+  -- 8-at-a-time across concepts, instead of N per concept.
+  IF v_per_event IS NOT NULL AND v_per_event > 0 AND v_mode = 'fill_event' THEN
+    FOREACH v_event_id IN ARRAY COALESCE(v_event_ids, ARRAY[]::TEXT[]) LOOP
+      SELECT
+        COALESCE((
+          SELECT count(*)::INT FROM public.questions q
+          WHERE q.event_id = v_event_id AND q.status = 'live'
+        ), 0)
+        + COALESCE((
+          SELECT sum(i.n_outstanding)::INT
+          FROM public.generation_job_items i
+          JOIN public.generation_jobs j ON j.id = i.job_id
+          WHERE i.event_id = v_event_id
+            AND j.status IN ('queued', 'running', 'paused')
+            AND i.status IN ('queued', 'running')
+        ), 0)
+      INTO v_have;
+      v_event_budget := v_event_budget || jsonb_build_object(
+        v_event_id,
+        GREATEST(v_per_event - COALESCE(v_have, 0), 0)
+      );
+    END LOOP;
+  END IF;
+
   FOR v_concept IN
     SELECT c.id, c.event_id, c.name
     FROM public.taxonomy_concepts c
@@ -852,14 +881,28 @@ BEGIN
     v_q_cov := public.admin_concept_coverage(v_concept.id);
     v_inflight := public.admin_inflight_generation_count(v_concept.id);
     v_coverage := v_q_cov + v_inflight;
-    v_gap := GREATEST(v_target - v_coverage, 0);
 
-    IF v_mode = 'workbench' AND COALESCE((p_config->>'fillGap')::BOOLEAN, TRUE) = FALSE THEN
-      v_gap := v_n_per_call;
+    IF v_per_event IS NOT NULL AND v_per_event > 0 AND v_mode = 'fill_event' THEN
+      v_left := COALESCE((v_event_budget->>v_concept.event_id)::INT, 0);
+      v_gap := LEAST(v_n_per_call, v_left);
+      IF v_gap > 0 THEN
+        v_event_budget := jsonb_set(
+          v_event_budget,
+          ARRAY[v_concept.event_id],
+          to_jsonb(v_left - v_gap)
+        );
+      END IF;
+    ELSE
+      v_gap := GREATEST(v_target - v_coverage, 0);
+      IF v_mode = 'workbench' AND COALESCE((p_config->>'fillGap')::BOOLEAN, TRUE) = FALSE THEN
+        v_gap := v_n_per_call;
+      END IF;
     END IF;
 
     IF v_gap <= 0 THEN
-      v_skipped_full := v_skipped_full + 1;
+      IF v_per_event IS NULL OR v_mode <> 'fill_event' THEN
+        v_skipped_full := v_skipped_full + 1;
+      END IF;
       CONTINUE;
     END IF;
 

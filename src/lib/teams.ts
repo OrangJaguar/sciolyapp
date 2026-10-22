@@ -1,6 +1,21 @@
 import { requireSupabase, supabase } from './supabase'
 import type { Division, Team } from './types'
 
+export function unknownErrorText(err: unknown, fallback: string): string {
+  if (typeof err === 'string' && err.trim()) return err.trim()
+  if (err && typeof err === 'object') {
+    const rec = err as { message?: unknown; details?: unknown; hint?: unknown; code?: unknown }
+    const parts = [rec.message, rec.details, rec.hint].filter(
+      (part): part is string => typeof part === 'string' && part.trim().length > 0,
+    )
+    if (parts.length > 0) return parts.join(' — ')
+    if (typeof rec.code === 'string' && rec.code.trim()) {
+      return `${fallback} (${rec.code.trim()})`
+    }
+  }
+  return fallback
+}
+
 export const JOIN_CODE_LENGTH = 6
 
 export function normalizeJoinCode(raw: string): string {

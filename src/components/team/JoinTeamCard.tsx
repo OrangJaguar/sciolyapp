@@ -4,6 +4,7 @@ import {
   isValidJoinCode,
   joinTeamByCode,
   normalizeJoinCode,
+  unknownErrorText,
 } from '../../lib/teams'
 
 type Props = {
@@ -29,7 +30,7 @@ export function JoinTeamCard({ onJoined, compact }: Props) {
       setCode('')
       await onJoined?.()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Join failed')
+      setError(unknownErrorText(err, 'Join failed'))
     } finally {
       setBusy(false)
     }
@@ -48,8 +49,8 @@ export function JoinTeamCard({ onJoined, compact }: Props) {
           className="data-mono mt-2 w-full rounded-md border border-[var(--ghost-border)] bg-void px-3 py-2.5 tracking-[0.35em] text-foreground outline-none focus:border-cyan"
         />
         <p className="mt-2 text-xs text-dim">
-          Ask your coach for the student code. A coach invite code makes you a
-          coach on that team.
+          Use the student code. A coach promotes you to officer afterward.
+          The coach code makes you a coach.
         </p>
       </label>
       {error ? <p className="text-sm text-alert">{error}</p> : null}

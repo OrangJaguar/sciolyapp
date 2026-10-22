@@ -46,6 +46,23 @@ import { ConceptPickModal } from './ConceptPickModal'
 
 type GenerateTab = 'workbench' | 'jobs'
 
+const STUDY_EVENT_IDS = [
+  'anatomy',
+  'astronomy',
+  'botany',
+  'chem_lab',
+  'circuit_lab',
+  'designer_genes',
+  'disease_detectives',
+  'dynamic_planet',
+  'forensics',
+  'protein_modeling',
+  'remote_sensing',
+  'rocks_minerals',
+  'thermodynamics',
+  'water_quality',
+] as const
+
 function buildConfig(
   base: GenerationJobConfig,
   overrides: Partial<GenerationJobConfig>,
@@ -126,6 +143,34 @@ export function GeneratePage() {
     [catalogQuery.data?.events],
   )
 
+  const studyEvents = useMemo(
+    () =>
+      (catalogQuery.data?.events ?? []).filter((event) =>
+        (STUDY_EVENT_IDS as readonly string[]).includes(event.id),
+      ),
+    [catalogQuery.data?.events],
+  )
+
+  const liveByEvent = useMemo(() => {
+    const eventOf = new Map(
+      (catalogQuery.data?.concepts ?? []).map((concept) => [
+        concept.id,
+        concept.event_id,
+      ]),
+    )
+    const counts = new Map<string, number>()
+    for (const row of catalogQuery.data?.coverage ?? []) {
+      const eventId = eventOf.get(row.concept_id)
+      if (!eventId) continue
+      counts.set(eventId, (counts.get(eventId) ?? 0) + row.live_count)
+    }
+    return counts
+  }, [catalogQuery.data])
+
+  const [queueIds, setQueueIds] = useState<string[] | null>(null)
+  const [perEvent, setPerEvent] = useState(50)
+  const selectedQueue = queueIds ?? studyEvents.map((event) => event.id)
+
   const eventNameById = useMemo(() => {
     const map = new Map<string, string>()
     for (const event of catalogQuery.data?.events ?? []) {
@@ -173,6 +218,35 @@ export function GeneratePage() {
       setTab('jobs')
       setNote(
         'Job started — server dispatcher drains off-peak; this tab Live-boosts up to 32.',
+      )
+      await qc.invalidateQueries({ queryKey: ['admin-generation-jobs'] })
+    },
+    onError: (err) => setNote(adminErrorMessage(err)),
+  })
+
+  const queueMutation = useMutation({
+    mutationFn: async (cfg: GenerationJobConfig) => {
+      const plan = await previewGeneration(cfg)
+      if (plan.blockers.length > 0 || plan.request_count === 0) {
+        return { plan, jobId: null as string | null }
+      }
+      const jobId = await createGenerationJob(cfg)
+      return { plan, jobId }
+    },
+    onSuccess: async ({ plan, jobId }) => {
+      setPreview(plan)
+      if (!jobId) {
+        setNote(
+          plan.blockers.length > 0
+            ? 'Nothing queued. See the notes below.'
+            : 'Those events already have at least that many live questions.',
+        )
+        return
+      }
+      setActiveJobId(jobId)
+      setTab('jobs')
+      setNote(
+        `Queued ${plan.question_count} questions across ${plan.events.length} events. They run as one job.`,
       )
       await qc.invalidateQueries({ queryKey: ['admin-generation-jobs'] })
     },
@@ -830,7 +904,113 @@ export function GeneratePage() {
       <div className="min-h-0 flex-1 overflow-y-auto">
         {tab === 'workbench' ? (
           <div className="hud-panel space-y-5 p-5">
-            <div className="grid gap-4 sm:grid-cols-[1fr_auto]">
+            <div className="space-y-3">
+              <div>
+                <p className="label-caps text-[9px] text-dim">Question bank</p>
+                <h2 className="mt-1 text-lg text-foreground">Queue events</h2>
+                <p className="mt-1 max-w-2xl text-sm text-muted">
+                  Pick events and how many live questions each one should have.
+                  That number is for the whole event, not each concept. Questions
+                  land on the next concepts, 8 at a time, until the event hits
+                  the number. An event that already has enough is skipped.
+                  This queue runs on your DeepSeek API as V4.1 Flash.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {studyEvents.map((event) => {
+                  const on = selectedQueue.includes(event.id)
+                  const have = liveByEvent.get(event.id) ?? 0
+                  return (
+                    <button
+                      key={event.id}
+                      type="button"
+                      aria-pressed={on}
+                      onClick={() => {
+                        setQueueIds(
+                          on
+                            ? selectedQueue.filter((id) => id !== event.id)
+                            : [...selectedQueue, event.id],
+                        )
+                        setPreview(null)
+                      }}
+                      className={`hud-pill px-3 py-1.5 text-[11px] ${
+                        on ? 'hud-pill-active' : 'text-foreground'
+                      }`}
+                    >
+                      {event.name}
+                      <span className="ml-1.5 data-mono text-[9px] text-dim">
+                        {have}
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+              <div className="flex flex-wrap items-end gap-3">
+                <label className="flex flex-col gap-1.5">
+                  <span className="label-caps text-[9px] text-dim">
+                    Questions per event
+                  </span>
+                  <input
+                    type="number"
+                    min={1}
+                    max={500}
+                    value={perEvent}
+                    onChange={(e) => {
+                      const next = Number(e.target.value)
+                      setPerEvent(Number.isFinite(next) ? next : 50)
+                      setPreview(null)
+                    }}
+                    className="field-input w-28"
+                  />
+                </label>
+                <button
+                  type="button"
+                  className="hud-pill px-3 py-1.5 text-[11px]"
+                  onClick={() =>
+                    setQueueIds(studyEvents.map((event) => event.id))
+                  }
+                >
+                  All 14
+                </button>
+                <button
+                  type="button"
+                  className="hud-pill hud-pill-active px-4 py-2 text-xs font-bold"
+                  disabled={
+                    queueMutation.isPending || selectedQueue.length === 0
+                  }
+                  onClick={() => {
+                    const count = Math.min(
+                      500,
+                      Math.max(1, Math.round(perEvent) || 50),
+                    )
+                    queueMutation.mutate(
+                      buildConfig(workbenchConfig, {
+                        mode: 'fill_event',
+                        eventIds: selectedQueue,
+                        questionsPerEvent: count,
+                        conceptIds: undefined,
+                        limitConcepts: undefined,
+                        targetPerConcept: count,
+                        provider: 'deepseek_flash',
+                        concurrency: defaultConcurrencyForProvider('deepseek_flash'),
+                        window: defaultWindowForProvider('deepseek_flash'),
+                      }),
+                    )
+                    setPickedConceptIds([])
+                  }}
+                >
+                  {queueMutation.isPending
+                    ? 'Queuing…'
+                    : `Queue ${selectedQueue.length} event${selectedQueue.length === 1 ? '' : 's'}`}
+                </button>
+              </div>
+            </div>
+
+            <details className="space-y-5">
+              <summary className="cursor-pointer text-xs text-dim">
+                Advanced — one event, or a target per concept
+              </summary>
+            <div className="grid gap-4 pt-4 sm:grid-cols-[1fr_auto]">
               <label className="flex flex-col gap-1.5">
                 <span className="label-caps text-[9px] text-dim">Event</span>
                 <select
@@ -929,6 +1109,7 @@ export function GeneratePage() {
             </div>
 
             {renderPreview()}
+            </details>
           </div>
         ) : null}
 

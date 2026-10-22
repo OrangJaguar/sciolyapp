@@ -27,6 +27,8 @@ export type GenerationJobConfig = {
   eventIds?: string[]
   conceptIds?: string[]
   targetPerConcept: number
+  /** When set on fill_event, generate until each event has this many live questions. */
+  questionsPerEvent?: number
   questionsPerCall: number
   passMode: GenerationPassMode
   difficultyMix: { easy: number; medium: number; hard: number }
@@ -146,14 +148,14 @@ export const DEFAULT_GENERATION_CONFIG: GenerationJobConfig = {
   questionsPerCall: 8,
   passMode: 'A_then_B',
   difficultyMix: { easy: 20, medium: 50, hard: 30 },
-  provider: 'nim',
+  provider: 'deepseek_flash',
   includeGuide: true,
   includeMedia: true,
   fillGap: true,
   // undefined = all concepts below target (season GO)
   limitConcepts: undefined,
-  concurrency: 3,
-  window: defaultWindowForProvider('nim'),
+  concurrency: 64,
+  window: defaultWindowForProvider('deepseek_flash'),
 }
 
 export const GENERATION_CONCURRENCY_MIN = 1
@@ -220,6 +222,14 @@ export function serializeGenerationConfig(
   const next = { ...config }
   if (next.limitConcepts == null || next.limitConcepts <= 0) {
     delete next.limitConcepts
+  }
+  if (next.questionsPerEvent == null || next.questionsPerEvent <= 0) {
+    delete next.questionsPerEvent
+  } else {
+    next.questionsPerEvent = Math.min(
+      500,
+      Math.max(1, Math.round(next.questionsPerEvent)),
+    )
   }
   next.concurrency = clampConcurrency(next.concurrency ?? 3, next.provider)
   return next
@@ -584,9 +594,11 @@ export function describeGenerationJob(
       ? 'All studyable'
       : eventIds.length === 0
         ? '—'
-        : eventIds
-            .map((id) => eventNameById?.get(id) ?? id)
-            .join(', ')
+        : eventIds.length > 3
+          ? `${eventIds.length} events`
+          : eventIds
+              .map((id) => eventNameById?.get(id) ?? id)
+              .join(', ')
 
   const passDivisor = 2
   const conceptEstimate = Math.max(
@@ -621,7 +633,9 @@ export function describeGenerationJob(
       : limit,
     `${config.questionsPerCall ?? 8}/call`,
     `×${clampConcurrency(config.concurrency ?? 3, config.provider)}`,
-    `target ${config.targetPerConcept ?? 30}`,
+    config.questionsPerEvent
+      ? `${config.questionsPerEvent}/event`
+      : `target ${config.targetPerConcept ?? 30}`,
     config.provider ?? 'nim',
     windowNote,
     pauseNote,

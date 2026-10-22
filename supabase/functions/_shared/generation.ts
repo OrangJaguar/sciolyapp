@@ -390,7 +390,7 @@ export async function callNim(
   const apiKey = Deno.env.get('NVIDIA_NIM_API_KEY')
   const baseUrl = Deno.env.get('NVIDIA_NIM_BASE_URL') ?? 'https://integrate.api.nvidia.com/v1'
   const flashModel =
-    Deno.env.get('NVIDIA_NIM_FLASH_MODEL') ?? 'nvidia/nemotron-3-super-120b-a12b'
+    Deno.env.get('NVIDIA_NIM_FLASH_MODEL') ?? 'nvidia/nemotron-3.5-super-vl-120b-a12b'
   const proModel =
     Deno.env.get('NVIDIA_NIM_PRO_MODEL') ?? flashModel
 
@@ -431,9 +431,9 @@ export async function callDeepseek(
   const flashModel =
     Deno.env.get('DEEPSEEK_FLASH_MODEL')?.trim() ||
     Deno.env.get('DEEPSEEK_MODEL')?.trim() ||
-    'deepseek-chat'
+    'deepseek-flash'
   const proModel =
-    Deno.env.get('DEEPSEEK_PRO_MODEL')?.trim() || 'deepseek-reasoner'
+    Deno.env.get('DEEPSEEK_PRO_MODEL')?.trim() || 'deepseek-v4-pro'
 
   if (!apiKey) {
     throw new Error(

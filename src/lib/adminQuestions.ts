@@ -1,4 +1,5 @@
 import { supabase } from './supabase'
+import { unknownErrorText } from './teams'
 import type { Question, QuestionOptions } from './types'
 
 const OPTION_KEYS = ['A', 'B', 'C', 'D'] as const
@@ -124,8 +125,8 @@ export async function fetchQuestionsForConcept(
 }
 
 export function adminErrorMessage(err: unknown): string {
-  if (!(err instanceof Error)) return 'Request failed'
-  const msg = err.message
+  const msg = unknownErrorText(err, 'Request failed')
+  if (msg === 'Request failed') return msg
   if (/permission|policy|row-level/i.test(msg)) {
     return 'Admin write denied — set profiles.platform_role=admin for your user in Supabase'
   }

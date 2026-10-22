@@ -8,6 +8,7 @@ import {
   JOIN_CODE_LENGTH,
   createTeam,
   normalizeJoinCode,
+  unknownErrorText,
 } from '../../lib/teams'
 import { clientTimezone } from '../../lib/timezone'
 import type { Division, Team } from '../../lib/types'
@@ -168,6 +169,10 @@ export function SetupPage() {
     setBusy(true)
     try {
       const cleaned = handle.replace(/^@/, '').trim().toLowerCase()
+      if (!/^[a-z0-9_]{3,24}$/.test(cleaned)) {
+        setError('Handle must be 3–24 characters: letters, numbers, and underscore.')
+        return
+      }
       const { error: err } = await requireSupabase().rpc('complete_onboarding', {
         p_handle: cleaned,
         p_division: division,
@@ -192,7 +197,7 @@ export function SetupPage() {
       await refreshProfile()
       navigate('/cmd/missions', { replace: true })
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Setup failed')
+      setError(unknownErrorText(err, 'Setup failed'))
     } finally {
       setBusy(false)
     }
@@ -380,8 +385,9 @@ export function SetupPage() {
                   required
                 />
                 <p className="mt-2 text-xs text-dim">
-                  Ask your coach for the student code. A coach invite code makes
-                  you a coach on that team.
+                  Officers use the student code. After you join, a coach sets
+                  your role to Officer in Comms. The coach code makes you a
+                  coach, not an officer.
                 </p>
               </label>
             )}
