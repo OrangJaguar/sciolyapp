@@ -139,6 +139,7 @@ export async function fetchArenaQuestionBank(input: {
       reinjections,
       history,
       nowIso: new Date().toISOString(),
+      seed: Math.floor(Math.random() * 0x7fffffff),
     },
     cap,
   )

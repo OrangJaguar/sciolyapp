@@ -28,6 +28,8 @@ export type ServingInput = {
   history: HistoryTouch[]
   /** ISO timestamp — inject for tests */
   nowIso: string
+  /** Per-session shuffle. Omit for stable id order. */
+  seed?: number
 }
 
 export function weaknessScore(row: WeaknessRow): number {
@@ -46,6 +48,22 @@ function byId(a: Question, b: Question): number {
   return a.id < b.id ? -1 : a.id > b.id ? 1 : 0
 }
 
+function mix(id: string, seed: number): number {
+  let h = seed >>> 0
+  for (let i = 0; i < id.length; i++) {
+    h = Math.imul(h ^ id.charCodeAt(i), 16777619)
+  }
+  return h >>> 0
+}
+
+function byServe(seed: number | undefined): (a: Question, b: Question) => number {
+  return (a, b) => {
+    if (seed == null) return byId(a, b)
+    const delta = mix(a.id, seed) - mix(b.id, seed)
+    return delta !== 0 ? delta : byId(a, b)
+  }
+}
+
 /**
  * Pick the next Casual question.
  * Pure + deterministic for a fixed input (ties → question id).
@@ -56,6 +74,9 @@ export function pickNextQuestion(input: ServingInput): Question | null {
 
   const now = Date.parse(input.nowIso)
   const poolById = new Map(pool.map((q) => [q.id, q]))
+  const order = byServe(input.seed)
+  const seen = new Set(input.history.map((h) => h.question_id))
+  const unseen = pool.filter((q) => !seen.has(q.id))
 
   // 1) Due reinjections (oldest unlock first, then id)
   const due = input.reinjections
@@ -75,6 +96,9 @@ export function pickNextQuestion(input: ServingInput): Question | null {
     return poolById.get(due[0].question_id) ?? null
   }
 
+  // New questions before a recycle of ones already answered.
+  const working = unseen.length > 0 ? unseen : pool
+
   const weaknessByConcept = new Map(
     input.weakness.map((w) => [w.concept_id, w]),
   )
@@ -87,13 +111,13 @@ export function pickNextQuestion(input: ServingInput): Question | null {
 
   // Group pool by concept (null concept → own bucket)
   const byConcept = new Map<string, Question[]>()
-  for (const q of pool) {
+  for (const q of working) {
     const key = q.concept_id ?? `__none__:${q.id}`
     const list = byConcept.get(key) ?? []
     list.push(q)
     byConcept.set(key, list)
   }
-  for (const list of byConcept.values()) list.sort(byId)
+  for (const list of byConcept.values()) list.sort(order)
 
   type Candidate = {
     conceptKey: string
@@ -123,7 +147,7 @@ export function pickNextQuestion(input: ServingInput): Question | null {
   const weak = [...candidates].sort((a, b) => {
     if (b.score !== a.score) return b.score - a.score
     if (b.attempts !== a.attempts) return b.attempts - a.attempts
-    return byId(a.question, b.question)
+    return order(a.question, b.question)
   })
 
   if (weak[0] && weak[0].score > 0) {
@@ -134,12 +158,11 @@ export function pickNextQuestion(input: ServingInput): Question | null {
   const coverage = [...candidates].sort((a, b) => {
     if (a.touches !== b.touches) return a.touches - b.touches
     if (a.attempts !== b.attempts) return a.attempts - b.attempts
-    return byId(a.question, b.question)
+    return order(a.question, b.question)
   })
   if (coverage[0]) return coverage[0].question
 
-  // 5) Fallback any remaining
-  return [...pool].sort(byId)[0] ?? null
+  return [...working].sort(order)[0] ?? null
 }
 
 /** Build an ordered session queue (cap length). */

@@ -53,49 +53,8 @@ export function CasualLobbyPage() {
     enabled: isSupabaseConfigured,
   })
 
-  const studyable = useMemo(
-    () => (data?.events ?? []).filter((e) => e.studyable),
-    [data?.events],
-  )
-  const comingSoon = useMemo(
-    () => (data?.events ?? []).filter((e) => !e.studyable),
-    [data?.events],
-  )
-
   const [eventId, setEventId] = useState<string | null>(null)
   const [topicId, setTopicId] = useState<string | 'all'>('all')
-
-  useEffect(() => {
-    if (!data || !presetEvent) return
-    const liveEvents = data.events.filter((e) => e.studyable)
-    if (!liveEvents.some((e) => e.id === presetEvent)) return
-    setEventId(presetEvent)
-    if (presetTopic && presetTopic !== 'all') {
-      const topicOk = data.topics.some(
-        (t) => t.id === presetTopic && t.event_id === presetEvent,
-      )
-      setTopicId(topicOk ? presetTopic : 'all')
-    } else {
-      setTopicId('all')
-    }
-  }, [data, presetEvent, presetTopic])
-
-  // Default to first studyable once loaded; honor ?event= from Missions
-  const selectedEventId =
-    eventId ??
-    (presetEvent && studyable.some((e) => e.id === presetEvent)
-      ? presetEvent
-      : null) ??
-    studyable[0]?.id ??
-    null
-
-  const topicsForEvent = useMemo(
-    () =>
-      (data?.topics ?? [])
-        .filter((t) => t.event_id === selectedEventId)
-        .sort((a, b) => a.sort_order - b.sort_order),
-    [data?.topics, selectedEventId],
-  )
 
   const liveByEvent = useMemo(() => {
     const map = new Map<string, number>()
@@ -114,13 +73,50 @@ export function CasualLobbyPage() {
     return map
   }, [data?.liveRows])
 
+  const playable = useMemo(
+    () =>
+      (data?.events ?? []).filter((event) => (liveByEvent.get(event.id) ?? 0) > 0),
+    [data?.events, liveByEvent],
+  )
+
+  useEffect(() => {
+    if (!data || !presetEvent) return
+    if (!playable.some((event) => event.id === presetEvent)) return
+    setEventId(presetEvent)
+    if (presetTopic && presetTopic !== 'all') {
+      const topicOk =
+        data.topics.some(
+          (t) => t.id === presetTopic && t.event_id === presetEvent,
+        ) && (liveByTopic.get(presetTopic) ?? 0) > 0
+      setTopicId(topicOk ? presetTopic : 'all')
+    } else {
+      setTopicId('all')
+    }
+  }, [data, liveByTopic, playable, presetEvent, presetTopic])
+
+  const selectedEventId =
+    eventId ??
+    (presetEvent && playable.some((event) => event.id === presetEvent)
+      ? presetEvent
+      : null) ??
+    playable[0]?.id ??
+    null
+
+  const topicsForEvent = useMemo(
+    () =>
+      (data?.topics ?? [])
+        .filter((t) => t.event_id === selectedEventId)
+        .sort((a, b) => a.sort_order - b.sort_order),
+    [data?.topics, selectedEventId],
+  )
+
   const liveForSelection = useMemo(() => {
     if (!selectedEventId) return 0
     if (topicId === 'all') return liveByEvent.get(selectedEventId) ?? 0
     return liveByTopic.get(topicId) ?? 0
   }, [selectedEventId, topicId, liveByEvent, liveByTopic])
 
-  const selectedEvent = studyable.find((e) => e.id === selectedEventId) ?? null
+  const selectedEvent = playable.find((event) => event.id === selectedEventId) ?? null
   const canStart = Boolean(selectedEventId) && liveForSelection > 0
 
   function startSession() {
@@ -137,7 +133,7 @@ export function CasualLobbyPage() {
       <aside className="hud-panel flex min-h-0 w-full shrink-0 flex-col overflow-hidden lg:w-[280px]">
         <div className="border-b border-subtle px-4 py-3">
           <p className="label-caps">Events</p>
-          <p className="mt-1 text-xs text-dim">Studyable now · rest locked</p>
+          <p className="mt-1 text-xs text-dim">Events with a question bank</p>
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto p-2">
           {!isSupabaseConfigured && (
@@ -153,10 +149,7 @@ export function CasualLobbyPage() {
               Failed to load taxonomy. Check auth + seed.
             </p>
           )}
-          <p className="px-2 pt-2 pb-1 text-[10px] tracking-[0.14em] text-dim uppercase">
-            Live
-          </p>
-          {studyable.map((ev) => {
+          {playable.map((ev) => {
             const active = ev.id === selectedEventId
             const n = liveByEvent.get(ev.id) ?? 0
             return (
@@ -182,25 +175,6 @@ export function CasualLobbyPage() {
               </button>
             )
           })}
-          {comingSoon.length > 0 && (
-            <>
-              <p className="px-2 pt-4 pb-1 text-[10px] tracking-[0.14em] text-dim uppercase">
-                Coming soon
-              </p>
-              {comingSoon.map((ev) => (
-                <div
-                  key={ev.id}
-                  className="mb-1 flex w-full items-center justify-between rounded-md px-3 py-2.5 text-muted opacity-50"
-                  title="Topics lock in September"
-                >
-                  <span className="text-sm">{ev.name}</span>
-                  <span className="text-[10px] tracking-wide uppercase">
-                    Locked
-                  </span>
-                </div>
-              ))}
-            </>
-          )}
         </div>
       </aside>
 
@@ -247,7 +221,9 @@ export function CasualLobbyPage() {
               }
               onClick={() => setTopicId('all')}
             />
-            {topicsForEvent.map((t) => (
+            {topicsForEvent
+              .filter((topic) => (liveByTopic.get(topic.id) ?? 0) > 0)
+              .map((t) => (
               <TopicCard
                 key={t.id}
                 active={topicId === t.id}

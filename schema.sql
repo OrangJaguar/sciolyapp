@@ -2837,6 +2837,7 @@ DECLARE
   v_streak integer;
   v_xp_total integer;
   v_badge jsonb;
+  v_question_id uuid;
 BEGIN
   IF EXISTS (
     SELECT 1 FROM practice_session_commits
@@ -2916,6 +2917,32 @@ BEGIN
       (v_answer->>'question_id'), p_event_id, p_topic_id,
       v_is_correct, false, false, v_response_ms
     );
+
+    BEGIN
+      v_question_id := NULLIF(v_answer->>'question_id', '')::uuid;
+    EXCEPTION
+      WHEN invalid_text_representation THEN
+        v_question_id := NULL;
+    END;
+
+    IF v_question_id IS NOT NULL THEN
+      INSERT INTO user_history (user_id, question_id, answered_at, is_correct)
+      VALUES (p_user_id, v_question_id, clock_timestamp(), v_is_correct);
+
+      INSERT INTO user_weakness_map (user_id, concept_id, total_attempts, correct_attempts)
+      SELECT p_user_id, q.concept_id, 1, CASE WHEN v_is_correct THEN 1 ELSE 0 END
+      FROM questions q
+      WHERE q.id = v_question_id
+        AND q.concept_id IS NOT NULL
+      ON CONFLICT (user_id, concept_id) DO UPDATE
+      SET total_attempts = user_weakness_map.total_attempts + 1,
+          correct_attempts = user_weakness_map.correct_attempts + EXCLUDED.correct_attempts;
+
+      IF NOT v_is_correct THEN
+        INSERT INTO reinjection_queue (user_id, question_id, unlock_at)
+        VALUES (p_user_id, v_question_id, now() + interval '6 hours');
+      END IF;
+    END IF;
   END LOOP;
 
   IF v_valid_count >= 5
@@ -3849,7 +3876,7 @@ BEGIN
   UPDATE profiles
   SET
     current_streak = v_streak,
-    last_activity_on = v_local::text,
+    last_activity_on = v_local,
     timezone = COALESCE(NULLIF(trim(p_tz), ''), timezone, 'UTC')
   WHERE id = p_user_id;
 

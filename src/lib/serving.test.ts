@@ -171,4 +171,29 @@ const bank = [
   assert.equal(next, null)
 }
 
+// A new session shuffles; a later run prefers questions not yet answered.
+{
+  const first = buildSessionQueue(
+    { bank, weakness: [], reinjections: [], history: [], nowIso: now, seed: 1 },
+    4,
+  ).map((x) => x.id)
+  const second = buildSessionQueue(
+    { bank, weakness: [], reinjections: [], history: [], nowIso: now, seed: 99 },
+    4,
+  ).map((x) => x.id)
+  assert.notEqual(first.join(), second.join())
+
+  const seen = bank
+    .filter((item) => item.id !== 'q-kmt-a')
+    .map((item) => ({ question_id: item.id, concept_id: item.concept_id }))
+  const next = pickNextQuestion(
+    base({
+      bank,
+      history: seen,
+      seed: 7,
+    }),
+  )
+  assert.equal(next?.id, 'q-kmt-a')
+}
+
 console.log('serving engine tests: ok')
