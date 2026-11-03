@@ -136,6 +136,23 @@ export async function bulkSetQuestionStatus(
   return Number(data ?? 0)
 }
 
+/** Publish every unrouted draft. Optional event filter matches the review queue. */
+export async function publishAllWaiting(
+  eventId?: string | null,
+): Promise<number> {
+  let query = requireSupabase()
+    .from('questions')
+    .update({ status: 'live', needs_fix: false }, { count: 'exact' })
+    .eq('status', 'draft')
+    .is('critic_route', null)
+
+  if (eventId) query = query.eq('event_id', eventId)
+
+  const { data, error, count } = await query.select('id')
+  if (error) throw error
+  return count ?? data?.length ?? 0
+}
+
 export async function setNeedsFix(
   questionId: string,
   needs = true,

@@ -5,10 +5,10 @@ import { fetchCatalogSnapshot } from '../../lib/adminCatalog'
 import {
   adminErrorMessage,
   bulkSetQuestionStatus,
-  drainCritic,
   fetchAuditSample,
   fetchCriticStats,
   fetchReviewQueue,
+  publishAllWaiting,
   saveAndPublish,
   saveAndReject,
   setNeedsFix,
@@ -188,15 +188,12 @@ export function ReviewPage() {
     if (next) setSelectedId(next.id)
   }
 
-  const criticMutation = useMutation({
-    mutationFn: () => drainCritic(50),
-    onSuccess: async (result) => {
-      setNote(
-        `Critic done: ${result.processed} routed · auto ${result.routes.auto_live ?? 0} · human ${result.routes.human ?? 0} · reject ${result.routes.reject_regen ?? 0}`,
-      )
+  const approveAllMutation = useMutation({
+    mutationFn: () => publishAllWaiting(eventFilter || null),
+    onSuccess: async (n) => {
+      setNote(`Approved ${n} — now live`)
+      setSelectedIds([])
       await invalidate()
-      if ((result.routes.human ?? 0) > 0) setMode('human')
-      else setMode('waiting')
     },
     onError: (err) => setNote(adminErrorMessage(err)),
   })
@@ -371,17 +368,17 @@ export function ReviewPage() {
           className={`hud-pill px-4 py-2 text-[11px] ${
             waitingCount > 0 ? 'hud-pill-active' : 'opacity-40'
           }`}
-          disabled={criticMutation.isPending || waitingCount === 0}
+          disabled={approveAllMutation.isPending || waitingCount === 0}
           onClick={() => {
             setMode('waiting')
-            criticMutation.mutate()
+            approveAllMutation.mutate()
           }}
         >
-          {criticMutation.isPending
-            ? 'Critic running…'
+          {approveAllMutation.isPending
+            ? 'Approving…'
             : waitingCount > 0
-              ? `Run critic (${waitingCount})`
-              : 'Nothing to critique'}
+              ? `Approve all (${waitingCount})`
+              : 'Nothing waiting'}
         </button>
       </div>
 
@@ -399,7 +396,7 @@ export function ReviewPage() {
           <div className="flex items-center justify-between border-b border-subtle px-3 py-2">
             <p className="label-caps text-[9px] text-dim">
               {mode === 'waiting'
-                ? 'Waiting for critic'
+                ? 'Waiting'
                 : mode === 'human'
                   ? 'Needs you'
                   : 'Audit (already live)'}
@@ -429,7 +426,7 @@ export function ReviewPage() {
             {items.length === 0 ? (
               <li className="px-3 py-6 text-center text-[11px] text-muted">
                 {mode === 'waiting'
-                  ? 'No uncritiqued drafts. Generate more, or check Needs you.'
+                  ? 'Nothing waiting. Generate more, or check Needs you.'
                   : mode === 'human'
                     ? 'Nothing needs you — critic auto-published the rest.'
                     : 'No audit flags yet.'}
@@ -448,7 +445,7 @@ export function ReviewPage() {
                       {mode === 'human' ? (
                         <input
                           type="checkbox"
-                          className="mt-2"
+                          className="mt-1"
                           checked={checked}
                           onChange={() =>
                             setSelectedIds((cur) =>
@@ -484,8 +481,8 @@ export function ReviewPage() {
         <div className="hud-panel min-h-0 overflow-y-auto p-4">
           {mode === 'waiting' && !selected ? (
             <p className="text-sm text-muted">
-              Pick a draft to preview, or hit Run critic when the count above is
-              &gt; 0.
+              Pick a draft to preview, or hit Approve all when the count above
+              is &gt; 0.
             </p>
           ) : !selected || !form ? (
             <p className="text-sm text-muted">Select a question.</p>
@@ -532,7 +529,7 @@ export function ReviewPage() {
                   )
                 ) : (
                   <p className="text-[10px] text-dim">
-                    Preview only — run critic to route this draft.
+                    Preview only — Approve all publishes every waiting draft.
                   </p>
                 )}
               </div>

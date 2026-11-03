@@ -1,18 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
+import { isStudyableEvent } from '../../lib/eventKinds'
+import { fetchLiveQuestionRows } from '../../lib/liveBank'
 import { isSupabaseConfigured, supabase } from '../../lib/supabase'
 import type { TaxonomyEvent, TaxonomyTopic } from '../../lib/types'
-
-type LiveCountRow = {
-  event_id: string
-  topic_id: string | null
-}
 
 async function fetchLobbyData() {
   if (!supabase) throw new Error('Supabase not configured')
 
-  const [eventsRes, topicsRes, questionsRes] = await Promise.all([
+  const [eventsRes, topicsRes, liveRows] = await Promise.all([
     supabase
       .from('taxonomy_events')
       .select(
@@ -24,20 +21,16 @@ async function fetchLobbyData() {
       .from('taxonomy_topics')
       .select('id, event_id, name, sort_order')
       .order('sort_order'),
-    supabase
-      .from('questions')
-      .select('event_id, topic_id')
-      .eq('status', 'live'),
+    fetchLiveQuestionRows(),
   ])
 
   if (eventsRes.error) throw eventsRes.error
   if (topicsRes.error) throw topicsRes.error
-  if (questionsRes.error) throw questionsRes.error
 
   return {
     events: (eventsRes.data ?? []) as TaxonomyEvent[],
     topics: (topicsRes.data ?? []) as TaxonomyTopic[],
-    liveRows: (questionsRes.data ?? []) as LiveCountRow[],
+    liveRows,
   }
 }
 
@@ -48,7 +41,7 @@ export function CasualLobbyPage() {
   const presetTopic = searchParams.get('topic')
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['casual-lobby'],
+    queryKey: ['live-question-index'],
     queryFn: fetchLobbyData,
     enabled: isSupabaseConfigured,
   })
@@ -75,7 +68,10 @@ export function CasualLobbyPage() {
 
   const playable = useMemo(
     () =>
-      (data?.events ?? []).filter((event) => (liveByEvent.get(event.id) ?? 0) > 0),
+      (data?.events ?? []).filter(
+        (event) =>
+          isStudyableEvent(event) && (liveByEvent.get(event.id) ?? 0) > 0,
+      ),
     [data?.events, liveByEvent],
   )
 

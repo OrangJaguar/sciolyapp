@@ -1,13 +1,10 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
+import { isStudyableEvent } from '../../lib/eventKinds'
+import { fetchLiveQuestionRows } from '../../lib/liveBank'
 import { isSupabaseConfigured, supabase } from '../../lib/supabase'
 import type { TaxonomyEvent, TaxonomyTopic } from '../../lib/types'
-
-type LiveCountRow = {
-  event_id: string
-  topic_id: string | null
-}
 
 const COUNT_PRESETS = [5, 10] as const
 const TIME_PRESETS = [
@@ -20,7 +17,7 @@ const TIME_PRESETS = [
 async function fetchLobbyData() {
   if (!supabase) throw new Error('Supabase not configured')
 
-  const [eventsRes, topicsRes, questionsRes] = await Promise.all([
+  const [eventsRes, topicsRes, liveRows] = await Promise.all([
     supabase
       .from('taxonomy_events')
       .select(
@@ -32,37 +29,29 @@ async function fetchLobbyData() {
       .from('taxonomy_topics')
       .select('id, event_id, name, sort_order')
       .order('sort_order'),
-    supabase
-      .from('questions')
-      .select('event_id, topic_id')
-      .eq('status', 'live'),
+    fetchLiveQuestionRows(),
   ])
 
   if (eventsRes.error) throw eventsRes.error
   if (topicsRes.error) throw topicsRes.error
-  if (questionsRes.error) throw questionsRes.error
 
   return {
     events: (eventsRes.data ?? []) as TaxonomyEvent[],
     topics: (topicsRes.data ?? []) as TaxonomyTopic[],
-    liveRows: (questionsRes.data ?? []) as LiveCountRow[],
+    liveRows,
   }
 }
 
 export function TimedConfigPage() {
   const navigate = useNavigate()
   const { data, isLoading, error } = useQuery({
-    queryKey: ['casual-lobby'],
+    queryKey: ['live-question-index'],
     queryFn: fetchLobbyData,
     enabled: isSupabaseConfigured,
   })
 
   const studyable = useMemo(
-    () => (data?.events ?? []).filter((e) => e.studyable),
-    [data?.events],
-  )
-  const comingSoon = useMemo(
-    () => (data?.events ?? []).filter((e) => !e.studyable),
+    () => (data?.events ?? []).filter((e) => isStudyableEvent(e)),
     [data?.events],
   )
 
@@ -192,24 +181,6 @@ export function TimedConfigPage() {
               </button>
             )
           })}
-          {comingSoon.length > 0 && (
-            <>
-              <p className="px-2 pt-4 pb-1 text-[10px] tracking-[0.14em] text-dim uppercase">
-                Coming soon
-              </p>
-              {comingSoon.map((ev) => (
-                <div
-                  key={ev.id}
-                  className="mb-1 flex w-full items-center justify-between rounded-md px-3 py-2.5 text-muted opacity-50"
-                >
-                  <span className="text-sm">{ev.name}</span>
-                  <span className="text-[10px] tracking-wide uppercase">
-                    Locked
-                  </span>
-                </div>
-              ))}
-            </>
-          )}
         </div>
       </aside>
 

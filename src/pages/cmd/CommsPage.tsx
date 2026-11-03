@@ -1,4 +1,4 @@
-import { useMemo, useState, type FormEvent, type MouseEvent } from 'react'
+import { useEffect, useMemo, useState, type FormEvent, type MouseEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '../../features/auth/AuthProvider'
 import { MemberIntelDrawer } from '../../components/team/MemberIntelDrawer'
@@ -6,8 +6,8 @@ import { NoTeamPanel } from '../../components/team/NoTeamPanel'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import type { TeamRole } from '../../lib/types'
 import {
+  assignableRoles,
   canManageRoster,
-  coverageLabel,
   createTeamPost,
   deleteTeamPost,
   fetchActiveEvents,
@@ -18,9 +18,9 @@ import {
   fetchTeamRoster,
   formatRole,
   isOfficerPlus,
-  nextCoverageStatus,
   postAgo,
   removeTeamMember,
+  rosterNameClass,
   setEventCoverage,
   setPostPinned,
   setTeamMemberRole,
@@ -39,6 +39,7 @@ export function CommsPage() {
   const [draft, setDraft] = useState('')
   const [pinOnCreate, setPinOnCreate] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
+  const [squadOpen, setSquadOpen] = useState(false)
   const [intelUserId, setIntelUserId] = useState<string | null>(null)
   const [hoverTip, setHoverTip] = useState<{
     handle: string
@@ -193,7 +194,13 @@ export function CommsPage() {
       <div className="grid h-full min-h-0 gap-3 lg:grid-cols-[160px_1fr] xl:grid-cols-[180px_1fr] lg:gap-4">
         <aside className="hud-panel flex min-h-0 flex-col p-2.5 lg:p-3">
           <div className="mb-2 flex shrink-0 items-center justify-between gap-1">
-            <p className="label-caps">Squad</p>
+            <button
+              type="button"
+              onClick={() => setSquadOpen(true)}
+              className="label-caps text-left hover:text-cyan"
+            >
+              Squad
+            </button>
             {manager && (
               <button
                 type="button"
@@ -204,12 +211,28 @@ export function CommsPage() {
               </button>
             )}
           </div>
-          <div className="hud-pill mb-2 w-full justify-center px-2 py-1.5 text-[10px] text-[var(--text)]">
+          <button
+            type="button"
+            onClick={() => setSquadOpen(true)}
+            className="hud-pill mb-2 w-full justify-center px-2 py-1.5 text-[10px] text-[var(--text)]"
+            aria-label="Open full squad snapshot"
+          >
             {(team?.name ?? 'SQUAD').toUpperCase()}
-          </div>
+          </button>
           {teamQuery.data?.role ? (
-            <p className="mb-3 text-center label-caps text-[9px] text-cyan">
-              You · {formatRole(teamQuery.data.role)}
+            <p
+              className={`mb-3 text-center label-caps text-[9px] ${
+                rosterNameClass(
+                  roster.find((m) => m.user_id === userId)?.role ??
+                    teamQuery.data.role,
+                ) ?? 'text-cyan'
+              }`}
+            >
+              You ·{' '}
+              {formatRole(
+                roster.find((m) => m.user_id === userId)?.role ??
+                  teamQuery.data.role,
+              )}
             </p>
           ) : null}
           {rosterQuery.isLoading && (
@@ -234,10 +257,9 @@ export function CommsPage() {
           <ul className="min-h-0 space-y-1 overflow-y-auto overflow-x-hidden">
             {roster.map((m) => {
               const cov = coverageByUser.get(m.user_id) ?? []
-              const names = cov.map((c) => {
-                const label = eventName.get(c.event_id) ?? c.event_id
-                return `${label} · ${coverageLabel(c.status)}`
-              })
+              const names = cov.map(
+                (c) => eventName.get(c.event_id) ?? c.event_id,
+              )
               const initials = (m.display_name || m.handle)
                 .slice(0, 2)
                 .toUpperCase()
@@ -267,9 +289,10 @@ export function CommsPage() {
                       {m.display_name ? (
                         <p
                           className={`truncate text-xs ${
-                            m.user_id === userId
+                            rosterNameClass(m.role) ??
+                            (m.user_id === userId
                               ? 'text-cyan'
-                              : 'text-[var(--text)]'
+                              : 'text-[var(--text)]')
                           }`}
                         >
                           {m.display_name}
@@ -277,11 +300,12 @@ export function CommsPage() {
                       ) : null}
                       <p
                         className={`flex min-w-0 items-center gap-1 text-[10px] ${
-                          m.display_name
+                          rosterNameClass(m.role) ??
+                          (m.display_name
                             ? 'text-dim'
                             : m.user_id === userId
                               ? 'text-cyan'
-                              : 'text-[var(--text)]'
+                              : 'text-[var(--text)]')
                         }`}
                       >
                         <RoleStar role={m.role} />
@@ -400,7 +424,7 @@ export function CommsPage() {
         </div>
       </div>
 
-      {hoverTip && !editOpen && (
+      {hoverTip && !editOpen && !squadOpen && (
         <div
           className="pointer-events-none fixed z-[60] w-52 rounded-md border border-cyan/30 bg-surface-elevated p-3 shadow-[0_12px_40px_rgba(0,0,0,0.65)]"
           style={{ left: hoverTip.x, top: hoverTip.y }}
@@ -426,6 +450,16 @@ export function CommsPage() {
         </div>
       )}
 
+      {squadOpen && (
+        <SquadSnapshotModal
+          squadName={team?.name ?? 'Squad'}
+          roster={roster}
+          events={events}
+          coverage={coverageQuery.data ?? []}
+          onClose={() => setSquadOpen(false)}
+        />
+      )}
+
       {editOpen && teamId && userId && (
         <RosterAdminModal
           teamId={teamId}
@@ -449,6 +483,7 @@ export function CommsPage() {
           userId={intelUserId}
           selfId={userId}
           selfRole={teamQuery.data?.role ?? null}
+          countByEvent={countByEvent}
           onClose={() => setIntelUserId(null)}
           onChanged={() => {
             void qc.invalidateQueries({ queryKey: ['comms-roster', teamId] })
@@ -511,6 +546,128 @@ function PostCard({
   )
 }
 
+function SquadSnapshotModal({
+  squadName,
+  roster,
+  events,
+  coverage,
+  onClose,
+}: {
+  squadName: string
+  roster: RosterMember[]
+  events: Array<{ id: string; name: string; studyable: boolean }>
+  coverage: EventCoverage[]
+  onClose: () => void
+}) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [onClose])
+
+  const rows = useMemo(() => {
+    const byId = new Map(roster.map((m) => [m.user_id, m]))
+    return events.map((ev) => {
+      const people = coverage
+        .filter((c) => c.event_id === ev.id)
+        .map((c) => ({
+          member: byId.get(c.user_id),
+          status: c.status,
+        }))
+        .filter((p): p is { member: RosterMember; status: EventCoverage['status'] } =>
+          Boolean(p.member),
+        )
+        .sort((a, b) => {
+          const an = a.member.display_name || a.member.handle
+          const bn = b.member.display_name || b.member.handle
+          return an.localeCompare(bn)
+        })
+      return { ev, people }
+    })
+  }, [coverage, events, roster])
+
+  const filled = rows.filter((row) => row.people.length > 0).length
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-overlay p-4 backdrop-blur-[2px]"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Squad snapshot"
+      onClick={onClose}
+    >
+      <div
+        className="hud-panel flex max-h-[min(90dvh,820px)] w-full max-w-3xl flex-col overflow-hidden border-cyan/30 shadow-[0_0_48px_var(--accent-dim)]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex shrink-0 items-start justify-between gap-3 border-b border-subtle px-5 py-4">
+          <div>
+            <p className="label-caps">Squad snapshot</p>
+            <h2 className="mt-1 text-2xl font-medium text-[var(--text)]">
+              {squadName.toUpperCase()}
+            </h2>
+            <p className="mt-1 text-sm text-muted">
+              {filled} of {rows.length} events have a pair. Two seats per event.
+            </p>
+          </div>
+          <button type="button" onClick={onClose} className="hud-pill px-4 py-2 text-xs">
+            CLOSE
+          </button>
+        </div>
+        <div className="min-h-0 flex-1 overflow-auto">
+          <table className="w-full border-collapse text-left text-sm">
+            <thead className="sticky top-0 bg-surface">
+              <tr className="border-b border-subtle text-[10px] tracking-[0.14em] text-dim">
+                <th className="px-5 py-2 font-medium">Event</th>
+                <th className="px-3 py-2 font-medium">Teammate 1</th>
+                <th className="px-5 py-2 font-medium">Teammate 2</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map(({ ev, people }) => (
+                <tr key={ev.id} className="border-b border-subtle/80">
+                  <td className="px-5 py-2.5 text-[var(--text)]">{ev.name}</td>
+                  <td className="px-3 py-2.5">
+                    <PartnerCell person={people[0]} />
+                  </td>
+                  <td className="px-5 py-2.5">
+                    <PartnerCell person={people[1]} />
+                  </td>
+                </tr>
+              ))}
+              {rows.length === 0 && (
+                <tr>
+                  <td colSpan={3} className="px-5 py-6 text-dim">
+                    No events loaded.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function PartnerCell({
+  person,
+}: {
+  person?: { member: RosterMember; status: EventCoverage['status'] }
+}) {
+  if (!person) return <span className="text-dim">—</span>
+  const name = person.member.display_name || `@${person.member.handle}`
+  return (
+    <span className="inline-flex items-center gap-2">
+      <span className={rosterNameClass(person.member.role) ?? 'text-[var(--text)]'}>
+        {name}
+      </span>
+    </span>
+  )
+}
+
 function RosterAdminModal({
   teamId,
   selfId,
@@ -559,7 +716,13 @@ function RosterAdminModal({
       onChanged()
     },
     onError: (err) =>
-      setError(err instanceof Error ? err.message : 'Role update failed'),
+      setError(
+        err instanceof Error
+          ? err.message
+          : err && typeof err === 'object' && 'message' in err
+            ? String((err as { message: unknown }).message)
+            : 'Role update failed',
+      ),
   })
 
   const removeMutation = useMutation({
@@ -591,10 +754,7 @@ function RosterAdminModal({
       setError(err instanceof Error ? err.message : 'Coverage update failed'),
   })
 
-  const roleOptions: TeamRole[] =
-    selfRole === 'coach'
-      ? ['member', 'officer', 'captain', 'coach']
-      : ['member', 'officer', 'captain']
+  const roleOptions = assignableRoles(selfRole)
 
   return (
     <div
@@ -615,8 +775,7 @@ function RosterAdminModal({
               {squadName.toUpperCase()}
             </h2>
             <p className="mt-1 text-sm text-muted">
-              Roles, event coverage (max 2 partners). Tap a chip to cycle
-              Assigned → Training → Ready → Off.
+              Two partners max. Click an event again to take it off.
             </p>
           </div>
           <button
@@ -683,11 +842,10 @@ function RosterAdminModal({
             const coverage = coverageByUser.get(m.user_id) ?? []
             const assignedIds = new Set(coverage.map((c) => c.event_id))
             const isSelf = m.user_id === selfId
-            const available = events.filter((ev) => {
-              if (assignedIds.has(ev.id)) return false
-              const n = countByEvent.get(ev.id) ?? 0
-              return n < 2
-            })
+            const choices = events.filter((ev) => !assignedIds.has(ev.id))
+            const openChoices = choices.filter(
+              (ev) => (countByEvent.get(ev.id) ?? 0) < 2,
+            )
             const initials = (m.display_name || m.handle)
               .slice(0, 2)
               .toUpperCase()
@@ -702,16 +860,21 @@ function RosterAdminModal({
                   </span>
                   <div className="min-w-0 flex-1">
                     {m.display_name ? (
-                      <p className="text-sm font-medium text-[var(--text)]">
+                      <p
+                      className={`text-sm font-medium ${
+                        rosterNameClass(m.role) ?? 'text-[var(--text)]'
+                      }`}
+                    >
                         {m.display_name}
                         {isSelf ? ' · YOU' : ''}
                       </p>
                     ) : null}
                     <p
                       className={`flex items-center gap-1.5 text-sm ${
-                        m.display_name
+                        rosterNameClass(m.role) ??
+                        (m.display_name
                           ? 'text-dim'
-                          : 'font-medium text-[var(--text)]'
+                          : 'font-medium text-[var(--text)]')
                       }`}
                     >
                       <RoleStar role={m.role} />
@@ -779,30 +942,25 @@ function RosterAdminModal({
                         key={c.event_id}
                         type="button"
                         disabled={coverageMutation.isPending}
-                        title="Click to cycle: Assigned → Training → Ready → Off"
+                        title="Click again to remove"
                         onClick={() =>
                           coverageMutation.mutate({
                             userId: m.user_id,
                             eventId: c.event_id,
-                            status: nextCoverageStatus(c.status),
+                            status: 'off',
                           })
                         }
-                        className={`inline-flex items-center gap-1.5 rounded-pill border px-2.5 py-1 text-xs ${
-                          c.status === 'ready'
-                            ? 'border-success/40 bg-success/10 text-success'
-                            : c.status === 'training'
-                              ? 'border-[var(--ghost-border-active)] bg-surface-high text-foreground'
-                              : 'border-cyan/30 bg-cyan/10 text-cyan'
-                        }`}
+                        className="inline-flex items-center gap-1.5 rounded-pill border border-cyan/30 bg-cyan/10 px-2.5 py-1 text-xs text-cyan"
                       >
                         <span>{ev?.name ?? c.event_id}</span>
-                        <span className="data-mono text-[9px] opacity-80">
-                          {coverageLabel(c.status)}
-                        </span>
                       </button>
                     )
                   })}
-                  {addingFor === m.user_id ? (
+                  {m.role === 'bench' ? (
+                    <p className="text-xs text-dim">
+                      Bench. Not placed on an event.
+                    </p>
+                  ) : addingFor === m.user_id ? (
                     <select
                       autoFocus
                       defaultValue=""
@@ -813,6 +971,7 @@ function RosterAdminModal({
                           setAddingFor(null)
                           return
                         }
+                        if ((countByEvent.get(v) ?? 0) >= 2) return
                         coverageMutation.mutate({
                           userId: m.user_id,
                           eventId: v,
@@ -824,25 +983,29 @@ function RosterAdminModal({
                       }}
                     >
                       <option value="">Select event…</option>
-                      {available.map((ev) => (
-                        <option key={ev.id} value={ev.id}>
-                          {ev.name}
-                          {ev.studyable ? '' : ' (locked)'} ·{' '}
-                          {countByEvent.get(ev.id) ?? 0}/2
-                        </option>
-                      ))}
+                      {choices.map((ev) => {
+                        const n = countByEvent.get(ev.id) ?? 0
+                        const full = n >= 2
+                        return (
+                          <option key={ev.id} value={ev.id} disabled={full}>
+                            {ev.name} · {n}/2{full ? ' · full' : ''}
+                          </option>
+                        )
+                      })}
                     </select>
                   ) : (
                     <button
                       type="button"
-                      disabled={available.length === 0}
+                      disabled={choices.length === 0}
                       onClick={() => setAddingFor(m.user_id)}
                       className="hud-pill px-3 py-1 text-[10px] text-cyan disabled:opacity-30"
                       style={{ borderColor: 'var(--cyan)' }}
                       title={
-                        available.length === 0
-                          ? 'No more events available (already assigned or full at 2/2)'
-                          : 'Add event (starts as Assigned)'
+                        choices.length === 0
+                          ? 'Already on every event'
+                          : openChoices.length === 0
+                            ? 'Every other event is full'
+                            : 'Add an event'
                       }
                     >
                       + EVENT
@@ -859,7 +1022,7 @@ function RosterAdminModal({
 }
 
 function RoleStar({ role }: { role: TeamRole }) {
-  if (role === 'member') return null
+  if (role === 'member' || role === 'bench') return null
   return (
     <span
       className="shrink-0 text-[11px] leading-none text-cyan"

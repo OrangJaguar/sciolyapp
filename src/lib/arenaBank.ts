@@ -53,23 +53,32 @@ export async function fetchArenaQuestionBank(input: {
 }): Promise<Question[]> {
   if (!supabase) throw new Error('Supabase not configured')
 
-  let query = supabase
-    .from('questions')
-    .select(
-      'id, event_id, topic_id, concept_id, question_type, status, stem, options, correct_key, explanation',
-    )
-    .eq('status', 'live')
-    .eq('event_id', input.eventId)
-    .eq('question_type', 'mcq')
+  const questionRows: Array<Record<string, unknown>> = []
+  const pageSize = 1000
+  for (let from = 0; from < 20_000; from += pageSize) {
+    let query = supabase
+      .from('questions')
+      .select(
+        'id, event_id, topic_id, concept_id, question_type, status, stem, options, correct_key, explanation',
+      )
+      .eq('status', 'live')
+      .eq('event_id', input.eventId)
+      .eq('question_type', 'mcq')
+      .order('id', { ascending: true })
+      .range(from, from + pageSize - 1)
 
-  if (input.topicId !== 'all') {
-    query = query.eq('topic_id', input.topicId)
+    if (input.topicId !== 'all') {
+      query = query.eq('topic_id', input.topicId)
+    }
+
+    const { data, error: qErr } = await query
+    if (qErr) throw qErr
+    const batch = (data ?? []) as Array<Record<string, unknown>>
+    questionRows.push(...batch)
+    if (batch.length < pageSize) break
   }
 
-  const { data: questionRows, error: qErr } = await query
-  if (qErr) throw qErr
-
-  const bank = parseQuestions((questionRows ?? []) as Array<Record<string, unknown>>)
+  const bank = parseQuestions(questionRows)
   if (bank.length === 0) return []
 
   const {

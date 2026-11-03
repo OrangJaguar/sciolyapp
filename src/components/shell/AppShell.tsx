@@ -33,7 +33,10 @@ export function AppShell() {
       <div className="mx-auto flex h-full w-full min-h-0 flex-1 flex-col px-5 sm:px-6 lg:px-8 xl:px-10">
         {immersivePractice ? null : <TopBar />}
         <main className="flex min-h-0 flex-1 flex-col pt-2 pb-2">
-          <div className="min-h-0 flex-1 overflow-hidden">
+          <div
+            key={immersivePractice ? 'practice' : pathname}
+            className={`min-h-0 flex-1 overflow-hidden ${immersivePractice ? '' : 'rise-in'}`}
+          >
             <Outlet />
           </div>
         </main>

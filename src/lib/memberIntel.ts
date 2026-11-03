@@ -1,5 +1,5 @@
 import { requireSupabase } from './supabase'
-import type { CoverageStatus } from './comms'
+import { applyBenchRole, type CoverageStatus } from './comms'
 import type { Division, TeamRole } from './types'
 
 export type MemberIntelCoverage = {
@@ -44,6 +44,7 @@ export async function fetchTeamMemberIntel(
   const raw = data as MemberIntel
   return {
     ...raw,
+    role: await applyBenchRole(userId, raw.role),
     display_name: raw.display_name?.trim() || null,
     school_name: raw.school_name?.trim() || null,
     coverage: raw.coverage ?? [],

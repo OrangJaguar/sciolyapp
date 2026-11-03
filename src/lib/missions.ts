@@ -1,7 +1,10 @@
+import { isStudyableEvent } from './eventKinds'
 import { supabase } from './supabase'
 import type { TeamRole } from './types'
 
 export type MissionGoalType = 'answered' | 'correct'
+
+export type MissionKind = 'casual' | 'timed'
 
 export type TeamMission = {
   id: string
@@ -13,6 +16,25 @@ export type TeamMission = {
   target_value: number
   deadline: string
   created_at: string
+  kind?: MissionKind | null
+  timed_seconds?: number | null
+}
+
+export type TeamSchedule = {
+  next_meeting_at: string | null
+  next_meeting_place: string | null
+  next_comp_at: string | null
+  next_comp_place: string | null
+}
+
+/** Hidden comms post used until the schedule columns exist. */
+export const SCHEDULE_POST_PREFIX = '@@schedule\n'
+
+const EMPTY_SCHEDULE: TeamSchedule = {
+  next_meeting_at: null,
+  next_meeting_place: null,
+  next_comp_at: null,
+  next_comp_place: null,
 }
 
 export type MissionProgress = {
@@ -131,6 +153,241 @@ export async function createTeamMission(input: {
   return data as TeamMission
 }
 
+export function missionKind(mission: {
+  kind?: string | null
+  title: string
+}): MissionKind {
+  if (mission.kind === 'timed') return 'timed'
+  if (/^Test\b/i.test(mission.title)) return 'timed'
+  return 'casual'
+}
+
+export function missionTimedSeconds(mission: {
+  timed_seconds?: number | null
+  title: string
+  target_value: number
+}): number {
+  if (mission.timed_seconds && mission.timed_seconds >= 60) return mission.timed_seconds
+  const match = mission.title.match(/(\d+)\s*min/i)
+  if (match) return Number(match[1]) * 60
+  return Math.max(60, mission.target_value * 60)
+}
+
+export function missionStartPath(mission: {
+  kind?: string | null
+  title: string
+  target_event_id: string | null
+  target_value: number
+  timed_seconds?: number | null
+}): string | null {
+  if (!mission.target_event_id) return null
+  if (missionKind(mission) === 'timed') {
+    const params = new URLSearchParams({
+      session: crypto.randomUUID(),
+      event: mission.target_event_id,
+      topic: 'all',
+      count: String(mission.target_value),
+      seconds: String(missionTimedSeconds(mission)),
+    })
+    return `/ops/timed/exam?${params.toString()}`
+  }
+  const params = new URLSearchParams({
+    event: mission.target_event_id,
+    topic: 'all',
+  })
+  return `/ops/casual/arena?${params.toString()}`
+}
+
+export async function createEventMissions(input: {
+  kind: MissionKind
+  goalType: MissionGoalType
+  targetValue: number
+  deadlineIso: string
+  eventIds: string[]
+  timedSeconds: number | null
+}) {
+  if (!supabase) throw new Error('Supabase not configured')
+  if (input.eventIds.length === 0) throw new Error('Pick at least one event')
+
+  const { data, error } = await supabase.rpc('create_event_missions', {
+    p_kind: input.kind,
+    p_goal_type: input.goalType,
+    p_target_value: input.targetValue,
+    p_deadline: input.deadlineIso,
+    p_event_ids: input.eventIds,
+    p_timed_seconds: input.timedSeconds,
+  })
+  if (!error) return (data ?? []) as TeamMission[]
+
+  const missing =
+    /create_event_missions|schema cache|Could not find the function|PGRST202/i.test(
+      error.message ?? '',
+    )
+  if (!missing) throw error
+
+  const created: TeamMission[] = []
+  for (const eventId of input.eventIds) {
+    const title =
+      input.kind === 'timed'
+        ? `Test · ${input.targetValue} Q · ${Math.round((input.timedSeconds ?? 60) / 60)} min`
+        : `Casual · ${input.targetValue} ${input.goalType}`
+    created.push(
+      await createTeamMission({
+        title,
+        targetEventId: eventId,
+        goalType: input.goalType,
+        targetValue: input.targetValue,
+        deadlineIso: input.deadlineIso,
+      }),
+    )
+  }
+  return created
+}
+
+export async function deleteTeamMissions(ids: string[]) {
+  if (!supabase) throw new Error('Supabase not configured')
+  if (ids.length === 0) return
+  const { error } = await supabase.from('team_missions').delete().in('id', ids)
+  if (error) throw error
+}
+
+function parseSchedulePost(content: string): TeamSchedule {
+  try {
+    const raw = JSON.parse(content.slice(SCHEDULE_POST_PREFIX.length)) as Partial<TeamSchedule>
+    return {
+      next_meeting_at: raw.next_meeting_at ?? null,
+      next_meeting_place: raw.next_meeting_place ?? null,
+      next_comp_at: raw.next_comp_at ?? null,
+      next_comp_place: raw.next_comp_place ?? null,
+    }
+  } catch {
+    return { ...EMPTY_SCHEDULE }
+  }
+}
+
+async function readSchedulePost(teamId: string): Promise<TeamSchedule> {
+  if (!supabase) throw new Error('Supabase not configured')
+  const { data, error } = await supabase
+    .from('team_posts')
+    .select('content')
+    .eq('team_id', teamId)
+    .like('content', `${SCHEDULE_POST_PREFIX}%`)
+    .order('created_at', { ascending: false })
+    .limit(1)
+  if (error) throw error
+  const content = (data?.[0] as { content?: string } | undefined)?.content
+  if (!content) return { ...EMPTY_SCHEDULE }
+  return parseSchedulePost(content)
+}
+
+async function writeSchedulePost(teamId: string, schedule: TeamSchedule) {
+  if (!supabase) throw new Error('Supabase not configured')
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) throw new Error('Not authenticated')
+
+  const { data: existing, error: readErr } = await supabase
+    .from('team_posts')
+    .select('id')
+    .eq('team_id', teamId)
+    .like('content', `${SCHEDULE_POST_PREFIX}%`)
+    .order('created_at', { ascending: false })
+  if (readErr) throw readErr
+
+  const rows = (existing ?? []) as Array<{ id: string }>
+  const empty =
+    !schedule.next_meeting_at &&
+    !schedule.next_meeting_place &&
+    !schedule.next_comp_at &&
+    !schedule.next_comp_place
+  if (empty) {
+    if (rows.length === 0) return
+    const { error } = await supabase
+      .from('team_posts')
+      .delete()
+      .in(
+        'id',
+        rows.map((row) => row.id),
+      )
+    if (error) throw error
+    return
+  }
+
+  const content = SCHEDULE_POST_PREFIX + JSON.stringify(schedule)
+  if (rows.length === 0) {
+    const { error } = await supabase.from('team_posts').insert({
+      team_id: teamId,
+      author_id: user.id,
+      content,
+      is_pinned: false,
+    })
+    if (error) throw error
+    return
+  }
+
+  const [keep, ...rest] = rows
+  const { error } = await supabase
+    .from('team_posts')
+    .update({ content })
+    .eq('id', keep.id)
+  if (error) throw error
+  if (rest.length > 0) {
+    const { error: delErr } = await supabase
+      .from('team_posts')
+      .delete()
+      .in(
+        'id',
+        rest.map((row) => row.id),
+      )
+    if (delErr) throw delErr
+  }
+}
+
+export async function fetchTeamSchedule(teamId: string): Promise<TeamSchedule | null> {
+  if (!supabase) throw new Error('Supabase not configured')
+  const { data, error } = await supabase
+    .from('teams')
+    .select('next_meeting_at, next_meeting_place, next_comp_at, next_comp_place')
+    .eq('id', teamId)
+    .maybeSingle()
+  if (!error) return (data ?? { ...EMPTY_SCHEDULE }) as TeamSchedule
+  if (/next_meeting_at|column|schema cache/i.test(error.message)) {
+    return readSchedulePost(teamId)
+  }
+  throw error
+}
+
+export async function saveTeamSchedule(input: {
+  teamId: string
+  which: 'meeting' | 'comp'
+  at: string | null
+  place: string
+}) {
+  if (!supabase) throw new Error('Supabase not configured')
+  const { data, error } = await supabase.rpc('set_team_schedule', {
+    p_which: input.which,
+    p_at: input.at,
+    p_place: input.place,
+  })
+  if (!error) return data as TeamSchedule
+
+  const missing =
+    /set_team_schedule|schema cache|Could not find the function|PGRST202/i.test(
+      error.message ?? '',
+    )
+  if (!missing) throw error
+
+  const current = await readSchedulePost(input.teamId)
+  const place = input.place.trim() || null
+  const next: TeamSchedule =
+    input.which === 'meeting'
+      ? { ...current, next_meeting_at: input.at, next_meeting_place: place }
+      : { ...current, next_comp_at: input.at, next_comp_place: place }
+  await writeSchedulePost(input.teamId, next)
+  return next
+}
+
 export { joinTeamByCode, createTeam } from './teams'
 
 export function isOfficerPlus(role: TeamRole | null): boolean {
@@ -166,23 +423,34 @@ export type TargetedPractice = {
   attempts: number
 }
 
-/** Weakest studyable topic for the current user; null if no weakness data yet. */
+const MIN_TOPIC_ATTEMPTS = 5
+
+/**
+ * Weakest topic on the user's own events.
+ * One bad question is not enough — a topic needs a few answers before it can surface.
+ */
 export async function fetchTargetedPractice(
   userId: string,
+  eventIds: string[],
 ): Promise<TargetedPractice | null> {
   if (!supabase) throw new Error('Supabase not configured')
+  const allowed = new Set(eventIds)
+  if (allowed.size === 0) return null
 
   const [weakRes, conceptsRes, topicsRes, eventsRes] = await Promise.all([
     supabase
       .from('user_weakness_map')
       .select('concept_id, total_attempts, correct_attempts')
       .eq('user_id', userId),
-    supabase.from('taxonomy_concepts').select('id, topic_id, event_id'),
+    supabase
+      .from('taxonomy_concepts')
+      .select('id, topic_id, event_id')
+      .in('event_id', [...allowed]),
     supabase.from('taxonomy_topics').select('id, name'),
     supabase
       .from('taxonomy_events')
       .select('id, name, studyable')
-      .eq('studyable', true),
+      .in('id', [...allowed]),
   ])
 
   if (weakRes.error) throw weakRes.error
@@ -191,7 +459,14 @@ export async function fetchTargetedPractice(
   if (eventsRes.error) throw eventsRes.error
 
   const studyableEvents = new Set(
-    ((eventsRes.data ?? []) as Array<{ id: string }>).map((e) => e.id),
+    (
+      (eventsRes.data ?? []) as Array<{
+        id: string
+        studyable?: boolean
+      }>
+    )
+      .filter((event) => allowed.has(event.id) && isStudyableEvent(event))
+      .map((event) => event.id),
   )
   const conceptMeta = new Map(
     (
@@ -238,7 +513,7 @@ export async function fetchTargetedPractice(
   }
 
   const ranked = [...byTopic.values()]
-    .filter((a) => a.attempts > 0)
+    .filter((a) => a.attempts >= MIN_TOPIC_ATTEMPTS)
     .sort((a, b) => {
       const accA = a.correct / a.attempts
       const accB = b.correct / b.attempts
@@ -270,5 +545,7 @@ export async function fetchStudyableEvents(): Promise<
     .eq('active', true)
     .order('name')
   if (error) throw error
-  return (data ?? []) as Array<{ id: string; name: string }>
+  return ((data ?? []) as Array<{ id: string; name: string }>).filter((event) =>
+    isStudyableEvent(event),
+  )
 }

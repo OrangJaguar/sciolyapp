@@ -86,6 +86,7 @@ CREATE TYPE "public"."team_role" AS ENUM (
     'coach',
     'captain',
     'officer',
+    'bench',
     'member'
 );
 
@@ -3834,9 +3835,9 @@ BEGIN
   SELECT role INTO r FROM public.team_roster
   WHERE team_id = p_team_id AND user_id = auth.uid();
   IF r IS NULL THEN RETURN FALSE; END IF;
-  rank_map := CASE r WHEN 'member' THEN 1 WHEN 'officer' THEN 2 WHEN 'captain' THEN 3 WHEN 'coach' THEN 4 END;
-  need := CASE p_min WHEN 'member' THEN 1 WHEN 'officer' THEN 2 WHEN 'captain' THEN 3 WHEN 'coach' THEN 4 END;
-  RETURN rank_map >= need;
+  rank_map := CASE r WHEN 'bench' THEN 0 WHEN 'member' THEN 1 WHEN 'officer' THEN 2 WHEN 'captain' THEN 3 WHEN 'coach' THEN 4 END;
+  need := CASE p_min WHEN 'bench' THEN 0 WHEN 'member' THEN 1 WHEN 'officer' THEN 2 WHEN 'captain' THEN 3 WHEN 'coach' THEN 4 END;
+  RETURN COALESCE(rank_map, 0) >= COALESCE(need, 99);
 END;
 $$;
 

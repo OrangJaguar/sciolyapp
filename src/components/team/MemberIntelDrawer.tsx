@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react'
+import { MemberPrepModal } from './MemberPrepModal'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
-  coverageLabel,
+  assignableRoles,
   fetchActiveEvents,
   formatRole,
-  nextCoverageStatus,
   removeTeamMember,
+  rosterNameClass,
   setEventCoverage,
   setTeamMemberRole,
   type CoverageStatus,
@@ -22,6 +23,7 @@ type Props = {
   userId: string
   selfId: string
   selfRole: TeamRole | null
+  countByEvent: Map<string, number>
   onClose: () => void
   onChanged: () => void
 }
@@ -30,12 +32,14 @@ export function MemberIntelDrawer({
   userId,
   selfId,
   selfRole,
+  countByEvent,
   onClose,
   onChanged,
 }: Props) {
   const qc = useQueryClient()
   const [error, setError] = useState<string | null>(null)
   const [addingEvent, setAddingEvent] = useState(false)
+  const [prepOpen, setPrepOpen] = useState(false)
 
   const intelQuery = useQuery({
     queryKey: ['member-intel', userId],
@@ -49,17 +53,14 @@ export function MemberIntelDrawer({
 
   const intel = intelQuery.data
   const isSelf = userId === selfId
-  const roleOptions: TeamRole[] =
-    selfRole === 'coach'
-      ? ['member', 'officer', 'captain', 'coach']
-      : ['member', 'officer', 'captain']
+  const roleOptions = assignableRoles(selfRole)
 
   const assignedIds = useMemo(
     () => new Set((intel?.coverage ?? []).map((c) => c.event_id)),
     [intel?.coverage],
   )
 
-  const availableEvents = useMemo(() => {
+  const eventChoices = useMemo(() => {
     const events = eventsQuery.data ?? []
     return events.filter((e) => !assignedIds.has(e.id))
   }, [eventsQuery.data, assignedIds])
@@ -142,13 +143,25 @@ export function MemberIntelDrawer({
               <p className="mt-2 text-sm text-alert">Could not load member.</p>
             )}
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="hud-pill px-4 py-2 text-xs"
-          >
-            Close
-          </button>
+          <div className="flex shrink-0 gap-2">
+            {intel && (
+              <button
+                type="button"
+                onClick={() => setPrepOpen(true)}
+                className="hud-pill px-4 py-2 text-xs text-cyan"
+                style={{ borderColor: 'var(--cyan)' }}
+              >
+                Preparation
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={onClose}
+              className="hud-pill px-4 py-2 text-xs"
+            >
+              Close
+            </button>
+          </div>
         </div>
 
         <div className="min-h-0 flex-1 space-y-5 overflow-y-auto px-5 py-4">
@@ -168,7 +181,9 @@ export function MemberIntelDrawer({
                 <div className="flex flex-wrap gap-3 text-sm text-muted">
                   <span>Div {intel.division}</span>
                   <span>·</span>
-                  <span>{formatRole(intel.role)}</span>
+                  <span className={rosterNameClass(intel.role) ?? undefined}>
+                    {formatRole(intel.role)}
+                  </span>
                 </div>
                 {!isSelf ? (
                   <label className="mt-2 block">
@@ -227,19 +242,23 @@ export function MemberIntelDrawer({
               <section className="space-y-3">
                 <div className="flex items-center justify-between gap-2">
                   <p className="label-caps text-dim">Events</p>
-                  <button
-                    type="button"
-                    disabled={availableEvents.length === 0}
-                    onClick={() => setAddingEvent((v) => !v)}
-                    className="data-mono text-[10px] text-cyan hover:underline disabled:opacity-40"
-                  >
-                    + EVENT
-                  </button>
+                  {intel.role === 'bench' ? null : (
+                    <button
+                      type="button"
+                      disabled={eventChoices.length === 0}
+                      onClick={() => setAddingEvent((v) => !v)}
+                      className="data-mono text-[10px] text-cyan hover:underline disabled:opacity-40"
+                    >
+                      + EVENT
+                    </button>
+                  )}
                 </div>
                 <p className="text-xs text-dim">
-                  Tap a chip to cycle Assigned → Training → Ready → Off.
+                  {intel.role === 'bench'
+                    ? 'Bench is not placed on an event. Click one to take it off.'
+                    : 'Two partners max. Click an event again to take it off.'}
                 </p>
-                {addingEvent ? (
+                {intel.role !== 'bench' && addingEvent ? (
                   <select
                     autoFocus
                     defaultValue=""
@@ -250,6 +269,7 @@ export function MemberIntelDrawer({
                         setAddingEvent(false)
                         return
                       }
+                      if ((countByEvent.get(v) ?? 0) >= 2) return
                       coverageMutation.mutate({
                         eventId: v,
                         status: 'assigned',
@@ -260,11 +280,15 @@ export function MemberIntelDrawer({
                     }}
                   >
                     <option value="">Select event…</option>
-                    {availableEvents.map((ev) => (
-                      <option key={ev.id} value={ev.id}>
-                        {ev.name}
-                      </option>
-                    ))}
+                    {eventChoices.map((ev) => {
+                      const n = countByEvent.get(ev.id) ?? 0
+                      const full = n >= 2
+                      return (
+                        <option key={ev.id} value={ev.id} disabled={full}>
+                          {ev.name} · {n}/2{full ? ' · full' : ''}
+                        </option>
+                      )
+                    })}
                   </select>
                 ) : null}
                 {intel.coverage.length === 0 ? (
@@ -276,25 +300,16 @@ export function MemberIntelDrawer({
                         key={c.event_id}
                         type="button"
                         disabled={coverageMutation.isPending}
-                        title="Cycle coverage status"
+                        title="Click again to remove"
                         onClick={() =>
                           coverageMutation.mutate({
                             eventId: c.event_id,
-                            status: nextCoverageStatus(c.status),
+                            status: 'off',
                           })
                         }
-                        className={`inline-flex items-center gap-1.5 rounded-pill border px-2.5 py-1 text-xs ${
-                          c.status === 'ready'
-                            ? 'border-success/40 bg-success/10 text-success'
-                            : c.status === 'training'
-                              ? 'border-[var(--ghost-border-active)] bg-surface-high text-foreground'
-                              : 'border-cyan/30 bg-cyan/10 text-cyan'
-                        }`}
+                        className="inline-flex items-center gap-1.5 rounded-pill border border-cyan/30 bg-cyan/10 px-2.5 py-1 text-xs text-cyan"
                       >
                         <span>{c.event_name ?? c.event_id}</span>
-                        <span className="data-mono text-[9px] opacity-80">
-                          {coverageLabel(c.status)}
-                        </span>
                       </button>
                     ))}
                   </div>
@@ -360,6 +375,13 @@ export function MemberIntelDrawer({
           ) : null}
         </div>
       </div>
+      {prepOpen && intel ? (
+        <MemberPrepModal
+          userId={userId}
+          name={intel.display_name || `@${intel.handle}`}
+          onClose={() => setPrepOpen(false)}
+        />
+      ) : null}
     </div>
   )
 }

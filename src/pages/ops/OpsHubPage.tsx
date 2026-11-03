@@ -179,11 +179,12 @@ const cards: OpsCard[] = [
 export function OpsHubPage() {
   return (
     <div className="grid grid-cols-1 gap-4 md:h-full md:min-h-0 md:grid-cols-3 md:grid-rows-1 md:items-stretch">
-      {cards.map((card) => (
+      {cards.map((card, index) => (
         <Link
           key={card.to}
           to={card.to}
-          className="hud-panel group relative flex min-h-[320px] flex-col overflow-hidden border-subtle transition-[border-color,box-shadow,transform] duration-500 ease-out hover:border-accent/70 hover:shadow-[0_0_40px_var(--accent-dim)] md:min-h-0 md:h-full md:hover:-translate-y-1"
+          className="hud-panel rise-in group relative flex min-h-[320px] flex-col overflow-hidden border-subtle transition-[border-color,box-shadow,transform] duration-500 ease-out hover:border-accent/70 hover:shadow-[0_0_40px_var(--accent-dim)] md:min-h-0 md:h-full md:hover:-translate-y-1"
+          style={{ animationDelay: `${index * 70}ms` }}
         >
           <div
             className="pointer-events-none absolute inset-0 transition-opacity duration-500 opacity-90 group-hover:opacity-100"

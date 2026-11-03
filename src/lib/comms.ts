@@ -3,6 +3,7 @@ import {
   fetchTeamContext,
   isOfficerPlus,
   joinTeamByCode,
+  SCHEDULE_POST_PREFIX,
 } from './missions'
 import type { TeamRole } from './types'
 
@@ -101,14 +102,16 @@ export async function fetchTeamRoster(teamId: string): Promise<RosterMember[]> {
     captain: 3,
     officer: 2,
     member: 1,
+    bench: 0,
   }
+  const benched = await readBenchIds(teamId)
 
   return rows
     .map((r) => {
       const p = byId.get(r.user_id)
       return {
         user_id: r.user_id,
-        role: r.role,
+        role: benched.has(r.user_id) ? 'bench' : r.role,
         handle: p?.handle ?? 'unknown',
         display_name: p?.display_name?.trim() || null,
         avatar_id: p?.avatar_id ?? 'default',
@@ -155,10 +158,16 @@ export async function fetchTeamPosts(teamId: string): Promise<TeamPost[]> {
     ]),
   )
 
-  return posts.map((p) => ({
-    ...p,
-    author_handle: handleById.get(p.author_id) ?? 'unknown',
-  }))
+  return posts
+    .filter(
+      (p) =>
+        !p.content.startsWith(SCHEDULE_POST_PREFIX) &&
+        !p.content.startsWith(BENCH_POST_PREFIX),
+    )
+    .map((p) => ({
+      ...p,
+      author_handle: handleById.get(p.author_id) ?? 'unknown',
+    }))
 }
 
 export async function createTeamPost(input: {
@@ -211,7 +220,22 @@ export function formatRole(role: TeamRole): string {
       return 'Officer'
     case 'member':
       return 'Member'
+    case 'bench':
+      return 'Bench'
   }
+}
+
+/** Bench names use a distinct shade so they read apart from officers. */
+export function rosterNameClass(role: TeamRole): string | null {
+  if (role === 'bench') return 'text-[#e0b15a]'
+  return null
+}
+
+export function assignableRoles(selfRole: TeamRole | null): TeamRole[] {
+  if (selfRole === 'coach') {
+    return ['bench', 'member', 'officer', 'captain', 'coach']
+  }
+  return ['bench', 'member', 'officer', 'captain']
 }
 
 export function canManageRoster(role: TeamRole | null): boolean {
@@ -276,8 +300,144 @@ export async function setEventCoverage(
   if (error) throw error
 }
 
+const BENCH_POST_PREFIX = '@@bench\n'
+
+function isMissingBenchEnum(error: { message?: string }): boolean {
+  return /invalid input value for enum|team_role/i.test(error.message ?? '')
+}
+
+async function teamIdForMember(userId: string): Promise<string | null> {
+  if (!supabase) return null
+  const { data, error } = await supabase
+    .from('team_roster')
+    .select('team_id')
+    .eq('user_id', userId)
+    .maybeSingle()
+  if (error) throw error
+  return (data?.team_id as string | undefined) ?? null
+}
+
+async function readBenchIds(teamId: string): Promise<Set<string>> {
+  if (!supabase) return new Set()
+  const { data, error } = await supabase
+    .from('team_posts')
+    .select('content')
+    .eq('team_id', teamId)
+    .like('content', `${BENCH_POST_PREFIX}%`)
+    .order('created_at', { ascending: false })
+    .limit(1)
+  if (error) throw error
+  const content = (data?.[0] as { content?: string } | undefined)?.content
+  if (!content) return new Set()
+  try {
+    const ids = JSON.parse(content.slice(BENCH_POST_PREFIX.length)) as unknown
+    if (!Array.isArray(ids)) return new Set()
+    return new Set(ids.filter((id): id is string => typeof id === 'string'))
+  } catch {
+    return new Set()
+  }
+}
+
+async function writeBenchIds(teamId: string, ids: Set<string>) {
+  if (!supabase) throw new Error('Supabase not configured')
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) throw new Error('Not authenticated')
+
+  const { data: existing, error: readErr } = await supabase
+    .from('team_posts')
+    .select('id')
+    .eq('team_id', teamId)
+    .like('content', `${BENCH_POST_PREFIX}%`)
+    .order('created_at', { ascending: false })
+  if (readErr) throw readErr
+
+  const rows = (existing ?? []) as Array<{ id: string }>
+  if (ids.size === 0) {
+    if (rows.length === 0) return
+    const { error } = await supabase
+      .from('team_posts')
+      .delete()
+      .in(
+        'id',
+        rows.map((row) => row.id),
+      )
+    if (error) throw error
+    return
+  }
+
+  const content = BENCH_POST_PREFIX + JSON.stringify([...ids])
+  if (rows.length === 0) {
+    const { error } = await supabase.from('team_posts').insert({
+      team_id: teamId,
+      author_id: user.id,
+      content,
+      is_pinned: false,
+    })
+    if (error) throw error
+    return
+  }
+
+  const [keep, ...rest] = rows
+  const { error } = await supabase
+    .from('team_posts')
+    .update({ content })
+    .eq('id', keep.id)
+  if (error) throw error
+  if (rest.length > 0) {
+    const { error: delErr } = await supabase
+      .from('team_posts')
+      .delete()
+      .in(
+        'id',
+        rest.map((row) => row.id),
+      )
+    if (delErr) throw delErr
+  }
+}
+
+/** Overlay the bench mark when the database role list does not include it yet. */
+export async function applyBenchRole(
+  userId: string,
+  role: TeamRole,
+): Promise<TeamRole> {
+  if (role === 'bench') return role
+  const teamId = await teamIdForMember(userId)
+  if (!teamId) return role
+  const ids = await readBenchIds(teamId)
+  return ids.has(userId) ? 'bench' : role
+}
+
 export async function setTeamMemberRole(userId: string, role: TeamRole) {
   if (!supabase) throw new Error('Supabase not configured')
+  const teamId = await teamIdForMember(userId)
+  if (!teamId) throw new Error('Not on a team')
+
+  if (role === 'bench') {
+    const { error } = await supabase.rpc('set_team_member_role', {
+      p_user_id: userId,
+      p_role: 'bench',
+    })
+    if (!error) {
+      const ids = await readBenchIds(teamId)
+      if (ids.delete(userId)) await writeBenchIds(teamId, ids)
+      return
+    }
+    if (!isMissingBenchEnum(error)) throw error
+    const { error: memberErr } = await supabase.rpc('set_team_member_role', {
+      p_user_id: userId,
+      p_role: 'member',
+    })
+    if (memberErr) throw memberErr
+    const ids = await readBenchIds(teamId)
+    ids.add(userId)
+    await writeBenchIds(teamId, ids)
+    return
+  }
+
+  const ids = await readBenchIds(teamId)
+  if (ids.delete(userId)) await writeBenchIds(teamId, ids)
   const { error } = await supabase.rpc('set_team_member_role', {
     p_user_id: userId,
     p_role: role,

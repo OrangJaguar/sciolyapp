@@ -1,5 +1,5 @@
 export type Division = 'B' | 'C'
-export type TeamRole = 'coach' | 'captain' | 'officer' | 'member'
+export type TeamRole = 'coach' | 'captain' | 'officer' | 'member' | 'bench'
 export type PlatformRole = 'user' | 'admin'
 
 export type Profile = {
