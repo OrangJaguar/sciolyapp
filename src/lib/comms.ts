@@ -272,18 +272,23 @@ export async function fetchActiveEvents(): Promise<TeamEventOption[]> {
   return (data ?? []) as TeamEventOption[]
 }
 
-export async function fetchTeamJoinCodes(teamId: string) {
+export async function fetchTeamJoinCodes(teamId: string, includeAdmin = false) {
   if (!supabase) throw new Error('Supabase not configured')
   const { data, error } = await supabase
     .from('teams')
-    .select('join_code_student, join_code_admin')
+    .select(includeAdmin ? 'join_code_student, join_code_admin' : 'join_code_student')
     .eq('id', teamId)
     .maybeSingle()
   if (error) throw error
-  return data as {
+  const row = data as {
     join_code_student: string
-    join_code_admin: string
+    join_code_admin?: string
   } | null
+  if (!row) return null
+  return {
+    join_code_student: row.join_code_student,
+    join_code_admin: includeAdmin ? (row.join_code_admin ?? null) : null,
+  }
 }
 
 export async function setEventCoverage(

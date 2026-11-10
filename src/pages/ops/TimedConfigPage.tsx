@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useMemo, useState } from 'react'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { isStudyableEvent } from '../../lib/eventKinds'
 import { fetchLiveQuestionRows } from '../../lib/liveBank'
@@ -44,6 +44,8 @@ async function fetchLobbyData() {
 
 export function TimedConfigPage() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const presetEvent = searchParams.get('event')
   const { data, isLoading, error } = useQuery({
     queryKey: ['live-question-index'],
     queryFn: fetchLobbyData,
@@ -62,7 +64,20 @@ export function TimedConfigPage() {
     (typeof TIME_PRESETS)[number]['id'] | null
   >(null)
 
-  const selectedEventId = eventId ?? studyable[0]?.id ?? null
+  useEffect(() => {
+    if (!presetEvent) return
+    if (!studyable.some((event) => event.id === presetEvent)) return
+    setEventId(presetEvent)
+    setTopicId('all')
+  }, [presetEvent, studyable])
+
+  const selectedEventId =
+    eventId ??
+    (presetEvent && studyable.some((event) => event.id === presetEvent)
+      ? presetEvent
+      : null) ??
+    studyable[0]?.id ??
+    null
 
   const topicsForEvent = useMemo(
     () =>

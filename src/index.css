@@ -126,6 +126,17 @@ input {
   transition: width 520ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.stripe-progress-alert {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--alert),
+    var(--alert) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+  transition: width 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 @keyframes hud-rise {
   from {
     opacity: 0;
@@ -309,6 +320,7 @@ textarea.field-input {
   }
 
   .stripe-progress,
+  .stripe-progress-alert,
   .event-card {
     transition: none;
   }

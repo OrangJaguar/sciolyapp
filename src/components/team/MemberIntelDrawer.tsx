@@ -316,36 +316,6 @@ export function MemberIntelDrawer({
                 )}
               </section>
 
-              <section className="space-y-3">
-                <p className="label-caps text-dim">Active missions</p>
-                {intel.missions.length === 0 ? (
-                  <p className="text-sm text-dim">No active missions.</p>
-                ) : (
-                  <ul className="space-y-2">
-                    {intel.missions.map((m) => {
-                      const pct = Math.min(
-                        100,
-                        Math.round(
-                          (m.current_value / Math.max(1, m.target_value)) * 100,
-                        ),
-                      )
-                      return (
-                        <li
-                          key={m.id}
-                          className="rounded-md border border-subtle bg-surface-elevated px-3 py-2"
-                        >
-                          <p className="text-sm text-foreground">{m.title}</p>
-                          <p className="mt-1 data-mono text-[10px] text-dim">
-                            {m.current_value}/{m.target_value} · {pct}%
-                            {m.completed ? ' · done' : ''}
-                          </p>
-                        </li>
-                      )
-                    })}
-                  </ul>
-                )}
-              </section>
-
               {!isSelf ? (
                 <section className="border-t border-subtle pt-4">
                   <button

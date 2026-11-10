@@ -21,11 +21,15 @@ import {
   fetchTeamSchedule,
   formatDeadline,
   isOfficerPlus,
+  missionIsOverdue,
   missionKind,
+  missionLobbyPath,
   missionStartPath,
+  overdueLabel,
   saveTeamSchedule,
   syncMyMissionProgress,
   tMinus,
+  type DeadlinePolicy,
   type MissionGoalType,
   type MissionRow,
   type TeamSchedule,
@@ -115,7 +119,7 @@ export function MissionsPage() {
     (m) => m.target_event_id == null && !m.completed,
   )
   const expired = [
-    ...old.filter((m) => !m.completed || m.target_event_id == null),
+    ...old.filter((m) => m.target_event_id == null),
     ...mine.filter(
       (m) =>
         m.target_event_id == null &&
@@ -436,7 +440,13 @@ function EventFill({
       }}
     >
       {cards.map((card, index) => {
-        const open = card.missions.filter((mission) => !mission.completed)
+        const open = card.missions
+          .filter((mission) => !mission.completed)
+          .sort(
+            (a, b) =>
+              Date.parse(a.deadline) - Date.parse(b.deadline) ||
+              Date.parse(a.created_at) - Date.parse(b.created_at),
+          )
         const done = card.missions.filter((mission) => mission.completed)
         return (
           <li
@@ -521,29 +531,51 @@ function EventMission({
   onRemoved: () => void
 }) {
   const kind = missionKind(item)
-  const path = missionStartPath(item)
+  const lobby = missionLobbyPath(item)
+  const overdue = missionIsOverdue(item)
   return (
     <div>
       <button
         type="button"
-        disabled={!path || item.completed}
-        onClick={() => path && onStart(path)}
-        className="flex w-full items-baseline justify-between gap-3 text-left disabled:cursor-default"
+        disabled={!lobby}
+        aria-label={`Open ${item.event_name ?? 'event'}`}
+        onClick={() => lobby && onStart(lobby)}
+        className="group flex w-full items-baseline gap-3 rounded-md px-2 py-1.5 -mx-2 text-left transition-colors hover:bg-[var(--surface-high)] disabled:cursor-default"
       >
-        <span className="min-w-0 truncate text-sm text-muted">
+        <span
+          className={`min-w-0 flex-1 truncate text-sm transition-colors ${
+            overdue
+              ? 'text-alert group-hover:brightness-150'
+              : 'text-muted group-hover:text-cyan'
+          }`}
+        >
           {kind === 'timed' ? 'Test' : 'Casual'}
           {' · '}
           {item.goal_type === 'correct' ? 'correct' : 'answered'}
-          {' · due '}
-          {formatDeadline(item.deadline)}
+          {' · '}
+          {overdue ? overdueLabel(item) : `due ${formatDeadline(item.deadline)}`}
         </span>
-        <span className="data-mono shrink-0 text-lg font-semibold text-cyan">
+        <span
+          className={`data-mono shrink-0 text-lg font-semibold ${
+            overdue ? 'text-alert' : 'text-cyan'
+          }`}
+        >
           {item.current_value}/{item.target_value}
         </span>
+        <span
+          aria-hidden
+          className={`shrink-0 text-lg leading-none ${overdue ? 'text-alert' : 'text-cyan'}`}
+        >
+          →
+        </span>
       </button>
-      <div className="mt-2 h-1.5 overflow-hidden rounded-pill border border-cyan/30">
+      <div
+        className={`mt-2 h-1.5 overflow-hidden rounded-pill border ${
+          overdue ? 'border-alert/50' : 'border-cyan/30'
+        }`}
+      >
         <div
-          className="stripe-progress h-full"
+          className={`h-full ${overdue ? 'stripe-progress-alert' : 'stripe-progress'}`}
           style={{ width: `${item.progress_pct}%` }}
         />
       </div>
@@ -669,6 +701,7 @@ function AssignMissionsModal({
   const [questions, setQuestions] = useState(25)
   const [minutes, setMinutes] = useState(20)
   const [selected, setSelected] = useState<string[]>([])
+  const [deadlinePolicyChoice, setDeadlinePolicyChoice] = useState<DeadlinePolicy>('late')
   const [deadlineLocal, setDeadlineLocal] = useState(() => {
     const d = new Date(Date.now() + 7 * 24 * 3_600_000)
     d.setMinutes(d.getMinutes() - d.getTimezoneOffset())
@@ -696,6 +729,7 @@ function AssignMissionsModal({
         deadlineIso: new Date(deadlineLocal).toISOString(),
         eventIds: selected,
         timedSeconds: tab === 'timed' ? minutes * 60 : null,
+        deadlinePolicy: deadlinePolicyChoice,
       }),
     onSuccess: () => {
       setError(null)
@@ -836,6 +870,41 @@ function AssignMissionsModal({
                   </div>
                 </div>
               )}
+            </div>
+
+            <div>
+              <span className="label-caps mb-1.5 block text-[9px] text-dim">
+                After the deadline
+              </span>
+              <div className="grid grid-cols-3 gap-2">
+                {(
+                  [
+                    ['late', 'Late'],
+                    ['close', 'Closes'],
+                    ['count', 'Counts'],
+                  ] as const
+                ).map(([id, label]) => (
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => setDeadlinePolicyChoice(id)}
+                    className={`rounded-md border px-2 py-2 text-sm ${
+                      deadlinePolicyChoice === id
+                        ? 'border-cyan bg-cyan/10 text-cyan'
+                        : 'border-subtle text-muted'
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <p className="mt-1.5 text-xs text-dim">
+                {deadlinePolicyChoice === 'close'
+                  ? 'After the deadline it is closed and later work does not fill it.'
+                  : deadlinePolicyChoice === 'count'
+                    ? 'It stays open and still counts.'
+                    : 'It stays open, turns red, and later work still fills it.'}
+              </p>
             </div>
 
             <label className="block">

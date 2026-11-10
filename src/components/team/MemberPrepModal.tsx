@@ -7,7 +7,11 @@ import {
   prepNotes,
   type PrepSession,
 } from '../../lib/memberPrep'
-import { formatDeadline } from '../../lib/missions'
+import {
+  formatDeadline,
+  missionTiming,
+  missionTimingLabel,
+} from '../../lib/missions'
 
 function errText(err: unknown): string {
   const message =
@@ -77,6 +81,8 @@ export function MemberPrepModal({
             Close
           </button>
         </div>
+
+        {prep ? <MissionRecord missions={prep.missions} /> : null}
 
         {prepQuery.isLoading ? (
           <p className="px-5 py-6 text-sm text-muted">Loading sessions…</p>
@@ -197,37 +203,103 @@ export function MemberPrepModal({
                   )}
                 </>
               ) : (
-                <>
-                  <p className="label-caps">Missions</p>
-                  {prep.missions.length === 0 ? (
-                    <p className="mt-2 text-sm text-dim">No missions for their events.</p>
-                  ) : (
-                    <ul className="mt-2 space-y-2">
-                      {prep.missions.map((mission) => (
-                        <li key={mission.id}>
-                          <p className="text-sm text-[var(--text)]">
-                            {mission.event_name ?? mission.title}
-                          </p>
-                          <p className="text-xs text-dim">
-                            {mission.current_value}/{mission.target_value}{' '}
-                            {mission.goal_type === 'correct' ? 'correct' : 'answered'}
-                            {mission.completed ? ' · done' : ''}
-                            {' · '}
-                            {formatDeadline(mission.deadline)}
-                          </p>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  <p className="mt-6 text-sm text-dim">
-                    Open a session to see each question and how long it took.
-                  </p>
-                </>
+                <p className="text-sm text-dim">
+                  Open a session to see each question and how long it took.
+                </p>
               )}
             </div>
           </div>
         ) : null}
       </div>
+    </div>
+  )
+}
+
+function MissionRecord({
+  missions,
+}: {
+  missions: Array<{
+    id: string
+    title: string
+    goal_type: string
+    target_value: number
+    deadline: string
+    event_name: string | null
+    current_value: number
+    completed: boolean
+  }>
+}) {
+  const counts = { 'on-time': 0, done: 0, missed: 0, open: 0 }
+  for (const mission of missions) counts[missionTiming(mission)] += 1
+  const tally = [
+    counts['on-time'] ? `${counts['on-time']} on time` : '',
+    counts.open ? `${counts.open} open` : '',
+    counts.missed ? `${counts.missed} missed` : '',
+    counts.done ? `${counts.done} done` : '',
+  ]
+    .filter(Boolean)
+    .join(' · ')
+
+  return (
+    <div className="shrink-0 border-b border-subtle px-5 py-4">
+      <div className="flex items-baseline justify-between gap-3">
+        <p className="label-caps">Missions</p>
+        <p className="text-xs text-muted">{tally || 'None yet'}</p>
+      </div>
+      {missions.length === 0 ? (
+        <p className="mt-2 text-sm text-dim">No missions for their events.</p>
+      ) : (
+        <ul className="mt-3 max-h-44 space-y-3 overflow-y-auto pr-1">
+          {missions.map((mission) => {
+            const timing = missionTiming(mission)
+            const pct = Math.min(
+              100,
+              Math.round(
+                (mission.current_value / Math.max(1, mission.target_value)) * 100,
+              ),
+            )
+            return (
+              <li key={mission.id}>
+                <div className="flex items-baseline justify-between gap-3">
+                  <p className="min-w-0 truncate text-sm text-[var(--text)]">
+                    {mission.event_name ?? mission.title}
+                    <span className="text-dim">
+                      {' · '}
+                      {mission.goal_type === 'correct' ? 'correct' : 'answered'}
+                      {' · due '}
+                      {formatDeadline(mission.deadline)}
+                    </span>
+                  </p>
+                  <p
+                    className={`shrink-0 text-xs ${
+                      timing === 'on-time'
+                        ? 'text-cyan'
+                        : timing === 'missed'
+                          ? 'text-alert'
+                          : 'text-dim'
+                    }`}
+                    title={
+                      timing === 'done'
+                        ? 'Finished. The completion time is not stored, so this is not marked on time or late.'
+                        : undefined
+                    }
+                  >
+                    {missionTimingLabel(timing)}
+                  </p>
+                </div>
+                <div className="mt-1.5 flex items-center gap-3">
+                  <div className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-pill border border-cyan/30">
+                    <div className="stripe-progress h-full" style={{ width: `${pct}%` }} />
+                  </div>
+                  <span className="data-mono text-xs text-dim">
+                    {mission.current_value}/{mission.target_value}
+                  </span>
+                </div>
+              </li>
+            )
+          })}
+        </ul>
+      )}
     </div>
   )
 }

@@ -18,6 +18,7 @@ export type TeamMission = {
   created_at: string
   kind?: MissionKind | null
   timed_seconds?: number | null
+  deadline_policy?: DeadlinePolicy | null
 }
 
 export type TeamSchedule = {
@@ -37,11 +38,16 @@ const EMPTY_SCHEDULE: TeamSchedule = {
   next_comp_place: null,
 }
 
+export type DeadlinePolicy = 'close' | 'late' | 'count'
+
 export type MissionProgress = {
   mission_id: string
   user_id: string
   current_value: number
   completed: boolean
+  completed_at?: string | null
+  snapshot_value?: number | null
+  snapshot_at?: string | null
 }
 
 export type MissionRow = TeamMission & {
@@ -153,6 +159,119 @@ export async function createTeamMission(input: {
   return data as TeamMission
 }
 
+export type MissionTiming = 'on-time' | 'done' | 'missed' | 'open'
+
+export function missionTiming(
+  mission: { completed: boolean; deadline: string },
+  now = Date.now(),
+): MissionTiming {
+  const past = Date.parse(mission.deadline) <= now
+  if (mission.completed) return past ? 'done' : 'on-time'
+  return past ? 'missed' : 'open'
+}
+
+export function missionTimingLabel(timing: MissionTiming): string {
+  if (timing === 'on-time') return 'On time'
+  if (timing === 'done') return 'Done'
+  if (timing === 'missed') return 'Missed'
+  return 'Open'
+}
+
+export function deadlinePolicy(mission: {
+  deadline_policy?: string | null
+}): DeadlinePolicy {
+  if (mission.deadline_policy === 'close' || mission.deadline_policy === 'count') {
+    return mission.deadline_policy
+  }
+  return 'late'
+}
+
+export function missionIsOverdue(
+  mission: { completed: boolean; deadline: string; deadline_policy?: string | null },
+  now = Date.now(),
+): boolean {
+  if (mission.completed || deadlinePolicy(mission) === 'count') return false
+  return Date.parse(mission.deadline) <= now
+}
+
+export function overdueLabel(mission: {
+  deadline_policy?: string | null
+}): string {
+  return deadlinePolicy(mission) === 'close' ? 'Closed' : 'Late'
+}
+
+export function missionLobbyPath(mission: {
+  kind?: string | null
+  title: string
+  target_event_id: string | null
+}): string | null {
+  if (!mission.target_event_id) return null
+  const base = missionKind(mission) === 'timed' ? '/ops/timed' : '/ops/casual'
+  return `${base}?event=${encodeURIComponent(mission.target_event_id)}`
+}
+
+export type AssignmentMission = {
+  id: string
+  title: string
+  target_event_id: string | null
+  goal_type: 'answered' | 'correct' | string
+  target_value: number
+  deadline: string
+  deadline_policy?: DeadlinePolicy | null
+}
+
+export type AssignmentProgress = {
+  mission_id: string
+  user_id: string
+  current_value: number
+  completed: boolean
+  completed_at?: string | null
+  snapshot_value?: number | null
+}
+
+export async function fetchTeamAssignments(teamId: string): Promise<{
+  missions: AssignmentMission[]
+  progress: AssignmentProgress[]
+}> {
+  if (!supabase) throw new Error('Supabase not configured')
+  await supabase.rpc('refresh_team_mission_progress')
+  const fullMissions = await supabase
+    .from('team_missions')
+    .select('id, title, target_event_id, goal_type, target_value, deadline, deadline_policy')
+    .eq('team_id', teamId)
+    .order('deadline', { ascending: true })
+  const missionsResult =
+    fullMissions.error && /deadline_policy|column|schema cache/i.test(fullMissions.error.message)
+      ? await supabase
+          .from('team_missions')
+          .select('id, title, target_event_id, goal_type, target_value, deadline')
+          .eq('team_id', teamId)
+          .order('deadline', { ascending: true })
+      : fullMissions
+
+  const fullProgress = await supabase
+    .from('user_mission_progress')
+    .select('mission_id, user_id, current_value, completed, completed_at, snapshot_value')
+  const progressResult =
+    fullProgress.error &&
+    /completed_at|snapshot_value|column|schema cache/i.test(fullProgress.error.message)
+      ? await supabase
+          .from('user_mission_progress')
+          .select('mission_id, user_id, current_value, completed')
+      : fullProgress
+  if (missionsResult.error) throw missionsResult.error
+  if (progressResult.error) throw progressResult.error
+  const ids = new Set(
+    ((missionsResult.data ?? []) as AssignmentMission[]).map((mission) => mission.id),
+  )
+  return {
+    missions: (missionsResult.data ?? []) as AssignmentMission[],
+    progress: ((progressResult.data ?? []) as AssignmentProgress[]).filter((row) =>
+      ids.has(row.mission_id),
+    ),
+  }
+}
+
 export function missionKind(mission: {
   kind?: string | null
   title: string
@@ -205,9 +324,11 @@ export async function createEventMissions(input: {
   deadlineIso: string
   eventIds: string[]
   timedSeconds: number | null
+  deadlinePolicy?: DeadlinePolicy
 }) {
   if (!supabase) throw new Error('Supabase not configured')
   if (input.eventIds.length === 0) throw new Error('Pick at least one event')
+  const policy = input.deadlinePolicy ?? 'late'
 
   const { data, error } = await supabase.rpc('create_event_missions', {
     p_kind: input.kind,
@@ -216,6 +337,7 @@ export async function createEventMissions(input: {
     p_deadline: input.deadlineIso,
     p_event_ids: input.eventIds,
     p_timed_seconds: input.timedSeconds,
+    p_deadline_policy: policy,
   })
   if (!error) return (data ?? []) as TeamMission[]
 
@@ -231,15 +353,22 @@ export async function createEventMissions(input: {
       input.kind === 'timed'
         ? `Test · ${input.targetValue} Q · ${Math.round((input.timedSeconds ?? 60) / 60)} min`
         : `Casual · ${input.targetValue} ${input.goalType}`
-    created.push(
-      await createTeamMission({
-        title,
-        targetEventId: eventId,
-        goalType: input.goalType,
-        targetValue: input.targetValue,
-        deadlineIso: input.deadlineIso,
-      }),
-    )
+    const mission = await createTeamMission({
+      title,
+      targetEventId: eventId,
+      goalType: input.goalType,
+      targetValue: input.targetValue,
+      deadlineIso: input.deadlineIso,
+    })
+    await supabase
+      .from('team_missions')
+      .update({
+        deadline_policy: policy,
+        kind: input.kind,
+        timed_seconds: input.kind === 'timed' ? input.timedSeconds : null,
+      })
+      .eq('id', mission.id)
+    created.push({ ...mission, deadline_policy: policy, kind: input.kind })
   }
   return created
 }
