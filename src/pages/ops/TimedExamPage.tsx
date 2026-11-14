@@ -349,11 +349,12 @@ export function TimedExamPage() {
             }
           }
         } else {
-          const qs = await fetchArenaQuestionBank({
+          const bank = await fetchArenaQuestionBank({
             eventId: eventId!,
             topicId: topicId === 'all' ? 'all' : topicId,
             cap: count,
           })
+          const qs = bank.questions
           if (cancelled) return
           if (qs.length === 0) throw new Error('No live questions for this config')
           const now = Date.now()

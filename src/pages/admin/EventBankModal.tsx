@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { ModalScrim } from '../../components/shell/ModalScrim'
 import { useQuery } from '@tanstack/react-query'
 import type {
   CatalogConcept,
@@ -96,15 +97,9 @@ export function EventBankModal({
   if (!open) return null
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-overlay p-4"
-      role="dialog"
-      aria-modal="true"
-      aria-label={`${eventName} question bank`}
-      onClick={onClose}
-    >
+    <ModalScrim label={`${eventName} question bank`} onClose={onClose}>
       <div
-        className="flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-subtle bg-surface-elevated shadow-2xl"
+        className="w-full max-w-3xl rounded-2xl border border-subtle bg-surface-elevated shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-3 border-b border-subtle px-4 py-3">
@@ -143,7 +138,7 @@ export function EventBankModal({
           </label>
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto p-3">
+        <div className="p-3">
           {topics.map((topic) => {
             const concepts = conceptsByTopic.get(topic.id) ?? []
             if (concepts.length === 0) return null
@@ -185,7 +180,7 @@ export function EventBankModal({
           Read-only. Edit drafts in Review; taxonomy in Catalog.
         </p>
       </div>
-    </div>
+    </ModalScrim>
   )
 }
 

@@ -3,7 +3,8 @@ import { useAuth } from '../../features/auth/AuthProvider'
 import { LandingPage } from '../../pages/landing/LandingPage'
 
 /**
- * `/` — landing for logged-out users; onboarded users go to CMD.
+ * `/` — landing for logged-out users and for a login that never finished setup.
+ * Onboarded users go to CMD.
  */
 export function HomeEntry() {
   const { ready, session, profile, profileStatus, configured } = useAuth()
@@ -29,10 +30,10 @@ export function HomeEntry() {
         </div>
       )
     }
-    if (profileStatus === 'missing' || !profile) {
-      return <Navigate to="/setup" replace />
+    if (profile && !profile.onboarding_complete) {
+      return <LandingPage />
     }
-    if (!profile.onboarding_complete) {
+    if (profileStatus === 'missing' || !profile) {
       return <Navigate to="/setup" replace />
     }
     return <Navigate to="/cmd/missions" replace />

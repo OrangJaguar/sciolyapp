@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ModalScrim } from '../shell/ModalScrim'
 import { useQuery } from '@tanstack/react-query'
 import {
   fetchMemberPrep,
@@ -56,18 +57,12 @@ export function MemberPrepModal({
   const summary = prep?.summary
 
   return (
-    <div
-      className="fade-in fixed inset-0 z-[70] flex items-center justify-center bg-overlay p-4 backdrop-blur-[2px]"
-      role="dialog"
-      aria-modal="true"
-      aria-label={`${name} preparation`}
-      onClick={(e) => {
-        e.stopPropagation()
-        onClose()
-      }}
+    <ModalScrim
+      label={`${name} preparation`}
+      onClose={onClose}
     >
       <div
-        className="hud-panel rise-in flex max-h-[min(92dvh,860px)] w-full max-w-5xl flex-col overflow-hidden border-cyan/30 shadow-[0_0_48px_var(--accent-dim)]"
+        className="hud-panel rise-in w-full max-w-5xl border-cyan/30 shadow-[0_0_48px_var(--accent-dim)]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex shrink-0 items-start justify-between gap-3 border-b border-subtle px-5 py-4">
@@ -90,7 +85,7 @@ export function MemberPrepModal({
           <p className="px-5 py-6 text-sm text-alert">{errText(prepQuery.error)}</p>
         ) : prep && summary ? (
           <div className="grid min-h-0 flex-1 lg:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.9fr)]">
-            <div className="min-h-0 overflow-y-auto px-5 py-4">
+            <div className="px-5 py-4">
               <div className="flex flex-wrap gap-6">
                 <Stat
                   label="Accuracy"
@@ -159,7 +154,7 @@ export function MemberPrepModal({
               )}
             </div>
 
-            <div className="min-h-0 overflow-y-auto border-t border-subtle px-5 py-4 lg:border-t-0 lg:border-l">
+            <div className="border-t border-subtle px-5 py-4 lg:border-t-0 lg:border-l">
               {session ? (
                 <>
                   <p className="label-caps">
@@ -211,7 +206,7 @@ export function MemberPrepModal({
           </div>
         ) : null}
       </div>
-    </div>
+    </ModalScrim>
   )
 }
 
@@ -249,7 +244,7 @@ function MissionRecord({
       {missions.length === 0 ? (
         <p className="mt-2 text-sm text-dim">No missions for their events.</p>
       ) : (
-        <ul className="mt-3 max-h-44 space-y-3 overflow-y-auto pr-1">
+        <ul className="mt-3 max-h-44 space-y-3 overflow-y-auto overscroll-contain pr-1">
           {missions.map((mission) => {
             const timing = missionTiming(mission)
             const pct = Math.min(

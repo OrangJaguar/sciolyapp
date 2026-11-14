@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { ModalScrim } from '../shell/ModalScrim'
 import { useQuery } from '@tanstack/react-query'
 import {
   formatRole,
@@ -134,15 +135,9 @@ export function SquadProgress({
   )
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-overlay p-4 backdrop-blur-[2px]"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Progress"
-      onClick={onClose}
-    >
+    <ModalScrim label="Progress" onClose={onClose}>
       <div
-        className="hud-panel flex max-h-[min(90dvh,820px)] w-full max-w-3xl flex-col overflow-hidden border-cyan/30 shadow-[0_0_48px_var(--accent-dim)]"
+        className="hud-panel w-full max-w-3xl border-cyan/30 shadow-[0_0_48px_var(--accent-dim)]"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="shrink-0 border-b border-subtle px-5 py-4">
@@ -210,7 +205,7 @@ export function SquadProgress({
           </div>
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto px-5 py-2">
+        <div className="px-5 py-2">
           {boardQuery.isLoading ? (
             <p className="py-4 text-sm text-muted">Loading progress…</p>
           ) : boardQuery.error ? (
@@ -228,7 +223,7 @@ export function SquadProgress({
           )}
         </div>
       </div>
-    </div>
+    </ModalScrim>
   )
 }
 

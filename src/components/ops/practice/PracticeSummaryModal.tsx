@@ -1,4 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
+import { ModalScrim } from '../../shell/ModalScrim'
 import { Link } from 'react-router-dom'
 import { PracticeCommitFeedback } from '../PracticeCommitFeedback'
 import {
@@ -78,12 +79,7 @@ export function PracticeSummaryModal({ payload, onClose }: Props) {
     stats.pct != null ? `${stats.pct}%` : stats.total === 0 ? '—' : '0%'
 
   return (
-    <div
-      className="fixed inset-0 z-[80] flex items-stretch justify-center bg-[var(--overlay)] p-3 sm:p-5"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby={titleId}
-    >
+    <ModalScrim label="Session summary" align="stretch">
       <div className="flex h-full w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-subtle bg-[var(--void)] shadow-[0_24px_80px_rgba(0,0,0,0.55)]">
         <header className="flex shrink-0 items-start justify-between gap-3 border-b border-subtle px-4 py-3 sm:px-6 sm:py-4">
           <div className="min-w-0">
@@ -303,7 +299,7 @@ export function PracticeSummaryModal({ payload, onClose }: Props) {
           </section>
         </div>
       </div>
-    </div>
+    </ModalScrim>
   )
 }
 

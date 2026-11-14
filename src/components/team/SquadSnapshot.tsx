@@ -1,3 +1,4 @@
+import { ModalScrim } from '../shell/ModalScrim'
 import { useEffect, useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import {
@@ -55,15 +56,9 @@ export function SquadSnapshot({
   const codes = codesQuery.data
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-overlay p-4 backdrop-blur-[2px]"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Squad snapshot"
-      onClick={onClose}
-    >
+    <ModalScrim label="Squad snapshot" onClose={onClose}>
       <div
-        className="hud-panel flex max-h-[min(90dvh,820px)] w-full max-w-3xl flex-col overflow-hidden border-cyan/30 shadow-[0_0_48px_var(--accent-dim)]"
+        className="hud-panel w-full max-w-3xl border-cyan/30 shadow-[0_0_48px_var(--accent-dim)]"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex shrink-0 items-start justify-between gap-3 border-b border-subtle px-5 py-4">
@@ -97,7 +92,7 @@ export function SquadSnapshot({
             Close
           </button>
         </div>
-        <div className="min-h-0 flex-1 overflow-auto">
+        <div>
           <table className="w-full border-collapse text-left text-sm">
             <thead className="sticky top-0 bg-surface">
               <tr className="border-b border-subtle text-[10px] tracking-[0.14em] text-dim">
@@ -129,7 +124,7 @@ export function SquadSnapshot({
           </table>
         </div>
       </div>
-    </div>
+    </ModalScrim>
   )
 }
 

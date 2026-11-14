@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react'
+import { ModalScrim } from '../shell/ModalScrim'
 import { BADGE_CATALOG, BadgeMark } from '../../lib/badges'
 import {
   DEFAULT_AVATARS,
@@ -61,17 +62,10 @@ export function AvatarPickerModal({
   const earnedHidden = BADGE_CATALOG.filter((b) => b.hidden && earned.has(b.id))
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-overlay p-4 backdrop-blur-[2px]"
-      onClick={onClose}
-      role="presentation"
-    >
+    <ModalScrim label="Profile picture" onClose={onClose}>
       <div
-        className="flex max-h-[min(40rem,90vh)] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-subtle bg-surface-elevated shadow-2xl"
+        className="w-full max-w-lg rounded-2xl border border-subtle bg-surface-elevated shadow-2xl"
         onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="avatar-picker-title"
       >
         <div className="flex items-start justify-between gap-3 border-b border-subtle px-5 py-4">
           <div>
@@ -96,7 +90,7 @@ export function AvatarPickerModal({
           </button>
         </div>
 
-        <div className="min-h-0 flex-1 space-y-6 overflow-y-auto px-5 py-4">
+        <div className="space-y-6 px-5 py-4">
           <section>
             <p className="label-caps text-dim">Standard</p>
             <ul className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-6">
@@ -163,7 +157,7 @@ export function AvatarPickerModal({
           {error ? <p className="text-sm text-alert">{error}</p> : null}
         </div>
       </div>
-    </div>
+    </ModalScrim>
   )
 }
 

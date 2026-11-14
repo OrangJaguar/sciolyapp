@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
+import { AbandonAccountButton } from '../../components/auth/AbandonAccountButton'
 import { SiteFooter } from '../../components/shell/SiteFooter'
 import { TeamInviteCodes } from '../../components/team/TeamInviteCodes'
 import { useAuth } from '../../features/auth/AuthProvider'
@@ -431,6 +432,14 @@ export function SetupPage() {
             </div>
           </form>
         )}
+
+        <div className="mt-10 border-t border-[var(--ghost-border)] pt-6">
+          <AbandonAccountButton />
+          <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted">
+            This login still needs setup. Log out deletes the account so the same
+            email can start over.
+          </p>
+        </div>
       </div>
       <SiteFooter />
     </div>

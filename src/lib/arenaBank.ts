@@ -5,6 +5,31 @@ import type { HistoryTouch, ReinjectionRow, WeaknessRow } from './serving'
 
 const OPTION_KEYS = ['A', 'B', 'C', 'D'] as const
 
+export type ArenaBank = {
+  questions: Question[]
+  liveCount: number
+}
+
+async function fetchAnsweredIds(userId: string): Promise<Set<string>> {
+  if (!supabase) return new Set()
+  const ids = new Set<string>()
+  const pageSize = 1000
+  for (let from = 0; from < 50_000; from += pageSize) {
+    const { data, error } = await supabase
+      .from('user_history')
+      .select('question_id')
+      .eq('user_id', userId)
+      .order('answered_at', { ascending: true })
+      .order('question_id', { ascending: true })
+      .range(from, from + pageSize - 1)
+    if (error) throw error
+    const batch = (data ?? []) as Array<{ question_id: string }>
+    for (const row of batch) ids.add(row.question_id)
+    if (batch.length < pageSize) break
+  }
+  return ids
+}
+
 export const ARENA_SESSION_CAP = 10
 
 function normalizeOptions(raw: unknown): QuestionOptions | null {
@@ -50,7 +75,9 @@ export async function fetchArenaQuestionBank(input: {
   cap?: number
   /** Serve the full live bank. Casual keeps going until the player ends. */
   uncapped?: boolean
-}): Promise<Question[]> {
+  /** Drop questions this user has already answered. Casual uses this. */
+  excludeAnswered?: boolean
+}): Promise<ArenaBank> {
   if (!supabase) throw new Error('Supabase not configured')
 
   const questionRows: Array<Record<string, unknown>> = []
@@ -79,7 +106,7 @@ export async function fetchArenaQuestionBank(input: {
   }
 
   const bank = parseQuestions(questionRows)
-  if (bank.length === 0) return []
+  if (bank.length === 0) return { questions: [], liveCount: 0 }
 
   const {
     data: { user },
@@ -95,7 +122,8 @@ export async function fetchArenaQuestionBank(input: {
     ]
     const questionIds = bank.map((q) => q.id)
 
-    const [weakRes, reinjRes, histRes] = await Promise.all([
+    const bankIds = new Set(questionIds)
+    const [weakRes, reinjRes, answeredIds] = await Promise.all([
       conceptIds.length
         ? supabase
             .from('user_weakness_map')
@@ -103,55 +131,58 @@ export async function fetchArenaQuestionBank(input: {
             .eq('user_id', user.id)
             .in('concept_id', conceptIds)
         : Promise.resolve({ data: [], error: null }),
-      questionIds.length
-        ? supabase
-            .from('reinjection_queue')
-            .select('id, question_id, unlock_at, resolved')
-            .eq('user_id', user.id)
-            .eq('resolved', false)
-            .in('question_id', questionIds)
-        : Promise.resolve({ data: [], error: null }),
-      questionIds.length
-        ? supabase
-            .from('user_history')
-            .select('question_id')
-            .eq('user_id', user.id)
-            .in('question_id', questionIds)
-        : Promise.resolve({ data: [], error: null }),
+      supabase
+        .from('reinjection_queue')
+        .select('id, question_id, unlock_at, resolved')
+        .eq('user_id', user.id)
+        .eq('resolved', false)
+        .limit(1000),
+      fetchAnsweredIds(user.id),
     ])
 
     if (weakRes.error) throw weakRes.error
     if (reinjRes.error) throw reinjRes.error
-    if (histRes.error) throw histRes.error
 
     weakness = (weakRes.data ?? []) as WeaknessRow[]
-    reinjections = (reinjRes.data ?? []) as ReinjectionRow[]
+    reinjections = ((reinjRes.data ?? []) as ReinjectionRow[]).filter((row) =>
+      bankIds.has(row.question_id),
+    )
 
     const conceptByQuestion = new Map(
       bank.map((q) => [q.id, q.concept_id] as const),
     )
-    history = ((histRes.data ?? []) as Array<{ question_id: string }>).map(
-      (h) => ({
-        question_id: h.question_id,
-        concept_id: conceptByQuestion.get(h.question_id) ?? null,
-      }),
-    )
+    history = [...answeredIds]
+      .filter((id) => bankIds.has(id))
+      .map((id) => ({
+        question_id: id,
+        concept_id: conceptByQuestion.get(id) ?? null,
+      }))
   }
 
+  const answered = new Set(history.map((row) => row.question_id))
+  const servingBank = input.excludeAnswered
+    ? bank.filter((question) => !answered.has(question.id))
+    : bank
   const cap = input.uncapped
-    ? bank.length
-    : Math.max(1, input.cap ?? ARENA_SESSION_CAP)
-  return buildSessionQueue(
-    {
-      bank,
-      weakness,
-      reinjections,
-      history,
-      nowIso: new Date().toISOString(),
-      seed: Math.floor(Math.random() * 0x7fffffff),
-    },
-    cap,
-  )
+    ? servingBank.length
+    : Math.max(1, Math.min(input.cap ?? ARENA_SESSION_CAP, servingBank.length || 1))
+  return {
+    liveCount: bank.length,
+    questions:
+      servingBank.length === 0
+        ? []
+        : buildSessionQueue(
+            {
+              bank: servingBank,
+              weakness,
+              reinjections: input.excludeAnswered ? [] : reinjections,
+              history: input.excludeAnswered ? [] : history,
+              nowIso: new Date().toISOString(),
+              seed: Math.floor(Math.random() * 0x7fffffff),
+            },
+            cap,
+          ),
+  }
 }
 
 /** Load live questions by id, preserving `ids` order. */

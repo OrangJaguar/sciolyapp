@@ -66,17 +66,6 @@ function commitErrorText(err: unknown): string {
   return 'Failed to commit session'
 }
 
-function cycleBank(bank: Question[]): Question[] {
-  const copy = [...bank]
-  for (let i = copy.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1))
-    const swap = copy[i]!
-    copy[i] = copy[j]!
-    copy[j] = swap
-  }
-  return copy
-}
-
 function gradesToCommitList(
   grades: Record<number, GradedAnswer>,
 ): CommitAnswer[] {
@@ -103,19 +92,23 @@ export function CasualArenaPage() {
   const topicId = (params.get('topic') as string | null) ?? 'all'
 
   const bankQuery = useQuery({
-    queryKey: ['arena-bank', eventId, topicId],
+    queryKey: ['arena-bank', eventId, topicId, 'unseen'],
     enabled: isSupabaseConfigured && Boolean(eventId),
     queryFn: () =>
       fetchArenaQuestionBank({
         eventId: eventId!,
         topicId: topicId === 'all' ? 'all' : topicId,
         uncapped: true,
+        excludeAnswered: true,
       }),
-    staleTime: Infinity,
+    staleTime: 0,
+    gcTime: 0,
+    refetchOnMount: 'always',
     refetchOnWindowFocus: false,
   })
 
-  const sourceBank = bankQuery.data ?? []
+  const sourceBank = bankQuery.data?.questions ?? []
+  const liveCount = bankQuery.data?.liveCount ?? 0
   const [queue, setQueue] = useState<Question[] | null>(null)
   const questions = queue ?? []
   const [index, setIndex] = useState(0)
@@ -390,27 +383,25 @@ export function CasualArenaPage() {
       clinicResume.current = null
 
       if (resume === 'advance') {
-        setIndex((i) => {
-          if (i >= questions.length - 1 && sourceBank.length > 0) {
-            setQueue((q) => [...(q ?? questions), ...cycleBank(sourceBank)])
-          }
-          return i + 1
-        })
+        if (index >= questions.length - 1) {
+          endSession()
+        } else {
+          setIndex((i) => i + 1)
+        }
       }
     },
-    [clinic, refreshProfile, questions, sourceBank],
+    [clinic, refreshProfile, questions.length, index, endSession],
   )
 
   const goNext = useCallback(() => {
     if (!current || paused || clinic) return
     if (!revealed) return
-    setIndex((i) => {
-      if (i >= questions.length - 1 && sourceBank.length > 0) {
-        setQueue((q) => [...(q ?? questions), ...cycleBank(sourceBank)])
-      }
-      return i + 1
-    })
-  }, [current, paused, clinic, revealed, questions, sourceBank])
+    if (index >= questions.length - 1) {
+      endSession()
+      return
+    }
+    setIndex((i) => i + 1)
+  }, [current, paused, clinic, revealed, questions.length, index, endSession])
 
   const pick = useCallback(
     (key: Question['correct_key']) => {
@@ -456,9 +447,11 @@ export function CasualArenaPage() {
     setClinic(null)
     setConceptMisses({})
     setClinicCleared([])
-    setQueue(sourceBank.length ? [...sourceBank] : null)
-    void bankQuery.refetch()
-  }, [bankQuery, sourceBank])
+    void bankQuery.refetch().then((next) => {
+      const questions = next.data?.questions ?? []
+      setQueue(questions.length ? questions : [])
+    })
+  }, [bankQuery])
 
   const jumpTo = useCallback(
     (target: number) => {
@@ -582,10 +575,15 @@ export function CasualArenaPage() {
   }
 
   if (total === 0) {
+    const finished = liveCount > 0
     return (
       <ArenaMessage
-        title="Empty bank"
-        body="No live MCQs for this event/topic. Seed live questions in Supabase or pick another scope."
+        title={finished ? 'No new questions' : 'Empty bank'}
+        body={
+          finished
+            ? 'Every live question in this event is already answered. Pick another event, or a topic you have not finished.'
+            : 'No live MCQs for this event/topic. Seed live questions in Supabase or pick another scope.'
+        }
         actionTo="/ops/casual"
         actionLabel="Back to lobby"
       />

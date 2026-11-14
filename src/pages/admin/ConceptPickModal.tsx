@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { ModalScrim } from '../../components/shell/ModalScrim'
 import type {
   CatalogConcept,
   CatalogSnapshot,
@@ -92,17 +93,10 @@ export function ConceptPickModal({
   }
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-overlay p-4"
-      onClick={onClose}
-      role="presentation"
-    >
+    <ModalScrim label="Select concepts" onClose={onClose}>
       <div
-        className="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-subtle bg-surface-elevated shadow-2xl"
+        className="w-full max-w-2xl rounded-2xl border border-subtle bg-surface-elevated shadow-2xl"
         onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Select concepts"
       >
         <div className="flex items-start justify-between gap-3 border-b border-subtle px-4 py-3">
           <div>
@@ -148,7 +142,7 @@ export function ConceptPickModal({
           ) : null}
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto px-2 py-2">
+        <div className="px-2 py-2">
           {topics.map((topic) => {
             const concepts = conceptsByTopic.get(topic.id) ?? []
             if (concepts.length === 0) return null
@@ -220,6 +214,6 @@ export function ConceptPickModal({
           </button>
         </div>
       </div>
-    </div>
+    </ModalScrim>
   )
 }

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { ModalScrim } from '../shell/ModalScrim'
 import { useQuery } from '@tanstack/react-query'
 import { BadgeMark, badgeName, badgeXp } from '../../lib/badges'
 import { XP_AWARDS } from '../../lib/progression'
@@ -236,13 +237,11 @@ export function ClinicOverlay({
   }
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-overlay p-4 backdrop-blur-sm"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="clinic-title"
-    >
-      <div className="hud-panel relative flex max-h-[min(90dvh,720px)] w-full max-w-2xl flex-col overflow-hidden border-cyan/40 shadow-[0_0_48px_var(--accent-dim)]">
+    <ModalScrim label="Clinic interrupt">
+      <div
+        className="hud-panel relative w-full max-w-2xl border-cyan/40 shadow-[0_0_48px_var(--accent-dim)]"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex shrink-0 items-center justify-between border-b border-subtle px-5 py-3">
           <div>
             <p className="label-caps text-cyan">Clinic interrupt</p>
@@ -266,7 +265,7 @@ export function ClinicOverlay({
           </div>
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5">
+        <div className="px-5 py-5">
           {contentQuery.isLoading && (
             <p className="text-sm text-muted">Loading clinic materials…</p>
           )}
@@ -459,7 +458,7 @@ export function ClinicOverlay({
           </div>
         </div>
       </div>
-    </div>
+    </ModalScrim>
   )
 }
 

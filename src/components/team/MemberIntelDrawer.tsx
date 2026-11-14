@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
-import { MemberPrepModal } from './MemberPrepModal'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { ModalScrim } from '../shell/ModalScrim'
+import { MemberPrepModal } from './MemberPrepModal'
 import {
   assignableRoles,
   fetchActiveEvents,
@@ -112,15 +113,9 @@ export function MemberIntelDrawer({
   const progressPct = Math.round(xpProgress(xp) * 100)
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex justify-end bg-overlay backdrop-blur-[2px]"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Member intel"
-      onClick={onClose}
-    >
+    <ModalScrim label="Member intel" onClose={onClose} align="end">
       <div
-        className="hud-panel flex h-full w-full max-w-md flex-col overflow-hidden border-l border-cyan/30 shadow-[0_0_48px_var(--accent-dim)]"
+        className="hud-panel flex h-dvh w-full max-w-md flex-col overflow-hidden border-l border-cyan/30 shadow-[0_0_48px_var(--accent-dim)]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex shrink-0 items-start justify-between gap-3 border-b border-subtle px-5 py-4">
@@ -352,7 +347,7 @@ export function MemberIntelDrawer({
           onClose={() => setPrepOpen(false)}
         />
       ) : null}
-    </div>
+    </ModalScrim>
   )
 }
 
