@@ -5,6 +5,7 @@ import {
   TIMED_PRACTICE_SHORTCUTS,
   type PracticeNavigatorItem,
 } from '../../components/ops/practice/PracticeChrome'
+import { MathText } from '../../components/ops/MathText'
 import {
   fetchArenaQuestionBank,
   fetchQuestionsByIds,
@@ -675,8 +676,8 @@ export function TimedExamPage() {
           No mid-run feedback · crash-protected · {answeredCount}/{total}{' '}
           answered
         </p>
-        <p className="mt-4 text-xl leading-snug font-medium text-foreground md:text-2xl">
-          {current.stem}
+        <p className="mt-4 text-xl leading-relaxed font-medium text-foreground md:text-2xl">
+          <MathText text={current.stem} />
         </p>
         <div className="mt-8 flex flex-col gap-3">
           {OPTION_KEYS.map((key, i) => {
@@ -702,8 +703,8 @@ export function TimedExamPage() {
                 >
                   {i + 1}
                 </span>
-                <span className="pt-1 text-sm text-foreground md:text-base">
-                  {current.options[key]}
+                <span className="pt-1 text-sm leading-relaxed text-foreground md:text-base">
+                  <MathText text={current.options[key]} />
                 </span>
               </button>
             )

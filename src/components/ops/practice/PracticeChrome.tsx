@@ -156,7 +156,7 @@ export function PracticeChrome({
   return (
     <div className="relative flex h-full min-h-0 flex-col">
       {/* Top chrome */}
-      <div className="relative z-20 flex shrink-0 flex-wrap items-center gap-3 pb-3">
+      <div className="relative z-20 flex shrink-0 flex-wrap items-center gap-4 pb-4">
         <div className="relative min-w-0 flex-1" ref={navRef}>
           <div className="flex min-w-0 items-center gap-3">
             <button
@@ -173,7 +173,7 @@ export function PracticeChrome({
               {counterLabel ?? `Q ${current}/${total}`}
             </button>
             <div
-              className="relative h-1.5 min-w-[4rem] max-w-md flex-1 overflow-hidden rounded-pill bg-surface-high"
+              className="relative h-2 min-w-[6rem] flex-1 overflow-hidden rounded-pill bg-surface-high"
               role="progressbar"
               aria-valuenow={Math.round(ratio * 100)}
               aria-valuemin={0}
@@ -211,12 +211,12 @@ export function PracticeChrome({
           ) : null}
         </div>
 
-        <div className="flex shrink-0 items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2.5 pl-2">
           {showTimerControls ? (
             <>
               {!timerHidden && timerLabel != null ? (
                 <span
-                  className={`data-mono rounded-pill border border-subtle px-2.5 py-1 text-sm font-semibold tabular-nums ${
+                  className={`data-mono rounded-pill border border-subtle px-3 py-1.5 text-sm font-semibold tabular-nums ${
                     timerUrgent ? 'border-alert/40 text-alert' : 'text-cyan'
                   }`}
                 >
@@ -262,7 +262,7 @@ export function PracticeChrome({
           }`}
           aria-hidden={paused}
         >
-          <div className="min-h-0 flex-1 overflow-y-auto px-0.5 pb-2 md:px-1">
+          <div className="mx-auto w-full max-w-3xl min-h-0 flex-1 overflow-y-auto px-1 pt-8 pb-8 md:pt-12">
             {children}
           </div>
         </div>

@@ -4,12 +4,16 @@ import { AvatarMark } from '../../lib/avatars'
 import { profileToHud } from '../../lib/progression'
 import { AdminTabSlider } from './AdminTabSlider'
 import { CmdOpsToggle } from './CmdOpsToggle'
+import { useHeldXp } from './SessionArrival'
 import { XpBar } from './XpBar'
 
 export function TopBar() {
   const { profile } = useAuth()
+  const held = useHeldXp()
   const { pathname } = useLocation()
-  const hud = profileToHud(profile)
+  const hud = profileToHud(
+    profile ? { ...profile, xp: held?.xp ?? profile.xp } : null,
+  )
   const inAdmin = pathname.startsWith('/admin')
 
   return (
@@ -41,6 +45,7 @@ export function TopBar() {
             progress={hud.progress}
             xpLabel={hud.xpLabel}
             xpToNext={hud.xpToNext}
+            animate={held?.animate ?? false}
           />
 
           {hud.streak > 0 ? (

@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../../features/auth/AuthProvider'
 import { fetchQuestionsByIds } from '../../lib/arenaBank'
+import { provisionalCommit } from '../../lib/practiceCommit'
 import {
   itemFromQuestion,
-  savePracticeSummary,
+  publishPracticeSummary,
 } from '../../lib/practiceSummary'
 import { isSupabaseConfigured, supabase } from '../../lib/supabase'
 import { submitTimedSession } from '../../lib/timedCommit'
@@ -24,7 +25,7 @@ import type { Question } from '../../lib/types'
  */
 export function TimedAutopsyPage() {
   const navigate = useNavigate()
-  const { refreshProfile } = useAuth()
+  const { profile, refreshProfile } = useAuth()
   const [params] = useSearchParams()
   const session = params.get('session')
   const reason = params.get('reason') ?? 'manual'
@@ -38,7 +39,6 @@ export function TimedAutopsyPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [commitError, setCommitError] = useState<string | null>(null)
-  const [committing, setCommitting] = useState(false)
   const commitLock = useRef(false)
   const navigatedRef = useRef(false)
 
@@ -85,107 +85,123 @@ export function TimedAutopsyPage() {
     }
   }, [snapshot])
 
-  async function runCommit(snap: TimedExamPersisted, qs: Question[]) {
+  function runCommit(snap: TimedExamPersisted, qs: Question[]) {
     if (!isSupabaseConfigured) {
       setCommitError('Supabase not configured')
       return
     }
     if (commitLock.current || navigatedRef.current) return
     commitLock.current = true
-    setCommitting(true)
-    setCommitError(null)
-    try {
-      const byId = new Map(qs.map((q) => [q.id, q]))
-      const payload = snap.questionIds.map((id) => {
-        const q = byId.get(id)
-        const selected = snap.answers[id] ?? null
-        if (!q || selected == null) {
-          return {
-            question_id: id,
-            skipped: true,
-            is_correct: null,
-            response_ms: null,
-          }
-        }
+    navigatedRef.current = true
+
+    const byId = new Map(qs.map((q) => [q.id, q]))
+    const answers = snap.questionIds.map((id) => {
+      const q = byId.get(id)
+      const selected = snap.answers[id] ?? null
+      if (!q || selected == null) {
         return {
           question_id: id,
-          skipped: false,
-          is_correct: selected === q.correct_key,
-          response_ms: timedResponseMs(snap, id),
+          skipped: true,
+          is_correct: null as boolean | null,
+          response_ms: null as number | null,
         }
-      })
-
-      const timeLimitMs = Math.max(0, snap.seconds) * 1000
-      const result = await submitTimedSession({
-        sessionToken: snap.session,
-        eventId: snap.eventId,
-        topicId: snap.topicId === 'all' ? 'all' : snap.topicId,
-        answers: payload,
-        elapsedMs: timedElapsedMs(snap),
-        timeLimitMs,
-      })
-      await refreshProfile()
-
-      const items = snap.questionIds.map((id, index) => {
-        const q = byId.get(id)
-        if (!q) {
-          return itemFromQuestion(
-            {
-              id,
-              event_id: snap.eventId,
-              topic_id: null,
-              concept_id: null,
-              question_type: 'mcq',
-              status: 'live',
-              stem: 'Question unavailable',
-              options: { A: '', B: '', C: '', D: '' },
-              correct_key: 'A',
-              explanation: '',
-            },
-            snap.answers[id] ?? null,
-            index,
-          )
-        }
+      }
+      return {
+        question_id: id,
+        skipped: false,
+        is_correct: selected === q.correct_key,
+        response_ms: timedResponseMs(snap, id),
+      }
+    })
+    const items = snap.questionIds.map((id, index) => {
+      const q = byId.get(id)
+      if (!q) {
         return itemFromQuestion(
-          q,
+          {
+            id,
+            event_id: snap.eventId,
+            topic_id: null,
+            concept_id: null,
+            question_type: 'mcq',
+            status: 'live',
+            stem: 'Question unavailable',
+            options: { A: '', B: '', C: '', D: '' },
+            correct_key: 'A',
+            explanation: '',
+          },
           snap.answers[id] ?? null,
           index,
-          q.concept_id ? (conceptNames[q.concept_id] ?? null) : null,
         )
-      })
-
-      const durationSec = Math.max(
-        0,
-        Math.round(timedElapsedMs(snap) / 1000),
+      }
+      return itemFromQuestion(
+        q,
+        snap.answers[id] ?? null,
+        index,
+        q.concept_id ? (conceptNames[q.concept_id] ?? null) : null,
       )
-
-      savePracticeSummary({
-        v: 1,
+    })
+    const durationSec = Math.max(0, Math.round(timedElapsedMs(snap) / 1000))
+    const xpBefore = profile?.xp ?? 0
+    const correct = answers.filter((answer) => answer.is_correct === true).length
+    const incorrect = answers.filter((answer) => answer.is_correct === false).length
+    const createdAt = new Date().toISOString()
+    const base = {
+      v: 1 as const,
+      mode: 'timed' as const,
+      eventId: snap.eventId,
+      topicId: snap.topicId === 'all' ? 'all' : snap.topicId,
+      durationSec,
+      items,
+      createdAt,
+      xpBefore,
+      settled: false,
+      timedReason: reason,
+      commit: provisionalCommit({
+        xpBefore,
+        correct,
+        incorrect,
         mode: 'timed',
-        eventId: snap.eventId,
-        topicId: snap.topicId === 'all' ? 'all' : snap.topicId,
-        durationSec,
-        items,
-        commit: result,
-        createdAt: new Date().toISOString(),
-        timedReason: reason,
-      })
-      clearTimedExam(snap.session)
-      navigatedRef.current = true
-      navigate('/cmd/missions', { replace: true })
-    } catch (err) {
-      commitLock.current = false
-      setCommitError(
-        err instanceof Error ? err.message : 'Failed to commit timed session',
-      )
-    } finally {
-      setCommitting(false)
+      }),
     }
+    publishPracticeSummary(base)
+    clearTimedExam(snap.session)
+    navigate('/cmd/missions', { replace: true })
+
+    const timeLimitMs = Math.max(0, snap.seconds) * 1000
+    void submitTimedSession({
+      sessionToken: snap.session,
+      eventId: snap.eventId,
+      topicId: snap.topicId === 'all' ? 'all' : snap.topicId,
+      answers,
+      elapsedMs: timedElapsedMs(snap),
+      timeLimitMs,
+    })
+      .then(async (result) => {
+        publishPracticeSummary({
+          ...base,
+          commit: result,
+          settled: true,
+          saveError: null,
+        })
+        await refreshProfile()
+      })
+      .catch((err) => {
+        publishPracticeSummary({
+          ...base,
+          settled: true,
+          saveError: err instanceof Error ? err.message : 'Failed to commit timed session',
+          commit: {
+            ...base.commit,
+            xp_awarded: 0,
+            xp_total: xpBefore,
+          },
+        })
+      })
   }
 
   useEffect(() => {
     if (!snapshot || questions.length === 0) return
-    if (commitError || committing || navigatedRef.current) return
+    if (commitError || navigatedRef.current) return
     void runCommit(snapshot, questions)
     // one-shot on graded load
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -209,16 +225,9 @@ export function TimedAutopsyPage() {
     )
   }
 
-  if (loading || (committing && !commitError)) {
+  if (loading) {
     return (
-      <Shell
-        title={loading ? 'Running autopsy…' : 'Saving session…'}
-        body={
-          loading
-            ? 'Grading sealed answers.'
-            : 'Writing XP, then opening your summary on CMD.'
-        }
-      />
+      <Shell title="Running autopsy…" body="Grading sealed answers." />
     )
   }
 

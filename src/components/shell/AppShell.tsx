@@ -1,12 +1,14 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { PracticeSummaryModal } from '../ops/practice/PracticeSummaryModal'
 import {
   clearPracticeSummary,
   loadPracticeSummary,
+  PRACTICE_SUMMARY_EVENT,
   type PracticeSummaryPayload,
 } from '../../lib/practiceSummary'
 import { BottomNav } from './BottomNav'
+import { SessionArrival } from './SessionArrival'
 import { SiteFooter } from './SiteFooter'
 import { TopBar } from './TopBar'
 
@@ -16,11 +18,19 @@ export function AppShell() {
   const immersivePractice =
     pathname.startsWith('/ops/casual/arena') ||
     pathname.startsWith('/ops/timed/exam')
-  const [summary, setSummary] = useState<PracticeSummaryPayload | null>(null)
+  const [summary, setSummary] = useState<PracticeSummaryPayload | null>(() =>
+    loadPracticeSummary(),
+  )
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setSummary(loadPracticeSummary())
   }, [pathname])
+
+  useEffect(() => {
+    const onSummary = () => setSummary(loadPracticeSummary())
+    window.addEventListener(PRACTICE_SUMMARY_EVENT, onSummary)
+    return () => window.removeEventListener(PRACTICE_SUMMARY_EVENT, onSummary)
+  }, [])
 
   const closeSummary = useCallback(() => {
     clearPracticeSummary()
@@ -28,28 +38,29 @@ export function AppShell() {
   }, [])
 
   return (
-    <div className="flex h-dvh flex-col overflow-hidden bg-void">
-      {/* Full-bleed HUD — no max-width island / side gutters */}
-      <div className="mx-auto flex h-full w-full min-h-0 flex-1 flex-col px-5 sm:px-6 lg:px-8 xl:px-10">
-        {immersivePractice ? null : <TopBar />}
-        <main className="flex min-h-0 flex-1 flex-col pt-2 pb-2">
-          <div
-            key={immersivePractice ? 'practice' : pathname}
-            className={`min-h-0 flex-1 overflow-hidden ${immersivePractice ? '' : 'rise-in'}`}
-          >
-            <Outlet />
-          </div>
-        </main>
-        {immersivePractice ? null : (
-          <div className="shrink-0 pt-1">
-            {showCmdNav && <BottomNav />}
-            <SiteFooter />
-          </div>
-        )}
+    <SessionArrival summary={summary}>
+      <div className="flex h-dvh flex-col overflow-hidden bg-void">
+        <div className="mx-auto flex h-full w-full min-h-0 flex-1 flex-col px-5 sm:px-6 lg:px-8 xl:px-10">
+          {immersivePractice ? null : <TopBar />}
+          <main className="flex min-h-0 flex-1 flex-col pt-2 pb-2">
+            <div
+              key={immersivePractice ? 'practice' : pathname}
+              className={`min-h-0 flex-1 overflow-hidden ${immersivePractice ? '' : 'rise-in'}`}
+            >
+              <Outlet />
+            </div>
+          </main>
+          {immersivePractice ? null : (
+            <div className="shrink-0 pt-1">
+              {showCmdNav && <BottomNav />}
+              <SiteFooter />
+            </div>
+          )}
+        </div>
+        {summary ? (
+          <PracticeSummaryModal payload={summary} onClose={closeSummary} />
+        ) : null}
       </div>
-      {summary ? (
-        <PracticeSummaryModal payload={summary} onClose={closeSummary} />
-      ) : null}
-    </div>
+    </SessionArrival>
   )
 }

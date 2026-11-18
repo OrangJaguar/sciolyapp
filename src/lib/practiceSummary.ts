@@ -25,12 +25,18 @@ export type PracticeSummaryPayload = {
   items: PracticeSummaryItem[]
   commit: PracticeSessionCommitResult
   createdAt: string
+  /** Profile XP before this session was saved. */
+  xpBefore: number
+  /** False while the save is still running in the background. */
+  settled: boolean
+  saveError?: string | null
   timedReason?: string
 }
 
 export type PracticeSummaryFilter = 'all' | 'wrong' | 'correct' | 'blank'
 
 const STORAGE_KEY = 'scioly.practiceSummary.v1'
+export const PRACTICE_SUMMARY_EVENT = 'scioly-summary'
 
 export function savePracticeSummary(payload: PracticeSummaryPayload): void {
   try {
@@ -38,6 +44,11 @@ export function savePracticeSummary(payload: PracticeSummaryPayload): void {
   } catch {
     // quota / private mode — modal simply won't open
   }
+}
+
+export function publishPracticeSummary(payload: PracticeSummaryPayload): void {
+  savePracticeSummary(payload)
+  window.dispatchEvent(new CustomEvent(PRACTICE_SUMMARY_EVENT))
 }
 
 export function loadPracticeSummary(): PracticeSummaryPayload | null {
@@ -49,7 +60,16 @@ export function loadPracticeSummary(): PracticeSummaryPayload | null {
     if (!parsed.commit || (parsed.mode !== 'casual' && parsed.mode !== 'timed')) {
       return null
     }
-    return parsed
+    const xpAwarded = Number(parsed.commit.xp_awarded ?? 0)
+    const xpTotal = Number(parsed.commit.xp_total ?? 0)
+    return {
+      ...parsed,
+      xpBefore:
+        typeof parsed.xpBefore === 'number'
+          ? parsed.xpBefore
+          : Math.max(0, xpTotal - xpAwarded),
+      settled: parsed.settled !== false,
+    }
   } catch {
     return null
   }

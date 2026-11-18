@@ -25,7 +25,7 @@ export function PracticeCommitFeedback({
 
   return (
     <div className={`space-y-2 ${compact ? '' : 'mt-4'} text-left`}>
-      <p className="data-mono text-sm text-cyan">
+      <p data-xp-source className="data-mono text-sm text-cyan">
         +{result.xp_awarded} XP · total {formatXp(result.xp_total)} ·{' '}
         {formatRankHud(result.xp_total)}
       </p>

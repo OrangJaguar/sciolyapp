@@ -1,5 +1,6 @@
 import { isStudyableEvent } from './eventKinds'
 import { supabase } from './supabase'
+import { clientTimezone } from './timezone'
 import type { TeamRole } from './types'
 
 export type MissionGoalType = 'answered' | 'correct'
@@ -19,6 +20,20 @@ export type TeamMission = {
   kind?: MissionKind | null
   timed_seconds?: number | null
   deadline_policy?: DeadlinePolicy | null
+  opens_at?: string | null
+  recurrence_id?: string | null
+}
+
+export type MissionRecurrence = {
+  id: string
+  team_id: string
+  event_id: string
+  goal_type: MissionGoalType
+  target_value: number
+  due_isodow: number
+  due_minute: number
+  timezone: string
+  active: boolean
 }
 
 export type TeamSchedule = {
@@ -373,6 +388,67 @@ export async function createEventMissions(input: {
   return created
 }
 
+const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const
+
+export function formatWeeklyDue(isodow: number, minute: number): string {
+  const day = WEEKDAYS[isodow - 1] ?? 'Sun'
+  const hours = Math.floor(minute / 60)
+  const mins = minute % 60
+  const suffix = hours >= 12 ? 'PM' : 'AM'
+  const hour12 = hours % 12 || 12
+  return `${day} ${hour12}:${String(mins).padStart(2, '0')} ${suffix}`
+}
+
+export async function fetchMissionRecurrences(
+  teamId: string,
+): Promise<MissionRecurrence[]> {
+  if (!supabase) throw new Error('Supabase not configured')
+  const { data, error } = await supabase
+    .from('mission_recurrences')
+    .select(
+      'id, team_id, event_id, goal_type, target_value, due_isodow, due_minute, timezone, active',
+    )
+    .eq('team_id', teamId)
+    .eq('active', true)
+    .order('event_id')
+  if (error) {
+    if (/mission_recurrences|schema cache|does not exist|PGRST205/i.test(error.message)) {
+      return []
+    }
+    throw error
+  }
+  return (data ?? []) as MissionRecurrence[]
+}
+
+export async function createRecurringMissions(input: {
+  goalType: MissionGoalType
+  targetValue: number
+  dueIsodow: number
+  dueMinute: number
+  eventIds: string[]
+}) {
+  if (!supabase) throw new Error('Supabase not configured')
+  if (input.eventIds.length === 0) throw new Error('Pick at least one event')
+  const { data, error } = await supabase.rpc('create_recurring_missions', {
+    p_goal_type: input.goalType,
+    p_target_value: input.targetValue,
+    p_due_isodow: input.dueIsodow,
+    p_due_minute: input.dueMinute,
+    p_timezone: clientTimezone(),
+    p_event_ids: input.eventIds,
+  })
+  if (error) throw error
+  return (data ?? []) as MissionRecurrence[]
+}
+
+export async function stopRecurringMission(recurrenceId: string) {
+  if (!supabase) throw new Error('Supabase not configured')
+  const { error } = await supabase.rpc('stop_recurring_mission', {
+    p_id: recurrenceId,
+  })
+  if (error) throw error
+}
+
 export async function deleteTeamMissions(ids: string[]) {
   if (!supabase) throw new Error('Supabase not configured')
   if (ids.length === 0) return
@@ -669,12 +745,12 @@ export async function fetchStudyableEvents(): Promise<
   if (!supabase) throw new Error('Supabase not configured')
   const { data, error } = await supabase
     .from('taxonomy_events')
-    .select('id, name')
+    .select('id, name, studyable')
     .eq('studyable', true)
     .eq('active', true)
     .order('name')
   if (error) throw error
-  return ((data ?? []) as Array<{ id: string; name: string }>).filter((event) =>
-    isStudyableEvent(event),
+  return ((data ?? []) as Array<{ id: string; name: string; studyable?: boolean }>).filter(
+    (event) => isStudyableEvent(event),
   )
 }

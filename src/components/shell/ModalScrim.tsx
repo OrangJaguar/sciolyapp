@@ -13,11 +13,14 @@ export function ModalScrim({
   label,
   onClose,
   align = 'center',
+  cover = 'screen',
 }: {
   children: ReactNode
   label: string
   onClose?: () => void
   align?: 'center' | 'end' | 'stretch'
+  /** below-bar leaves the rank bar visible above the dialog. */
+  cover?: 'screen' | 'below-bar'
 }) {
   useEffect(() => {
     if (!onClose) return
@@ -30,7 +33,11 @@ export function ModalScrim({
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[80] overflow-y-auto overscroll-contain bg-overlay backdrop-blur-[2px]"
+      className={
+        cover === 'below-bar'
+          ? 'fixed inset-x-0 bottom-0 top-[5.5rem] z-[80] overflow-y-auto overscroll-contain bg-overlay backdrop-blur-[2px]'
+          : 'fixed inset-0 z-[80] overflow-y-auto overscroll-contain bg-overlay backdrop-blur-[2px]'
+      }
       role="dialog"
       aria-modal="true"
       aria-label={label}
@@ -41,7 +48,7 @@ export function ModalScrim({
           align === 'end'
             ? 'flex min-h-full justify-end'
             : align === 'stretch'
-              ? 'flex h-dvh items-stretch justify-center p-3 sm:p-5'
+              ? 'flex h-full min-h-full items-stretch justify-center p-3 sm:p-5'
               : 'flex min-h-full items-[safe_center] justify-center p-4 py-6'
         }
       >

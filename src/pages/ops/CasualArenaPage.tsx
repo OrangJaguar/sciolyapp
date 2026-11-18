@@ -13,7 +13,9 @@ import {
   PracticeChrome,
   type PracticeNavigatorItem,
 } from '../../components/ops/practice/PracticeChrome'
+import { MathText } from '../../components/ops/MathText'
 import { useAuth } from '../../features/auth/AuthProvider'
+import { provisionalCommit } from '../../lib/practiceCommit'
 import {
   fetchArenaQuestionBank,
   optionIndexFromKey,
@@ -26,7 +28,7 @@ import {
 import { playPracticeSfx } from '../../lib/practiceSfx'
 import {
   itemFromQuestion,
-  savePracticeSummary,
+  publishPracticeSummary,
 } from '../../lib/practiceSummary'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import { formatExamClock } from '../../lib/timedExamStorage'
@@ -86,7 +88,7 @@ function gradesToCommitList(
 
 export function CasualArenaPage() {
   const navigate = useNavigate()
-  const { refreshProfile } = useAuth()
+  const { profile, refreshProfile } = useAuth()
   const [params] = useSearchParams()
   const eventId = params.get('event')
   const topicId = (params.get('topic') as string | null) ?? 'all'
@@ -122,7 +124,7 @@ export function CasualArenaPage() {
   const [commitResult, setCommitResult] =
     useState<SubmitCasualSessionResult | null>(null)
   const [commitError, setCommitError] = useState<string | null>(null)
-  const [committing, setCommitting] = useState(false)
+  const [committing] = useState(false)
   const commitLock = useRef(false)
   const [clinic, setClinic] = useState<ClinicPayload | null>(null)
   const [conceptMisses, setConceptMisses] = useState<Record<string, number>>(
@@ -231,60 +233,80 @@ export function CasualArenaPage() {
   }, [paused])
 
   const finalizeSession = useCallback(
-    async (finalGrades: Record<number, GradedAnswer>) => {
+    (finalGrades: Record<number, GradedAnswer>) => {
       if (!eventId || commitLock.current) return
       commitLock.current = true
-      setCommitting(true)
-      setCommitError(null)
       const list = gradesToCommitList(finalGrades)
-      try {
-        const result = await submitCasualSession({
-          sessionToken,
-          eventId,
-          topicId: topicId === 'all' ? 'all' : topicId,
-          answers: list.map((a) => ({
-            question_id: a.questionId,
-            skipped: a.skipped,
-            is_correct: a.correct,
-            response_ms: a.responseMs,
-          })),
+      const items = Object.keys(finalGrades)
+        .map(Number)
+        .sort((a, b) => a - b)
+        .flatMap((i) => {
+          const q = questions[i]
+          const g = finalGrades[i]
+          if (!q || !g) return []
+          return [itemFromQuestion(q, g.selected, i)]
         })
-        setCommitResult(result)
-        await refreshProfile()
-
-        const items = Object.keys(finalGrades)
-          .map(Number)
-          .sort((a, b) => a - b)
-          .flatMap((i) => {
-            const q = questions[i]
-            const g = finalGrades[i]
-            if (!q || !g) return []
-            return [itemFromQuestion(q, g.selected, i)]
-          })
-
-        savePracticeSummary({
-          v: 1,
+      const xpBefore = profile?.xp ?? 0
+      const correct = list.filter((answer) => answer.correct).length
+      const incorrect = list.filter((answer) => !answer.correct).length
+      const createdAt = new Date().toISOString()
+      const base = {
+        v: 1 as const,
+        mode: 'casual' as const,
+        eventId,
+        topicId: topicId === 'all' ? 'all' : topicId,
+        durationSec: sessionDurationSec(),
+        items,
+        createdAt,
+        xpBefore,
+        settled: false,
+        commit: provisionalCommit({
+          xpBefore,
+          correct,
+          incorrect,
           mode: 'casual',
-          eventId,
-          topicId: topicId === 'all' ? 'all' : topicId,
-          durationSec: sessionDurationSec(),
-          items,
-          commit: result,
-          createdAt: new Date().toISOString(),
-        })
-        navigate('/cmd/missions', { replace: true })
-      } catch (err) {
-        commitLock.current = false
-        setCommitError(commitErrorText(err))
-        console.error('submit_casual_session', err)
-      } finally {
-        setCommitting(false)
+        }),
       }
+      publishPracticeSummary(base)
+      navigate('/cmd/missions', { replace: true })
+      void submitCasualSession({
+        sessionToken,
+        eventId,
+        topicId: topicId === 'all' ? 'all' : topicId,
+        answers: list.map((a) => ({
+          question_id: a.questionId,
+          skipped: a.skipped,
+          is_correct: a.correct,
+          response_ms: a.responseMs,
+        })),
+      })
+        .then(async (result) => {
+          publishPracticeSummary({
+            ...base,
+            commit: result,
+            settled: true,
+            saveError: null,
+          })
+          await refreshProfile()
+        })
+        .catch((err) => {
+          publishPracticeSummary({
+            ...base,
+            settled: true,
+            saveError: commitErrorText(err),
+            commit: {
+              ...base.commit,
+              xp_awarded: 0,
+              xp_total: xpBefore,
+            },
+          })
+        })
     },
     [
       eventId,
       topicId,
       sessionToken,
+      profile?.xp,
       refreshProfile,
       questions,
       sessionDurationSec,
@@ -295,8 +317,7 @@ export function CasualArenaPage() {
   const endSession = useCallback(
     (finalGrades: Record<number, GradedAnswer> = grades) => {
       gradesSnapshot.current = finalGrades
-      setDone(true)
-      void finalizeSession(finalGrades)
+      finalizeSession(finalGrades)
     },
     [grades, finalizeSession],
   )
@@ -595,7 +616,7 @@ export function CasualArenaPage() {
       <div className="flex h-full min-h-0 items-center justify-center p-4">
         <div className="hud-panel w-full max-w-lg p-8 text-center">
           <p className="label-caps">
-            {commitError ? 'Could not save' : 'Saving session…'}
+            {commitError ? 'Could not save' : 'Opening summary…'}
           </p>
           <p className="mt-4 text-3xl font-medium text-foreground">
             {summary.correct}
@@ -687,8 +708,8 @@ export function CasualArenaPage() {
         onPrimary={goNext}
         shortcuts={CASUAL_PRACTICE_SHORTCUTS}
       >
-        <p className="text-xl leading-snug font-medium text-foreground md:text-2xl md:leading-snug">
-          {current.stem}
+        <p className="text-xl leading-relaxed font-medium text-foreground md:text-2xl">
+          <MathText text={current.stem} />
         </p>
 
         <div className="mt-8 flex flex-col gap-3">
@@ -744,8 +765,8 @@ export function CasualArenaPage() {
                 >
                   {i + 1}
                 </span>
-                <span className="min-w-0 flex-1 pt-0.5 text-sm text-foreground md:text-base">
-                  {label}
+                <span className="min-w-0 flex-1 pt-0.5 text-sm leading-relaxed text-foreground md:text-base">
+                  <MathText text={label} />
                 </span>
                 {isSelected && !revealed && !paused ? (
                   <button
@@ -773,7 +794,9 @@ export function CasualArenaPage() {
                 : ''}
             </p>
             {current.explanation ? (
-              <p className="mt-2 text-sm text-muted">{current.explanation}</p>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                <MathText text={current.explanation} />
+              </p>
             ) : (
               <p className="mt-2 text-sm text-dim">
                 No explanation for this item yet.

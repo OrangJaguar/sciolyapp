@@ -15,7 +15,7 @@ export type LeaderboardRow = {
   handle: string
   avatar_id: string
   score: number
-  place: number
+  place: number | null
 }
 
 export async function fetchTeamLeaderboard(input: {
@@ -41,7 +41,7 @@ export async function fetchTeamLeaderboard(input: {
     handle: r.handle,
     avatar_id: r.avatar_id,
     score: Number(r.score),
-    place: Number(r.place),
+    place: r.place == null || Number(r.score) <= 0 ? null : Number(r.place),
   }))
 }
 
@@ -79,7 +79,7 @@ export function windowLabel(w: LeaderboardWindow): string {
   }
 }
 
-export function placeTone(place: number): 'gold' | 'silver' | 'bronze' | 'dim' {
+export function placeTone(place: number | null): 'gold' | 'silver' | 'bronze' | 'dim' {
   if (place === 1) return 'gold'
   if (place === 2) return 'silver'
   if (place === 3) return 'bronze'

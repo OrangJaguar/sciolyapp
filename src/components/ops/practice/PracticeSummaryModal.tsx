@@ -2,6 +2,7 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { ModalScrim } from '../../shell/ModalScrim'
 import { Link } from 'react-router-dom'
 import { PracticeCommitFeedback } from '../PracticeCommitFeedback'
+import { MathText } from '../MathText'
 import {
   filterSummaryItems,
   formatSummaryDuration,
@@ -79,7 +80,7 @@ export function PracticeSummaryModal({ payload, onClose }: Props) {
     stats.pct != null ? `${stats.pct}%` : stats.total === 0 ? '—' : '0%'
 
   return (
-    <ModalScrim label="Session summary" align="stretch">
+    <ModalScrim label="Session summary" align="stretch" cover="below-bar">
       <div className="flex h-full w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-subtle bg-[var(--void)] shadow-[0_24px_80px_rgba(0,0,0,0.55)]">
         <header className="flex shrink-0 items-start justify-between gap-3 border-b border-subtle px-4 py-3 sm:px-6 sm:py-4">
           <div className="min-w-0">
@@ -190,8 +191,8 @@ export function PracticeSummaryModal({ payload, onClose }: Props) {
                       </p>
                       <StatusPill status={current.status} />
                     </div>
-                    <p className="mt-3 text-base leading-snug text-foreground sm:text-lg">
-                      {current.stem}
+                    <p className="mt-3 text-base leading-relaxed text-foreground sm:text-lg">
+                      <MathText text={current.stem} />
                     </p>
                     {current.conceptName ? (
                       <p className="mt-2 text-xs text-cyan">
@@ -200,24 +201,31 @@ export function PracticeSummaryModal({ payload, onClose }: Props) {
                     ) : null}
                     <p className="mt-3 text-sm text-muted">
                       Your answer:{' '}
-                      {current.selected
-                        ? `${current.selected}. ${current.options[current.selected]}`
-                        : '— blank —'}
+                      {current.selected ? (
+                        <>
+                          {current.selected}.{' '}
+                          <MathText text={current.options[current.selected]} />
+                        </>
+                      ) : (
+                        '— blank —'
+                      )}
                     </p>
                     {current.status !== 'correct' ? (
                       <p className="mt-1 text-sm text-success">
                         Correct: {current.correctKey}.{' '}
-                        {current.options[current.correctKey]}
+                        <MathText text={current.options[current.correctKey]} />
                       </p>
                     ) : null}
                     <div className="mt-3 border-t border-subtle/70 pt-3">
                       <p className="label-caps text-[9px] text-dim">
                         Explanation
                       </p>
-                      <p className="mt-1.5 text-sm text-muted">
-                        {current.explanation?.trim()
-                          ? current.explanation
-                          : 'No explanation for this item yet.'}
+                      <p className="mt-1.5 text-sm leading-relaxed text-muted">
+                        {current.explanation?.trim() ? (
+                          <MathText text={current.explanation} />
+                        ) : (
+                          'No explanation for this item yet.'
+                        )}
                       </p>
                     </div>
                     <div className="mt-4 flex items-center justify-between gap-2">
@@ -278,6 +286,9 @@ export function PracticeSummaryModal({ payload, onClose }: Props) {
             <div>
               <p className="label-caps text-[9px] text-dim">Progress</p>
               <PracticeCommitFeedback result={payload.commit} compact />
+              {payload.saveError ? (
+                <p className="mt-2 text-xs text-alert">{payload.saveError}</p>
+              ) : null}
             </div>
 
             <div className="flex flex-wrap gap-2 pt-1">

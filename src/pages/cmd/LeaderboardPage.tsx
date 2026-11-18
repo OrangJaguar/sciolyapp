@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '../../features/auth/AuthProvider'
 import { AvatarMark } from '../../lib/avatars'
@@ -81,7 +81,6 @@ export function LeaderboardPage() {
     eventId == null
       ? 'All'
       : (eventsQuery.data?.find((e) => e.id === eventId)?.name ?? eventId)
-  const xpNote = metric === 'xp' && (eventId != null || window !== 'all')
 
   return (
     <div className="hud-panel flex h-full min-h-0 w-full flex-col overflow-hidden p-4 lg:p-5">
@@ -119,9 +118,11 @@ export function LeaderboardPage() {
           value={eventName}
           open={openFilter === 'event'}
           onToggle={() => setOpenFilter((v) => (v === 'event' ? null : 'event'))}
+          menuClassName="grid w-[min(36rem,calc(100vw-3rem))] grid-cols-2"
         >
           <FilterOption
             active={eventId == null}
+            className="col-span-2"
             onClick={() => {
               setEventId(null)
               setOpenFilter(null)
@@ -164,12 +165,6 @@ export function LeaderboardPage() {
         </FilterButton>
       </div>
 
-      {xpNote && (
-        <p className="mb-3 shrink-0 data-mono text-xs text-dim">
-          XP is all-time — event/time filters apply to Correct / Answered.
-        </p>
-      )}
-
       {boardQuery.isLoading && (
         <p className="text-sm text-muted">Loading ranks…</p>
       )}
@@ -181,6 +176,7 @@ export function LeaderboardPage() {
 
       <ul className="min-h-0 space-y-2 overflow-y-auto pr-1">
         {rows.map((row) => {
+          const ranked = row.place != null && row.score > 0
           const tone = placeTone(row.place)
           const isMe = row.user_id === userId
           return (
@@ -190,12 +186,12 @@ export function LeaderboardPage() {
                 isMe
                   ? 'border-cyan/60 bg-cyan/10 shadow-[0_0_18px_var(--accent-dim)]'
                   : 'border-[var(--ghost-border)] bg-surface-elevated'
-              } ${tone === 'dim' && !isMe ? 'opacity-45' : ''}`}
+              } ${!ranked && !isMe ? 'opacity-45' : ''}`}
             >
               <span
                 className={`data-mono flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${badge[tone]}`}
               >
-                {row.place}
+                {ranked ? row.place : '—'}
               </span>
               <span
                 className={`data-mono flex-1 text-sm tracking-wider ${
@@ -206,7 +202,7 @@ export function LeaderboardPage() {
                 {isMe ? ' · YOU' : ''}
               </span>
               <span className="data-mono shrink-0 text-sm text-cyan">
-                {row.score.toLocaleString()}
+                {row.score > 0 ? row.score.toLocaleString() : '—'}
               </span>
               <span className="flex h-7 w-7 shrink-0 items-center justify-center text-cyan">
                 <AvatarMark avatarId={row.avatar_id} className="h-6 w-6" />
@@ -227,16 +223,36 @@ function FilterButton({
   value,
   open,
   onToggle,
+  menuClassName,
   children,
 }: {
   label: string
   value: string
   open: boolean
   onToggle: () => void
+  menuClassName?: string
   children: ReactNode
 }) {
+  const rootRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!open) return
+    function onPointer(event: MouseEvent) {
+      if (!rootRef.current?.contains(event.target as Node)) onToggle()
+    }
+    function onKey(event: KeyboardEvent) {
+      if (event.key === 'Escape') onToggle()
+    }
+    document.addEventListener('mousedown', onPointer)
+    window.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', onPointer)
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [open, onToggle])
+
   return (
-    <div className="relative">
+    <div className="relative" ref={rootRef}>
       <button
         type="button"
         onClick={onToggle}
@@ -250,7 +266,9 @@ function FilterButton({
         </span>
       </button>
       {open && (
-        <div className="absolute top-full left-0 z-20 mt-1 min-w-[10rem] rounded-md border border-cyan/30 bg-surface-elevated p-1 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+        <div
+          className={`absolute top-full left-0 z-30 mt-1 max-h-[min(24rem,55vh)] min-w-[10rem] overflow-y-auto overscroll-contain rounded-md border border-cyan/30 bg-surface-elevated p-1 shadow-[0_8px_32px_rgba(0,0,0,0.5)] ${menuClassName ?? ''}`}
+        >
           {children}
         </div>
       )}
@@ -261,10 +279,12 @@ function FilterButton({
 function FilterOption({
   active,
   onClick,
+  className,
   children,
 }: {
   active: boolean
   onClick: () => void
+  className?: string
   children: ReactNode
 }) {
   return (
@@ -273,7 +293,7 @@ function FilterOption({
       onClick={onClick}
       className={`block w-full rounded px-3 py-2 text-left text-sm ${
         active ? 'bg-cyan/15 text-cyan' : 'text-muted hover:bg-surface-high hover:text-[var(--text)]'
-      }`}
+      } ${className ?? ''}`}
     >
       {children}
     </button>

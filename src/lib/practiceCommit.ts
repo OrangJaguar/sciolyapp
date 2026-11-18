@@ -1,5 +1,7 @@
 /** Shared practice session commit result (casual + timed RPCs). */
 
+import { XP_AWARDS } from './progression'
+
 export type NewlyUnlockedBadge = {
   id: string
   xp: number
@@ -46,5 +48,31 @@ export function parsePracticeCommitResult(data: unknown): PracticeSessionCommitR
     flawless: Boolean(row.flawless),
     cap_hit: Boolean(row.cap_hit),
     newly_unlocked,
+  }
+}
+
+export function provisionalCommit(input: {
+  xpBefore: number
+  correct: number
+  incorrect: number
+  mode: 'casual' | 'timed'
+}): PracticeSessionCommitResult {
+  const correctXp =
+    input.mode === 'timed' ? XP_AWARDS.timedCorrect : XP_AWARDS.casualCorrect
+  const incorrectXp =
+    input.mode === 'timed' ? XP_AWARDS.timedIncorrect : XP_AWARDS.casualIncorrect
+  const xp = input.correct * correctXp + input.incorrect * incorrectXp
+  return {
+    already_committed: false,
+    xp_awarded: xp,
+    xp_total: input.xpBefore + xp,
+    streak: 0,
+    answered: input.correct + input.incorrect,
+    correct: input.correct,
+    skipped: 0,
+    invalidated: 0,
+    flawless: false,
+    cap_hit: false,
+    newly_unlocked: [],
   }
 }

@@ -11,16 +11,20 @@ import {
   rosterNameClass,
   type RosterMember,
 } from '../../lib/comms'
+import { isStudyableEvent } from '../../lib/eventKinds'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import {
   createEventMissions,
+  createRecurringMissions,
   deleteTeamMissions,
+  fetchMissionRecurrences,
   fetchMyMissions,
   fetchStudyableEvents,
   fetchTargetedPractice,
   fetchTeamContext,
   fetchTeamSchedule,
   formatDeadline,
+  formatWeeklyDue,
   isOfficerPlus,
   missionIsOverdue,
   missionKind,
@@ -28,15 +32,17 @@ import {
   missionStartPath,
   overdueLabel,
   saveTeamSchedule,
+  stopRecurringMission,
   syncMyMissionProgress,
   tMinus,
   type DeadlinePolicy,
   type MissionGoalType,
+  type MissionRecurrence,
   type MissionRow,
   type TeamSchedule,
 } from '../../lib/missions'
 
-type AssignTab = 'casual' | 'timed'
+type AssignTab = 'weekly' | 'casual' | 'timed'
 
 export function MissionsPage() {
   const { profile, refreshProfile, user } = useAuth()
@@ -157,6 +163,9 @@ export function MissionsPage() {
     const names = new Map(
       (allEventsQuery.data ?? []).map((event) => [event.id, event.name]),
     )
+    const studyableById = new Map(
+      (allEventsQuery.data ?? []).map((event) => [event.id, event.studyable]),
+    )
     const people = new Map(
       (rosterQuery.data ?? []).map((member) => [member.user_id, member]),
     )
@@ -171,6 +180,10 @@ export function MissionsPage() {
       .map((row) => ({
         id: row.event_id,
         name: names.get(row.event_id) ?? row.event_id,
+        studyable: isStudyableEvent({
+          id: row.event_id,
+          studyable: studyableById.get(row.event_id),
+        }),
         partners: coverage
           .filter(
             (other) =>
@@ -183,9 +196,16 @@ export function MissionsPage() {
               b.display_name || b.handle,
             ),
           ),
-        missions: mine.filter(
-          (mission) => mission.target_event_id === row.event_id,
-        ),
+        missions: mine.filter((mission) => {
+          if (mission.target_event_id !== row.event_id) return false
+          if (
+            mission.recurrence_id &&
+            Date.parse(mission.deadline) <= Date.now()
+          ) {
+            return false
+          }
+          return true
+        }),
       }))
       .sort((a, b) => a.name.localeCompare(b.name))
   }, [
@@ -228,6 +248,10 @@ export function MissionsPage() {
     : '/ops/casual'
 
   const eventsLoading = coverageQuery.isLoading || allEventsQuery.isLoading
+  const studyCards = eventCards.filter((card) => card.studyable)
+  const otherEventNames = eventCards
+    .filter((card) => !card.studyable)
+    .map((card) => card.name)
 
   return (
     <div className="flex h-full min-h-0 flex-col gap-3">
@@ -258,10 +282,17 @@ export function MissionsPage() {
 
       <section className="hud-panel flex min-h-0 flex-1 flex-col overflow-hidden">
         <div className="flex shrink-0 items-center justify-between gap-3 border-b border-subtle px-5 py-3">
-          <p className="label-caps">
-            {onBench ? 'Bench' : 'Your events'}
-            {!onBench && eventCards.length > 0 ? ` · ${eventCards.length}` : ''}
-          </p>
+          <div className="flex min-w-0 items-baseline gap-2">
+            <p className="label-caps shrink-0">
+              {onBench ? 'Bench' : 'Your events'}
+              {!onBench && studyCards.length > 0 ? ` · ${studyCards.length}` : ''}
+            </p>
+            {!onBench && otherEventNames.length > 0 && (
+              <p className="truncate text-xs text-dim">
+                {otherEventNames.join(' · ')}
+              </p>
+            )}
+          </div>
           {officer && (
             <button
               type="button"
@@ -334,13 +365,15 @@ export function MissionsPage() {
             </div>
           ) : eventsLoading ? (
             <p className="px-2 text-sm text-muted">Loading your events…</p>
-          ) : eventCards.length === 0 ? (
+          ) : studyCards.length === 0 ? (
             <p className="px-2 text-sm text-muted">
-              No events on you yet. Officers assign them from Comms.
+              {otherEventNames.length > 0
+                ? 'Question events show here. Builds stay in the header.'
+                : 'No events on you yet. Officers assign them from Comms.'}
             </p>
           ) : (
             <EventFill
-              cards={eventCards}
+              cards={studyCards}
               officer={officer}
               onStart={(path) => navigate(path)}
               onRemoved={refreshMissions}
@@ -355,7 +388,7 @@ export function MissionsPage() {
               {coverageQuery.isLoading || targetQuery.isLoading
                 ? 'Checking…'
                 : target
-                  ? `${target.eventName} · ${target.topicName} · ${target.accuracyPct}% · ${target.attempts} questions`
+                  ? `${target.eventName} · ${target.topicName} · ${target.accuracyPct}%`
                   : onBench
                     ? 'A weak topic shows up after a few questions.'
                     : myEventIds.size === 0
@@ -377,6 +410,7 @@ export function MissionsPage() {
 
       {showAssign && officer && (
         <AssignMissionsModal
+          teamId={teamId}
           events={eventsQuery.data ?? []}
           missions={missions}
           onClose={() => setShowAssign(false)}
@@ -532,6 +566,11 @@ function EventMission({
   onRemoved: () => void
 }) {
   const kind = missionKind(item)
+  const label = item.recurrence_id
+    ? 'Every week'
+    : kind === 'timed'
+      ? 'Test'
+      : 'Casual'
   const lobby = missionLobbyPath(item)
   const overdue = missionIsOverdue(item)
   return (
@@ -550,7 +589,7 @@ function EventMission({
               : 'text-muted group-hover:text-cyan'
           }`}
         >
-          {kind === 'timed' ? 'Test' : 'Casual'}
+          {label}
           {' · '}
           {item.goal_type === 'correct' ? 'correct' : 'answered'}
           {' · '}
@@ -582,7 +621,11 @@ function EventMission({
       </div>
       {officer && (
         <div className="mt-1.5">
-          <RemoveMissionButton id={item.id} onRemoved={onRemoved} />
+          <RemoveMissionButton
+            id={item.id}
+            recurrenceId={item.recurrence_id}
+            onRemoved={onRemoved}
+          />
         </div>
       )}
     </div>
@@ -599,27 +642,46 @@ function CompletedMission({
   onRemoved: () => void
 }) {
   const kind = missionKind(item)
+  const label = item.recurrence_id
+    ? 'Every week'
+    : kind === 'timed'
+      ? 'Test'
+      : 'Casual'
   return (
     <div className="flex items-center justify-between gap-2 py-1">
       <p className="min-w-0 truncate text-sm text-dim line-through">
-        {kind === 'timed' ? 'Test' : 'Casual'} · {item.current_value}/
-        {item.target_value}
+        {label} · {item.current_value}/{item.target_value}
       </p>
-      {officer && <RemoveMissionButton id={item.id} onRemoved={onRemoved} />}
+      {officer && (
+        <RemoveMissionButton
+          id={item.id}
+          recurrenceId={item.recurrence_id}
+          onRemoved={onRemoved}
+        />
+      )}
     </div>
   )
 }
 
 function RemoveMissionButton({
   id,
+  recurrenceId,
   onRemoved,
 }: {
   id: string
+  recurrenceId?: string | null
   onRemoved: () => void
 }) {
+  const qc = useQueryClient()
   const mutation = useMutation({
-    mutationFn: () => deleteTeamMissions([id]),
-    onSuccess: onRemoved,
+    mutationFn: () =>
+      recurrenceId ? stopRecurringMission(recurrenceId) : deleteTeamMissions([id]),
+    onSuccess: () => {
+      if (recurrenceId) {
+        void qc.invalidateQueries({ queryKey: ['mission-recurrences'] })
+      }
+      onRemoved()
+    },
   })
   return (
     <button
@@ -686,29 +748,164 @@ function CountField({
   )
 }
 
+function WeeklyRules({
+  rules,
+  eventName,
+  pending,
+  onStop,
+  onStopAll,
+}: {
+  rules: MissionRecurrence[]
+  eventName: Map<string, string>
+  pending: boolean
+  onStop: (id: string) => void
+  onStopAll: () => void
+}) {
+  return (
+    <>
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <p className="label-caps text-[9px] text-dim">
+          Every week{rules.length > 0 ? ` · ${rules.length}` : ''}
+        </p>
+        <button
+          type="button"
+          disabled={pending || rules.length === 0}
+          onClick={onStopAll}
+          className="data-mono text-[10px] text-dim hover:text-alert disabled:opacity-40"
+        >
+          Stop all
+        </button>
+      </div>
+      <ul className="max-h-52 space-y-1.5 overflow-y-auto overscroll-contain rounded-md border border-subtle p-2">
+        {rules.length === 0 ? (
+          <li className="px-2 py-3 text-sm text-dim">No weekly missions yet.</li>
+        ) : (
+          rules.map((rule) => (
+            <li
+              key={rule.id}
+              className="flex items-center justify-between gap-3 rounded-md px-2 py-1.5"
+            >
+              <div className="min-w-0">
+                <p className="truncate text-sm text-foreground">
+                  {eventName.get(rule.event_id) ?? rule.event_id}
+                </p>
+                <p className="truncate text-xs text-dim">
+                  {rule.target_value} {rule.goal_type} · due{' '}
+                  {formatWeeklyDue(rule.due_isodow, rule.due_minute)}
+                </p>
+              </div>
+              <button
+                type="button"
+                disabled={pending}
+                onClick={() => onStop(rule.id)}
+                className="data-mono shrink-0 text-[10px] text-dim hover:text-alert"
+              >
+                Stop
+              </button>
+            </li>
+          ))
+        )}
+      </ul>
+    </>
+  )
+}
+
+function OneOffBoard({
+  board,
+  pending,
+  onRemove,
+}: {
+  board: MissionRow[]
+  pending: boolean
+  onRemove: (ids: string[]) => void
+}) {
+  return (
+    <>
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <p className="label-caps text-[9px] text-dim">
+          On the board{board.length > 0 ? ` · ${board.length}` : ''}
+        </p>
+        <button
+          type="button"
+          disabled={pending || board.length === 0}
+          onClick={() => {
+            if (window.confirm(`Remove all ${board.length} upcoming missions?`)) {
+              onRemove(board.map((mission) => mission.id))
+            }
+          }}
+          className="data-mono text-[10px] text-dim hover:text-alert disabled:opacity-40"
+        >
+          Remove all
+        </button>
+      </div>
+      <ul className="max-h-52 space-y-1.5 overflow-y-auto overscroll-contain rounded-md border border-subtle p-2">
+        {board.length === 0 ? (
+          <li className="px-2 py-3 text-sm text-dim">Nothing assigned right now.</li>
+        ) : (
+          board.map((mission) => (
+            <li
+              key={mission.id}
+              className="flex items-center justify-between gap-3 rounded-md px-2 py-1.5"
+            >
+              <div className="min-w-0">
+                <p className="truncate text-sm text-foreground">
+                  {mission.event_name ?? 'Any event'}
+                </p>
+                <p className="truncate text-xs text-dim">
+                  {mission.title} · due {formatDeadline(mission.deadline)}
+                </p>
+              </div>
+              <button
+                type="button"
+                disabled={pending}
+                onClick={() => onRemove([mission.id])}
+                className="data-mono shrink-0 text-[10px] text-dim hover:text-alert"
+              >
+                Remove
+              </button>
+            </li>
+          ))
+        )}
+      </ul>
+    </>
+  )
+}
+
 function AssignMissionsModal({
+  teamId,
   events,
   missions,
   onClose,
   onChanged,
 }: {
+  teamId: string
   events: Array<{ id: string; name: string }>
   missions: MissionRow[]
   onClose: () => void
   onChanged: () => void
 }) {
-  const [tab, setTab] = useState<AssignTab>('casual')
+  const qc = useQueryClient()
+  const [tab, setTab] = useState<AssignTab>('weekly')
   const [goalType, setGoalType] = useState<MissionGoalType>('answered')
   const [questions, setQuestions] = useState(25)
   const [minutes, setMinutes] = useState(20)
   const [selected, setSelected] = useState<string[]>([])
   const [deadlinePolicyChoice, setDeadlinePolicyChoice] = useState<DeadlinePolicy>('late')
+  const [dueIsodow, setDueIsodow] = useState(7)
+  const [dueTime, setDueTime] = useState('23:59')
   const [deadlineLocal, setDeadlineLocal] = useState(() => {
     const d = new Date(Date.now() + 7 * 24 * 3_600_000)
     d.setMinutes(d.getMinutes() - d.getTimezoneOffset())
     return d.toISOString().slice(0, 16)
   })
   const [error, setError] = useState<string | null>(null)
+
+  const rulesQuery = useQuery({
+    queryKey: ['mission-recurrences', teamId],
+    queryFn: () => fetchMissionRecurrences(teamId),
+  })
+  const rules = rulesQuery.data ?? []
+  const eventName = new Map(events.map((event) => [event.id, event.name]))
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -719,11 +916,31 @@ function AssignMissionsModal({
   }, [onClose])
 
   const now = Date.now()
-  const board = missions.filter((m) => Date.parse(m.deadline) > now)
+  const board = missions.filter(
+    (m) => !m.recurrence_id && Date.parse(m.deadline) > now,
+  )
+  const dueMinute = (() => {
+    const [hourText, minuteText] = dueTime.split(':')
+    const hour = Number(hourText)
+    const minute = Number(minuteText)
+    if (!Number.isInteger(hour) || !Number.isInteger(minute)) return null
+    if (hour < 0 || hour > 23 || minute < 0 || minute > 59) return null
+    return hour * 60 + minute
+  })()
 
   const createMutation = useMutation({
-    mutationFn: () =>
-      createEventMissions({
+    mutationFn: async () => {
+      if (tab === 'weekly') {
+        await createRecurringMissions({
+          goalType,
+          targetValue: questions,
+          dueIsodow,
+          dueMinute: dueMinute ?? 0,
+          eventIds: selected,
+        })
+        return
+      }
+      await createEventMissions({
         kind: tab === 'timed' ? 'timed' : 'casual',
         goalType,
         targetValue: questions,
@@ -731,10 +948,12 @@ function AssignMissionsModal({
         eventIds: selected,
         timedSeconds: tab === 'timed' ? minutes * 60 : null,
         deadlinePolicy: deadlinePolicyChoice,
-      }),
+      })
+    },
     onSuccess: () => {
       setError(null)
       setSelected([])
+      void qc.invalidateQueries({ queryKey: ['mission-recurrences', teamId] })
       onChanged()
     },
     onError: (err) => {
@@ -753,12 +972,26 @@ function AssignMissionsModal({
     },
   })
 
+  const stopMutation = useMutation({
+    mutationFn: (ids: string[]) => Promise.all(ids.map((id) => stopRecurringMission(id))),
+    onSuccess: () => {
+      setError(null)
+      void qc.invalidateQueries({ queryKey: ['mission-recurrences', teamId] })
+      onChanged()
+    },
+    onError: (err) => {
+      setError(errText(err, 'Could not stop'))
+    },
+  })
+
   const ready =
     selected.length > 0 &&
     questions >= 1 &&
-    Boolean(deadlineLocal) &&
-    Date.parse(deadlineLocal) > Date.now() &&
-    (tab === 'casual' || minutes >= 1)
+    (tab === 'weekly'
+      ? dueMinute != null
+      : Boolean(deadlineLocal) &&
+        Date.parse(deadlineLocal) > Date.now() &&
+        (tab === 'casual' || minutes >= 1))
 
   function toggle(id: string) {
     setSelected((cur) =>
@@ -773,9 +1006,11 @@ function AssignMissionsModal({
   }
 
   const summary =
-    tab === 'timed'
-      ? `${questions} question test, ${minutes} min, on ${selected.length} event${selected.length === 1 ? '' : 's'}`
-      : `${questions} casual ${goalType} on ${selected.length} event${selected.length === 1 ? '' : 's'}`
+    tab === 'weekly'
+      ? `${questions} ${goalType} every week, due ${formatWeeklyDue(dueIsodow, dueMinute ?? 0)}, on ${selected.length} event${selected.length === 1 ? '' : 's'}`
+      : tab === 'timed'
+        ? `${questions} question test, ${minutes} min, on ${selected.length} event${selected.length === 1 ? '' : 's'}`
+        : `${questions} casual ${goalType} on ${selected.length} event${selected.length === 1 ? '' : 's'}`
 
   return (
     <ModalScrim label="Assign missions" onClose={onClose}>
@@ -787,11 +1022,12 @@ function AssignMissionsModal({
           <div>
             <p className="label-caps">Assign</p>
             <h2 className="mt-1 text-2xl font-medium text-[var(--text)]">
-              One mission per event
+              {tab === 'weekly' ? 'Every week' : 'One mission per event'}
             </h2>
             <p className="mt-1 max-w-xl text-sm text-muted">
-              Check the events. Each one becomes its own mission, and only the
-              people assigned to that event see it.
+              {tab === 'weekly'
+                ? 'Pick the count, answered or correct, and the weekly deadline. Each week starts at zero. Last week’s answers stay on last week.'
+                : 'Check the events. Each one becomes its own mission, and only the people assigned to that event see it.'}
             </p>
           </div>
           <button type="button" onClick={onClose} className="hud-pill px-4 py-2 text-xs">
@@ -801,10 +1037,11 @@ function AssignMissionsModal({
 
         <form onSubmit={onSubmit} className="flex flex-col">
           <div className="space-y-4 px-5 py-4">
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               {(
                 [
-                  ['casual', 'Casual questions'],
+                  ['weekly', 'Every week'],
+                  ['casual', 'Casual'],
                   ['timed', 'Tests'],
                 ] as const
               ).map(([id, label]) => (
@@ -867,52 +1104,100 @@ function AssignMissionsModal({
               )}
             </div>
 
-            <div>
-              <span className="label-caps mb-1.5 block text-[9px] text-dim">
-                After the deadline
-              </span>
-              <div className="grid grid-cols-3 gap-2">
-                {(
-                  [
-                    ['late', 'Late'],
-                    ['close', 'Closes'],
-                    ['count', 'Counts'],
-                  ] as const
-                ).map(([id, label]) => (
-                  <button
-                    key={id}
-                    type="button"
-                    onClick={() => setDeadlinePolicyChoice(id)}
-                    className={`rounded-md border px-2 py-2 text-sm ${
-                      deadlinePolicyChoice === id
-                        ? 'border-cyan bg-cyan/10 text-cyan'
-                        : 'border-subtle text-muted'
-                    }`}
-                  >
-                    {label}
-                  </button>
-                ))}
+            {tab === 'weekly' ? (
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div>
+                  <span className="label-caps mb-1.5 block text-[9px] text-dim">
+                    Due day
+                  </span>
+                  <div className="grid grid-cols-7 gap-1">
+                    {(
+                      [
+                        [1, 'Mo'],
+                        [2, 'Tu'],
+                        [3, 'We'],
+                        [4, 'Th'],
+                        [5, 'Fr'],
+                        [6, 'Sa'],
+                        [7, 'Su'],
+                      ] as const
+                    ).map(([day, letter]) => (
+                      <button
+                        key={day}
+                        type="button"
+                        onClick={() => setDueIsodow(day)}
+                        className={`rounded-md border py-2 text-sm ${
+                          dueIsodow === day
+                            ? 'border-cyan bg-cyan/10 text-cyan'
+                            : 'border-subtle text-muted'
+                        }`}
+                      >
+                        {letter}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <label className="block">
+                  <span className="label-caps mb-1.5 block text-[9px] text-dim">
+                    Due time
+                  </span>
+                  <input
+                    type="time"
+                    value={dueTime}
+                    onChange={(e) => setDueTime(e.target.value)}
+                    className="w-full rounded-md border border-subtle bg-surface px-2.5 py-2 data-mono text-sm text-foreground outline-none focus:border-accent"
+                  />
+                </label>
               </div>
-              <p className="mt-1.5 text-xs text-dim">
-                {deadlinePolicyChoice === 'close'
-                  ? 'After the deadline it is closed and later work does not fill it.'
-                  : deadlinePolicyChoice === 'count'
-                    ? 'It stays open and still counts.'
-                    : 'It stays open, turns red, and later work still fills it.'}
-              </p>
-            </div>
-
-            <label className="block">
-              <span className="label-caps mb-1.5 block text-[9px] text-dim">
-                Deadline
-              </span>
-              <input
-                type="datetime-local"
-                value={deadlineLocal}
-                onChange={(e) => setDeadlineLocal(e.target.value)}
-                className="w-full rounded-md border border-subtle bg-surface px-2.5 py-2 data-mono text-sm text-foreground outline-none focus:border-accent"
-              />
-            </label>
+            ) : (
+              <>
+                <div>
+                  <span className="label-caps mb-1.5 block text-[9px] text-dim">
+                    After the deadline
+                  </span>
+                  <div className="grid grid-cols-3 gap-2">
+                    {(
+                      [
+                        ['late', 'Late'],
+                        ['close', 'Closes'],
+                        ['count', 'Counts'],
+                      ] as const
+                    ).map(([id, label]) => (
+                      <button
+                        key={id}
+                        type="button"
+                        onClick={() => setDeadlinePolicyChoice(id)}
+                        className={`rounded-md border px-2 py-2 text-sm ${
+                          deadlinePolicyChoice === id
+                            ? 'border-cyan bg-cyan/10 text-cyan'
+                            : 'border-subtle text-muted'
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="mt-1.5 text-xs text-dim">
+                    {deadlinePolicyChoice === 'close'
+                      ? 'After the deadline it is closed and later work does not fill it.'
+                      : deadlinePolicyChoice === 'count'
+                        ? 'It stays open and still counts.'
+                        : 'It stays open, turns red, and later work still fills it.'}
+                  </p>
+                </div>
+                <label className="block">
+                  <span className="label-caps mb-1.5 block text-[9px] text-dim">
+                    Deadline
+                  </span>
+                  <input
+                    type="datetime-local"
+                    value={deadlineLocal}
+                    onChange={(e) => setDeadlineLocal(e.target.value)}
+                    className="w-full rounded-md border border-subtle bg-surface px-2.5 py-2 data-mono text-sm text-foreground outline-none focus:border-accent"
+                  />
+                </label>
+              </>
+            )}
 
             <div>
               <div className="mb-2 flex items-center justify-between gap-2">
@@ -963,7 +1248,9 @@ function AssignMissionsModal({
             <p className="data-mono text-xs text-muted">
               {selected.length === 0
                 ? 'Check at least one event.'
-                : `Will create ${selected.length} mission${selected.length === 1 ? '' : 's'} · ${summary}`}
+                : tab === 'weekly'
+                  ? `Will save ${selected.length} weekly mission${selected.length === 1 ? '' : 's'} · ${summary}`
+                  : `Will create ${selected.length} mission${selected.length === 1 ? '' : 's'} · ${summary}`}
             </p>
             {questions < 1 && (
               <p className="text-xs text-alert">Question count has to be at least 1.</p>
@@ -971,56 +1258,29 @@ function AssignMissionsModal({
             {error && <p className="text-sm text-alert">{error}</p>}
 
             <div className="border-t border-subtle pt-4">
-              <div className="mb-2 flex items-center justify-between gap-2">
-                <p className="label-caps text-[9px] text-dim">
-                  On the board{board.length > 0 ? ` · ${board.length}` : ''}
-                </p>
-                <button
-                  type="button"
-                  disabled={clearMutation.isPending || board.length === 0}
-                  onClick={() => {
+              {tab === 'weekly' ? (
+                <WeeklyRules
+                  rules={rules}
+                  eventName={eventName}
+                  pending={stopMutation.isPending}
+                  onStop={(id) => stopMutation.mutate([id])}
+                  onStopAll={() => {
                     if (
                       window.confirm(
-                        `Remove all ${board.length} upcoming missions?`,
+                        `Stop all ${rules.length} weekly missions?`,
                       )
                     ) {
-                      clearMutation.mutate(board.map((m) => m.id))
+                      stopMutation.mutate(rules.map((rule) => rule.id))
                     }
                   }}
-                  className="data-mono text-[10px] text-dim hover:text-alert disabled:opacity-40"
-                >
-                  Remove all
-                </button>
-              </div>
-              <ul className="max-h-52 space-y-1.5 overflow-y-auto overscroll-contain rounded-md border border-subtle p-2">
-                {board.length === 0 ? (
-                  <li className="px-2 py-3 text-sm text-dim">Nothing assigned right now.</li>
-                ) : (
-                  board.map((m) => (
-                    <li
-                      key={m.id}
-                      className="flex items-center justify-between gap-3 rounded-md px-2 py-1.5"
-                    >
-                      <div className="min-w-0">
-                        <p className="truncate text-sm text-foreground">
-                          {m.event_name ?? 'Any event'}
-                        </p>
-                        <p className="truncate text-xs text-dim">
-                          {m.title} · due {formatDeadline(m.deadline)}
-                        </p>
-                      </div>
-                      <button
-                        type="button"
-                        disabled={clearMutation.isPending}
-                        onClick={() => clearMutation.mutate([m.id])}
-                        className="data-mono shrink-0 text-[10px] text-dim hover:text-alert"
-                      >
-                        Remove
-                      </button>
-                    </li>
-                  ))
-                )}
-              </ul>
+                />
+              ) : (
+                <OneOffBoard
+                  board={board}
+                  pending={clearMutation.isPending}
+                  onRemove={(ids) => clearMutation.mutate(ids)}
+                />
+              )}
             </div>
           </div>
 
@@ -1032,8 +1292,10 @@ function AssignMissionsModal({
               style={{ borderColor: 'var(--cyan)' }}
             >
               {createMutation.isPending
-                ? 'Assigning…'
-                : `Assign ${selected.length || ''}`.trim()}
+                ? 'Saving…'
+                : tab === 'weekly'
+                  ? `Save weekly${selected.length ? ` ${selected.length}` : ''}`
+                  : `Assign ${selected.length || ''}`.trim()}
             </button>
           </div>
         </form>
