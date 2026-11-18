@@ -169,7 +169,7 @@ DECLARE
   tid uuid;
   goal_norm text := lower(trim(COALESCE(p_goal_type, '')));
   tz text := NULLIF(trim(COALESCE(p_timezone, '')), '');
-  event_id text;
+  chosen_event text;
   rule public.mission_recurrences;
   title_text text;
   opens timestamptz;
@@ -207,22 +207,22 @@ BEGIN
 
   PERFORM public.next_weekly_deadline(now(), p_due_isodow, p_due_minute, tz);
 
-  FOREACH event_id IN ARRAY p_event_ids LOOP
-    IF event_id IN (
+  FOREACH chosen_event IN ARRAY p_event_ids LOOP
+    IF chosen_event IN (
       'boomilever', 'electric_vehicle', 'mission_possible',
       'ping_pong_parachute', 'wright_stuff'
     ) OR NOT EXISTS (
       SELECT 1 FROM public.taxonomy_events
-      WHERE id = event_id AND active AND studyable
+      WHERE id = chosen_event AND active AND studyable
     ) THEN
-      RAISE EXCEPTION 'Unknown studyable event: %', event_id;
+      RAISE EXCEPTION 'Unknown studyable event: %', chosen_event;
     END IF;
 
     INSERT INTO public.mission_recurrences (
       team_id, created_by, event_id, goal_type, target_value,
       due_isodow, due_minute, timezone, active
     ) VALUES (
-      tid, uid, event_id, goal_norm, p_target_value,
+      tid, uid, chosen_event, goal_norm, p_target_value,
       p_due_isodow, p_due_minute, tz, true
     )
     ON CONFLICT (team_id, event_id) DO UPDATE SET
@@ -532,7 +532,7 @@ DECLARE
   kind_norm text;
   goal_norm text;
   policy_norm text;
-  event_id text;
+  chosen_event text;
   title_text text;
   minutes integer;
   mission public.team_missions;
@@ -584,22 +584,22 @@ BEGIN
     title_text := format('Casual · %s %s', p_target_value, goal_norm);
   END IF;
 
-  FOREACH event_id IN ARRAY p_event_ids LOOP
-    IF event_id IN (
+  FOREACH chosen_event IN ARRAY p_event_ids LOOP
+    IF chosen_event IN (
       'boomilever', 'electric_vehicle', 'mission_possible',
       'ping_pong_parachute', 'wright_stuff'
     ) OR NOT EXISTS (
       SELECT 1 FROM public.taxonomy_events
-      WHERE id = event_id AND active AND studyable
+      WHERE id = chosen_event AND active AND studyable
     ) THEN
-      RAISE EXCEPTION 'Unknown studyable event: %', event_id;
+      RAISE EXCEPTION 'Unknown studyable event: %', chosen_event;
     END IF;
 
     INSERT INTO public.team_missions (
       team_id, created_by, title, target_event_id, goal_type, target_value,
       deadline, kind, timed_seconds, deadline_policy, opens_at
     ) VALUES (
-      tid, uid, title_text, event_id, goal_norm, p_target_value, p_deadline,
+      tid, uid, title_text, chosen_event, goal_norm, p_target_value, p_deadline,
       kind_norm,
       CASE WHEN kind_norm = 'timed' THEN p_timed_seconds ELSE NULL END,
       policy_norm,
@@ -610,7 +610,7 @@ BEGIN
     INSERT INTO public.user_mission_progress (mission_id, user_id, current_value, completed)
     SELECT mission.id, c.user_id, 0, false
     FROM public.team_event_coverage c
-    WHERE c.team_id = tid AND c.event_id = event_id
+    WHERE c.team_id = tid AND c.event_id = chosen_event
     ON CONFLICT DO NOTHING;
 
     RETURN NEXT mission;

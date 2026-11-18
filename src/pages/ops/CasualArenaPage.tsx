@@ -28,7 +28,7 @@ import {
 import { playPracticeSfx } from '../../lib/practiceSfx'
 import {
   itemFromQuestion,
-  publishPracticeSummary,
+  savePracticeSummary,
 } from '../../lib/practiceSummary'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import { formatExamClock } from '../../lib/timedExamStorage'
